@@ -9,6 +9,16 @@
   -o-box-sizing: border-box;
   box-sizing: border-box;
 }
+article,
+aside,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
 html {
   font: normal normal 400 1em/1em 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, Sans-Serif;
   min-height: 100%;
