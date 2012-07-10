@@ -1,2 +1,10 @@
 
 .DS_Store
+
+source/test/$src.html
+
+source/test/$www.html
+
+source/libs/atnotate/atnotate.pyc
+
+source/build.log
