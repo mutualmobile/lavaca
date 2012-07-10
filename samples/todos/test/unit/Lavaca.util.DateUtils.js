@@ -30,12 +30,12 @@ describe('DateUtils', function() {
     expect(Lavaca.util.DateUtils.stringify(date, 'yyyy-MM-ddTHH:mm:ss.fffzzz')).toEqual(out);
   });
   it('can stringify a date in UTC', function() {
-    var date = new Date('2009/09/01 09:58:03.567+00:00');
-    expect(Lavaca.util.DateUtils.stringify(date, 'yyyy-MM-ddTHH:mm:ss.fff', true)).toEqual('2009-09-01T09:58:03.567');
+    var date = new Date('Sep 01 2009 09:58:03+0000');
+    expect(Lavaca.util.DateUtils.stringify(date, 'yyyy-MM-ddTHH:mm:ss.fff', true)).toEqual('2009-09-01T09:58:03.000');
   });
   it('can enter raw strings in formats', function() {
-    var date = new Date('2009/09/01 09:58:03.567+00:00');
-    expect(Lavaca.util.DateUtils.stringify(date, 'yyyy-MM-ddTHH:mm:ss.fff"foo"', true)).toEqual('2009-09-01T09:58:03.567foo');
+    var date = new Date('Sep 01 2009 09:58:03+0000');
+    expect(Lavaca.util.DateUtils.stringify(date, 'yyyy-MM-ddTHH:mm:ss.fff"foo"', true)).toEqual('2009-09-01T09:58:03.000foo');
   });
 });
 
