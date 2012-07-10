@@ -20,8 +20,6 @@ ns.TodosView = ScrollableView.extend(function() {
   this.mapEvent({
     '#new-todo': {keypress: this.updateInput},
     'input[type=checkbox]': {tap: this.toggleDone},
-    '.remove': {tap: this.removeTodo},
-    '.remove-all': {tap: this.removeAll},
     '.todo': {
       dblclick: this.toggleEdit,
       swipe: this.toggleEdit
@@ -182,25 +180,6 @@ ns.TodosView = ScrollableView.extend(function() {
       li.append('<input type="text" class="text-edit" value="' + text + '">');
       li.find('.text-edit').focus();
     }
-  },
-  /**
-   * @method removeTodo
-   * Removes the todo from the collection
-   * @param {MouseEvent} e  The click event
-   */
-  removeTodo: function(e) {
-    var checkbox = $(e.currentTarget),
-        li = checkbox.parent(),
-        cid = li.attr('data-cid');
-    app.router.exec('/todo/remove/' + cid);
-  },
-  /**
-   * @method removeAll
-   * Removes the todo from the collection
-   * @param {MouseEvent} e  The click event
-   */
-  removeAll: function(e) {
-    app.router.exec('/todo/clear-done');
   },
   /**
    * @method dispose
