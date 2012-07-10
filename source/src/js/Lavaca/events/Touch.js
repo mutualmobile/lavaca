@@ -336,7 +336,7 @@ ns.bind = function(el, delegate, start, move, end, thisp) {
       result.startPoint = startPoint;
       result.lastPoint = lastPoint;
       result.currentPoint = currentPoint;
-      result.hasMoved = hasMoved || (hasMoved = !_withinThreshold(lastPoint, currentPoint));
+      result.hasMoved = hasMoved || (hasMoved = !_withinThreshold(startPoint, currentPoint));
       if (startPoint && currentPoint) {
         result.startDelta = _delta(currentPoint, startPoint);
         result.startDistance = _distance(currentPoint, startPoint);

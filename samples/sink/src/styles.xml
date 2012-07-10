@@ -1,6 +1,6 @@
 <styles>
   <package name="libs">
-    <file>/css/libs/Lavaca-1.0.0.min.css</file>
+    <file>/css/libs/Lavaca-1.0.1.min.css</file>
   </package>
   <package name="app">
     <file>/css/app/app.css</file>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <title>XDust</title>
+    <meta name="description" content=" The x-dust templating engine type">
+    <link type="text/css" href="assets/app.css" rel="stylesheet">
+  </head>
+  <body class="[[bodyClassName]]">
+    <iframe id="navigation-frame" src="packages.html"></iframe>
+    <div id="view-root"></div>
+    <script type="text/x-dust-template" data-name="field">
+      <li class="{?inherited}inherited{:else}instance{/inherited} field" id="sig-{name}">
+        <h3 class="name">{?static}{owner}.{/static}{name}<span class="default"> = {?default}{default|s}{:else}null{/default}</span></h3>
+        <div class="body">
+          <span class="type">{type}</span>
+          <span class="desc">{desc|s}</span>
+        </div>
+        {?inherited}
+          <div class="source">Inherited from <a href="{owner}.html#sig-{name}">{owner}</a></div>
+        {/inherited}
+      </li>
+    </script>
+    <script type="text/x-dust-template" data-name="method">
+      {#signatures static=static owner=owner}
+        <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
+          <h3 class="name">{?static}{owner}.{/static}{name}</h3>
+          <div class="body">
+            <div class="desc">{desc|s}</div>
+            {?params}
+              <table class="params">
+                <thead class="arguments" colspan="3">
+                  <tr>
+                    <th>Arguments</th>
+                  </tr>
+                </thead>
+                {#params}
+                  <tr class="param">
+                    <td class="type">{type}</td>
+                    <td class="name">{name}</td>
+                    <td class="desc">
+                      {desc|s}
+                      {?opts}
+                        <table class="options">
+                          {#opts}
+                            <tr class="option">
+                              <td class="name">{name}<span class="default">= {?default}{default|s}{:else}null{/default}</span></td>
+                              <td class="desc">
+                                <span class="type">{type}</span>
+                                <div>{desc|s}</div>
+                              </td>
+                            </tr>
+                          {/opts}
+                        </table>
+                      {/opts}
+                    </td>
+                  </tr>
+                {/params}
+              </table>
+            {/params}
+            {#returnValue}
+              <table class="params">
+                <thead>
+                  <tr>
+                    <th colspan="3">Returns</th>
+                  </tr>
+                </thead>
+                <tr class="return">
+                  <td class="type">{type}</td>
+                  <td class="desc" colspan="2">{desc|s}</td>
+                </tr>
+              </table>
+            {/returnValue}
+          </div>
+          {?inherited}
+            <div class="source">Inherited from <a href="{owner}.html#sig-{id}">{owner}</a></div>
+          {/inherited}
+        </li>
+      {/signatures}
+    </script>
+    <script type="text/x-dust-template" data-name="type">
+      <h2 class="package">{ns}</h2>
+      <h1 class="name">{name}</h1>
+      {?desc}
+        <section id="description" class="desc">
+          {desc|s}
+        </section>
+      {/desc}
+      {#superType}
+        <a class="show-inherited" href="#">Show inherited fields and methods</a>
+      {/superType}
+      <section id="inheritance">
+        <h2 class="title">Inheritance</h2>
+        <ul class="super-types">
+          <li class="super-type current">{?ns}{ns}.{/ns}{name}</li>
+          {#inheritance}
+            <li class="super-type">
+              <a href="{.}.html">{.}</a>
+            </li>
+          {/inheritance}
+          <li class="super-type">Object</li>
+        </ul>
+      </section>
+      {?staticFields}
+        <section id="fields">
+          <h2 class="title">Static Fields</h2>
+          <ul class="fields">
+            {#staticFields}
+              {>field:./}
+            {/staticFields}
+          </ul>
+        </section>
+      {/staticFields}
+      {?staticMethods}
+        <section id="methods">
+          <h2 class="title">Static Methods</h2>
+          <ul class="methods">
+            {#staticMethods}
+              {>method:./}
+            {/staticMethods}
+          </ul>
+        </section>
+      {/staticMethods}
+      {#constructor}
+        <section id="constructors">
+          <h2 class="title">Constructors</h2>
+          <ul class="methods">
+            {>method:./}
+          </ul>
+        </section>
+      {/constructor}
+      {?fields}
+        <section id="fields">
+          <h2 class="title">Fields</h2>
+          <ul class="fields">
+            {#fields}
+              {>field:./}
+            {/fields}
+          </ul>
+        </section>
+      {/fields}
+      {?methods}
+        <section id="methods">
+          <h2 class="title">Methods</h2>
+          <ul class="methods">
+            {#methods}
+              {>method:./}
+            {/methods}
+          </ul>
+        </section>
+      {/methods}
+    </script>
+    <script type="text/javascript" src="assets/zepto-1.0rc1.js"></script>
+    <script type="text/javascript" src="assets/x-dust-0.5.1.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+    <script type="text/javascript">
+      app.load({"qualifiedName": "XDust", "name": "XDust", "fields": [{"owner": "XDust", "type": "Object", "name": "filters", "desc": " A hash of variable value filters"}, {"owner": "XDust", "type": "Object", "name": "helpers", "desc": " A hash of helper functions"}, {"owner": "XDust", "type": "XDustNodeListParser", "name": "parser", "desc": " The parser (used to convert string code to node lists)"}, {"owner": "XDust", "type": "Object", "name": "templates", "desc": " A hash of template names to node list objects"}], "methods": [{"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "str", "desc": "The template code"}, {"type": "String", "name": "name", "desc": "The name of the template"}], "id": "compile(String,String)", "returnValue": {"type": "XDustNode", "desc": "The root node of the new template"}, "name": "compile(str, name)"}, {"params": [{"type": "String", "name": "str", "desc": "The template code"}, {"type": "String", "name": "name", "desc": "The name of the template"}, {"type": "String", "name": "srcFile", "desc": "The file that produced the code"}], "id": "compile(String,String,String)", "returnValue": {"type": "XDustNode", "desc": "The root node of the new template"}, "name": "compile(str, name, srcFile)"}], "name": "compile", "desc": " Compiles code into an <a href=\"XDustNode.html\" target=\"_top\">XDustNode</a>"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "str", "desc": "The string to encode"}], "id": "escapeHTML(String)", "returnValue": {"type": "String", "desc": "The encoded string"}, "name": "escapeHTML(str)"}], "name": "escapeHTML", "desc": " Encodes a string for inclusion in HTML"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "str", "desc": "The string to encode"}], "id": "escapeJS(String)", "returnValue": {"type": "String", "desc": "The encoded string"}, "name": "escapeJS(str)"}], "name": "escapeJS", "desc": " Encodes a string for inclusion in JavaScript"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "str", "desc": "The string to encode"}], "id": "escapeURI(String)", "returnValue": {"type": "String", "desc": "The encoded string"}, "name": "escapeURI(str)"}], "name": "escapeURI", "desc": " Encodes a string for inclusion in a URL"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "str", "desc": "The string to encode"}], "id": "escapeURIComponent(String)", "returnValue": {"type": "String", "desc": "The encoded string"}, "name": "escapeURIComponent(str)"}], "name": "escapeURIComponent", "desc": " Encodes a string for inclusion in a URL path"}, {"owner": "XDust", "signatures": [{"id": "getContextPath()", "returnValue": {"type": "String", "desc": "The current base URL"}, "name": "getContextPath()"}], "name": "getContextPath", "desc": " Gets the base URL for templates"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "srcFile", "desc": "The URL of the template file"}, {"type": "String", "name": "name", "desc": "The name of the new template"}], "id": "load(String,String)", "returnValue": {"type": "XDustNode", "desc": "The root node of the new template"}, "name": "load(srcFile, name)"}], "name": "load", "desc": " Creates a template from a file (or retrieves a cached version of the template if that file has already been loaded)"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "name", "desc": "The name of the template"}, {"type": "XDustNode", "name": "rootNode", "desc": "The root node of the template"}], "id": "register(String,XDustNode)", "name": "register(name, rootNode)"}, {"params": [{"type": "String", "name": "name", "desc": "The name of the template"}, {"type": "XDustNode", "name": "rootNode", "desc": "The root node of the template"}, {"type": "String", "name": "srcFile", "desc": "The file that produced the node"}], "id": "register(String,XDustNode,String)", "name": "register(name, rootNode, srcFile)"}], "name": "register", "desc": " Saves an <a href=\"XDustNode.html\" target=\"_top\">XDustNode</a> for use as a template"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "name", "desc": "The name of the template to render"}, {"type": "Object", "name": "model", "desc": "The data object to pass to the template"}, {"type": "Function", "name": "callback", "desc": "A callback in the form f(err, out) that accepts an error as its first argument and the string output of the renderer as the second. If the error is not null, then a problem occurred during rendering."}], "id": "render(String,Object,Function)", "name": "render(name, model, callback)"}], "name": "render", "desc": " Pairs a model with a template and renders the result"}, {"owner": "XDust", "signatures": [{"params": [{"type": "String", "name": "value", "desc": "The new base URL"}], "id": "setContextPath(String)", "name": "setContextPath(value)"}], "name": "setContextPath", "desc": " Sets the base URL for templates"}], "staticMethods": [], "constructor": {"owner": "XDust", "signatures": [{"id": "XDust()", "name": "XDust()", "desc": "Constructor"}], "name": "XDust"}, "staticFields": [{"owner": "XDust", "static": true, "type": "XDust", "name": "window.xdust", "desc": " An instance of the dust templating engine"}], "desc": " The x-dust templating engine type"});
+    </script>
+  </body>
+</html>
