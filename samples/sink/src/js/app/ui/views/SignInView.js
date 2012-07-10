@@ -27,13 +27,13 @@ function _showErrors(inputs) {
 }
 
 var _TForm = Lavaca.ui.Form.extend({
-      onsubmit_success: function(values) {
-        app.router.exec('/sign-in/submit', null, values);
-      },
-      onsubmit_error: function(inputs) {
-        _showErrors(inputs);
-      }
-    });
+  onSubmitSuccess: function(values) {
+    app.router.exec('/sign-in/submit', null, values);
+  },
+  onSubmitError: function(inputs) {
+    _showErrors(inputs);
+  }
+});
 
 /**
  * @class app.ui.SignInView
