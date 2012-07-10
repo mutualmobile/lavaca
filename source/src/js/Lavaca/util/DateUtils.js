@@ -239,7 +239,7 @@ ns.fn = {
       dateObj.ms = _int(input) * 10;
     },
     o: function(date, utc) {
-      return ns.fn.f.o(date, utc, 10);
+      return _pad(ns.fn.f.o(date, utc, 10), 2);
     }
   },
   fff: {
@@ -248,7 +248,7 @@ ns.fn = {
       dateObj.ms = _int(input, 10);
     },
     o: function(date, utc) {
-      return ns.fn.f.o(date, utc, 1);
+      return _pad(ns.fn.f.o(date, utc, 1), 3);
     }
   },
   h: {
