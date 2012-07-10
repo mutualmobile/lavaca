@@ -528,11 +528,11 @@ ns.parse = function(s, f) {
     }
   }
   return new Date(
-      _pad(dateObj.year, 4)
-    + '/'
-    + _pad(dateObj.month + 1, 2)
-    + '/'
+      ns.monthsAbbr[dateObj.month]
+    + ' '
     + _pad(dateObj.date, 2)
+    + ' '
+    + _pad(dateObj.year, 4)
     + ' '
     + _pad(dateObj.hour, 2)
     + ':'
@@ -542,7 +542,6 @@ ns.parse = function(s, f) {
     + (dateObj.ms > 0 ? '.' + _pad(dateObj.ms, 3) : '')
     + (dateObj.offset >= 0 ? '+' : '-')
     + _pad(Math.floor(Math.abs(dateObj.offset / 60)), 2)
-    + ':'
     + _pad(Math.abs(dateObj.offset % 60), 2));
 };
 
