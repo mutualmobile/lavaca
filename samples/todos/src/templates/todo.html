@@ -1,0 +1,5 @@
+<li class="todo {?done}done{/done}" data-cid="{cid}">
+  <input id="todo-{cid}" type="checkbox" {?done}checked="checked"{/done}>
+  <label for="todo-{cid}">{text}</label>
+  <a href="/todo/remove/{cid}" class="remove" title="{#msg}remove{/msg}">{#msg}remove{/msg}</a>
+</li>

@@ -1,0 +1,8 @@
+{?doneCount}
+  <a href="/todo/clear-done" class="remove-all">{#msg p0=doneCount}clear_all{/msg}</a>
+{/doneCount}
+{?items}
+  <div>{#msg}completed{/msg}: {doneCount}</div>
+  <div>{#msg}incomplete{/msg}: {remainingCount}</div>
+  <div>{#msg}total{/msg}: {count}</div>
+{/items}

@@ -1,0 +1,16 @@
+<scripts>
+  <package name="libs">
+  	<file>/js/libs/Lavaca-1.0.0.min.js</file>
+  </package>
+  <package name="app">
+    <file>/js/app/app.js</file>
+    <file>/js/app/models/models.js</file>
+    <file>/js/app/models/StoredCollection.js</file>
+    <file>/js/app/models/Todo.js</file>
+    <file>/js/app/models/TodoCollection.js</file>
+    <file>/js/app/net/TodosController.js</file>
+    <file>/js/app/ui/views/BaseView.js</file>
+    <file>/js/app/ui/views/ScrollableView.js</file>
+    <file>/js/app/ui/views/TodoView.js</file>
+  </package>
+</scripts>

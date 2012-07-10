@@ -1,0 +1,13 @@
+<div class="dialog">
+  {?errors}
+    <h1>Errors</h1>
+    <ul>
+      {#errors}
+        <li>{.}</li>
+      {/errors}
+    </ul>
+  {:else}
+    <h1>No Errors</h1>
+  {/errors}
+  <a href="#" rel="cancel">OK</a>
+</div>

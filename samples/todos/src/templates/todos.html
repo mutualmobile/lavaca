@@ -1,0 +1,15 @@
+<div class="todos-wrapper">
+  <h1>{#msg}todo_header{/msg}</h1>
+  <input id="new-todo" type="text" placeholder="{#msg}input_placeholder{/msg}">
+  <ul class="todo-list">
+    {#items}
+      {#include name="todo"/}
+    {/items}
+  </ul>
+  <div class="todo-meta">
+    {#include name="todo-meta"/}
+  </div>
+  <p>
+    {#msg}choose_language{/msg} <a href="/lang?locale=en_US">English</a>, <a href="/lang?locale=es_MX">Español</a>
+  </p>
+</div>

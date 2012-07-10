@@ -1,0 +1,11 @@
+<styles>
+  <package name="Lavaca-1.0.0.min">
+    <file>/css/libs/reset.css</file>
+    <file>/css/libs/boilerplate.css</file>
+    <file>/css/libs/animations.css</file>
+  </package>
+  <package name="app">
+    <file>/css/app/app.css</file>
+    <file>/css/app/ExampleView.css</file>
+  </package>
+</styles>
