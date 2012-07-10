@@ -2,7 +2,6 @@
 
 app.render = function(template, model) {
   dust.render(template, model, function(err, html) {
-  console.log(model);
     if (err) {
       console.log(err);
     } else {
@@ -26,8 +25,8 @@ $(document.body)
 $(document)
   .ready(function(e) {
     $('script[type="text/x-dust-template"]').each(function() {
-      dust.loadSource(dust.compile(this.innerText, this.getAttribute('data-name')));
+      dust.compile(this.innerHTML, this.getAttribute('data-name'));
     });
   });
 
-})(window.app || (window.app = {}), Zepto, dust);
+})(window.app || (window.app = {}), Zepto, xdust);

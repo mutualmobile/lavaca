@@ -236,8 +236,8 @@
         </section>
       {/methods}
     </script>
-    <script type="text/javascript" src="assets/zepto-0.8.0.min.js"></script>
-    <script type="text/javascript" src="assets/dust-full-0.3.0.min.js"></script>
+    <script type="text/javascript" src="assets/zepto-1.0rc1.js"></script>
+    <script type="text/javascript" src="assets/x-dust-0.5.1.js"></script>
     <script type="text/javascript" src="assets/app.js"></script>
     <script type="text/javascript">
       app.load({"qualifiedName": "Lavaca.net.Connectivity", "name": "Connectivity", "fields": [], "methods": [], "staticMethods": [{"owner": "Lavaca.net.Connectivity", "signatures": [{"params": [{"type": "Object", "name": "opts", "desc": "jQuery-style AJAX options"}], "id": "ajax(Object)", "returnValue": {"type": "Lavaca.util.Promise", "desc": "A promise"}, "name": "ajax(opts)"}], "static": true, "name": "ajax", "desc": " Makes an AJAX request if the user is online. If the user is offline, the returned promise will be rejected with the string argument \"offline\""}, {"owner": "Lavaca.net.Connectivity", "signatures": [{"id": "isOffline()", "returnValue": {"type": "Boolean", "desc": "True if the browser is offline; false if the browser is online or if connection status cannot be determined"}, "name": "isOffline()"}], "static": true, "name": "isOffline", "desc": " Attempts to detect whether or not the browser is connected"}, {"owner": "Lavaca.net.Connectivity", "signatures": [{"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute"}], "id": "registerOfflineAjaxHandler(Function)", "name": "registerOfflineAjaxHandler(callback)"}], "static": true, "name": "registerOfflineAjaxHandler", "desc": " Adds a callback to be executed whenever any Lavaca.net.Connectivity.ajax() call is blocked as a result of a lack of internet connection."}], "ns": "Lavaca.net", "staticFields": [], "desc": " A utility type for working under different network connectivity situations."});
