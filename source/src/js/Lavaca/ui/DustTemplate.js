@@ -152,7 +152,7 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    * Makes this template ready for disposal
    */
   dispose: function() {
-    delete xdust.cache[this.name];
+    delete xdust.templates[this.name];
     Template.prototype.dispose.call(this);
   }
 });
