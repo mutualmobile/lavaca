@@ -56,6 +56,7 @@ header {
   height: 100%;
   text-indent: -999px;
   overflow: hidden;
+  max-width: 400px;
 }
 .download {
   background: url(../img/curly-l.png) 0 55% no-repeat,
