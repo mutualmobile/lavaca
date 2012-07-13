@@ -119,7 +119,11 @@ ns.Collection = Model.extend(function(models, map) {
    * @return {Lavaca.mvc.Model}  The model derived from the data
    */
   prepare: function(data) {
-    var model = data instanceof this.TModel ? data : new this.TModel(data),
+    var model = data instanceof this.TModel
+          ? data
+          : this.TModel.prototype instanceof ns.Collection
+            ? new this.TModel(data[this.TModel.prototype.itemsProperty], data)
+            : new this.TModel(data),
         index = ArrayUtils.indexOf(this.models, model);
     if (index == -1) {
       model
@@ -129,6 +133,16 @@ ns.Collection = Model.extend(function(models, map) {
         .on('saveError', this.onItemEvent, this);
     }
     return model;
+  },
+  /**
+   * @method canSet
+   * Determines whether or not an attribute can be assigned
+   *
+   * @param {String} attribute  The name of the attribute
+   * @return {Boolean}  True if you can assign to the attribute
+   */
+  canSet: function(attribute) {
+    return attribute != this.itemsProperty;
   },
   /**
    * @method add
@@ -380,7 +394,12 @@ ns.Collection = Model.extend(function(models, map) {
    */
   onFetchSuccess: function(response) {
     response = this.parse(response);
-    this.add.apply(this, response);
+    var list = response;
+    if (!(list instanceof Array)) {
+      this.apply(response);
+      list = response[this.itemsProperty];
+    }
+    this.add.apply(this, list);
     this.trigger('fetchSuccess', {response: response});
   },
   /**

@@ -129,6 +129,16 @@ ns.Model = EventDispatcher.extend(function(map) {
     return this.attributes.get(attribute);
   },
   /**
+   * @method canSet
+   * Determines whether or not an attribute can be assigned
+   *
+   * @param {String} attribute  The name of the attribute
+   * @return {Boolean}  True if you can assign to the attribute
+   */
+  canSet: function(attribute) {
+    return true;
+  },
+  /**
    * @method set
    * Sets the value of the attribute, if it passes validation
    *
@@ -149,6 +159,9 @@ ns.Model = EventDispatcher.extend(function(map) {
    */
   set: function(attribute, value, flag, suppress) {
     return _suppressChecked(this, suppress, function() {
+      if (!this.canSet(attribute)) {
+        return false;
+      }
       var previous = this.attributes.get(attribute),
           messages = this.suppressValidation ? [] : this.validate(attribute, value);
       if (messages.length) {
