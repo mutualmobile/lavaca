@@ -154,6 +154,26 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
     return promise;
   },
   /**
+   * @method clearModelEvents
+   * Unbinds events from the model
+   */
+  clearModelEvents: function() {
+    var type,
+        callback;
+    if (this.eventMap
+        && this.eventMap.model
+        && this.model
+        && this.model instanceof EventDispatcher) {
+      for (type in this.eventMap.model) {
+        callback = this.eventMap.model[type];
+        if (typeof callback == 'object') {
+          callback = callback.on;
+        }
+        this.model.off(type, callback, this);
+      }
+    }
+  },
+  /**
    * @method applyEvents
    * Binds events to the view
    */
@@ -174,7 +194,11 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
         } else {
           opts = UNDEFINED;
         }
-        if (type == 'tap' && el.tap) {
+        if (delegate == 'model') {
+          if (this.model && this.model instanceof EventDispatcher) {
+            this.model.on(type, callback, this);
+          }
+        } else if (type == 'tap' && el.tap) {
           el.tap(delegate, callback);
         } else if (type == 'taphold' && el.taphold) {
           el.taphold(delegate, callback, opts ? opts.duration : UNDEFINED);
@@ -367,6 +391,9 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
    * Readies the view for garbage collection
    */
   dispose: function() {
+    if (this.model) {
+      this.clearModelEvents();
+    }
     // Do not dispose of template or model
     this.template
       = this.model

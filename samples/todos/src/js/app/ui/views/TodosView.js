@@ -27,6 +27,11 @@ ns.TodosView = ScrollableView.extend(function() {
     '.text-edit': {
       keypress: this.editTodo,
       blur: this.editTodo
+    },
+    model: {
+      addItem: this.drawTodo,
+      removeItem: this.redrawTodo,
+      changeItem: this.redrawTodo
     }
   });
 }, {
@@ -42,20 +47,6 @@ ns.TodosView = ScrollableView.extend(function() {
    * A class name added to the view container
    */
   className: 'todos',
-  /**
-   * @method onRenderSuccess
-   * Executes when the template renders successfully
-   *
-   * @param {Event} e  The render event. This object should have a string property named "html"
-   *   that contains the template's rendered HTML output.
-   */
-  onRenderSuccess: function(e) {
-    ScrollableView.prototype.onRenderSuccess.apply(this, arguments);
-    this.model
-      .on('addItem', this.drawTodo, this)
-      .on('removeItem', this.redrawTodo, this)
-      .on('changeItem', this.redrawTodo, this);
-  },
   /**
    * @method updateScroll
    * Updates the scroll widget
@@ -180,19 +171,6 @@ ns.TodosView = ScrollableView.extend(function() {
       li.append('<input type="text" class="text-edit" value="' + text + '">');
       li.find('.text-edit').focus();
     }
-  },
-  /**
-   * @method dispose
-   * Readies the view for garbage collection
-   */
-  dispose: function() {
-    if (this.model) {
-      this.model
-        .off('addItem', this.drawTodo, this)
-        .off('removeItem', this.redrawTodo, this)
-        .off('changeItem', this.redrawTodo, this);
-    }
-    ScrollableView.prototype.dispose.call(this);
   }
 });
 
