@@ -1,4 +1,4 @@
-Lavaca 1.0.1
+Lavaca 1.0.2
 ======
 
 Introducing Lavaca, the open source, HTML5 application framework by Mutual Mobile. Jumpstart development of your project by basing them off of Lavaca and using Lavaca's build tools.
