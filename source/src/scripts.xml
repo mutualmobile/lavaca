@@ -1,5 +1,5 @@
 <scripts>
-  <package name="Lavaca-1.0.1.min">
+  <package name="Lavaca-1.0.2.min">
   	<file>/js/libs/zepto-1.0rc1.js</file>
   	<file>/js/libs/x-dust-0.5.1.js</file>
   	<file>/js/libs/iscroll-lite-4.1.6.js</file>
