@@ -15,6 +15,13 @@ Lavaca features:
 
 Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.
 
+Changed in 1.0.2
+======
+* Added enter/exit events for Lavaca.mvc.View
+* Lavaca.mvc.Collection#fetch now works as expected with complex data containing arrays
+* Lavaca.mvc.Collection now supports TModel being a Collection-type
+* You can now delegate events to the view's model using the "model" selector. Those events will be automatically unbound when the view is disposed
+
 Legal stuff:
 
 Lavaca 1.0.2
