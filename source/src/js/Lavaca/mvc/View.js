@@ -19,6 +19,8 @@ var UNDEFINED;
  *
  * @event rendersuccess
  * @event rendererror
+ * @event enter
+ * @event exit
  *
  * @constructor
  * @param {Object} model  The model used by the view
@@ -335,16 +337,17 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
     if (!this.hasRendered) {
       renderPromise = this
         .render()
-        .error(function(err) { promise.reject(err); });
+        .error(promise.rejector());
     }
     this.insertInto(container);
     if (renderPromise) {
       promise.when(renderPromise);
     } else {
-      Lavaca.delay(function() {
-        promise.resolve();
-      });
+      Lavaca.delay(promise.resolver());
     }
+    promise.then(function() {
+      this.trigger('enter');
+    });
     return promise;
   },
   /**
@@ -358,8 +361,9 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
   exit: function(container, enteringViews) {
     var promise = new Promise(this);
     this.shell.remove();
-    Lavaca.delay(function() {
-      promise.resolve();
+    Lavaca.delay(promise.resolver());
+    promise.then(function() {
+      this.trigger('exit');
     });
     return promise;
   },
