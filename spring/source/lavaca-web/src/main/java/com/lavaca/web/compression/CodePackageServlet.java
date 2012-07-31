@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Base type for servlets that deliver Lavaca code files
+ */
 public abstract class CodePackageServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 2455598676706133913L;
@@ -29,23 +32,63 @@ public abstract class CodePackageServlet extends HttpServlet {
 	private static final String PARAMETER_KEY = "k";
 	private static final String TZ_GMT = "GMT";
 
+	/**
+	 * Get the MIME type associated with the code package type
+	 * 
+	 * @return The MIME type
+	 */
 	protected abstract String getContentType();
 
+	/**
+	 * Get a code package associated with a key
+	 * 
+	 * @param key
+	 *            The identifier of the code package
+	 * @return The code package
+	 */
 	protected abstract CodePackage getCodePackage(String key);
 
+	/**
+	 * Prepares an error
+	 * 
+	 * @param request
+	 *            The HTTP request
+	 * @param response
+	 *            The HTTP response
+	 * @param errorCode
+	 *            The error code
+	 * @throws IOException
+	 */
 	protected void sendError(HttpServletRequest request,
 			HttpServletResponse response, int errorCode) throws IOException {
 		request.setAttribute("originatingURL", request.getPathInfo());
 		response.setStatus(errorCode);
 	}
 
+	/**
+	 * The current servlet context
+	 */
 	protected ServletContext context;
 
+	/**
+	 * Initializes the servlet
+	 * 
+	 * @param config
+	 *            The servlet configuration
+	 */
 	@Override
 	public void init(ServletConfig config) {
 		this.context = config.getServletContext();
 	}
 
+	/**
+	 * Handles a GET request to the servlet for a specific code package.
+	 * 
+	 * @param request
+	 *            The HTTP request
+	 * @param response
+	 *            The HTTP response
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {

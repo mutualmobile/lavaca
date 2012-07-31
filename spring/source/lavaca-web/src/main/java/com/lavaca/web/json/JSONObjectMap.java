@@ -14,6 +14,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Adapter to conform JSONObject to the Map interface
+ * 
+ * @see org.json.JSONObject
+ * @see java.util.Map
+ */
 public class JSONObjectMap implements Map<String, Object>, Serializable {
 
 	private static final long serialVersionUID = -9182841373363379110L;
@@ -49,10 +55,23 @@ public class JSONObjectMap implements Map<String, Object>, Serializable {
 
 	private transient JSONObject obj;
 
+	/**
+	 * Constructs a JSONObjectMap
+	 * 
+	 * @param json
+	 *            The JSON string
+	 * @throws JSONException
+	 */
 	public JSONObjectMap(String json) throws JSONException {
 		this.obj = new JSONObject(json);
 	}
 
+	/**
+	 * Constructs a JSONObjectMap
+	 * 
+	 * @param json
+	 *            The JSONObject object
+	 */
 	public JSONObjectMap(JSONObject json) {
 		this.obj = json;
 	}

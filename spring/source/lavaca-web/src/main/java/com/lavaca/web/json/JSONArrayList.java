@@ -13,6 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Adapter to conform JSONArray to the List interface
+ * 
+ * @see org.json.JSONArray
+ * @see java.util.List
+ */
 public class JSONArrayList implements List<Object>, Serializable {
 
 	private static final long serialVersionUID = -7211232865041169646L;
@@ -71,10 +77,19 @@ public class JSONArrayList implements List<Object>, Serializable {
 
 	private transient JSONArray obj;
 
+	/**
+	 * Constructs a JSONArrayList
+	 * @param json The JSON string
+	 * @throws JSONException
+	 */
 	public JSONArrayList(String json) throws JSONException {
 		this.obj = new JSONArray(json);
 	}
 
+	/**
+	 * Constructs a JSONArrayList
+	 * @param json The JSONArray object
+	 */
 	public JSONArrayList(JSONArray json) {
 		this.obj = json;
 	}

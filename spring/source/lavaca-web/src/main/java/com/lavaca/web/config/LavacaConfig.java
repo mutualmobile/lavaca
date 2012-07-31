@@ -26,12 +26,29 @@ import com.lavaca.web.config.xml.XMLTemplates;
 import com.lavaca.web.config.xml.XMLTranslation;
 import com.lavaca.web.config.xml.XMLTranslations;
 
+/**
+ * Utility for managing the Lavaca server-side configuration
+ */
 public class LavacaConfig {
 
+	/**
+	 * Gets an instance of the configuration
+	 * 
+	 * @param context
+	 *            The current application context
+	 * @return The config bean defined in the root-context.xml
+	 */
 	public static LavacaConfig instance(ApplicationContext context) {
 		return context.getBean(LavacaConfig.class);
 	}
 
+	/**
+	 * Gets an instance of the configuration
+	 * 
+	 * @param context
+	 *            The current servlet context
+	 * @return The config bean defined in the root-context.xml
+	 */
 	public static LavacaConfig instance(ServletContext context) {
 		return instance(WebApplicationContextUtils
 				.getWebApplicationContext(context));
@@ -49,74 +66,171 @@ public class LavacaConfig {
 	private String[] translationKeys;
 	private String shellViewName;
 
+	/**
+	 * Get all keys available for Lavaca config files
+	 * 
+	 * @return The keys
+	 */
 	public String[] getConfigKeys() {
 		return configKeys;
 	}
 
+	/**
+	 * Get all keys available for Lavaca script files
+	 * 
+	 * @return The keys
+	 */
 	public String[] getScriptKeys() {
 		return scriptKeys;
 	}
 
+	/**
+	 * Get all keys available for Lavaca style files
+	 * 
+	 * @return The keys
+	 */
 	public String[] getStyleKeys() {
 		return styleKeys;
 	}
 
+	/**
+	 * Get all keys available for Lavaca template files
+	 * 
+	 * @return The keys
+	 */
 	public String[] getTemplateKeys() {
 		return templateKeys;
 	}
 
+	/**
+	 * Get all keys available for Lavaca translation files
+	 * 
+	 * @return The keys
+	 */
 	public String[] getTranslationKeys() {
 		return translationKeys;
 	}
 
+	/**
+	 * Gets the path associated with the Lavaca configs XML file
+	 * 
+	 * @return The file path
+	 */
 	public String getConfigsXmlPath() {
 		return configsXmlPath;
 	}
 
+	/**
+	 * Sets the path associated with the Lavaca configs XML file
+	 * 
+	 * @param configsXmlPath
+	 *            The file path
+	 */
 	public void setConfigsXmlPath(String configsXmlPath) {
 		this.configsXmlPath = configsXmlPath;
 	}
 
+	/**
+	 * Gets the path associated with the Lavaca scripts XML file
+	 * 
+	 * @return The file path
+	 */
 	public String getScriptsXmlPath() {
 		return scriptsXmlPath;
 	}
 
+	/**
+	 * Sets the path associated with the Lavaca scripts XML file
+	 * 
+	 * @param scriptsXmlPath
+	 *            The file path
+	 */
 	public void setScriptsXmlPath(String scriptsXmlPath) {
 		this.scriptsXmlPath = scriptsXmlPath;
 	}
 
+	/**
+	 * Gets the path associated with the Lavaca styles XML file
+	 * 
+	 * @return The file path
+	 */
 	public String getStylesXmlPath() {
 		return stylesXmlPath;
 	}
 
+	/**
+	 * Sets the path associated with the Lavaca styles XML file
+	 * 
+	 * @param stylesXmlPath
+	 *            The file path
+	 */
 	public void setStylesXmlPath(String stylesXmlPath) {
 		this.stylesXmlPath = stylesXmlPath;
 	}
 
+	/**
+	 * Gets the path associated with the Lavaca templates XML file
+	 * 
+	 * @return The file path
+	 */
 	public String getTemplatesXmlPath() {
 		return templatesXmlPath;
 	}
 
+	/**
+	 * Sets the path associated with the Lavaca templates XML file
+	 * 
+	 * @param templatesXmlPath
+	 *            The file path
+	 */
 	public void setTemplatesXmlPath(String templatesXmlPath) {
 		this.templatesXmlPath = templatesXmlPath;
 	}
 
+	/**
+	 * Gets the path associated with the Lavaca translations XML file
+	 * 
+	 * @return The file path
+	 */
 	public String getTranslationsXmlPath() {
 		return translationsXmlPath;
 	}
 
+	/**
+	 * Sets the path associated with the Lavaca translations XML file
+	 * 
+	 * @param translationsXmlPath
+	 *            The file path
+	 */
 	public void setTranslationsXmlPath(String translationsXmlPath) {
 		this.translationsXmlPath = translationsXmlPath;
 	}
 
+	/**
+	 * Gets the name of the wrapper JSP used by Lavaca
+	 * 
+	 * @return The name of the wrapper JSP
+	 */
 	public String getShellViewName() {
 		return shellViewName;
 	}
 
+	/**
+	 * Gets the name of the wrapper JSP used by Lavaca
+	 * 
+	 * @param shellViewName
+	 *            The name of the wrapper JSP
+	 */
 	public void setShellViewName(String shellViewName) {
 		this.shellViewName = shellViewName;
 	}
 
+	/**
+	 * Loads the Lavaca application and code packages
+	 * 
+	 * @param context
+	 *            The current servlet context
+	 */
 	public void load(ServletContext context) {
 		try {
 			List<String> keys;
