@@ -12,7 +12,9 @@ public class Functions {
 
 	/**
 	 * Escapes a string for inclusion in raw JavaScript string code
-	 * @param str The string to escape
+	 * 
+	 * @param str
+	 *            The string to escape
 	 * @return The escaped string
 	 */
 	public static String escapeJS(final String str) {
@@ -21,7 +23,9 @@ public class Functions {
 
 	/**
 	 * Escapes a string for inclusion in raw HTML code
-	 * @param str The string to escape
+	 * 
+	 * @param str
+	 *            The string to escape
 	 * @return The escaped string
 	 */
 	public static String escapeHTML(final String str) {
@@ -30,7 +34,9 @@ public class Functions {
 
 	/**
 	 * Escapes a string for inclusion in a raw URL
-	 * @param str The string to escape
+	 * 
+	 * @param str
+	 *            The string to escape
 	 * @return The escaped string
 	 * @throws UnsupportedEncodingException
 	 */

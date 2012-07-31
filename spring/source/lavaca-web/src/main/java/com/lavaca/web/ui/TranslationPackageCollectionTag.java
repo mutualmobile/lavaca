@@ -14,7 +14,8 @@ public class TranslationPackageCollectionTag extends CodePackageCollectionTag {
 	/**
 	 * Sets the unique identifier for this code package
 	 * 
-	 * @param key The key
+	 * @param key
+	 *            The key
 	 */
 	@Override
 	public void setKey(String key) {
@@ -31,6 +32,7 @@ public class TranslationPackageCollectionTag extends CodePackageCollectionTag {
 
 	/**
 	 * Gets the default locale associated with this translation collection
+	 * 
 	 * @return The locale
 	 */
 	public Locale getLocale() {

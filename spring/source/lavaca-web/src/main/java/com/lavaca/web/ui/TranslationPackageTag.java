@@ -23,6 +23,7 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the language associated with this translation
+	 * 
 	 * @return The language code
 	 */
 	public String getLanguage() {
@@ -31,7 +32,9 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Sets the language associated with this translation
-	 * @param language The language code
+	 * 
+	 * @param language
+	 *            The language code
 	 */
 	public void setLanguage(String language) {
 		this.language = language;
@@ -39,6 +42,7 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the country associated with this translation
+	 * 
 	 * @return The country code
 	 */
 	public String getCountry() {
@@ -47,7 +51,9 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Sets the country associated with this translation
-	 * @param country The country code
+	 * 
+	 * @param country
+	 *            The country code
 	 */
 	public void setCountry(String country) {
 		this.country = country;
@@ -55,6 +61,7 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the locale associated with this translation
+	 * 
 	 * @return The locale
 	 */
 	public Locale getLocale() {
@@ -92,7 +99,8 @@ public class TranslationPackageTag extends MapPackageTag {
 	/**
 	 * Sets the unique identifier for this code package
 	 * 
-	 * @param key The key
+	 * @param key
+	 *            The key
 	 */
 	@Override
 	public void setKey(String key) {
@@ -136,7 +144,9 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the MIME type of a code package
-	 * @param cp The code package
+	 * 
+	 * @param cp
+	 *            The code package
 	 * @return The MIME type of that package
 	 */
 	@Override
@@ -146,7 +156,9 @@ public class TranslationPackageTag extends MapPackageTag {
 
 	/**
 	 * Determines whether or not a package is the default one of its type
-	 * @param cp The code package to check
+	 * 
+	 * @param cp
+	 *            The code package to check
 	 * @return True if the package is default
 	 */
 	@Override

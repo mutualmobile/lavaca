@@ -32,7 +32,9 @@ public class ConfigPackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the MIME type of a code package
-	 * @param cp The code package
+	 * 
+	 * @param cp
+	 *            The code package
 	 * @return The MIME type of that package
 	 */
 	@Override
@@ -42,7 +44,9 @@ public class ConfigPackageTag extends MapPackageTag {
 
 	/**
 	 * Determines whether or not a package is the default one of its type
-	 * @param cp The code package to check
+	 * 
+	 * @param cp
+	 *            The code package to check
 	 * @return True if the package is default
 	 */
 	@Override

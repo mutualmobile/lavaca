@@ -22,6 +22,7 @@ public class TranslateTag extends TagSupport {
 
 	/**
 	 * Gets the key under which the message is stored
+	 * 
 	 * @return The key under which the message is stored
 	 */
 	public String getKey() {
@@ -30,7 +31,9 @@ public class TranslateTag extends TagSupport {
 
 	/**
 	 * Sets the key under which the message is stored
-	 * @param key The key under which the message is stored
+	 * 
+	 * @param key
+	 *            The key under which the message is stored
 	 */
 	public void setKey(String key) {
 		this.key = key;
@@ -38,6 +41,7 @@ public class TranslateTag extends TagSupport {
 
 	/**
 	 * Gets a list of arguments to substitute into the message
+	 * 
 	 * @return The arguments
 	 */
 	public List<String> getArgs() {

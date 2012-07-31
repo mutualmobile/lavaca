@@ -14,7 +14,8 @@ public class TranslateArgTag extends TagSupport {
 
 	/**
 	 * Gets the value of the argument
-	 * @return The value of the argument 
+	 * 
+	 * @return The value of the argument
 	 */
 	public String getValue() {
 		return value;
@@ -22,7 +23,9 @@ public class TranslateArgTag extends TagSupport {
 
 	/**
 	 * Sets the value of the argument
-	 * @param value The value of the argument
+	 * 
+	 * @param value
+	 *            The value of the argument
 	 */
 	public void setValue(String value) {
 		this.value = value;

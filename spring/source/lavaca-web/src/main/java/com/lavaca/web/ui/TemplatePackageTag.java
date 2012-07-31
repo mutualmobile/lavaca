@@ -23,6 +23,7 @@ public class TemplatePackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the MIME type of the template
+	 * 
 	 * @return The MIME type of the template
 	 */
 	public String getType() {
@@ -31,7 +32,9 @@ public class TemplatePackageTag extends MapPackageTag {
 
 	/**
 	 * Sets the MIME type of the template
-	 * @param type The MIME type of the template
+	 * 
+	 * @param type
+	 *            The MIME type of the template
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -86,7 +89,9 @@ public class TemplatePackageTag extends MapPackageTag {
 
 	/**
 	 * Determines whether or not a package is the default one of its type
-	 * @param cp The code package to check
+	 * 
+	 * @param cp
+	 *            The code package to check
 	 * @return True if the package is default
 	 */
 	@Override
@@ -96,7 +101,9 @@ public class TemplatePackageTag extends MapPackageTag {
 
 	/**
 	 * Gets the MIME type of a code package
-	 * @param cp The code package
+	 * 
+	 * @param cp
+	 *            The code package
 	 * @return The MIME type of that package
 	 */
 	@Override

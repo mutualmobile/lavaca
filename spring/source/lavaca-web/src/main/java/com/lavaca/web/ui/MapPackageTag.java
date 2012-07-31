@@ -20,6 +20,7 @@ public abstract class MapPackageTag extends CodePackageTag {
 
 	/**
 	 * Gets the file path associated with the map
+	 * 
 	 * @return The path
 	 */
 	public String getPath() {
@@ -28,7 +29,9 @@ public abstract class MapPackageTag extends CodePackageTag {
 
 	/**
 	 * Sets the file path associated with the map
-	 * @param path The path
+	 * 
+	 * @param path
+	 *            The path
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -36,6 +39,7 @@ public abstract class MapPackageTag extends CodePackageTag {
 
 	/**
 	 * Gets whether or not this package is the default one of its type
+	 * 
 	 * @return True if the map is default
 	 */
 	public boolean getDef() {
@@ -44,7 +48,9 @@ public abstract class MapPackageTag extends CodePackageTag {
 
 	/**
 	 * Sets whether or not this package is the default one of its type
-	 * @param def Whether or not this package is default
+	 * 
+	 * @param def
+	 *            Whether or not this package is default
 	 */
 	public void setDef(boolean def) {
 		this.def = def;
@@ -52,14 +58,18 @@ public abstract class MapPackageTag extends CodePackageTag {
 
 	/**
 	 * Determines whether or not a package is the default one of its type
-	 * @param cp The code package to check
+	 * 
+	 * @param cp
+	 *            The code package to check
 	 * @return True if the package is default
 	 */
 	public abstract boolean isDefault(CodePackage cp);
 
 	/**
 	 * Gets the MIME type of a code package
-	 * @param cp The code package
+	 * 
+	 * @param cp
+	 *            The code package
 	 * @return The MIME type of that package
 	 */
 	protected abstract String getMimeType(CodePackage cp);
