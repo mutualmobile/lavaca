@@ -1,0 +1,12 @@
+<translations>
+  <translation>
+  	<language>en</language>
+  	<country>US</country>
+  	<path>/messages/en_US.json</path>
+  </translation>
+  <translation>
+  	<language>es</language>
+  	<country>MX</country>
+  	<path>/messages/es_MX.json</path>
+  </translation>
+</translations>

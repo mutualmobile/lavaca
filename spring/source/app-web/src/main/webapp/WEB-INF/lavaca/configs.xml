@@ -1,0 +1,15 @@
+<configs>
+  <config>
+	<name>local</name>
+	<path>/configs/local.json</path>
+	<default>true</default>
+  </config>
+  <config>
+	<name>staging</name>
+	<path>/configs/staging.json</path>
+  </config>
+  <config>
+	<name>production</name>
+	<path>/configs/production.json</path>
+  </config>
+</configs>
