@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+
+	<bean id="lvConfig" class="com.lavaca.web.config.LavacaConfig">
+		<property name="shellViewName" value="index" />
+		<property name="configsXmlPath" value="/WEB-INF/lavaca/configs.xml" />
+		<property name="scriptsXmlPath" value="/WEB-INF/lavaca/scripts.xml" />
+		<property name="stylesXmlPath" value="/WEB-INF/lavaca/styles.xml" />
+		<property name="templatesXmlPath" value="/WEB-INF/lavaca/templates.xml" />
+		<property name="translationsXmlPath" value="/WEB-INF/lavaca/translations.xml" />
+	</bean>
+
+	<bean id="lvConfigCache" class="com.lavaca.web.caching.ConfigPackageCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+	<bean id="lvCssCache" class="com.lavaca.web.caching.CSSPackageCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+	<bean id="lvJsCache" class="com.lavaca.web.caching.JSPackageCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+	<bean id="lvTemplatesCache" class="com.lavaca.web.caching.TemplatePackageCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+	<bean id="lvTranslationsCache" class="com.lavaca.web.caching.TranslationPackageCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+	<bean id="lvDustCache" class="com.lavaca.web.caching.DustCache">
+		<constructor-arg name="cacheName" value="resourcesCache" />
+	</bean>
+
+</beans>

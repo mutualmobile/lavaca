@@ -8,3 +8,18 @@ source/test/$www.html
 source/libs/atnotate/atnotate.pyc
 
 source/build.log
+
+spring/source/.project
+spring/sample/app-web/.project
+spring/source/lavaca-web/.project
+
+spring/source/.classpath
+spring/sample/app-web/.classpath
+spring/source/lavaca-web/.classpath
+
+spring/source/.settings/*
+spring/sample/app-web/.settings/*
+spring/source/lavaca-web/.settings/*
+
+spring/sample/app-web/target/*
+spring/source/lavaca-web/target/*

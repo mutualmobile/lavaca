@@ -1,0 +1,32 @@
+<templates>
+  <template>
+  	<name>nav</name>
+  	<type>dust</type>
+  	<path>/templates/nav.html</path>
+  </template>
+  <template>
+  	<name>home</name>
+  	<type>dust</type>
+  	<path>/templates/home.html</path>
+  </template>
+  <template>
+  	<name>errors</name>
+  	<type>dust</type>
+  	<path>/templates/errors.html</path>
+  </template>
+  <template>
+  	<name>example</name>
+  	<type>dust</type>
+  	<path>/templates/example.html</path>
+  </template>
+  <template>
+  	<name>sign-in</name>
+  	<type>dust</type>
+  	<path>/templates/sign-in.html</path>
+  </template>
+  <template>
+  	<name>welcome</name>
+  	<type>dust</type>
+  	<path>/templates/welcome.html</path>
+  </template>
+</templates>

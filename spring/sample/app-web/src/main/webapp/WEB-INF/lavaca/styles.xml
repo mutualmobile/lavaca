@@ -1,0 +1,11 @@
+<styles>
+  <package name="libs">
+    <file>/css/libs/Lavaca-1.0.2.min.css</file>
+  </package>
+  <package name="app">
+    <file>/css/app/app.css</file>
+    <file>/css/app/ExampleView.css</file>
+    <file>/css/app/ErrorsView.css</file>
+    <file>/css/app/SignInView.css</file>
+  </package>
+</styles>

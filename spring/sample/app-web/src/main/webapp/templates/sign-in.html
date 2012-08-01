@@ -1,0 +1,17 @@
+<h1>{#msg}nav_signin{/msg}</h1>
+<form id="sign-in-form" action="{submitURL}">
+  <div class="fields">
+    <fieldset>
+      <label for="ip-user">{#msg}username{/msg}</label>
+      <input id="ip-user" type="text" name="username" placeholder="{#msg}username{/msg}" required>
+    </fieldset>
+    <fieldset>
+      <label for="ip-password">{#msg}password{/msg}</label>
+      <input id="ip-password" type="password" name="password" placeholder="{#msg}password{/msg}" required>
+    </fieldset>
+  </div>
+  <div class="buttons">
+    <button class="cancel">{#msg}cancel{/msg}</button>
+    <button type="submit">{#msg}submit{/msg}</button>
+  </div>
+</form>
