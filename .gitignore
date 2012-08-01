@@ -10,16 +10,16 @@ source/libs/atnotate/atnotate.pyc
 source/build.log
 
 spring/source/.project
-spring/source/app-web/.project
+spring/sample/app-web/.project
 spring/source/lavaca-web/.project
 
 spring/source/.classpath
-spring/source/app-web/.classpath
+spring/sample/app-web/.classpath
 spring/source/lavaca-web/.classpath
 
 spring/source/.settings/*
-spring/source/app-web/.settings/*
+spring/sample/app-web/.settings/*
 spring/source/lavaca-web/.settings/*
 
-spring/source/app-web/target/*
+spring/sample/app-web/target/*
 spring/source/lavaca-web/target/*
