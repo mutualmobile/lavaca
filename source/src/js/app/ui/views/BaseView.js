@@ -29,6 +29,12 @@ ns.BaseView = View.extend(function() {
   	.mapEvent('.cancel', 'tap', _onTapCancel);
 }, {
   /**
+   * @field {Number} column
+   * @default 0
+   * The horizontal column in which the view should live
+   */
+  column: 0,
+  /**
    * @field {String} template
    * @default 'default'
    * The name of the template used by the view
@@ -65,13 +71,13 @@ ns.BaseView = View.extend(function() {
     if (app.animations) {
       this.shell.removeClass('reverse');
       if (exitingViews.length || container[0].childNodes.length) {
-        if (this.model.column !== UNDEFINED) {
+        if (this.column !== UNDEFINED) {
           var i = -1,
               exitingView;
           while (exitingView = exitingViews[++i]) {
             if (exitingView.layer == this.layer
-                && exitingView.model.column !== UNDEFINED
-                && exitingView.model.column > this.model.column) {
+                && exitingView.column !== UNDEFINED
+                && exitingView.column > this.column) {
               this.shell.addClass('reverse');
               exitingView.shell.addClass('reverse');
             }

@@ -26,9 +26,7 @@ ns.ExampleController = Controller.extend({
    */
   home: function(params, model) {
     if (!model) {
-      model = {
-        column: 0
-      };
+      model = {};
     }
     return this
       .view('home', app.ui.views.ExampleView, model)
