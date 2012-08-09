@@ -109,7 +109,8 @@ ns.Application = EventDispatcher.extend(function(callback) {
   onTapLink: function(e) {
     var link = $(e.currentTarget),
         url = link.attr('href'),
-        rel = link.attr('rel');
+        rel = link.attr('rel'),
+        target = link.attr('target');
     if (/^((mailto)|(tel)|(sms))\:/.test(url)) {
       location.href = url;
       return true;
@@ -118,7 +119,7 @@ ns.Application = EventDispatcher.extend(function(callback) {
     }
     if (rel == 'back') {
       Lavaca.net.History.back();
-    } else if (rel == 'nofollow') {
+    } else if (rel == 'nofollow' || target == '_blank') {
       e.stopPropagation();
       plugins.childBrowser.showWebPage(url);
     } else if (rel == 'cancel') {

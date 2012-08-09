@@ -30,10 +30,16 @@ ns.ChildBrowser = Lavaca.events.EventDispatcher.extend({
    * @return {Lavaca.util.Promise}  A promise
    */
   showWebPage: function(loc) {
-    return Device.exec('ChildBrowser', 'showWebPage', [loc])
-      .error(function() {
-        window.location.href = loc;
-      });
+    if (Device.isCordova()) {
+      return Device
+        .exec('ChildBrowser', 'showWebPage', [loc])
+        .error(function() {
+          window.location.href = loc;
+        });
+    } else {
+      window.open(loc);
+      return new Lavaca.util.Promise(window).resolve();
+    }
   },
   /**
    * @method close
