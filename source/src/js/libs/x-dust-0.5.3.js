@@ -1,5 +1,5 @@
 /*
-x-dust 0.5.1
+x-dust 0.5.3
 
 Copyright (c) 2012 Dan Nichols
 
@@ -373,7 +373,7 @@ var XDustContext = _extend(function(head, tail, params) {
         } else {
           result = model.toString();
         }
-        if (this.filters) {
+        if (this.filters.length) {
           _each(this.filters, function(i, flag) {
             if (dust.filters[flag]) {
               result = dust.filters[flag](result);
@@ -591,7 +591,7 @@ var XDustContext = _extend(function(head, tail, params) {
     // pass
   }, {
     parse: function(str) {
-      str = str.replace(/(\{!.+?!\})|(^\s+)|(\s+$)/gm, '');
+      str = str.replace(/(\{![\s\S]+?!\})|(^\s+)|(\s+$)/g, '');
       var nodes = [new XDustNodeList()],
           depth = 0,
           exp = /(\{[\~\#\?\@\:\<\>\+\/\^]?([a-zA-Z0-9_\$\.]+|"[^"]+")(\:[a-zA-Z0-9\$\.]+)?(\|[a-z]+)*?( \w+\=(("[^"]*?")|([\w\.]+)))*?\/?\})/mg,
@@ -611,20 +611,24 @@ var XDustContext = _extend(function(head, tail, params) {
           root,
           filters,
           tail,
-          s;
-      while (match = exp.exec(str)) {
+          s,
+          currentStr = str;
+      function domatch(s) {
+        return new RegExp('(\\{[\\~\\#\\?\\@\\:\\<\\>\\+\\/\\^]?([a-zA-Z0-9_\\$\\.]+|"[^"]+")(\\:[a-zA-Z0-9\\$\\.]+)?(\\|[a-z]+)*?( \\w+\\=(("[^"]*?")|([\\w\\.]+)))*?\\/?\\})', 'g').exec(s);
+      }
+      while (match = domatch(currentStr)) {
         depthChange = false;
         start = match.index;
         end = start + match[0].length;
         if (lastEnd != start) {
-          head = str.slice(lastEnd, start);
+          head = currentStr.slice(0, start);
           if (head) {
             nodes[depth].add(new XDustTextNode(head));
           }
         }
         lastEnd = end;
         node = UNDEFINED;
-        tag = str.slice(start + 1, end - 1);
+        tag = currentStr.slice(start + 1, end - 1);
         operator = tag.charAt(0);
         tag = tag.split(' ');
         if (_contains(OPERATORS, operator)) {
@@ -683,7 +687,7 @@ var XDustContext = _extend(function(head, tail, params) {
             }
             node.params[name] = value;
           }, this);
-          if (!selfClosed) {          
+          if (!selfClosed) {
             if (_contains(OPERATORS_WITH_BODY, operator)) {
               depthChange = true;
               if (_isInstance(node, XDustNodeList)) {
@@ -717,8 +721,9 @@ var XDustContext = _extend(function(head, tail, params) {
         if (node && !depthChange) {
           nodes[depth].add(node);
         }
+        currentStr = currentStr.slice(lastEnd);
       }
-      tail = str.slice(lastEnd);
+      tail = currentStr;
       if (tail) {
         nodes[depth].add(new XDustTextNode(tail));
       }
@@ -802,7 +807,7 @@ var XDustContext = _extend(function(head, tail, params) {
       if (!/[&<>\"]/.test(str)) {
         return str;
       } else {
-        return str.replace(/&/, '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&squot;');
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&squot;');
       }
     },
     /**
@@ -814,7 +819,7 @@ var XDustContext = _extend(function(head, tail, params) {
      */
     escapeJS: function(str) {
       str = str + '';
-      return str.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'").replace('\r', '\\r').replace('\u2028', '\\u2028').replace('\u2029', '\\u2029').replace('\n', '\\n').replace('\f', '\\f').replace('\t', '\\t')
+      return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/'/g, "\\'").replace(/\r/g, '\\r').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029').replace(/\n/g, '\\n').replace(/\f/g, '\\f').replace(/\t/g, '\\t');
     },
     /**
      * @method escapeURI
