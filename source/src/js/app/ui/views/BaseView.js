@@ -114,7 +114,7 @@ ns.BaseView = View.extend(function() {
         .addClass('out');
       return promise;
     } else {
-      return View.prototype.exit.apply(self, arguments);
+      return View.prototype.exit.apply(this, arguments);
     }
   }
 });
