@@ -46,19 +46,16 @@ ns.ExampleController = Controller.extend({
     // This action uses two promises: one it returns and the other manages alert dialogs
     var result = new Promise(this),
         promise = new Promise(this),
+        ajaxPromise = new Promise(this),
         buttons;
     // If no model was passed in, we'll need to generate one
     if (!model) {
-      // Setup the model according to the parameters that were passed in
-      model = params.variable == 'cherry'
-        ? {column: 3, bg: 'rgba(255,0,0,.1)'}
-        : params.variable == 'banana'
-          ? {column: 2, bg: 'rgba(255,255,0,.1)'}
-          : {column: 1, bg: 'rgba(0,255,0,.1)'};
-      model.fruit = this.translate(params.variable);
-      if (params.confirm) {
-        model.confirm = this.translate(params.confirm);
-      }
+      ajaxPromise = this.ajax({
+        url: params.url + '.json',
+        dataType: 'json'
+      });
+    } else {
+      ajaxPromise.resolve(model);
     }
     // Setup the internal promise's success and failure states
     promise
@@ -74,21 +71,26 @@ ns.ExampleController = Controller.extend({
         // When the promise is rejected, redirect to the home page
         this.redirect('/');
       });
-    // If a confirm message parameter was passed, show the confirm asking if the user is allergic
-    if (model.confirm) {
-      // When the user accepts the confirm dialog, the promise is resolved and we navigate to the example view
-      // When the user declines the confirm dialog, the promise is rejected and we redirect to the home page
-      var buttons = [
-            // If the user clicks yes, they're allergic and we should redirect
-            {name: this.translate('yes'), exec: promise.rejector()},
-            // If the user clicks no, they're ok to proceed
-            {name: this.translate('no'), exec: promise.resolver()}
-          ];
-      promise.when(plugins.notification.confirm('', model.confirm, buttons));
-    } else {
-      // No dialogs needed, just resolve the promise
-      promise.resolve();
-    }
+    ajaxPromise
+      .success(function(response) {
+        model = response;
+        // If a confirm message parameter was passed, show the confirm asking if the user is allergic
+        if (model.confirm) {
+          // When the user accepts the confirm dialog, the promise is resolved and we navigate to the example view
+          // When the user declines the confirm dialog, the promise is rejected and we redirect to the home page
+          var buttons = [
+                // If the user clicks yes, they're allergic and we should redirect
+                {name: this.translate('yes'), exec: promise.rejector()},
+                // If the user clicks no, they're ok to proceed
+                {name: this.translate('no'), exec: promise.resolver()}
+              ];
+          promise.when(plugins.notification.confirm('', model.confirm, buttons));
+        } else {
+          // No dialogs needed, just resolve the promise
+          promise.resolve();
+        }
+      })
+      .error(result.rejector());
     return result;
   },
   /**
@@ -100,12 +102,22 @@ ns.ExampleController = Controller.extend({
    * @return {Lavaca.util.Promise} A promise
    */
   lang: function(params, model) {
-    var locale = params.locale || 'en_US';
-    Lavaca.util.Translation.setDefault(locale);
-    localStorage.setItem('app:lang', locale);
-    this.viewManager.flush();
-    app.state.set('lang', locale);
-    return this.redirect('/?lang={0}', [locale]);
+    var locale = params.locale || 'en_US',
+        result = new Promise(this);
+    this.ajax({
+        url: this.url('/lang.json?locale={0}', [locale]),
+        dataType: 'json'
+      })
+      .then(function(response) {
+        Lavaca.util.Translation.setDefault(locale);
+        localStorage.setItem('app:lang', locale);
+        this.viewManager.flush();
+        app.state.set('lang', locale);
+        this
+          .redirect('/?lang={0}', [locale])
+          .then(result.resolver(), result.rejector());
+      }, result.rejector());
+    return result;
   }
 });
 
