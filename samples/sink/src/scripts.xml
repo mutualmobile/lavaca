@@ -1,6 +1,6 @@
 <scripts>
   <package name="libs">
-  	<file>/js/libs/Lavaca-1.0.2.min.js</file>
+  	<file>/js/libs/Lavaca-1.0.3.min.js</file>
   </package>
   <package name="app">
     <file>/js/app/app.js</file>

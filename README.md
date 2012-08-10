@@ -1,4 +1,4 @@
-Lavaca 1.0.2
+Lavaca 1.0.3
 ======
 
 Introducing Lavaca, the open source, HTML5 application framework by Mutual Mobile. Jumpstart development of your project by basing them off of Lavaca and using Lavaca's build tools.
@@ -15,6 +15,16 @@ Lavaca features:
 
 Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.
 
+Changed in 1.0.3
+======
+* Moved the "column" property from the model to the view in app.ui.BaseView
+* Upgraded x-dust to 0.5.3
+* Fixed an issue where views would fail to exit on Android 4.1
+* Lavaca.env.Device no longer throws errors when Zepto is swapped out for jQuery
+* Added support for target="_blank" on application's tap handler for <a> tags
+* Fixed a timing issue with app.ui.BaseView's enter and exit animations
+* Fixed an issue where the signature $.fn.touch(onstart, onmove, onend) would fail to bind handlers
+
 Changed in 1.0.2
 ======
 * Added enter/exit events for Lavaca.mvc.View
@@ -24,7 +34,7 @@ Changed in 1.0.2
 
 Legal stuff:
 
-Lavaca 1.0.2
+Lavaca 1.0.3
 Copyright (c) 2012 Mutual Mobile
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -57,10 +67,6 @@ Released under the MIT license.
 
 Zepto.js 0.8.0
 (c) 2011 Thomas Fuchs
-Released under the MIT license
-
-jMiny 0.5.0
-(c) 2012 Dan Nichols
 Released under the MIT license
 
 ChildBrowser

@@ -1,4 +1,4 @@
-Lavaca 1.0.2
+Lavaca 1.0.3
 Copyright (c) 2012 Mutual Mobile
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -31,10 +31,6 @@ Released under the MIT license.
 
 Zepto.js 0.8.0
 (c) 2011 Thomas Fuchs
-Released under the MIT license
-
-jMiny 0.5.0
-(c) 2012 Dan Nichols
 Released under the MIT license
 
 ChildBrowser

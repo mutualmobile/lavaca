@@ -2,7 +2,7 @@
 <metadata modelVersion="1.1.0">
   <groupId>com.lavaca</groupId>
   <artifactId>com.lavaca.web</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <timestamp>20120801.145257</timestamp>
@@ -12,24 +12,24 @@
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0.2-20120801.145257-1</value>
+        <value>1.0.3-20120801.145257-1</value>
         <updated>20120801145257</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0.2-20120801.145257-1</value>
+        <value>1.0.3-20120801.145257-1</value>
         <updated>20120801145257</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
-        <value>1.0.2-20120801.145257-1</value>
+        <value>1.0.3-20120801.145257-1</value>
         <updated>20120801145257</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar</extension>
-        <value>1.0.2-20120801.145257-1</value>
+        <value>1.0.3-20120801.145257-1</value>
         <updated>20120801145257</updated>
       </snapshotVersion>
     </snapshotVersions>

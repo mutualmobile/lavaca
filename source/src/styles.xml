@@ -1,5 +1,5 @@
 <styles>
-  <package name="Lavaca-1.0.2.min">
+  <package name="Lavaca-1.0.3.min">
     <file>/css/libs/reset.css</file>
     <file>/css/libs/boilerplate.css</file>
     <file>/css/libs/animations.css</file>
