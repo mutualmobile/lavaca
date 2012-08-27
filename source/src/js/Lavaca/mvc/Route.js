@@ -13,24 +13,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var UNDEFINED;
 
 function _multivariablePattern() {
-  return /\{\*(.*?)\}/g;
+  return new RegExp('\\{\\*(.*?)\\}', 'g');
 }
 
 function _variablePattern() {
-  return /\{([^\/]*?)\}/g;
+  return new RegExp('\\{([^\\/]*?)\\}', 'g');
 }
 
 function _variableCharacters() {
-  return /[\{\}\*]/g;
+  return new RegExp('[\\{\\}\\*]', 'g');
 }
 
 function _datePattern() {
-  return /^\d{4}-[0-1]\d-[0-3]\d$/g;
+  return new RegExp('^\\d{4}-[0-1]\\d-[0-3]\\d$', 'g');
 }
 
 function _patternToRegExp(pattern) {
   if (pattern == '/') {
-    return /^\/(\?.*)?(#.*)?$/;
+    return new RegExp('^\\/(\\?.*)?(#.*)?$', 'g');
   }
   if (pattern.charAt(0) == '/') {
     pattern = pattern.slice(1);

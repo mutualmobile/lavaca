@@ -1,6 +1,8 @@
 
 .DS_Store
 
+source/docs
+source/www
 source/test/$src.html
 
 source/test/$www.html
