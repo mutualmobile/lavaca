@@ -5,6 +5,7 @@
   <package name="app">
     <file>/js/app/app.js</file>
     <file>/js/app/models/models.js</file>
+    <file>/js/app/net/BaseController.js</file>
     <file>/js/app/net/AuthenticationController.js</file>
     <file>/js/app/net/ExampleController.js</file>
     <file>/js/app/ui/Nav.js</file>

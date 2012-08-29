@@ -36,6 +36,12 @@ ns.TodosView = ScrollableView.extend(function() {
   });
 }, {
   /**
+   * @field {Number} column
+   * @default 0
+   * The horizontal column in which the view should live
+   */
+  column: 0,
+  /**
    * @field {String} template
    * @default 'todos'
    * The name of the template used by the view

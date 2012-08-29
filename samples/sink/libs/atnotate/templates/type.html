@@ -21,7 +21,7 @@
       </li>
     </script>
     <script type="text/x-dust-template" data-name="method">
-      {#signatures static=static owner=owner}
+      {#signatures owner=owner}
         <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
           <h3 class="name">{?static}{owner}.{/static}{name}</h3>
           <div class="body">

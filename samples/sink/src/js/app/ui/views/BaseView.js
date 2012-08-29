@@ -12,11 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 var UNDEFINED;
 
-function _onTapCancel(e) {
-  e.preventDefault();
-  app.viewManager.dismiss(e.currentTarget);
-}
-
 /**
  * @class app.ui.BaseView
  * @super Lavaca.mvc.View
@@ -26,8 +21,14 @@ ns.BaseView = View.extend(function() {
 	View.apply(this, arguments);
 	this
   	.mapWidget('.scrollable', Lavaca.ui.Scrollable)
-  	.mapEvent('.cancel', 'tap', _onTapCancel);
+  	.mapEvent('.cancel', 'tap', this.onTapCancel);
 }, {
+  /**
+   * @field {Number} column
+   * @default 0
+   * The horizontal column in which the view should live
+   */
+  column: 0,
   /**
    * @field {String} template
    * @default 'default'
@@ -54,6 +55,16 @@ ns.BaseView = View.extend(function() {
     }
   },
   /**
+   * @method onTapCancel
+   * Handler for when a cancel control is tapped
+   *
+   * @param {Event} e  The tap event.
+   */
+  onTapCancel: function(e) {
+    e.preventDefault();
+    app.viewManager.dismiss(e.currentTarget);    
+  },
+  /**
    * @method enter
    * Executes when the user navigates to this view
    *
@@ -62,27 +73,29 @@ ns.BaseView = View.extend(function() {
    * @return {Lavaca.util.Promise} A promise
    */
   enter: function(container, exitingViews) {
-    if (app.animations) {
-      this.shell.removeClass('reverse');
-      if (exitingViews.length || container[0].childNodes.length) {
-        if (this.model.column !== UNDEFINED) {
-          var i = -1,
-              exitingView;
-          while (exitingView = exitingViews[++i]) {
-            if (exitingView.layer == this.layer
-                && exitingView.model.column !== UNDEFINED
-                && exitingView.model.column > this.model.column) {
-              this.shell.addClass('reverse');
-              exitingView.shell.addClass('reverse');
+    return View.prototype.enter.apply(this, arguments)
+      .then(function() {
+        if (app.animations && (this.layer > 0 || exitingViews.length > 0)) {
+          this.shell.removeClass('reverse');
+          if (exitingViews.length || container[0].childNodes.length) {
+            if (this.column !== UNDEFINED) {
+              var i = -1,
+                  exitingView;
+              while (exitingView = exitingViews[++i]) {
+                if (exitingView.layer == this.layer
+                    && exitingView.column !== UNDEFINED
+                    && exitingView.column > this.column) {
+                  this.shell.addClass('reverse');
+                  exitingView.shell.addClass('reverse');
+                }
+              }
             }
+            this.shell
+              .removeClass('out')
+              .addClass('in');
           }
         }
-        this.shell
-          .removeClass('out')
-          .addClass('in');
-      }
-    }
-    return View.prototype.enter.apply(this, arguments);
+      });
   },
   /**
    * @method exit
@@ -93,7 +106,7 @@ ns.BaseView = View.extend(function() {
    * @return {Lavaca.util.Promise} A promise
    */
   exit: function(container, enteringViews) {
-    if (app.animations) {
+    if (app.animations && (this.layer > 0 || enteringViews.length > 0)) {
       this.shell.removeClass('reverse');
       var self = this,
           args = arguments,
@@ -108,7 +121,7 @@ ns.BaseView = View.extend(function() {
         .addClass('out');
       return promise;
     } else {
-      return View.prototype.exit.apply(self, arguments);
+      return View.prototype.exit.apply(this, arguments);
     }
   }
 });

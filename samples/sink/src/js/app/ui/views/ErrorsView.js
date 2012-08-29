@@ -17,6 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 ns.ErrorsView = PopoverView.extend({
   /**
+   * @field {Number} column
+   * @default 1
+   * The horizontal column in which the view should live
+   */
+  column: 1,
+  /**
    * @field {String} template
    * @default 'errors'
    * The name of the template used by the view

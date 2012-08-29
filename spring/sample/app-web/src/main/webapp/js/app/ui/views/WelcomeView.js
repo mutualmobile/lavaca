@@ -17,6 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 ns.WelcomeView = ScrollableView.extend({
   /**
+   * @field {Number} column
+   * @default 0
+   * The horizontal column in which the view should live
+   */
+  column: 0,
+  /**
    * @field {String} template
    * @default 'welcome'
    * The name of the template used by the view

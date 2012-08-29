@@ -26,9 +26,7 @@ ns.ExampleController = Controller.extend({
    */
   home: function(params, model) {
     if (!model) {
-      model = {
-        column: 0
-      };
+      model = {};
     }
     return this
       .view('home', app.ui.views.HomeView, model)
@@ -50,12 +48,14 @@ ns.ExampleController = Controller.extend({
     // If no model was passed in, we'll need to generate one
     if (!model) {
       // Setup the model according to the parameters that were passed in
-      model = params.variable == 'cherry'
-        ? {column: 3, bg: 'rgba(255,0,0,.1)'}
-        : params.variable == 'banana'
-          ? {column: 2, bg: 'rgba(255,255,0,.1)'}
-          : {column: 1, bg: 'rgba(0,255,0,.1)'};
-      model.fruit = this.translate(params.variable);
+      model = {
+        bg: params.variable == 'cherry'
+          ? 'rgba(255,0,0,.1)'
+          : (params.variable == 'banana'
+            ? 'rgba(255,255,0,.1)'
+            : 'rgba(0,255,0,.1)'),
+        fruit: this.translate(params.variable)
+      };
       if (params.confirm) {
         model.confirm = this.translate(params.confirm);
       }

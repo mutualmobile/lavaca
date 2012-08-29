@@ -41,13 +41,15 @@ public abstract class BaseController extends com.lavaca.web.mvc.BaseController {
 		Locale locale = (Locale) request.getAttribute("app-lang");
 		if (null == locale) {
 			locale = request.getLocale();
-			for (Cookie cookie : request.getCookies()) {
-				if (cookie.getName().equals("app-lang")) {
-					String[] localeParts = cookie.getValue().split("_");
-					if (localeParts.length == 2) {
-						locale = new Locale(localeParts[0], localeParts[1]);
+			if (null != request.getCookies()) {
+				for (Cookie cookie : request.getCookies()) {
+					if (cookie.getName().equals("app-lang")) {
+						String[] localeParts = cookie.getValue().split("_");
+						if (localeParts.length == 2) {
+							locale = new Locale(localeParts[0], localeParts[1]);
+						}
+						break;
 					}
-					break;
 				}
 			}
 			request.setAttribute("app-lang", locale);
