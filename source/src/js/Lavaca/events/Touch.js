@@ -327,7 +327,9 @@ ns.bind = function(el, delegate, start, move, end, thisp) {
       defaultPrevented = false,
       identifier,
       onMove,
-      onEnd;
+      onEnd,
+      eventMap = {},
+      k;
   function _appendTouchData(o) {
     var result = new _Event(o);
     if (o) {
@@ -350,60 +352,66 @@ ns.bind = function(el, delegate, start, move, end, thisp) {
     }
     return result;
   }
-  el
-    // Prevent click so that all platforms have uniform touch event handling:
-    // - Android doesn't prevent click if touchstart is prevented
-    // - Desktop browsers don't prevent click if mousedown is prevented
-    .on('click', delegate, function(e) {
-      if (defaultPrevented) {
-        e.preventDefault();
-      }
-    })
-    .on(_startName, delegate, function(e) {
-      e = e.originalEvent;
-      var el = this,
-          uuid = Lavaca.uuid();
-      startTime = (new Date).getTime();
-      startPoint = lastPoint = currentPoint = _getPoint(e);
-      hasMoved = false;
-      if (e.changedTouches && e.changedTouches.length) {
-        identifier = e.changedTouches[0].identifier;
-      } else {
-        idenfifier = null;
-      }
-      if (start) {
-        start.call(thisp || el, _appendTouchData(e));
-      }
-      defaultPrevented = defaultPrevented || e.defaultPrevented;
-      _addMoveHandler(uuid, function(e) {
-        var touch = _getEventTouch(identifier, e);
-        if (null !== touch) {
-          currentPoint = _getPoint(touch);
-          if (move) {
-            e = _appendTouchData(e);
-            e.currentTarget = el;
-            move.call(thisp || el, e);
-            defaultPrevented = defaultPrevented || e.defaultPrevented;
-          }
-          lastPoint = currentPoint;
+  // Prevent click so that all platforms have uniform touch event handling:
+  // - Android doesn't prevent click if touchstart is prevented
+  // - Desktop browsers don't prevent click if mousedown is prevented
+  eventMap.click = function(e) {
+    if (defaultPrevented) {
+      e.preventDefault();
+    }
+  };
+  eventMap[_startName] = function(e) {
+    e = e.originalEvent || e;
+    var el = this,
+        uuid = Lavaca.uuid();
+    startTime = (new Date).getTime();
+    startPoint = lastPoint = currentPoint = _getPoint(e);
+    hasMoved = false;
+    if (e.changedTouches && e.changedTouches.length) {
+      identifier = e.changedTouches[0].identifier;
+    } else {
+      idenfifier = null;
+    }
+    if (start) {
+      start.call(thisp || el, _appendTouchData(e));
+    }
+    defaultPrevented = defaultPrevented || e.defaultPrevented;
+    _addMoveHandler(uuid, function(e) {
+      var touch = _getEventTouch(identifier, e);
+      if (null !== touch) {
+        currentPoint = _getPoint(touch);
+        if (move) {
+          e = _appendTouchData(e);
+          e.currentTarget = el;
+          move.call(thisp || el, e);
+          defaultPrevented = defaultPrevented || e.defaultPrevented;
         }
-      });
-      _addEndHandler(uuid, function(e) {
-        var touch = _getEventTouch(identifier, e);
-        if (null !== touch) {
-          currentPoint = _getPoint(touch);
-          if (end) {
-            e = _appendTouchData(e);
-            e.currentTarget = el;
-            end.call(thisp || el, e);
-            defaultPrevented = defaultPrevented || e.defaultPrevented;
-          }
-          _removeMoveHandler(uuid);
-          _removeEndHandler(uuid);
-          el = onMove = onEnd = null;
-        }
-      });
+        lastPoint = currentPoint;
+      }
     });
+    _addEndHandler(uuid, function(e) {
+      var touch = _getEventTouch(identifier, e);
+      if (null !== touch) {
+        currentPoint = _getPoint(touch);
+        if (end) {
+          e = _appendTouchData(e);
+          e.currentTarget = el;
+          end.call(thisp || el, e);
+          defaultPrevented = defaultPrevented || e.defaultPrevented;
+        }
+        _removeMoveHandler(uuid);
+        _removeEndHandler(uuid);
+        el = onMove = onEnd = null;
+      }
+    });
+  };
+  for (k in eventMap) {
+    if (delegate) {
+      el.on(k, delegate, eventMap[k]);
+    } else {
+      el.on(k, eventMap[k]);
+    }
+  }
   el = null;
 };
 
@@ -473,6 +481,13 @@ ns.bind = function(el, delegate, start, move, end, thisp) {
  * @return {jQuery}  This jQuery object (for chaining)
  */
 $.fn.touch = function(delegate, start, move, end, thisp) {
+  if (delegate instanceof Function) {
+    thisp = end;
+    end = move;
+    move = start;
+    start = delegate;
+    delegate = null;
+  }
   ns.bind(this, delegate, start, move, end, thisp);
   return this;
 };
