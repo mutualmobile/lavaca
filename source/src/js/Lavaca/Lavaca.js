@@ -151,14 +151,16 @@ ns.uuid = function() {
  * @sig
  * @param {Function} callback  A callback to execute on delay
  * @param {Object} thisp  The object to use as the "this" keyword
+ * @return {Number}  The timeout ID
  *
  * @sig
  * @param {Function} callback  A callback to execute on delay
  * @param {Object} thisp  The object to use as the "this" keyword
  * @param {Number} ms  The number of milliseconds to delay execution
+ * @return {Number}  The timeout ID
  */
 ns.delay = function(callback, thisp, ms) {
-  setTimeout(function() {
+  return setTimeout(function() {
     callback.call(thisp);
   }, ms || 0);
 };
@@ -221,7 +223,7 @@ ns.merge = function(deepCopy, target/*, obj1, obj2, objN*/) {
   while (obj = objs[++i]) {
     for (n in obj) {
       if (obj.hasOwnProperty(n)) {
-        target[n] = deepCopy ? ns.clone(arg[n]) : obj[n];
+        target[n] = deepCopy ? ns.clone(obj[n]) : obj[n];
       }
     }
   }
