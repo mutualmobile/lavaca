@@ -132,7 +132,7 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
       model = model.toObject();
     }
     if (this.el) {
-      this.el.remove();
+      this.el.detach();
     }
     this.shell = this.wrapper();
     this.el = this.interior();
@@ -360,7 +360,7 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
    */
   exit: function(container, enteringViews) {
     var promise = new Promise(this);
-    this.shell.remove();
+    this.shell.detach();
     Lavaca.delay(promise.resolver());
     promise.then(function() {
       this.trigger('exit');

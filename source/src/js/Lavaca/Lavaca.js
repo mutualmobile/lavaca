@@ -267,4 +267,8 @@ if (!$.proxy) {
   };
 }
 
+if (!$.fn.detach) {
+  $.fn.detach = $.fn.remove;
+}
+
 })(window.Lavaca = window.Lavaca || {}, window.jQuery || window.Zepto || window.jMiny);

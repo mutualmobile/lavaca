@@ -125,6 +125,9 @@ describe('Lavaca', function() {
   it('ensures that $.proxy is defined', function() {
     expect(Lavaca.$.proxy).toBeDefined();
   });
+  it('ensures that $.fn.detach is defined', function() {
+    expect(Lavaca.$.fn.detach).toBeDefined();
+  });
 });
 
 })();
