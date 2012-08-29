@@ -24,6 +24,10 @@ Changed in 1.0.3
 * Added support for target="_blank" on application's tap handler for <a> tags
 * Fixed a timing issue with app.ui.BaseView's enter and exit animations
 * Fixed an issue where the signature $.fn.touch(onstart, onmove, onend) would fail to bind handlers
+* Fixed an issue where Lavaca.delay did not return a timeout ID
+* Fixed an issue where event handlers were unbound from cached views when Zepto is swapped out for jQuery
+* Documentation template no longer treats every method as static
+* Android now parses all route variables consistently
 
 Changed in 1.0.2
 ======
