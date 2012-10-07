@@ -1,5 +1,5 @@
 /*
-Lavaca 1.0.3
+Lavaca 1.0.4
 Copyright (c) 2012 Mutual Mobile
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -131,11 +131,11 @@ ns.cssProperty = function() {
  * @return {jQuery}  The jQuery object, for chaining
  */
 $.fn.transition = function(props, duration, easing, callback) {
-  if (ns.isSupported()) {
-    if (easing instanceof Function) {
+  if (easing instanceof Function) {
       callback = easing;
       easing = null;
-    }
+  }
+  if (ns.isSupported()) {
     var css = ns.toCSS(props, duration, easing);
     if (callback) {
       this.nextTransitionEnd(callback);

@@ -25,3 +25,9 @@ spring/source/lavaca-web/.settings/*
 
 spring/sample/app-web/target/*
 spring/source/lavaca-web/target/*
+
+source/android/.classpath
+
+source/android/.project
+source/android/bin/*
+source/android/gen/*

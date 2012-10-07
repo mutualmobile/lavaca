@@ -1,5 +1,5 @@
 /*
-Lavaca 1.0.3
+Lavaca 1.0.4
 Copyright (c) 2012 Mutual Mobile
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -524,7 +524,7 @@ $.fn.tap = function(delegate, callback, thisp) {
     delegate = null;
   }
   if (_supportsTouchEvents) {
-    ns.bind(this, delegate, _preventDefault, null, function(e) {
+    ns.bind(this, delegate, null, null, function(e) {
       if (!e.hasMoved && callback) {
         callback.apply(thisp || this, arguments);
       }
