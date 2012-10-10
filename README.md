@@ -15,7 +15,7 @@ Lavaca features:
 
 Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.
 
-Chnaged in 1.0.4
+Changed in 1.0.4
 ======
 * Upgraded Cordova to 2.1
 * Updated Android ChildBrowser plugin to remove legacy ctx in favor of cordova.getContext()
