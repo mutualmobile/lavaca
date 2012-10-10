@@ -15,6 +15,16 @@ Lavaca features:
 
 Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.
 
+Changed in 1.0.4
+======
+* Upgraded Cordova to 2.1
+* Updated Android ChildBrowser plugin to remove legacy ctx in favor of cordova.getContext()
+* Removed preventDefault() from touchstart in tap events
+* Added support for iPhone 5 and landscape iPad startup images
+* Fixed an issue where $.fn.transition(props, duration, easing, callback) would not overload properly if transitions were not supported
+* Fixed issue where a tap event would fire if the fake scroll was started/ended on a element with a tap handler  
+* Fixed issue in build.py where it was looking for mm:configs instead of Lavaca:configs
+
 Changed in 1.0.3
 ======
 * Moved the "column" property from the model to the view in app.ui.BaseView
