@@ -475,7 +475,7 @@ class Builder(BaseBuilder):
                             cf = open(os.path.join(os.path.dirname(src), target_config['src']), 'r')
                             target_config['code'] = cf.read()
                             cf.close();
-                        html = (script + re.sub('\s+', ' ', target_config['code']) + '</script>').join(re.split('<!--mm:configs-->.*?<!--/mm:configs-->', html))
+                        html = (script + re.sub('\s+', ' ', target_config['code']) + '</script>').join(re.split('<!--Lavaca:configs-->.*?<!--/Lavaca:configs-->', html))
                 if self.config.get('remove_comments'):
                     html = re.sub('<!--(?!cordova\:)(.*?)-->', '', html)
                 logging.debug('Deploying %s...' % src_name)
