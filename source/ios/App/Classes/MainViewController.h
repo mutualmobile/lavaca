@@ -19,17 +19,13 @@
 
 //
 //  MainViewController.h
-//  xyz
+//  App
 //
-//  Created by Dan Nichols on 4/13/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Copyright ___ORGANIZATIONNAME___ ___YEAR___. All rights reserved.
 //
 
-#ifdef CORDOVA_FRAMEWORK
-    #import <Cordova/CDVViewController.h>
-#else
-    #import "CDVViewController.h"
-#endif
+#import <Cordova/CDVViewController.h>
 
 @interface MainViewController : CDVViewController
 
