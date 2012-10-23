@@ -813,6 +813,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -o-animation-duration: 350ms;
   animation-duration: 350ms;
 }
+.in {
+  -webkit-animation-fill-mode: backwards;
+  -moz-animation-fill-mode: backwards;
+  -ms-animation-fill-mode: backwards;
+  -o-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+.out {
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
 .slide.out {
   -webkit-animation-name: slide-out-to-left;
   -moz-animation-name: slide-out-to-left;
