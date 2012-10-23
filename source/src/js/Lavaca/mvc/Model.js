@@ -336,8 +336,8 @@ ns.Model = EventDispatcher.extend(function(map) {
       return messages;
     } else {
       messages = {};
-      this.rules.each(function(attributeName, rules) {
-        messages[attribute] = this.validate(attribute);
+      this.rules.each(function(attributeName) {
+        messages[attributeName] = this.validate(attributeName);
       }, this);
       return messages;
     }

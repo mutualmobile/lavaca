@@ -41,13 +41,13 @@
 		30A0434914DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434614DC770100060A13 /* Localizable.strings */; };
 		30E1352710E2C1420031B30D /* Cordova.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30E1352610E2C1420031B30D /* Cordova.plist */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		34C19744161F9C53009CD4FB /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34504007161F98AD00C01CE8 /* libCordova.a */; };
+		34FCBFAE1636EF4400A89E10 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FCBFAD1636EF2200A89E10 /* libCordova.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		34504006161F98AD00C01CE8 /* PBXContainerItemProxy */ = {
+		34FCBFAC1636EF2200A89E10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */;
+			containerPortal = 34FCBF561636E61D00A89E10 /* CordovaLib.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 68A32D7114102E1C006B237C;
 			remoteInfo = CordovaLib;
@@ -64,7 +64,6 @@
 		1F766FE013BBADB100FB74C0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Localizable.strings; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../../Documents/phonegap-2.1-Libs/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		301BF56E109A69640062928A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		301BF5B4109A6A2B0062928A /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		301BF5B6109A6A2B0062928A /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -95,6 +94,7 @@
 		30E1352610E2C1420031B30D /* Cordova.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Cordova.plist; path = ../Cordova.plist; sourceTree = "<group>"; };
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* App-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "App-Prefix.pch"; sourceTree = "<group>"; };
+		34FCBF561636E61D00A89E10 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* App-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "App-Info.plist"; path = "../App-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34C19744161F9C53009CD4FB /* libCordova.a in Frameworks */,
+				34FCBFAE1636EF4400A89E10 /* libCordova.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -165,13 +165,13 @@
 			isa = PBXGroup;
 			children = (
 				301BF56E109A69640062928A /* www */,
-				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				307C750510C5A3420062BCA9 /* Plugins */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				34FCBF561636E61D00A89E10 /* CordovaLib.xcodeproj */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -272,10 +272,10 @@
 			path = se.lproj;
 			sourceTree = "<group>";
 		};
-		34504003161F98AD00C01CE8 /* Products */ = {
+		34FCBFA91636EF2200A89E10 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				34504007161F98AD00C01CE8 /* libCordova.a */,
+				34FCBFAD1636EF2200A89E10 /* libCordova.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -327,8 +327,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 34504003161F98AD00C01CE8 /* Products */;
-					ProjectRef = 301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */;
+					ProductGroup = 34FCBFA91636EF2200A89E10 /* Products */;
+					ProjectRef = 34FCBF561636E61D00A89E10 /* CordovaLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -339,11 +339,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		34504007161F98AD00C01CE8 /* libCordova.a */ = {
+		34FCBFAD1636EF2200A89E10 /* libCordova.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCordova.a;
-			remoteRef = 34504006161F98AD00C01CE8 /* PBXContainerItemProxy */;
+			remoteRef = 34FCBFAC1636EF2200A89E10 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -445,6 +445,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = NO;
@@ -458,6 +459,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = App;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "i386 armv6 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -465,6 +467,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = YES;
@@ -476,6 +479,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = App;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "i386 armv6 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -483,10 +487,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 307D28A1123043350040C0FA /* CordovaBuildSettings.xcconfig */;
 			buildSettings = {
-				ARCHS = (
+				"ARCHS[sdk=iphoneos*]" = (
 					armv6,
 					armv7,
 				);
+				"ARCHS[sdk=iphoneos6.*]" = (
+					armv7,
+					armv7s,
+				);
+				"ARCHS[sdk=iphonesimulator*]" = i386;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
@@ -515,6 +524,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = "i386 armv6 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -522,10 +532,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 307D28A1123043350040C0FA /* CordovaBuildSettings.xcconfig */;
 			buildSettings = {
-				ARCHS = (
+				"ARCHS[sdk=iphoneos*]" = (
 					armv6,
 					armv7,
 				);
+				"ARCHS[sdk=iphoneos6.*]" = (
+					armv7,
+					armv7s,
+				);
+				"ARCHS[sdk=iphonesimulator*]" = i386;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
@@ -554,6 +569,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = "i386 armv6 armv7 armv7s";
 			};
 			name = Release;
 		};
