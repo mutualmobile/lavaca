@@ -140,6 +140,12 @@ body {
   left: 0;
   min-width: 100%;
   min-height: 100%;
+  visibility: hidden;
+}
+.view.show,
+.view.in,
+.view.out {
+  visibility: visible;
 }
 .view.popover,
 .dialog {
