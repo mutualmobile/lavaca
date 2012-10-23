@@ -94,6 +94,8 @@ ns.BaseView = View.extend(function() {
               .removeClass('out')
               .addClass('in');
           }
+        } else {
+          this.shell.addClass('show');
         }
       });
   },
@@ -113,6 +115,7 @@ ns.BaseView = View.extend(function() {
           promise = new Lavaca.util.Promise(this);
       this.shell
         .nextAnimationEnd(function(e) {
+          self.shell.removeClass('in out show');
           View.prototype.exit.apply(self, arguments).then(function() {
             promise.resolve();
           });
@@ -121,6 +124,7 @@ ns.BaseView = View.extend(function() {
         .addClass('out');
       return promise;
     } else {
+      this.shell.removeClass('show');
       return View.prototype.exit.apply(this, arguments);
     }
   }

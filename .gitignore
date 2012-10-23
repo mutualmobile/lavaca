@@ -33,8 +33,18 @@ source/android/bin/*
 source/android/gen/*
 
 source/ios/www/*
+
+*atnotate.pyc
+*build.log
+
 samples/sink/www/*
 samples/sink/android/*
 samples/sink/ios/*
 samples/sink/docs/*
 samples/sink/test/*
+
+samples/todos/www/*
+samples/todos/android/*
+samples/todos/ios/*
+samples/todos/docs/*
+samples/todos/test/*
