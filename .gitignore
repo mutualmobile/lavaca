@@ -31,3 +31,10 @@ source/android/.classpath
 source/android/.project
 source/android/bin/*
 source/android/gen/*
+
+source/ios/www/*
+samples/sink/www/*
+samples/sink/android/*
+samples/sink/ios/*
+samples/sink/docs/*
+samples/sink/test/*
