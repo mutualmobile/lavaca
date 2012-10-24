@@ -50,6 +50,24 @@ function _suppressChecked(model, suppress, callback) {
   return result;
 }
 
+/**
+ * @method _isValid
+ * Returns the messages object with a new property indicating if the model is valid or not
+ * 
+ * @param {Object} messages The  messages object for the validation rules
+ * @return {Object} messages The messages object with a new property for validation - true if all rules validated
+ */
+function _isValid(messages){
+  var isValid = true;
+  for(var attribute in messages){
+    if (attribute.length > 0){
+      isValid = false;
+    }
+  }
+  messages.isValid = isValid;
+  return messages;
+}
+
 // Virtual type
 /**
  * @class Lavaca.mvc.AttributeEvent
@@ -339,7 +357,7 @@ ns.Model = EventDispatcher.extend(function(map) {
       this.rules.each(function(attributeName) {
         messages[attributeName] = this.validate(attributeName);
       }, this);
-      return messages;
+      return _isValid(messages);
     }
   },
   /**
