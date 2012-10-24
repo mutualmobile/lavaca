@@ -60,13 +60,14 @@ function _suppressChecked(model, suppress, callback) {
 function _isValid(messages){
   var isValid = true;
   for(var attribute in messages){
-    if (attribute.length > 0){
+    if (messages[attribute].length > 0){
       isValid = false;
     }
   }
   messages.isValid = isValid;
   return messages;
 }
+
 
 // Virtual type
 /**
