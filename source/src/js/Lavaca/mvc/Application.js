@@ -54,12 +54,6 @@ ns.Application = EventDispatcher.extend(function(callback) {
    */
   TState: Lavaca.mvc.Model,
   /**
-   * @field {Boolean} animations
-   * @default true
-   * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
-   */
-  animations: navigator.userAgent.indexOf('Android') == -1,
-  /**
    * @field {String} initRoute
    * @default "/"
    * The default URL that the app will navigate to
@@ -149,6 +143,18 @@ ns.Application = EventDispatcher.extend(function(callback) {
    */
   init: function() {
     var promise = new Lavaca.util.Promise(this);
+    /**
+     * @field {Object} mobileBrowser
+     * @default true
+     * A hash of user agent tests.
+     */
+    this.mobileBrowser = Lavaca.env.Device.mobileBrowser();
+    /**
+     * @field {Boolean} animations
+     * @default true
+     * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
+     */
+    this.animations = !this.mobileBrowser.android;
     /** 
      * @field {Lavaca.mvc.Model} state
      * @default null

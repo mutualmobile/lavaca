@@ -6,7 +6,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 (function(ns, $, Cordova) {
 
@@ -27,6 +27,29 @@ var _initHasRun = false,
  */
 ns.isCordova = function() {
   return !!Cordova;
+};
+
+ns.mobileBrowser = function() {
+  var mobileBrowser = {};
+  mobileBrowser.agent = navigator.userAgent.toLowerCase();
+  mobileBrowser.scrWidth = screen.width;
+  mobileBrowser.scrHeight = screen.height;
+  mobileBrowser.elemWidth = document.documentElement.clientWidth;
+  mobileBrowser.elemHeight = document.documentElement.clientHeight;
+  mobileBrowser.otherBrowser = (mobileBrowser.agent.indexOf('series60') != -1) || (mobileBrowser.agent.indexOf('symbian') != -1) || (mobileBrowser.agent.indexOf('windows ce') != -1) || (mobileBrowser.agent.indexOf('blackberry') != -1);
+  mobileBrowser.mobileOS = typeof orientation != 'undefined' ? true : false;
+  mobileBrowser.touchOS = ('ontouchstart' in document.documentElement) ? true : false;
+  mobileBrowser.blackberry = mobileBrowser.agent.indexOf('blackberry') > -1;
+  mobileBrowser.ipad = mobileBrowser.agent.indexOf('ipad') != -1 ? true : false;
+  mobileBrowser.ipod = mobileBrowser.agent.indexOf('ipod') != -1 ? true : false;
+  mobileBrowser.iphone = mobileBrowser.agent.indexOf('iphone') != -1 ? true : false;
+  mobileBrowser.palm = mobileBrowser.agent.indexOf('palm') != -1 ? true : false;
+  mobileBrowser.symbian = mobileBrowser.agent.indexOf('symbian') != -1 ? true : false;
+  mobileBrowser.iOS = (mobileBrowser.iphone || mobileBrowser.ipod || mobileBrowser.ipad) ? true : false;
+  mobileBrowser.android = (mobileBrowser.agent.indexOf('android') != -1) || (!mobileBrowser.iOS && !mobileBrowser.otherBrowser && mobileBrowser.touchOS && mobileBrowser.mobileOS) ? true : false;
+  mobileBrowser.android2 = mobileBrowser.android && (mobileBrowser.agent.indexOf('android 2') != -1) ? true : false;
+  mobileBrowser.isMobile = (mobileBrowser.android || mobileBrowser.iOS || mobileBrowser.mobileOS || mobileBrowser.touchOS) ? true : false;
+  return mobileBrowser;
 };
 
 /**
