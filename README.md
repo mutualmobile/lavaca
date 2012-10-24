@@ -18,12 +18,16 @@ Lavaca has a ton packed into it, and is designed to work well as a cohesive whol
 Changed in 1.0.4
 ======
 * Upgraded Cordova to 2.1
+* Fixed animation glitches in page transitions
 * Updated Android ChildBrowser plugin to remove legacy ctx in favor of cordova.getContext()
 * Removed preventDefault() from touchstart in tap events
-* Added support for iPhone 5 and landscape iPad startup images
+* Added support for all iOS app icons and startup images
 * Fixed an issue where $.fn.transition(props, duration, easing, callback) would not overload properly if transitions were not supported
 * Fixed issue where a tap event would fire if the fake scroll was started/ended on a element with a tap handler  
 * Fixed issue in build.py where it was looking for mm:configs instead of Lavaca:configs
+* Fixed toObject call on Models that have Models/Collections as an attribute
+* Added better support for Android identity checks and added Mobile identity checks 
+* Fixed Model.validate() and added support for quickly checking if model is valid
 
 Changed in 1.0.3
 ======
