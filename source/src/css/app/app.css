@@ -46,7 +46,7 @@ body {
   padding: 5px 10px;
 }
 #nav-header .logo {
-  background: url(/img/logo.png);
+  background: url(../../img/logo.png);
   width: 102px;
   height: 48px;
   overflow: hidden;
@@ -118,7 +118,7 @@ body {
     screen and (-ms-min-device-pixel-ratio: 2),
     screen and (min-device-pixel-ratio: 2) {
   #nav-header .logo { 
-    background-image: url(/img/logo-2x.png);
+    background-image: url(../../img/logo-2x.png);
     background-size: 100% 100%;
   }
 }

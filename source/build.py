@@ -46,7 +46,7 @@ class Config(FileManager):
             'js_src': 'js',
             'css_src': 'css',
             'js_dst': 'js',
-            'css_dst': 'css',
+            'css_dst': 'css/app',
             'combine_js': True,
             'combine_css': True,
             'compress_js': True,
