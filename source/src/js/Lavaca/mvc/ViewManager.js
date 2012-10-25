@@ -194,17 +194,22 @@ ns.ViewManager = Disposable.extend(function(el) {
    * @method flush
    * Empties the view cache
    */
-  flush: function() {
+  flush: function(cacheKey) {
     // Don't dispose of any views that are currently displayed
-    var i = -1,
+    //flush individual cacheKey
+    if(cacheKey){
+      this.views.remove(cacheKey);
+    } else {
+      var i = -1,
         layer;
-    while (layer = this.layers[++i]) {
-      if (layer.cacheKey) {
-        this.views.remove(layer.cacheKey);
+      while (layer = this.layers[++i]) {
+        if (layer.cacheKey) {
+          this.views.remove(layer.cacheKey);
+        }
       }
+      this.views.dispose();
+      this.views = new util.Cache();  
     }
-    this.views.dispose();
-    this.views = new util.Cache();
   },
   /**
    * @method dispose

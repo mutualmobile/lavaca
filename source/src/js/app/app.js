@@ -52,7 +52,8 @@ app.showErrors = function(errors) {
  * Handles attempts to make an AJAX request when the application is offline
  */
 app.onOfflineAjax = function() {
-  plugins.notification.alert(Lavaca.util.Translation.get('error_offline'));
+  var hasLoaded = Lavaca.util.Translation.hasLoaded;
+  plugins.notification.alert(hasLoaded ? Lavaca.util.Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
 };
 
 })(Lavaca, Lavaca.$);
