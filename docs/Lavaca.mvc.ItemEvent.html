@@ -6,94 +6,7 @@
     <link type="text/css" href="assets/app.css" rel="stylesheet">
   </head>
   <body class="[[bodyClassName]]">
-    <header>
-      <h1 class="logo">
-        <a href="http://www.getlavaca.com">Lavaca</a>
-      </h1>
-    </header>
-<div id="navigation-frame" class="package-list">
-<ul>
-<li class="package">Lavaca<ul class="package-contents">
-<li><a href="Lavaca.html">Lavaca</a></li>
-</ul></li>
-<li class="package">Lavaca.env<ul class="package-contents">
-<li><a href="Lavaca.env.Badge.html">Badge</a></li>
-<li><a href="Lavaca.env.ChildBrowser.html">ChildBrowser</a></li>
-<li><a href="Lavaca.env.Device.html">Device</a></li>
-<li><a href="Lavaca.env.Notification.html">Notification</a></li>
-</ul></li>
-<li class="package">Lavaca.events<ul class="package-contents">
-<li><a href="Lavaca.events.EventDispatcher.html">EventDispatcher</a></li>
-<li><a href="Lavaca.events.EventPoint.html">EventPoint</a></li>
-<li><a href="Lavaca.events.EventVector.html">EventVector</a></li>
-<li><a href="Lavaca.events.Touch.html">Touch</a></li>
-<li><a href="Lavaca.events.TouchEvent.html">TouchEvent</a></li>
-</ul></li>
-<li class="package">Lavaca.fx<ul class="package-contents">
-<li><a href="Lavaca.fx.Animation.html">Animation</a></li>
-<li><a href="Lavaca.fx.Transform.html">Transform</a></li>
-<li><a href="Lavaca.fx.Transition.html">Transition</a></li>
-</ul></li>
-<li class="package">Lavaca.mvc<ul class="package-contents">
-<li><a href="Lavaca.mvc.Application.html">Application</a></li>
-<li><a href="Lavaca.mvc.AttributeEvent.html">AttributeEvent</a></li>
-<li><a href="Lavaca.mvc.Collection.html">Collection</a></li>
-<li><a href="Lavaca.mvc.Controller.html">Controller</a></li>
-<li><a href="Lavaca.mvc.ItemEvent.html">ItemEvent</a></li>
-<li><a href="Lavaca.mvc.Model.html">Model</a></li>
-<li><a href="Lavaca.mvc.Route.html">Route</a></li>
-<li><a href="Lavaca.mvc.Router.html">Router</a></li>
-<li><a href="Lavaca.mvc.View.html">View</a></li>
-<li><a href="Lavaca.mvc.ViewManager.html">ViewManager</a></li>
-</ul></li>
-<li class="package">Lavaca.net<ul class="package-contents">
-<li><a href="Lavaca.net.Connectivity.html">Connectivity</a></li>
-<li><a href="Lavaca.net.History.html">History</a></li>
-</ul></li>
-<li class="package">Lavaca.storage<ul class="package-contents">
-<li><a href="Lavaca.storage.LocalStore.html">LocalStore</a></li>
-<li><a href="Lavaca.storage.Store.html">Store</a></li>
-</ul></li>
-<li class="package">Lavaca.ui<ul class="package-contents">
-<li><a href="Lavaca.ui.DustTemplate.html">DustTemplate</a></li>
-<li><a href="Lavaca.ui.Form.html">Form</a></li>
-<li><a href="Lavaca.ui.LoadingIndicator.html">LoadingIndicator</a></li>
-<li><a href="Lavaca.ui.Scrollable.html">Scrollable</a></li>
-<li><a href="Lavaca.ui.Template.html">Template</a></li>
-<li><a href="Lavaca.ui.Widget.html">Widget</a></li>
-</ul></li>
-<li class="package">Lavaca.util<ul class="package-contents">
-<li><a href="Lavaca.util.ArrayUtils.html">ArrayUtils</a></li>
-<li><a href="Lavaca.util.Cache.html">Cache</a></li>
-<li><a href="Lavaca.util.Config.html">Config</a></li>
-<li><a href="Lavaca.util.DateUtils.html">DateUtils</a></li>
-<li><a href="Lavaca.util.Disposable.html">Disposable</a></li>
-<li><a href="Lavaca.util.Map.html">Map</a></li>
-<li><a href="Lavaca.util.Promise.html">Promise</a></li>
-<li><a href="Lavaca.util.StringUtils.html">StringUtils</a></li>
-<li><a href="Lavaca.util.Translation.html">Translation</a></li>
-</ul></li>
-<li class="package">app<ul class="package-contents">
-<li><a href="app.html">app</a></li>
-<li><a href="app.models.html">models</a></li>
-</ul></li>
-<li class="package">app.net<ul class="package-contents">
-<li><a href="app.net.AuthenticationController.html">AuthenticationController</a></li>
-<li><a href="app.net.ExampleController.html">ExampleController</a></li>
-</ul></li>
-<li class="package">app.ui<ul class="package-contents">
-<li><a href="app.ui.BaseView.html">BaseView</a></li>
-<li><a href="app.ui.ErrorsView.html">ErrorsView</a></li>
-<li><a href="app.ui.ExampleView.html">ExampleView</a></li>
-<li><a href="app.ui.HomeView.html">HomeView</a></li>
-<li><a href="app.ui.Nav.html">Nav</a></li>
-<li><a href="app.ui.PopoverView.html">PopoverView</a></li>
-<li><a href="app.ui.ScrollableView.html">ScrollableView</a></li>
-<li><a href="app.ui.SignInView.html">SignInView</a></li>
-<li><a href="app.ui.WelcomeView.html">WelcomeView</a></li>
-</ul></li>
-</ul>
-</div>
+    <iframe id="navigation-frame" src="packages.html"></iframe>
     <div id="view-root"></div>
     <script type="text/x-dust-template" data-name="field">
       <li class="{?inherited}inherited{:else}instance{/inherited} field" id="sig-{name}">
@@ -108,7 +21,7 @@
       </li>
     </script>
     <script type="text/x-dust-template" data-name="method">
-      {#signatures static=static owner=owner}
+      {#signatures owner=owner}
         <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
           <h3 class="name">{?static}{owner}.{/static}{name}</h3>
           <div class="body">
@@ -241,19 +154,6 @@
     <script type="text/javascript" src="assets/app.js"></script>
     <script type="text/javascript">
       app.load({"qualifiedName": "Lavaca.mvc.ItemEvent", "name": "ItemEvent", "inheritance": ["Event"], "fields": [{"default": "null", "owner": "Lavaca.mvc.ItemEvent", "type": "Number", "name": "index", "desc": " The index of the event-causing model in the collection"}, {"default": "null", "owner": "Lavaca.mvc.ItemEvent", "type": "Lavaca.mvc.Model", "name": "model", "desc": " The model that caused the event"}, {"default": "null", "owner": "Lavaca.mvc.ItemEvent", "type": "Number", "name": "previousIndex", "desc": " The index of the event-causing model before the event"}, {"default": "null", "owner": "Lavaca.mvc.ItemEvent", "type": "Lavaca.mvc.Collection", "name": "target", "desc": " The collection that contains (or contained) the model that caused the event"}], "methods": [], "staticMethods": [], "superType": "Event", "ns": "Lavaca.mvc", "staticFields": [], "desc": " Event type used when a model in a collection has an event"});
-    </script>
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-33117894-1']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-      })();
     </script>
   </body>
 </html>

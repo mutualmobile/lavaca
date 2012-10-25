@@ -38,14 +38,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  overflow: auto;
-  margin-top: 4em;
 }
 #view-root {
   margin: 0 0 0 200px;
   height: 100%;
   overflow: auto;
-  margin-top: 4em;
 }
 ol,
 ul,
@@ -223,8 +220,17 @@ th {
   color: rgb(204, 212, 219);
 }
 .package-list > ul {
-  margin: 1em;
+  margin: 5.5em 1em 1em;
   font-size: 80%;
+}
+.package-list h1 {
+  background: rgb(0, 166, 222);
+  color:#fff;
+  font-weight: bold;
+  padding: 1em;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
 }
 .package-contents > li > a:before {
   content: '\230A\00A0';
@@ -232,24 +238,4 @@ th {
 }
 .package-contents a {
   color: rgb(0, 166, 222);
-}
-header {
-  background: rgb(0, 166, 222);
-  font-weight: bold;
-  padding: 1em;
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-}
-header .logo {
-  background: url(logo.png) no-repeat;
-  width: 91px;
-  height: 32px;
-}
-header .logo a {
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-indent: -999px;
-  overflow: hidden;
 }
