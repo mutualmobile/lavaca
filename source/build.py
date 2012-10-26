@@ -265,7 +265,7 @@ class XmlConfigCompiler():
     
     def write_js_config(self,package_manifest):
         package_def = self.config.get_js_package_def()
-       
+        
         with open(package_def, 'w') as f:
             f.write('<scripts>\n')
             for item in package_manifest:
@@ -311,7 +311,7 @@ class XmlConfigCompiler():
         
         package_manifest = self.build_js_package_manifest(package_list)
         
-        self.write_css_config(package_manifest)
+        self.write_js_config(package_manifest)
         
             
     def generate_css_config_xml(self):
