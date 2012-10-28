@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /** 
  * @class Lavaca.util.Promise
- * Utility type for asynchronous prograLavacaing
+ * Utility type for asynchronous programming
  *
  * @constructor
  *
