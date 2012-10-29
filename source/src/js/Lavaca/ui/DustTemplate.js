@@ -8,12 +8,12 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns, xdust, Template, Translation) {
+(function(ns, dust, Template, Translation) {
 
 /**
  * @class Lavaca.ui.DustTemplate
  * @super Lavaca.ui.Template
- * Base type for templates that use the x-dust engine
+ * Base type for templates that use the dust engine
  *
  * @constructor
  * @param {String} name  The unique name of the template
@@ -22,19 +22,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 ns.DustTemplate = Template.extend(function(name, src, code) {
   Template.apply(this, arguments);
-  var helper = this.prepareHelper(),
+  var helper = this.prepareHelpers(),
       n;
+  if(!dust.helpers) {
+    dust.helpers = [];
+  }
   for (n in helper) {
-    xdust.helpers[n] = helper[n];
+    dust.helpers[n] = helper[n];
   }
 }, {
   /**
-   * @method prepareHelper
+   * @method prepareHelpers
    * Gets the basis for the template helper object
    *
    * @return {Object}  A map of helper function names to functions
    */
-  prepareHelper: function() {
+  prepareHelpers: function() {
     return {
       msg: this.helperMsg,
       include: this.helperInclude
@@ -47,21 +50,23 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    *
    * <dl>
    *
-   * <dt>{#msg}code{/msg}</dt>
+   * <dt>{@msg key="code"/}</dt>
    *   <dd>code&mdash;The key under which the message is stored</dd>
    *
-   * <dt>{#msg}code{:or}default{/msg}</dt>
+   * <dt>{@msg key="code"}default{/msg}</dt>
    *   <dd>code&mdash;The key under which the message is stored</dd>
-   *   <dd>default&mdash;Text to use if no message exists</dd>
+   *   <dd>default&mdash;The default markup to display if no translation
+   *       is found</dd>
    *
-   * <dt>{#msg locale="en_US"}code{/msg}</dt>
+   *
+   * <dt>{@msg key="code" locale="en_US"/}</dt>
+   *   <dd>code&mdash;The key under which the message is stored</dd>
    *   <dd>locale&mdash;The locale from which to get the message ("en_US")</dd>
-   *   <dd>code&mdash;The key under which the message is stored</dd>
    *
-   * <dt>{#msg p0="first" p1=variable}code{/msg}</dt>
-   *   <dd>p0, p1, &hellip; pN&mdash;String format parameters for the message
-   *       (See [[Lavaca.util.StringUtils]].format()</dd>
+   * <dt>{@msg key="code" p0="first" p1="{variable}"/}</dt>
    *   <dd>code&mdash;The key under which the message is stored</dd>
+   *   <dd>p0, p1, &hellip; pN&mdash;String format parameters for the message
+   *       (See [[Lavaca.util.StringUtils]].format())</dd>
    *
    * </dl>
    *
@@ -70,17 +75,20 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    * @param {Object} model  Model object passed to template
    * @return {String}  Rendered output
    */
-  helperMsg: function(chain, context, model) {
-    var node = chain.tail,
-        code = node.renderBody('block', chain, context, model),
-        locale = node.params[locale],
-        args = [Translation.get(code, locale) || ''],
+  helperMsg: function(chunk, context, bodies, params) {
+    var key = dust.helpers.tap(params.key, chunk, context),
+        locale = dust.helpers.tap(params.locale, chunk, context),
+        translation = Translation.get(key, locale),
+        args = [translation],
         i = -1,
         arg;
-    while (arg = node.params['p' + (++i)]) {
-      args.push(arg.render(chain, context, model));
+    if(!translation) {
+      return bodies.block ? chunk.render(bodies.block, context) : chunk;
     }
-    return Lavaca.util.StringUtils.format.apply(this, args);
+    while (arg = params['p' + (++i)]) {
+      args.push(dust.helpers.tap(arg, chunk, context));
+    }
+    return chunk.write(Lavaca.util.StringUtils.format.apply(this, args));
   },
   /**
    * @method helperInclude
@@ -102,17 +110,20 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    * @param {Object} model  Model object passed to template
    * @return {String}  Rendered output
    */
-  helperInclude: function(chain, context, model) {
-    var node = chain.tail,
-        name = node.params['name'].render(chain, context, model),
+  helperInclude: function(chunk, context, bodies, params) {
+    var name = dust.helpers.tap(params.name, chunk, context),
         result;
-    // Note - this is potentially an async call
+
+    // Note that this only works because
+    // dust renders are synchronous so
+    // the .then() is called before this
+    // helper function returns
     Template
-      .render(name, model)
+      .render(name, context.stack.head)
       .then(function(html) {
         result = html;
       });
-    return result;
+    return chunk.write(result);
   },
   /**
    * @method compile
@@ -120,7 +131,7 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    */
   compile: function() {
     Template.prototype.compile.call(this);
-    xdust.compile(this.code, this.name);
+    dust.loadSource(dust.compile(this.code, this.name));
   },
   /**
    * @method render
@@ -138,7 +149,7 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
       this.compile();
       this.compiled = true;
     }
-    xdust.render(this.name, model, function(err, html) {
+    dust.render(this.name, model, function(err, html) {
       if (err) {
         promise.reject(err);
       } else {
@@ -152,12 +163,12 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    * Makes this template ready for disposal
    */
   dispose: function() {
-    delete xdust.templates[this.name];
+    delete dust.cache[this.name];
     Template.prototype.dispose.call(this);
   }
 });
 
 // Register the Dust template type for later use
-ns.Template.register('text/x-dust-template', ns.DustTemplate);
+ns.Template.register('text/dust-template', ns.DustTemplate);
 
-})(Lavaca.ui, xdust, Lavaca.ui.Template, Lavaca.util.Translation);
+})(Lavaca.ui, dust, Lavaca.ui.Template, Lavaca.util.Translation);
