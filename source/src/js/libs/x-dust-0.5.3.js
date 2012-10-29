@@ -1,5 +1,5 @@
 /*
-x-dust 0.5.3
+x-dust 0.5.3 with NotExists fix
 
 Copyright (c) 2012 Dan Nichols
 
@@ -33,7 +33,7 @@ THE SOFTWARE.
 var BREAK = false,
     UNDEFINED,
     OPERATORS = ['~', '#', '?', '@', ':', '<', '>', '+', '/', '^'],
-    OPERATORS_WITH_BODY = ['#', '?', '@', ':', '+', '<'],
+    OPERATORS_WITH_BODY = ['#', '?', '@', ':', '+', '<', '^'],
     dust;
 
 function _hasProp(obj, name) {
@@ -482,8 +482,13 @@ var XDustContext = _extend(function(head, tail, params) {
   XDustNotExistsNode = _extend(XDustExistsNode, function() {
     XDustExistsNode.apply(this, arguments);
   }, {
-    prepareModel: function(chain, context, model) {
-      return this.context.resolve(context, model) ? 'else' : 'block';
+    operator: '^',
+    chooseBodyName: function(context, model) {
+      var resolved = this.context.resolve(context, model);
+      if (_isInstance(resolved, Array) && resolved.length < 1) {
+        resolved = false;
+      }
+      return resolved ? 'else' : 'block';
     }
   }),
   XDustHelperNode = _extend(XDustLogicNode, function(name, scope, params, blocks, bodies) {
@@ -657,6 +662,8 @@ var XDustContext = _extend(function(head, tail, params) {
             }
           } else if (operator == '?') {
             node = new XDustExistsNode(tagName, scope, params);
+          } else if (operator == '^') {
+            node = new XDustNotExistsNode(tagName, scope, params);
           } else if (operator == '@') {
             name = tag[0].slice(1);
             if (name == 'idx') {
