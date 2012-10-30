@@ -150,10 +150,18 @@ ns.Collection = Model.extend(function(models, map) {
    *
    * @event add
    *
+   * @sig
    * @params {Object} item  The items to add to the collection
+   * @return {Boolean}  True if an item was added, false otherwise
+   *
+   * @sig
+   * @params {Array} items  An array of items to add to the collection
    * @return {Boolean}  True if an item was added, false otherwise
    */
   add: function(/* item1, item2, itemN */) {
+    if (arguments.length && arguments[0] instanceof Array) {
+      return this.add.apply(this, arguments[0]);
+    }
     var result = false,
         i,
         j,
