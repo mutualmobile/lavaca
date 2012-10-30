@@ -4,8 +4,9 @@
 source/docs
 source/www
 source/test/$src.html
-
 source/test/$www.html
+source/src/scripts.xml
+source/src/styles.xml
 
 source/libs/atnotate/atnotate.pyc
 
