@@ -10,7 +10,7 @@ describe('A View', function() {
         'self': Lavaca.ui.Form
       };
   beforeEach(function() {
-    $('body').append('<script type="text/x-dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>');
+    $('body').append('<script type="text/dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>');
     Lavaca.ui.Template.init();
     testView = new View();
   }); 

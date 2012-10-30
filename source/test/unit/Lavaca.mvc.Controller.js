@@ -62,7 +62,7 @@ describe('A Controller', function() {
         };
     beforeEach(function(){
       spyOn(noop, 'success');
-      $('body').append('<script type="text/x-dust-template" data-name="hello-world">Hello World</script>');
+      $('body').append('<script type="text/dust-template" data-name="hello-world">Hello World</script>');
       Lavaca.ui.Template.init();
     });
     afterEach(function(){
