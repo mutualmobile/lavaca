@@ -138,7 +138,8 @@ ns.Model = EventDispatcher.extend(function(map) {
    * @return {Object}  The value of the attribute, or null if there is no value
    */
   get: function(attribute) {
-    return this.attributes.get(attribute);
+    var attr = this.attributes.get(attribute);
+    return typeof attr === 'function' ? attr.call(this) : attr;
   },
   /**
    * @method canSet
@@ -482,7 +483,13 @@ ns.Model = EventDispatcher.extend(function(map) {
    * @return {Object}  The key-value hash
    */
   toObject: function() {
-    return this.attributes.toObject();
+    var obj = this.attributes.toObject();
+    for(var key in obj) {
+      if(typeof obj[key] === "function") {
+        obj[key] = obj[key].call(this);
+      }
+    }
+    return obj;
   },
   /**
    * @method toJSON
