@@ -14,7 +14,13 @@ function _stopEvent(e) {
   e.preventDefault();
   e.stopPropagation();
 }
-
+function _matchHashRoute(hash) {
+  var matches = hash.match(/^(?:#)(\/.*)#?@?/);
+  if (matches instanceof Array && matches[1]) {
+    return matches[1].replace(/#.*/, '');
+  }
+  return null;
+}
 /**
  * @class Lavaca.mvc.Application
  * @super Lavaca.events.EventDispatcher
@@ -182,7 +188,9 @@ ns.Application = EventDispatcher.extend(function(callback) {
       .tap('.ui-blocker', _stopEvent);
     this.trigger('init');
     if (!this.router.hasNavigated) {
-      promise.when(this.router.exec(this.initRoute, this.initState, this.initParams));
+      promise.when(
+        this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
+      );
       if (this.initState) {
         Lavaca.net.History.replace(this.initState.state, this.initState.title, this.initState.url); 
       }
@@ -204,7 +212,14 @@ ns.Application = EventDispatcher.extend(function(callback) {
     Lavaca.util.Translation.dispose();
     Lavaca.ui.Template.dispose();
     EventDispatcher.prototype.dispose.call(this);
-  }
+  },
+  /**
+   * @field initialStandardRoute
+   * Gets initial route based on query string returned by server 302 redirect
+   */
+  initialHashRoute: (function(hash) {
+    return _matchHashRoute(hash);
+  })(window.location.hash)
 });
 
 })(Lavaca.mvc, Lavaca.events.EventDispatcher, Lavaca.$);

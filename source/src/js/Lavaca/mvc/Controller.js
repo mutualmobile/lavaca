@@ -132,12 +132,13 @@ ns.Controller = Disposable.extend(function(router, viewManager) {
    * @param {Object} state  A data object associated with the page state
    * @param {String} title  The title of the page state
    * @param {String} url  The URL of the page state
+   * @param {Bollean} useReplace  The bool to decide if to remove previous history
    */
-  history: function(state, title, url) {
+  history: function(state, title, url, useReplace) {
     var needsHistory = !this.state;
     return function() {
       if (needsHistory) {
-        Lavaca.net.History.push(state, title, url);
+        Lavaca.net.History[useReplace ? 'replace' : 'push'](state, title, url);
       }
     };
   },
