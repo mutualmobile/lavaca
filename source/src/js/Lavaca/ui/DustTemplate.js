@@ -85,8 +85,10 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
     if(!translation) {
       return bodies.block ? chunk.render(bodies.block, context) : chunk;
     }
-    while (arg = params['p' + (++i)]) {
+    arg = params['p' + (++i)];
+    while (typeof arg !== 'undefined') {
       args.push(dust.helpers.tap(arg, chunk, context));
+      arg = params['p' + (++i)];
     }
     return chunk.write(Lavaca.util.StringUtils.format.apply(this, args));
   },
