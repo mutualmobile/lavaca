@@ -20,6 +20,19 @@ function _triggerItemEvent(collection, event, previousIndex, index, model) {
   });
 }
 
+function _getComparator(attr, descending) {
+  var compareVal = descending ? 1 : -1;
+  return function(modelA, modelB) {
+    var attrA = modelA.get(attr),
+        attrB = modelB.get(attr);
+    return attrA == attrB
+            ? 0
+            : attrA < attrB
+              ? compareVal
+              : -compareVal;
+  };
+}
+
 // Virtual type
 /**
  * @class Lavaca.mvc.ItemEvent
@@ -372,6 +385,54 @@ ns.Collection = Model.extend(function(models, map) {
     while (item = this.itemAt(++i)) {
       cb.call(thisp || this, i, item);
     }
+  },
+  /**
+   * @method sort
+   *
+   * @sig
+   * Sorts the models in the collection using the specified attribute, in ascending order.
+   * @param {String} attribute  Attribute to sort by
+   * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
+   *
+   * @sig
+   * Sorts the models in the collection using the specified attribute, in either ascending or descending order.
+   * @param {String} attribute  Attribute to sort by
+   * @param {Boolean}  descending  Use descending sort. Defaults to false
+   * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
+   *
+   * @sig
+   * Sorts the models in the collection according to the specified compare function.
+   * @param {Function} compareFunction  A function that compares two models. It should work
+   *     in the same manner as the default Array.sort method in javascript.  i.e. the function
+   *     should have a signature of function(modelA, modelB) and should return a negative integer
+   *     if modelA should come before modelB, a positive integer if modelB should come before modelA
+   *     and integer 0 if modelA and modelB are equivalent.
+   * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
+   */
+  sort: function(attribute, descending) {
+    var comparator = typeof attribute === "function" ? attribute : _getComparator(attribute, descending),
+        oldModels = Lavaca.clone(this.models);
+    this.models.sort(comparator, this);
+    if (!this.suppressTracking) {
+      this.changedOrder = true;
+    }
+    this.trigger('rearrange', {oldModels: oldModels, newModels: this.models});
+    return this;
+  },
+  /**
+   * @method reverse
+   * Reverses the order of the models in the collection
+   *
+   * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
+   */
+  reverse: function() {
+    var oldModels = Lavaca.clone(this.models);
+    this.models.reverse();
+    if (!this.suppressTracking) {
+      this.changedOrder = true;
+    }
+    this.trigger('rearrange', {oldModels: oldModels, newModels: this.models});
+    return this;
   },
   /**
    * @method onItemEvent
