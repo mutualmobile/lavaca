@@ -40,7 +40,8 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
   prepareHelpers: function() {
     return {
       msg: this.helperMsg,
-      include: this.helperInclude
+      include: this.helperInclude,
+      config: this.helperConfig
     };
   },
   /**
@@ -63,16 +64,17 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    *   <dd>code&mdash;The key under which the message is stored</dd>
    *   <dd>locale&mdash;The locale from which to get the message ("en_US")</dd>
    *
-   * <dt>{@msg key="code" p0="first" p1="{variable}"/}</dt>
+   * <dt>{@msg key="code" p0="first" p1=variable /}</dt>
    *   <dd>code&mdash;The key under which the message is stored</dd>
    *   <dd>p0, p1, &hellip; pN&mdash;String format parameters for the message
    *       (See [[Lavaca.util.StringUtils]].format())</dd>
    *
    * </dl>
    *
-   * @param {RenderChain} chain  Dust render chain
-   * @param {Context} context  Dust context
-   * @param {Object} model  Model object passed to template
+   * @param {Object} chunk  Dust chunk
+   * @param {Object} context  Dust context
+   * @param {Object} bodies  Dust bodies
+   * @param {Object} params  Parameters passed to the helper
    * @return {String}  Rendered output
    */
   helperMsg: function(chunk, context, bodies, params) {
@@ -99,7 +101,7 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    *
    * <dl>
    *
-   * <dt>{#include name="template-name"/}</dt>
+   * <dt>{@include name="template-name"/}</dt>
    *   <dd>name&mdash;The name under which the template can be referenced</dd>
    *
    * </dl>
@@ -107,9 +109,10 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    * <strong>Note:</strong> You should always use the include helper instead of
    * the dust.js partial syntax. The dust.js partial syntax may not work as expected.
    *
-   * @param {RenderChain} chain  Dust render chain
-   * @param {Context} context  Dust context
-   * @param {Object} model  Model object passed to template
+   * @param {Object} chunk  Dust chunk
+   * @param {Object} context  Dust context
+   * @param {Object} bodies  Dust bodies
+   * @param {Object} params  Parameters passed to the helper
    * @return {String}  Rendered output
    */
   helperInclude: function(chunk, context, bodies, params) {
@@ -126,6 +129,54 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
         result = html;
       });
     return chunk.write(result);
+  },
+  /**
+   * @method helperConfig
+   * Helper function, exposed in dust templates, that allows templates
+   *   to use data from [[Lavaca.util.Config]]. Accessed as:
+   *
+   * <dl>
+   *
+   * <dt>{@config key="config_value"/}</dt>
+   *   <dd>key&mdash;The key to read from the config file for the default environment.</dd>
+   *
+   * <dt>{@config key="config_value" environment="production"/}</dt>
+   *   <dd>key&mdash;The key to read from the config file for the specified environment.</dd>
+   *
+   * <dt>{@config key="config_value"}default{/config}</dt>
+   *   <dd>key&mdash;The key to read from the config file</dd>
+   *   <dd>default&mdash;The default markup to display if the key
+   *       is not found</dd>
+   *
+   * <dt>{@config key="config_value" p0="first" p1=variable /}</dt>
+   *   <dd>key&mdash;The key to read from the config file</dd>
+   *   <dd>p0, p1, &hellip; pN&mdash;String format parameters
+   *       (See [[Lavaca.util.StringUtils]].format())</dd>
+   *
+   * </dl>
+   *
+   * @param {Object} chunk  Dust chunk
+   * @param {Object} context  Dust context
+   * @param {Object} bodies  Dust bodies
+   * @param {Object} params  Parameters passed to the helper
+   * @return {String}  Rendered output
+   */
+  helperConfig: function(chunk, context, bodies, params) {
+    var key = dust.helpers.tap(params.key, chunk, context),
+        environment = dust.helpers.tap(params.environment, chunk, context),
+        value = environment ? Lavaca.util.Config.get(environment, key) : Lavaca.util.Config.get(key),
+        args = [value],
+        i = -1,
+        arg;
+    if(!value) {
+      return bodies.block ? chunk.render(bodies.block, context) : chunk;
+    }
+    arg = params['p' + (++i)];
+    while (typeof arg !== 'undefined') {
+      args.push(dust.helpers.tap(arg, chunk, context));
+      arg = params['p' + (++i)];
+    }
+    return chunk.write(Lavaca.util.StringUtils.format.apply(this, args));
   },
   /**
    * @method compile

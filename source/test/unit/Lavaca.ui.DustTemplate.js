@@ -99,6 +99,24 @@
 
       expect(noop.error).not.toHaveBeenCalled();
     });
+    it('can reference a variable from a config file', function() {
+      var source = '<p>{@config key="test_key" environment="test-environment" /}</p>',
+          context = {},
+          template = _newTemplate(source);
+          
+      $('body').append('<script type="text/x-config" data-name="test-environment" id="temp-config-script">{"test_key": "test value"}</script>');
+      Lavaca.util.Config.init();
+
+      template.render(context)
+        .success(function(html) {
+          expect(html).toEqual('<p>test value</p>');
+        })
+        .error(noop.error);
+
+      expect(noop.error).not.toHaveBeenCalled();
+      Lavaca.util.Config.dispose();
+	  	$('#temp-config-script').remove();
+    });
   });
 
 })(Lavaca.resolve('Lavaca.ui.DustTemplate', true), Lavaca.resolve('Lavaca.util.Translation', true));
