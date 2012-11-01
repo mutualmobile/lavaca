@@ -147,10 +147,54 @@ ns.BaseView = View.extend(function() {
    * promise will be rejected.
    *
    * @sig
+   * Re-renders the view's template using the view's model
+   * and redraws the entire view
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model
+   * and redraws the entire view
+   * @param {Object} model  The data model to be passed to the template
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the view's model and only redraws the
+   * elements that match the specified selector string.
+   * Note: The numbers of items that match the selector must
+   * be exactly the same in the view's current markup and in the newly rendered
+   * markup. If that is not the case, the returned promise will be rejected and
+   * nothing will be redrawn.
+   * @param {String} selector  Selector string that defines elements to redraw
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model and only redraws the
+   * elements that match the specified selector string.
+   * Note: The numbers of items that match the selector must
+   * be exactly the same in the view's current markup and in the newly rendered
+   * markup. If that is not the case, the returned promise will be rejected and
+   * nothing will be redrawn.
    * @param {String} selector  Selector string that defines elements that will be updated
    * @param {Object} model  The data model to be passed to the template
+   * @return {Lavaca.util.Promise} A promise
+   *
    * @sig
-   * @param {Bollean} selector  If false the method with not replace any html instead just pass along resulting html with the promise
+   * Re-renders the view's template using the view's model. If shouldRedraw is true,
+   * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
+   * but the returned promise will be resolved with the newly rendered content. This allows
+   * the caller to attach a success handler to the returned promise and define their own
+   * redrawing behavior.
+   * @param {Boolean} shouldRedraw  Whether the view should be automatically redrawn.
+   * @return {Lavaca.util.Promise}  A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model. If shouldRedraw is true,
+   * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
+   * but the returned promise will be resolved with the newly rendered content. This allows
+   * the caller to attach a success handler to the returned promise and define their own
+   * redrawing behavior.
+   * @param {Boolean} shouldRedraw  Whether the view should be automatically redrawn.
+   * @param {Object} model  The data model to be passed to the template
    * @return {Lavaca.util.Promise}  A promise
    */
   redraw: function(selector, model) {
@@ -159,13 +203,18 @@ ns.BaseView = View.extend(function() {
         redrawPromise = new Promise(this),
         template = Lavaca.ui.Template.get(this.template),
         replaceAll;
-    if (typeof selector == 'boolean') {
+    if (typeof selector === 'object' || selector instanceof Model) {
+      model = selector;
+      selector = null;
+    }
+    else if (typeof selector == 'boolean') {
       replaceAll = selector;
+      selector = null;
     } else if (!selector) {
       replaceAll = true;
-    } 
+    }
     if(!this.hasRendered) {
-      return redrawPromise.rejector();
+      return redrawPromise.rejector('View has not been rendered yet and cannot be redrawn.');
     }
     model = model || this.model;
     if (model instanceof Model) {
@@ -175,7 +224,7 @@ ns.BaseView = View.extend(function() {
       .success(function(html) {
         if (replaceAll) {
           this.el.html(html);
-          redrawPromise.resolve();
+          redrawPromise.resolve(html);
           return;
         }
         if(selector) {
@@ -185,9 +234,9 @@ ns.BaseView = View.extend(function() {
             $oldEl.each(function(index) {
               $(this).replaceWith($newEl.eq(index));
             });
-            redrawPromise.resolve();
+            redrawPromise.resolve(html);
           } else {
-            redrawPromise.reject();
+            redrawPromise.reject('Count of items matching selector is not the same in the original html and in the newly rendered html.');
           }
         } else {
           redrawPromise.resolve(html);
