@@ -15,7 +15,9 @@ var UNDEFINED;
 /**
  * @class app.ui.BaseView
  * @super Lavaca.mvc.View
- * Default view type
+ *
+ * A View from which all other application Views can extend.
+ * Adds support for animating between views.
  */
 ns.BaseView = View.extend(function() {
 	View.apply(this, arguments);
@@ -43,7 +45,9 @@ ns.BaseView = View.extend(function() {
   animation: 'slide',
   /**
    * @method onRenderSuccess
-   * Executes when the template renders successfully
+   * Executes when the template renders successfully. This implementation
+   * adds support for animations between views, based off of the animation
+   * property on the prototype.
    *
    * @param {Event} e  The render event. This object should have a string property named "html"
    *   that contains the template's rendered HTML output.
@@ -62,11 +66,13 @@ ns.BaseView = View.extend(function() {
    */
   onTapCancel: function(e) {
     e.preventDefault();
-    app.viewManager.dismiss(e.currentTarget);    
+    app.viewManager.dismiss(e.currentTarget);
   },
   /**
    * @method enter
-   * Executes when the user navigates to this view
+   * Executes when the user navigates to this view. This implementation
+   * adds support for animations between views, based off of the animation
+   * property on the prototype.
    *
    * @param {jQuery} container  The parent element of all views
    * @param {Array} exitingViews  The views that are exiting as this one enters
@@ -101,7 +107,9 @@ ns.BaseView = View.extend(function() {
   },
   /**
    * @method exit
-   * Executes when the user navigates away from this view
+   * Executes when the user navigates away from this view. This implementation
+   * adds support for animations between views, based off of the animation
+   * property on the prototype.
    *
    * @param {jQuery} container  The parent element of all views
    * @param {Array} enteringViews  The views that are entering as this one exits
