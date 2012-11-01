@@ -214,7 +214,7 @@ ns.Application = EventDispatcher.extend(function(callback) {
     EventDispatcher.prototype.dispose.call(this);
   },
   /**
-   * @field initialStandardRoute
+   * @field {String} initialStandardRoute
    * Gets initial route based on query string returned by server 302 redirect
    */
   initialHashRoute: (function(hash) {
