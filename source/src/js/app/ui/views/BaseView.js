@@ -135,6 +135,70 @@ ns.BaseView = View.extend(function() {
       this.shell.removeClass('show');
       return View.prototype.exit.apply(this, arguments);
     }
+  },
+  /**
+   * @method redraw
+   * Re-renders the view's template and replaces the DOM nodes that match
+   * the selector argument. If no selector argument is provided, the whole view
+   * will be re-rendered. If the first parameter is passed as <code>false</code>
+   * the resulting html will pe passed with the promise and nothing will be replaced.
+   * Note: the number of elements that match the provided selector must be identical
+   * in the current markup and in the newly rendered markup or else the returned
+   * promise will be rejected.
+   *
+   * @sig
+   * @param {String} selector  Selector string that defines elements that will be updated
+   * @param {Object} model  The data model to be passed to the template
+   * @sig
+   * @param {Bollean} selector  If false the method with not replace any html instead just pass along resulting html with the promise
+   * @return {Lavaca.util.Promise}  A promise
+   */
+  redraw: function(selector, model) {
+    var self = this,
+        templateRenderPromise = new Promise(this),
+        redrawPromise = new Promise(this),
+        template = Lavaca.ui.Template.get(this.template),
+        replaceAll;
+    if (typeof selector == 'boolean') {
+      replaceAll = selector;
+    } else if (!selector) {
+      replaceAll = true;
+    } 
+    if(!this.hasRendered) {
+      return redrawPromise.rejector();
+    }
+    model = model || this.model;
+    if (model instanceof Model) {
+      model = model.toObject();
+    }
+    templateRenderPromise
+      .success(function(html) {
+        if (replaceAll) {
+          this.el.html(html);
+          redrawPromise.resolve();
+          return;
+        }
+        if(selector) {
+          var $newEl = $('<div>' + html + '</div>').find(selector),
+              $oldEl = this.el.find(selector);
+          if($newEl.length > 0 && $newEl.length === $oldEl.length) {
+            $oldEl.each(function(index) {
+              $(this).replaceWith($newEl.eq(index));
+            });
+            redrawPromise.resolve();
+          } else {
+            redrawPromise.reject();
+          }
+        } else {
+          redrawPromise.resolve(html);
+        }
+      })
+      .error(redrawPromise.rejector());
+    template
+      .render(model)
+      .success(templateRenderPromise.resolver())
+      .error(templateRenderPromise.rejector());
+    return redrawPromise;
   }
 });
 
