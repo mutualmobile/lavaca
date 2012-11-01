@@ -15,11 +15,11 @@ function _stopEvent(e) {
   e.stopPropagation();
 }
 function _matchHashRoute(hash) {
-  var matches = hash.match(/^(?:#)(\/.*)#?@?/);
-  if (matches instanceof Array && matches[1]) {
-    return matches[1].replace(/#.*/, '');
-  }
-  return null;
+  var matches = hash.match(/^(?:#)(\/.*)#?@?/);
+  if (matches instanceof Array && matches[1]) {
+    return matches[1].replace(/#.*/, '');
+  }
+  return null;
 }
 /**
  * @class Lavaca.mvc.Application
@@ -214,12 +214,12 @@ ns.Application = EventDispatcher.extend(function(callback) {
     EventDispatcher.prototype.dispose.call(this);
   },
   /**
-   * @field initialStandardRoute
-   * Gets initial route based on query string returned by server 302 redirect
-   */
-  initialHashRoute: (function(hash) {
-    return _matchHashRoute(hash);
-  })(window.location.hash)
+   * @field initialStandardRoute
+   * Gets initial route based on query string returned by server 302 redirect
+   */
+  initialHashRoute: (function(hash) {
+    return _matchHashRoute(hash);
+  })(window.location.hash)
 });
 
 })(Lavaca.mvc, Lavaca.events.EventDispatcher, Lavaca.$);
