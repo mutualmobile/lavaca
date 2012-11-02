@@ -108,6 +108,9 @@ ns.Model = EventDispatcher.extend(function(map) {
   this.rules = new Cache();
   this.unsavedAttributes = [];
   this.flags = {};
+  if (this.defaults) {
+    map = Lavaca.merge({}, this.defaults, map);
+  }
   if (map) {
     this.suppressEvents
       = this.suppressTracking
