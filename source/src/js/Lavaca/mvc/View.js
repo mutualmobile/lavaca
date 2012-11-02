@@ -156,6 +156,120 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
     return promise;
   },
   /**
+   * @method redraw
+   * Re-renders the view's template and replaces the DOM nodes that match
+   * the selector argument. If no selector argument is provided, the whole view
+   * will be re-rendered. If the first parameter is passed as <code>false</code>
+   * the resulting html will pe passed with the promise and nothing will be replaced.
+   * Note: the number of elements that match the provided selector must be identical
+   * in the current markup and in the newly rendered markup or else the returned
+   * promise will be rejected.
+   *
+   * @sig
+   * Re-renders the view's template using the view's model
+   * and redraws the entire view
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model
+   * and redraws the entire view
+   * @param {Object} model  The data model to be passed to the template
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the view's model and only redraws the
+   * elements that match the specified selector string.
+   * Note: The numbers of items that match the selector must
+   * be exactly the same in the view's current markup and in the newly rendered
+   * markup. If that is not the case, the returned promise will be rejected and
+   * nothing will be redrawn.
+   * @param {String} selector  Selector string that defines elements to redraw
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model and only redraws the
+   * elements that match the specified selector string.
+   * Note: The numbers of items that match the selector must
+   * be exactly the same in the view's current markup and in the newly rendered
+   * markup. If that is not the case, the returned promise will be rejected and
+   * nothing will be redrawn.
+   * @param {String} selector  Selector string that defines elements that will be updated
+   * @param {Object} model  The data model to be passed to the template
+   * @return {Lavaca.util.Promise} A promise
+   *
+   * @sig
+   * Re-renders the view's template using the view's model. If shouldRedraw is true,
+   * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
+   * but the returned promise will be resolved with the newly rendered content. This allows
+   * the caller to attach a success handler to the returned promise and define their own
+   * redrawing behavior.
+   * @param {Boolean} shouldRedraw  Whether the view should be automatically redrawn.
+   * @return {Lavaca.util.Promise}  A promise
+   *
+   * @sig
+   * Re-renders the view's template using the specified model. If shouldRedraw is true,
+   * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
+   * but the returned promise will be resolved with the newly rendered content. This allows
+   * the caller to attach a success handler to the returned promise and define their own
+   * redrawing behavior.
+   * @param {Boolean} shouldRedraw  Whether the view should be automatically redrawn.
+   * @param {Object} model  The data model to be passed to the template
+   * @return {Lavaca.util.Promise}  A promise
+   */
+  redraw: function(selector, model) {
+    var self = this,
+        templateRenderPromise = new Promise(this),
+        redrawPromise = new Promise(this),
+        template = Lavaca.ui.Template.get(this.template),
+        replaceAll;
+    if (typeof selector === 'object' || selector instanceof ns.Model) {
+      model = selector;
+      replaceAll = true;
+      selector = null;
+    }
+    else if (typeof selector == 'boolean') {
+      replaceAll = selector;
+      selector = null;
+    } else if (!selector) {
+      replaceAll = true;
+    }
+    if(!this.hasRendered) {
+      return redrawPromise.rejector('View has not been rendered yet and cannot be redrawn.');
+    }
+    model = model || this.model;
+    if (model instanceof ns.Model) {
+      model = model.toObject();
+    }
+    templateRenderPromise
+      .success(function(html) {
+        if (replaceAll) {
+          this.el.html(html);
+          redrawPromise.resolve(html);
+          return;
+        }
+        if(selector) {
+          var $newEl = $('<div>' + html + '</div>').find(selector),
+              $oldEl = this.el.find(selector);
+          if($newEl.length > 0 && $newEl.length === $oldEl.length) {
+            $oldEl.each(function(index) {
+              $(this).replaceWith($newEl.eq(index));
+            });
+            redrawPromise.resolve(html);
+          } else {
+            redrawPromise.reject('Count of items matching selector is not the same in the original html and in the newly rendered html.');
+          }
+        } else {
+          redrawPromise.resolve(html);
+        }
+      })
+      .error(redrawPromise.rejector());
+    template
+      .render(model)
+      .success(templateRenderPromise.resolver())
+      .error(templateRenderPromise.rejector());
+    return redrawPromise;
+  },
+  /**
    * @method clearModelEvents
    * Unbinds events from the model
    */
