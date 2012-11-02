@@ -274,6 +274,40 @@ describe('A Model', function() {
       var myModel = new Model();
       expect(myModel.has('foo')).toBe(false);
     });
+
+    it('should merge default attributes with the new attributes upon instantialization', function() {
+      var ModelType = Model.extend({
+        defaults: {
+          boo: false,
+          foo: 'bar',
+          holy: 'moly',
+          hello: 'hola'
+        }
+      });
+      var myEmptyModel = new ModelType;
+      var myModel = new ModelType({
+        boo: true,
+        bar: 'foo',
+        holy: 'cow'
+      });
+
+      testModel.apply({
+        0: 0.19,
+        holy: 'shi*'
+      });
+
+      expect(myEmptyModel instanceof ModelType).toBe(true);
+      expect(myEmptyModel.get('boo')).toEqual(false);
+      expect(myEmptyModel.get('foo')).toEqual('bar');
+      expect(myModel.get('boo')).toEqual(true);
+      expect(myModel.get('foo')).toEqual('bar');
+      expect(myModel.get('hello')).toEqual('hola');
+      expect(testModel instanceof ModelType).toBe(false);
+      expect(testModel.get('0')).toEqual(0.19);
+      expect(testModel.get('hello')).toEqual(null);
+      expect(testModel.get('holy')).toEqual('shi*');
+    });
+
   });
 
 });
