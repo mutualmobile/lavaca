@@ -15,6 +15,19 @@ Lavaca features:
 
 Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.
 
+Changed in 1.0.5
+======
+* Upgraded Cordova to 2.2
+* Enhanced build script to generate scripts.xml and styles.xml files based on specially annotated sections of the index.html
+* Added computed attributes for models and collections
+* Added redraw() method to view that handels partial rendering based on a CSS selector or with custom redraw method
+* Added initial hash route parsing to facilitate page refreshing
+* Switched default templating engine to LinkedIn fork of Dust
+* Overloaded collection's add() to accept an array of objects or models
+* Added sort method to collections following _.sortBy pattern
+* Added Dust helper to access variables from config files
+* Added entercomplete event that fires when a view is done animating
+
 Changed in 1.0.4
 ======
 * Upgraded Cordova to 2.1
