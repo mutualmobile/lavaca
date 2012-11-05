@@ -96,12 +96,17 @@ ns.BaseView = View.extend(function() {
                 }
               }
             }
+            var self = this;
             this.shell
+              .nextAnimationEnd(function(e) {
+                self.trigger('entercomplete');
+              })
               .removeClass('out')
               .addClass('in');
           }
         } else {
           this.shell.addClass('show');
+          this.trigger('entercomplete');
         }
       });
   },
