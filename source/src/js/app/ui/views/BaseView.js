@@ -22,8 +22,8 @@ var UNDEFINED;
 ns.BaseView = View.extend(function() {
 	View.apply(this, arguments);
 	this
-  	.mapWidget('.scrollable', Lavaca.ui.Scrollable)
-  	.mapEvent('.cancel', 'tap', this.onTapCancel);
+    .mapWidget('.scrollable', Lavaca.ui.Scrollable)
+    .mapEvent('.cancel', 'tap', this.onTapCancel);
 }, {
   /**
    * @field {Number} column
