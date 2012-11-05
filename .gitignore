@@ -3,6 +3,7 @@
 
 source/docs
 source/www
+source/www-production
 source/test/$src.html
 source/test/$www.html
 source/src/scripts.xml
