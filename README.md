@@ -1,4 +1,4 @@
-Lavaca 1.0.4
+Lavaca 1.0.5
 ======
 
 Introducing Lavaca, the open source, HTML5 application framework by Mutual Mobile. Jumpstart development of your project by basing them off of Lavaca and using Lavaca's build tools.
@@ -19,13 +19,13 @@ Changed in 1.0.5
 ======
 * Upgraded Cordova to 2.2
 * Enhanced build script to generate scripts.xml and styles.xml files based on specially annotated sections of the index.html
-* Added computed attributes for models and collections
+* Added computed attributes for models and collections ([more](https://github.com/mutualmobile/lavaca/wiki/3.1.-Models-and-Collections#wiki-computed-attributes))
 * Added redraw() method to view that handels partial rendering based on a CSS selector or with custom redraw method
 * Added initial hash route parsing to facilitate page refreshing
-* Switched default templating engine to LinkedIn fork of Dust
+* Switched default templating engine to LinkedIn fork of Dust (NOTE: This change is not 100% backwards compatible. [Read more] (https://github.com/mutualmobile/Lavaca-modules/tree/master/x-dust#syntax-differences-from-default-lavaca-template-system))
 * Overloaded collection's add() to accept an array of objects or models
 * Added sort method to collections following _.sortBy pattern
-* Added Dust helper to access variables from config files
+* Added Dust helper to access variables from config files ([more](https://github.com/mutualmobile/lavaca/wiki/4.1.-Using-Templates-to-Generate-HTML#wiki-config-helper))
 * Added entercomplete event that fires when a view is done animating
 
 Changed in 1.0.4
@@ -48,7 +48,7 @@ Changed in 1.0.3
 * Upgraded x-dust to 0.5.3
 * Fixed an issue where views would fail to exit on Android 4.1
 * Lavaca.env.Device no longer throws errors when Zepto is swapped out for jQuery
-* Added support for target="_blank" on application's tap handler for <a> tags
+* Added support for target="_blank" on application's tap handler for `<a>` tags
 * Fixed a timing issue with app.ui.BaseView's enter and exit animations
 * Fixed an issue where the signature $.fn.touch(onstart, onmove, onend) would fail to bind handlers
 * Fixed an issue where Lavaca.delay did not return a timeout ID
