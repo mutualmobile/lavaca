@@ -39,7 +39,7 @@ function _onAjaxError(arg) {
  *    or if connection status cannot be determined
  */
 ns.isOffline = function() {
-  var connectionType = Lavaca.resolve('navigator.network.connection.type');
+  var connectionType = Lavaca.resolve('navigator.connection.type');
   if (connectionType !== null) {
     return connectionType == Lavaca.resolve('Connection.NONE');
   } else {
