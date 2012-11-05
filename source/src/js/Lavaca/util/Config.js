@@ -38,6 +38,16 @@ ns.Config.setDefault = function(name) {
   Map.setDefault(_cache, name);
 };
 /**
+ * @method setDefault
+ * @static
+ * Gets the application's current config environment name
+ *
+ * @return {String} environment  The name of the current environment
+ */
+ns.Config.currentEnvironment = function() {
+  return _cache.get('default').name;
+};
+/**
  * @method get
  * @static
  * Retrieves a value from the configuration

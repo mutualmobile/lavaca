@@ -155,6 +155,16 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
    *
    * </dl>
    *
+   * <dt>{@config only="local"}&hellip;{:else}&hellip;{/config}</dt>
+   *   <dd>only&mdash;Only render the body content if the current config environment's name matches this key</dd>
+   *
+   * </dl>
+   *
+   * <dt>{@config not="production"}&hellip;{:else}&hellip;{/config}</dt>
+   *   <dd>not&mdash;Only render the body content if the current config environment's name does NOT match this key</dd>
+   *
+   * </dl>
+   *
    * @param {Object} chunk  Dust chunk
    * @param {Object} context  Dust context
    * @param {Object} bodies  Dust bodies
@@ -167,7 +177,15 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
         value = environment ? Lavaca.util.Config.get(environment, key) : Lavaca.util.Config.get(key),
         args = [value],
         i = -1,
-        arg;
+        currentEnvironment, arg;
+    if(params.only || params.not) {
+      currentEnvironment = Lavaca.util.Config.currentEnvironment();
+      if((params.only && currentEnvironment == params.only) || (params.not && currentEnvironment != params.not)) {
+        return bodies.block ? chunk.render(bodies.block, context) : chunk;
+      } else {
+        return bodies['else'] ? chunk.render(bodies['else'], context) : chunk;
+      }
+    }
     if(!value) {
       return bodies.block ? chunk.render(bodies.block, context) : chunk;
     }
