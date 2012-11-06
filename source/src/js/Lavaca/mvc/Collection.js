@@ -176,24 +176,27 @@ ns.Collection = Model.extend(function(models, map) {
       return this.add.apply(this, arguments[0]);
     }
     var result = false,
+        ArrayUtils = Lavaca.util.ArrayUtils,
+        obj,
         i,
         j,
         model,
         isModel,
-        index;
+        isModelInArray;
     for (i = 0, j = arguments.length; i < j; i++) {
       model = arguments[i];
       isModel = model instanceof this.TModel;
+      isModel || (obj = model);
       model = this.prepare(model);
-      index = ArrayUtils.indexOf(this.models, model);
-      if (!isModel || !ArrayUtils.contains(this.models, model)) {
+      isModelInArray = this.first(obj || model.toObject());
+      if (!isModelInArray) {
         this.models.push(model);
         if (!this.suppressTracking) {
           ArrayUtils.remove(this.removedItems, model);
           ArrayUtils.remove(this.changedItems, model);
           ArrayUtils.pushIfNotExists(this.addedItems, model);
         }
-        _triggerItemEvent(this, 'addItem', null, index, model);
+        _triggerItemEvent(this, 'addItem', null, this.models.length - 1, model);
         result = true;
       }
     }
