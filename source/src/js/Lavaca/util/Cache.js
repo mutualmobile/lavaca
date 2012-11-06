@@ -97,7 +97,7 @@ ns.Cache = Disposable.extend({
   toObject: function() {
     var result = {};
     this.each(function(prop, value) {
-      result[prop] = typeof value.toObject === 'function' ? value.toObject() : value;
+      result[prop] = (value && typeof value.toObject === 'function') ? value.toObject() : value;
     });
     return result;
   },
