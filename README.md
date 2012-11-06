@@ -92,7 +92,7 @@ Backbone.js 0.9.1 and Underscore.js 1.3.1
 (c) 2012, Jeremy Ashkenas, DocumentCloud Inc
 Released under the MIT license.
 
-Dust.js v0.3.0
+LinkedIn Fork of Dust.js 1.1
 (c) 2010, Aleksander Williams
 Released under the MIT license.
 
