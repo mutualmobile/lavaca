@@ -40,17 +40,9 @@ source/ios/www/*
 *build.log
 
 samples/sink/www/*
-samples/sink/android/*
-samples/sink/ios/*
-samples/sink/docs/*
-samples/sink/test/*
 samples/sink/src/scripts.xml
 samples/sink/src/styles.xml
 
 samples/todos/www/*
-samples/todos/android/*
-samples/todos/ios/*
-samples/todos/docs/*
-samples/todos/test/*
 samples/todos/src/scripts.xml
 samples/todos/src/styles.xml
