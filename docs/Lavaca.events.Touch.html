@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Touch</title>
+    <meta name="description" content=" Static utility class for Touch events">
+    <link type="text/css" href="assets/app.css" rel="stylesheet">
+  </head>
+  <body class="[[bodyClassName]]">
+    <iframe id="navigation-frame" src="packages.html"></iframe>
+    <div id="view-root"></div>
+    <script type="text/x-dust-template" data-name="field">
+      <li class="{?inherited}inherited{:else}instance{/inherited} field" id="sig-{name}">
+        <h3 class="name">{?static}{owner}.{/static}{name}<span class="default"> = {?default}{default|s}{:else}null{/default}</span></h3>
+        <div class="body">
+          <span class="type">{type}</span>
+          <span class="desc">{desc|s}</span>
+        </div>
+        {?inherited}
+          <div class="source">Inherited from <a href="{owner}.html#sig-{name}">{owner}</a></div>
+        {/inherited}
+      </li>
+    </script>
+    <script type="text/x-dust-template" data-name="method">
+      {#signatures owner=owner}
+        <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
+          <h3 class="name">{?static}{owner}.{/static}{name}</h3>
+          <div class="body">
+            <div class="desc">{desc|s}</div>
+            {?params}
+              <table class="params">
+                <thead class="arguments" colspan="3">
+                  <tr>
+                    <th>Arguments</th>
+                  </tr>
+                </thead>
+                {#params}
+                  <tr class="param">
+                    <td class="type">{type}</td>
+                    <td class="name">{name}</td>
+                    <td class="desc">
+                      {desc|s}
+                      {?opts}
+                        <table class="options">
+                          {#opts}
+                            <tr class="option">
+                              <td class="name">{name}<span class="default">= {?default}{default|s}{:else}null{/default}</span></td>
+                              <td class="desc">
+                                <span class="type">{type}</span>
+                                <div>{desc|s}</div>
+                              </td>
+                            </tr>
+                          {/opts}
+                        </table>
+                      {/opts}
+                    </td>
+                  </tr>
+                {/params}
+              </table>
+            {/params}
+            {#returnValue}
+              <table class="params">
+                <thead>
+                  <tr>
+                    <th colspan="3">Returns</th>
+                  </tr>
+                </thead>
+                <tr class="return">
+                  <td class="type">{type}</td>
+                  <td class="desc" colspan="2">{desc|s}</td>
+                </tr>
+              </table>
+            {/returnValue}
+          </div>
+          {?inherited}
+            <div class="source">Inherited from <a href="{owner}.html#sig-{id}">{owner}</a></div>
+          {/inherited}
+        </li>
+      {/signatures}
+    </script>
+    <script type="text/x-dust-template" data-name="type">
+      <h2 class="package">{ns}</h2>
+      <h1 class="name">{name}</h1>
+      {?desc}
+        <section id="description" class="desc">
+          {desc|s}
+        </section>
+      {/desc}
+      {#superType}
+        <a class="show-inherited" href="#">Show inherited fields and methods</a>
+      {/superType}
+      <section id="inheritance">
+        <h2 class="title">Inheritance</h2>
+        <ul class="super-types">
+          <li class="super-type current">{?ns}{ns}.{/ns}{name}</li>
+          {#inheritance}
+            <li class="super-type">
+              <a href="{.}.html">{.}</a>
+            </li>
+          {/inheritance}
+          <li class="super-type">Object</li>
+        </ul>
+      </section>
+      {?staticFields}
+        <section id="fields">
+          <h2 class="title">Static Fields</h2>
+          <ul class="fields">
+            {#staticFields}
+              {>field:./}
+            {/staticFields}
+          </ul>
+        </section>
+      {/staticFields}
+      {?staticMethods}
+        <section id="methods">
+          <h2 class="title">Static Methods</h2>
+          <ul class="methods">
+            {#staticMethods}
+              {>method:./}
+            {/staticMethods}
+          </ul>
+        </section>
+      {/staticMethods}
+      {#constructor}
+        <section id="constructors">
+          <h2 class="title">Constructors</h2>
+          <ul class="methods">
+            {>method:./}
+          </ul>
+        </section>
+      {/constructor}
+      {?fields}
+        <section id="fields">
+          <h2 class="title">Fields</h2>
+          <ul class="fields">
+            {#fields}
+              {>field:./}
+            {/fields}
+          </ul>
+        </section>
+      {/fields}
+      {?methods}
+        <section id="methods">
+          <h2 class="title">Methods</h2>
+          <ul class="methods">
+            {#methods}
+              {>method:./}
+            {/methods}
+          </ul>
+        </section>
+      {/methods}
+    </script>
+    <script type="text/javascript" src="assets/zepto-1.0rc1.js"></script>
+    <script type="text/javascript" src="assets/x-dust-0.5.1.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+    <script type="text/javascript">
+      app.load({"qualifiedName": "Lavaca.events.Touch", "name": "Touch", "fields": [{"default": "4", "owner": "Lavaca.events.Touch", "type": "Number", "name": "moveThreshold", "desc": " How many pixels the pointer may move and still count as a tap"}, {"default": "800", "owner": "Lavaca.events.Touch", "type": "Number", "name": "tapholdDuration", "desc": " How many milliseconds the user must wait between touch start and touch end to count as a hold"}], "methods": [{"owner": "Lavaca.events.Touch", "signatures": [{"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute when the user swipes the element"}], "id": "$.fn.swipe(Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.swipe(callback)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "The callback to execute when the user swipes the element"}], "id": "$.fn.swipe(String,Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.swipe(delegate, callback)"}, {"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute when the user swipes the element"}, {"type": "Object", "name": "opts", "opts": [{"default": "null", "type": "Function", "name": "cancel", "desc": "A callback to execute when the swipe gesture is invalidated because of time, distance or direction requirements"}, {"default": "'horizontal'", "type": "String", "name": "direction", "desc": "The axis or cardinal direction to which swipes are limited (horizontal, vertical, north, south, east or west)"}, {"default": "null", "type": "Function", "name": "end", "desc": "A callback to execute when the user ends contact with the screen after touching the element"}, {"default": "null", "type": "Number", "name": "maxDistance", "desc": "The maximum number of pixels that the touch end point may be from the touch start point"}, {"default": "30", "type": "Number", "name": "minDistance", "desc": "The minimum number of pixels that the touch end point may be from the touch start point"}, {"default": "null", "type": "Function", "name": "move", "desc": "A callback to execute when the user moves after touching the element but before ending contact with the screen"}, {"default": "null", "type": "Function", "name": "start", "desc": "A callback to execute when the user starts touching the element"}, {"default": "1000", "type": "Number", "name": "timeLimit", "desc": "The maximum number of milliseconds that the gesture may have taken to perform"}], "desc": "Parameters for the swipe"}], "id": "$.fn.swipe(Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.swipe(callback, opts)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "The callback to execute when the user swipes the element"}, {"type": "Object", "name": "opts", "opts": [{"default": "null", "type": "Function", "name": "cancel", "desc": "A callback to execute when the swipe gesture is invalidated because of time, distance or direction requirements"}, {"default": "'horizontal'", "type": "String", "name": "direction", "desc": "The axis or cardinal direction to which swipes are limited (horizontal, vertical, north, south, east or west)"}, {"default": "null", "type": "Function", "name": "end", "desc": "A callback to execute when the user ends contact with the screen after touching the element"}, {"default": "null", "type": "Number", "name": "maxDistance", "desc": "The maximum number of pixels that the touch end point may be from the touch start point"}, {"default": "30", "type": "Number", "name": "minDistance", "desc": "The minimum number of pixels that the touch end point may be from the touch start point"}, {"default": "null", "type": "Function", "name": "move", "desc": "A callback to execute when the user moves after touching the element but before ending contact with the screen"}, {"default": "null", "type": "Function", "name": "start", "desc": "A callback to execute when the user starts touching the element"}, {"default": "1000", "type": "Number", "name": "timeLimit", "desc": "The maximum number of milliseconds that the gesture may have taken to perform"}], "desc": "Parameters for the swipe"}], "id": "$.fn.swipe(String,Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.swipe(delegate, callback, opts)"}], "name": "$.fn.swipe", "desc": " Binds handlers to an element to execute when the user gestures in a direction. Event handlers are passed <a href=\"Lavaca.events.TouchEvent.html\" target=\"_top\">Lavaca.events.TouchEvent</a> objects."}, {"owner": "Lavaca.events.Touch", "signatures": [{"params": [{"type": "Function", "name": "callback", "desc": "Callback to execute when the user taps the element"}], "id": "$.fn.tap(Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.tap(callback)"}, {"params": [{"type": "Function", "name": "callback", "desc": "Callback to execute when the user taps the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.tap(Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.tap(callback, thisp)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "Callback to execute when the user taps the element"}], "id": "$.fn.tap(String,Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.tap(delegate, callback)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "Callback to execute when the user taps the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.tap(String,Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.tap(delegate, callback, thisp)"}], "name": "$.fn.tap", "desc": " Binds a handler to the tap event (roughly equivalent to a click event, consisting of a touch start and touch end with no touch move). Event handlers are passed <a href=\"Lavaca.events.TouchEvent.html\" target=\"_top\">Lavaca.events.TouchEvent</a> objects."}, {"owner": "Lavaca.events.Touch", "signatures": [{"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}], "id": "$.fn.taphold(Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(callback)"}, {"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}, {"type": "Number", "name": "duration", "desc": "The minimum number of milliseconds before the tap counts as a taphold"}], "id": "$.fn.taphold(Function,Number)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(callback, duration)"}, {"params": [{"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}, {"type": "Number", "name": "duration", "desc": "The minimum number of milliseconds before the tap counts as a taphold"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.taphold(Function,Number,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(callback, duration, thisp)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}], "id": "$.fn.taphold(String,Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(delegate, callback)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}, {"type": "Number", "name": "duration", "desc": "The minimum number of milliseconds before the tap counts as a taphold"}], "id": "$.fn.taphold(String,Function,Number)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(delegate, callback, duration)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "callback", "desc": "The callback to execute when the user tap-holds the element"}, {"type": "Number", "name": "duration", "desc": "The minimum number of milliseconds before the tap counts as a taphold"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.taphold(String,Function,Number,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.taphold(delegate, callback, duration, thisp)"}], "name": "$.fn.taphold", "desc": " Binds a handler to the tap-and-hold event, where the user taps but waits a minimum amount of time before ending the touch. Event handlers are passed <a href=\"Lavaca.events.TouchEvent.html\" target=\"_top\">Lavaca.events.TouchEvent</a> objects."}, {"owner": "Lavaca.events.Touch", "signatures": [{"params": [{"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}], "id": "$.fn.touch(Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(opts)"}, {"params": [{"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.touch(Object,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(opts, thisp)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}], "id": "$.fn.touch(String,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(delegate, opts)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.touch(String,Object,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(delegate, opts, thisp)"}, {"params": [{"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}], "id": "$.fn.touch(Function,Function,Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(start, move, end)"}, {"params": [{"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.touch(Function,Function,Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(start, move, end, thisp)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}], "id": "$.fn.touch(String,Function,Function,Function)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(delegate, start, move, end)"}, {"params": [{"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "$.fn.touch(String,Function,Function,Function,Object)", "returnValue": {"type": "jQuery", "desc": "This jQuery object (for chaining)"}, "name": "$.fn.touch(delegate, start, move, end, thisp)"}], "name": "$.fn.touch", "desc": " Binds touch start, move, and end handlers to an element, falling back to mouse events when touch isn't supported. Event handlers are passed <a href=\"Lavaca.events.TouchEvent.html\" target=\"_top\">Lavaca.events.TouchEvent</a> objects."}], "staticMethods": [{"owner": "Lavaca.events.Touch", "signatures": [{"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}], "id": "bind(jQuery,Object)", "name": "bind(el, opts)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "bind(jQuery,Object,Object)", "name": "bind(el, opts, thisp)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}], "id": "bind(jQuery,String,Object)", "name": "bind(el, delegate, opts)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Object", "name": "opts", "opts": [{"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}], "desc": "Parameters to initialize touch event handling"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "bind(jQuery,String,Object,Object)", "name": "bind(el, delegate, opts, thisp)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}], "id": "bind(jQuery,Function,Function,Function)", "name": "bind(el, start, move, end)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "bind(jQuery,Function,Function,Function,Object)", "name": "bind(el, start, move, end, thisp)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}], "id": "bind(jQuery,String,Function,Function,Function)", "name": "bind(el, delegate, start, move, end)"}, {"params": [{"type": "jQuery", "name": "el", "desc": "The element to which to bind events"}, {"type": "String", "name": "delegate", "desc": "Selector for the descendant elements to which the handlers will be bound"}, {"type": "Function", "name": "start", "desc": "Callback to execute when the user begins touching the element"}, {"type": "Function", "name": "move", "desc": "Callback to execute when the user moves the pointer (without ending contact) after touching the element"}, {"type": "Function", "name": "end", "desc": "Callback to execute when the user stops touching the screen after touching the element"}, {"type": "Object", "name": "thisp", "desc": "Context for the callback"}], "id": "bind(jQuery,String,Function,Function,Function,Object)", "name": "bind(el, delegate, start, move, end, thisp)"}], "static": true, "name": "bind", "desc": " Binds touch start, move, and end handlers to an element, falling back to mouse events when touch isn't supported. Event handlers are passed <a href=\"Lavaca.events.TouchEvent.html\" target=\"_top\">Lavaca.events.TouchEvent</a> objects."}, {"owner": "Lavaca.events.Touch", "signatures": [{"id": "isSupported()", "returnValue": {"type": "Boolean", "desc": "True if touch events are supported"}, "name": "isSupported()"}], "static": true, "name": "isSupported", "desc": " Whether or not touch events are supported by the browser"}], "ns": "Lavaca.events", "staticFields": [], "desc": " Static utility class for Touch events"});
+    </script>
+  </body>
+</html>

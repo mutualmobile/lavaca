@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Router</title>
+    <meta name="description" content=" URL manager">
+    <link type="text/css" href="assets/app.css" rel="stylesheet">
+  </head>
+  <body class="[[bodyClassName]]">
+    <iframe id="navigation-frame" src="packages.html"></iframe>
+    <div id="view-root"></div>
+    <script type="text/x-dust-template" data-name="field">
+      <li class="{?inherited}inherited{:else}instance{/inherited} field" id="sig-{name}">
+        <h3 class="name">{?static}{owner}.{/static}{name}<span class="default"> = {?default}{default|s}{:else}null{/default}</span></h3>
+        <div class="body">
+          <span class="type">{type}</span>
+          <span class="desc">{desc|s}</span>
+        </div>
+        {?inherited}
+          <div class="source">Inherited from <a href="{owner}.html#sig-{name}">{owner}</a></div>
+        {/inherited}
+      </li>
+    </script>
+    <script type="text/x-dust-template" data-name="method">
+      {#signatures owner=owner}
+        <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
+          <h3 class="name">{?static}{owner}.{/static}{name}</h3>
+          <div class="body">
+            <div class="desc">{desc|s}</div>
+            {?params}
+              <table class="params">
+                <thead class="arguments" colspan="3">
+                  <tr>
+                    <th>Arguments</th>
+                  </tr>
+                </thead>
+                {#params}
+                  <tr class="param">
+                    <td class="type">{type}</td>
+                    <td class="name">{name}</td>
+                    <td class="desc">
+                      {desc|s}
+                      {?opts}
+                        <table class="options">
+                          {#opts}
+                            <tr class="option">
+                              <td class="name">{name}<span class="default">= {?default}{default|s}{:else}null{/default}</span></td>
+                              <td class="desc">
+                                <span class="type">{type}</span>
+                                <div>{desc|s}</div>
+                              </td>
+                            </tr>
+                          {/opts}
+                        </table>
+                      {/opts}
+                    </td>
+                  </tr>
+                {/params}
+              </table>
+            {/params}
+            {#returnValue}
+              <table class="params">
+                <thead>
+                  <tr>
+                    <th colspan="3">Returns</th>
+                  </tr>
+                </thead>
+                <tr class="return">
+                  <td class="type">{type}</td>
+                  <td class="desc" colspan="2">{desc|s}</td>
+                </tr>
+              </table>
+            {/returnValue}
+          </div>
+          {?inherited}
+            <div class="source">Inherited from <a href="{owner}.html#sig-{id}">{owner}</a></div>
+          {/inherited}
+        </li>
+      {/signatures}
+    </script>
+    <script type="text/x-dust-template" data-name="type">
+      <h2 class="package">{ns}</h2>
+      <h1 class="name">{name}</h1>
+      {?desc}
+        <section id="description" class="desc">
+          {desc|s}
+        </section>
+      {/desc}
+      {#superType}
+        <a class="show-inherited" href="#">Show inherited fields and methods</a>
+      {/superType}
+      <section id="inheritance">
+        <h2 class="title">Inheritance</h2>
+        <ul class="super-types">
+          <li class="super-type current">{?ns}{ns}.{/ns}{name}</li>
+          {#inheritance}
+            <li class="super-type">
+              <a href="{.}.html">{.}</a>
+            </li>
+          {/inheritance}
+          <li class="super-type">Object</li>
+        </ul>
+      </section>
+      {?staticFields}
+        <section id="fields">
+          <h2 class="title">Static Fields</h2>
+          <ul class="fields">
+            {#staticFields}
+              {>field:./}
+            {/staticFields}
+          </ul>
+        </section>
+      {/staticFields}
+      {?staticMethods}
+        <section id="methods">
+          <h2 class="title">Static Methods</h2>
+          <ul class="methods">
+            {#staticMethods}
+              {>method:./}
+            {/staticMethods}
+          </ul>
+        </section>
+      {/staticMethods}
+      {#constructor}
+        <section id="constructors">
+          <h2 class="title">Constructors</h2>
+          <ul class="methods">
+            {>method:./}
+          </ul>
+        </section>
+      {/constructor}
+      {?fields}
+        <section id="fields">
+          <h2 class="title">Fields</h2>
+          <ul class="fields">
+            {#fields}
+              {>field:./}
+            {/fields}
+          </ul>
+        </section>
+      {/fields}
+      {?methods}
+        <section id="methods">
+          <h2 class="title">Methods</h2>
+          <ul class="methods">
+            {#methods}
+              {>method:./}
+            {/methods}
+          </ul>
+        </section>
+      {/methods}
+    </script>
+    <script type="text/javascript" src="assets/zepto-1.0rc1.js"></script>
+    <script type="text/javascript" src="assets/x-dust-0.5.1.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+    <script type="text/javascript">
+      app.load({"qualifiedName": "Lavaca.mvc.Router", "name": "Router", "inheritance": ["Lavaca.util.Disposable"], "fields": [{"default": "false", "owner": "Lavaca.mvc.Router", "type": "Boolean", "name": "hasNavigated", "desc": " Whether or not this router has been used to navigate"}, {"default": "false", "owner": "Lavaca.mvc.Router", "type": "Boolean", "name": "locked", "desc": " When true, the router is prevented from executing a route"}, {"default": "[]", "owner": "Lavaca.mvc.Router", "type": "Array", "name": "routes", "desc": " The <a href=\"Lavaca.mvc.Route.html\" target=\"_top\">Lavaca.mvc.Route</a>s used by this router"}, {"default": "null", "owner": "Lavaca.mvc.Router", "type": "Lavaca.mvc.ViewManager", "name": "viewManager", "desc": " The view manager used by this router"}], "methods": [{"owner": "Lavaca.mvc.Router", "signatures": [{"name": "add(map)", "params": [{"type": "Object", "name": "map", "desc": "A hash in the form {pattern: [TController, action, params]} or {pattern: {controller: TController, action: action, params: params}"}], "id": "add(Object)", "returnValue": {"type": "Lavaca.mvc.Router", "desc": "The router (for chaining)"}, "desc": "Adds multiple routes"}, {"name": "add(pattern, TController, action)", "params": [{"type": "String", "name": "pattern", "desc": "The route URL pattern"}, {"type": "Function", "name": "TController", "desc": "The type of controller to perform the action (should derive from <a href=\"Lavaca.mvc.Controller.html\" target=\"_top\">Lavaca.mvc.Controller</a>)"}, {"type": "String", "name": "action", "desc": "The name of the controller method to call"}], "id": "add(String,Function,String)", "returnValue": {"type": "Lavaca.mvc.Router", "desc": "The router (for chaining)"}, "desc": "Adds a route"}, {"name": "add(pattern, TController, action, params)", "params": [{"type": "String", "name": "pattern", "desc": "The route URL pattern"}, {"type": "Function", "name": "TController", "desc": "The type of controller to perform the action (should derive from <a href=\"Lavaca.mvc.Controller.html\" target=\"_top\">Lavaca.mvc.Controller</a>)"}, {"type": "String", "name": "action", "desc": "The name of the controller method to call"}, {"type": "Object", "name": "params", "desc": "Key-value pairs that will be passed to the action"}], "id": "add(String,Function,String,Object)", "returnValue": {"type": "Lavaca.mvc.Router", "desc": "The router (for chaining)"}, "desc": "Adds a route"}], "name": "add"}, {"owner": "Lavaca.mvc.Router", "signatures": [{"id": "dispose()", "name": "dispose()", "desc": " Readies the router for garbage collection"}], "name": "dispose", "desc": " Readies the router for garbage collection"}, {"owner": "Lavaca.mvc.Router", "signatures": [{"params": [{"type": "String", "name": "url", "desc": "The URL"}], "id": "exec(String)", "returnValue": {"type": "Lavaca.util.Promise", "desc": "A promise"}, "name": "exec(url)"}, {"params": [{"type": "String", "name": "url", "desc": "The URL"}, {"type": "Object", "name": "state", "desc": "A history record object"}], "id": "exec(String,Object)", "returnValue": {"type": "Lavaca.util.Promise", "desc": "A promise"}, "name": "exec(url, state)"}, {"params": [{"type": "String", "name": "url", "desc": "The URL"}, {"type": "Object", "name": "state", "desc": "A history record object"}, {"type": "Object", "name": "params", "desc": "Additional parameters to pass to the route"}], "id": "exec(String,Object,Object)", "returnValue": {"type": "Lavaca.util.Promise", "desc": "A promise"}, "name": "exec(url, state, params)"}], "name": "exec", "desc": " Executes the action for a given URL"}, {"owner": "Lavaca.mvc.Router", "signatures": [{"id": "unlock()", "returnValue": {"type": "Lavaca.mvc.Router", "desc": "This router (for chaining)"}, "name": "unlock()"}], "name": "unlock", "desc": " Unlocks the router so that it can be used again"}], "staticMethods": [], "constructor": {"owner": "Lavaca.mvc.Router", "signatures": [{"params": [{"type": "Lavaca.mvc.ViewManager", "name": "viewManager", "desc": "The view manager"}], "id": "Router(Lavaca.mvc.ViewManager)", "name": "Router(viewManager)", "desc": "Constructor"}], "name": "Router"}, "superType": "Lavaca.util.Disposable", "ns": "Lavaca.mvc", "staticFields": [], "desc": " URL manager"});
+    </script>
+  </body>
+</html>

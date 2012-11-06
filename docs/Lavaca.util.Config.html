@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Config</title>
+    <meta name="description" content=" Configuration management type">
+    <link type="text/css" href="assets/app.css" rel="stylesheet">
+  </head>
+  <body class="[[bodyClassName]]">
+    <iframe id="navigation-frame" src="packages.html"></iframe>
+    <div id="view-root"></div>
+    <script type="text/x-dust-template" data-name="field">
+      <li class="{?inherited}inherited{:else}instance{/inherited} field" id="sig-{name}">
+        <h3 class="name">{?static}{owner}.{/static}{name}<span class="default"> = {?default}{default|s}{:else}null{/default}</span></h3>
+        <div class="body">
+          <span class="type">{type}</span>
+          <span class="desc">{desc|s}</span>
+        </div>
+        {?inherited}
+          <div class="source">Inherited from <a href="{owner}.html#sig-{name}">{owner}</a></div>
+        {/inherited}
+      </li>
+    </script>
+    <script type="text/x-dust-template" data-name="method">
+      {#signatures owner=owner}
+        <li id="sig-{id}" class="method {?inherited}inherited{:else}instance{/inherited}">
+          <h3 class="name">{?static}{owner}.{/static}{name}</h3>
+          <div class="body">
+            <div class="desc">{desc|s}</div>
+            {?params}
+              <table class="params">
+                <thead class="arguments" colspan="3">
+                  <tr>
+                    <th>Arguments</th>
+                  </tr>
+                </thead>
+                {#params}
+                  <tr class="param">
+                    <td class="type">{type}</td>
+                    <td class="name">{name}</td>
+                    <td class="desc">
+                      {desc|s}
+                      {?opts}
+                        <table class="options">
+                          {#opts}
+                            <tr class="option">
+                              <td class="name">{name}<span class="default">= {?default}{default|s}{:else}null{/default}</span></td>
+                              <td class="desc">
+                                <span class="type">{type}</span>
+                                <div>{desc|s}</div>
+                              </td>
+                            </tr>
+                          {/opts}
+                        </table>
+                      {/opts}
+                    </td>
+                  </tr>
+                {/params}
+              </table>
+            {/params}
+            {#returnValue}
+              <table class="params">
+                <thead>
+                  <tr>
+                    <th colspan="3">Returns</th>
+                  </tr>
+                </thead>
+                <tr class="return">
+                  <td class="type">{type}</td>
+                  <td class="desc" colspan="2">{desc|s}</td>
+                </tr>
+              </table>
+            {/returnValue}
+          </div>
+          {?inherited}
+            <div class="source">Inherited from <a href="{owner}.html#sig-{id}">{owner}</a></div>
+          {/inherited}
+        </li>
+      {/signatures}
+    </script>
+    <script type="text/x-dust-template" data-name="type">
+      <h2 class="package">{ns}</h2>
+      <h1 class="name">{name}</h1>
+      {?desc}
+        <section id="description" class="desc">
+          {desc|s}
+        </section>
+      {/desc}
+      {#superType}
+        <a class="show-inherited" href="#">Show inherited fields and methods</a>
+      {/superType}
+      <section id="inheritance">
+        <h2 class="title">Inheritance</h2>
+        <ul class="super-types">
+          <li class="super-type current">{?ns}{ns}.{/ns}{name}</li>
+          {#inheritance}
+            <li class="super-type">
+              <a href="{.}.html">{.}</a>
+            </li>
+          {/inheritance}
+          <li class="super-type">Object</li>
+        </ul>
+      </section>
+      {?staticFields}
+        <section id="fields">
+          <h2 class="title">Static Fields</h2>
+          <ul class="fields">
+            {#staticFields}
+              {>field:./}
+            {/staticFields}
+          </ul>
+        </section>
+      {/staticFields}
+      {?staticMethods}
+        <section id="methods">
+          <h2 class="title">Static Methods</h2>
+          <ul class="methods">
+            {#staticMethods}
+              {>method:./}
+            {/staticMethods}
+          </ul>
+        </section>
+      {/staticMethods}
+      {#constructor}
+        <section id="constructors">
+          <h2 class="title">Constructors</h2>
+          <ul class="methods">
+            {>method:./}
+          </ul>
+        </section>
+      {/constructor}
+      {?fields}
+        <section id="fields">
+          <h2 class="title">Fields</h2>
+          <ul class="fields">
+            {#fields}
+              {>field:./}
+            {/fields}
+          </ul>
+        </section>
+      {/fields}
+      {?methods}
+        <section id="methods">
+          <h2 class="title">Methods</h2>
+          <ul class="methods">
+            {#methods}
+              {>method:./}
+            {/methods}
+          </ul>
+        </section>
+      {/methods}
+    </script>
+    <script type="text/javascript" src="assets/zepto-1.0rc1.js"></script>
+    <script type="text/javascript" src="assets/x-dust-0.5.1.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+    <script type="text/javascript">
+      app.load({"qualifiedName": "Lavaca.util.Config", "name": "Config", "inheritance": ["Lavaca.util.Map", "Lavaca.util.Disposable"], "fields": [{"name": "cache", "default": "new Lavaca.util.Cache()", "inherited": true, "owner": "Lavaca.util.Map", "type": "Lavaca.util.Cache", "desc": " The cache in which this map stores data"}, {"name": "code", "default": "null", "inherited": true, "owner": "Lavaca.util.Map", "type": "String", "desc": " The raw string data for the map"}, {"name": "hasLoaded", "default": "false", "inherited": true, "owner": "Lavaca.util.Map", "type": "Boolean", "desc": " Whether or not the map has loaded"}, {"name": "name", "default": "null", "inherited": true, "owner": "Lavaca.util.Map", "type": "String", "desc": " The name of the map"}, {"name": "src", "default": "null", "inherited": true, "owner": "Lavaca.util.Map", "type": "String", "desc": " The source URL for the map"}], "methods": [{"owner": "Lavaca.util.Map", "inherited": true, "signatures": [{"params": [{"type": "Object", "name": "data", "desc": "The parameters to add"}], "id": "add(Object)", "name": "add(data)"}], "name": "add", "desc": " Adds parameters to this map"}, {"owner": "Lavaca.util.Disposable", "inherited": true, "signatures": [{"id": "dispose()", "name": "dispose()", "desc": " Readies the object to be garbage collected"}], "name": "dispose", "desc": " Readies the object to be garbage collected"}, {"owner": "Lavaca.util.Map", "inherited": true, "signatures": [{"params": [{"type": "String", "name": "code", "desc": "The code"}], "id": "get(String)", "returnValue": {"type": "Object", "desc": "The value (or null)"}, "name": "get(code)"}], "name": "get", "desc": " Gets the value stored under a code"}, {"owner": "Lavaca.util.Map", "inherited": true, "signatures": [{"params": [{"type": "String", "name": "name", "desc": "The name of the lookup"}], "id": "is(String)", "returnValue": {"type": "Boolean", "desc": "True if this is the lookup"}, "name": "is(name)"}], "name": "is", "desc": " Determines whether or not this is the desired lookup"}, {"owner": "Lavaca.util.Map", "inherited": true, "signatures": [{"params": [{"type": "String", "name": "url", "desc": "The URL of the data"}], "id": "load(String)", "name": "load(url)"}], "name": "load", "desc": " Adds JSON data to this map (synchronous)"}, {"owner": "Lavaca.util.Map", "inherited": true, "signatures": [{"params": [{"type": "String", "name": "text", "desc": "The server data string"}], "id": "process(String)", "name": "process(text)"}], "name": "process", "desc": " Processes server data to include in this lookup"}], "staticMethods": [{"owner": "Lavaca.util.Config", "signatures": [{"id": "currentEnvironment()", "returnValue": {"type": "String", "desc": "The name of the current environment"}, "name": "currentEnvironment()"}], "static": true, "name": "currentEnvironment", "desc": " Gets the application's current config environment name"}, {"owner": "Lavaca.util.Config", "signatures": [{"id": "dispose()", "name": "dispose()", "desc": " Disposes of all translations"}], "static": true, "name": "dispose", "desc": " Disposes of all translations"}, {"owner": "Lavaca.util.Config", "signatures": [{"params": [{"type": "String", "name": "code", "desc": "The name of the parameter"}], "id": "get(String)", "returnValue": {"type": "Object", "desc": "The value of the parameter"}, "name": "get(code)"}, {"params": [{"type": "String", "name": "name", "desc": "The name of the config"}, {"type": "String", "name": "code", "desc": "The name of the parameter"}], "id": "get(String,String)", "returnValue": {"type": "Object", "desc": "The value of the parameter"}, "name": "get(name, code)"}], "static": true, "name": "get", "desc": " Retrieves a value from the configuration"}, {"owner": "Lavaca.util.Config", "signatures": [{"id": "init()", "name": "init()"}, {"params": [{"type": "jQuery", "name": "scope", "desc": "The element to which to limit the scan"}], "id": "init(jQuery)", "name": "init(scope)"}], "static": true, "name": "init", "desc": " Scans the document for all translations and prepares them"}, {"owner": "Lavaca.util.Config", "signatures": [{"params": [{"type": "String", "name": "name", "desc": "The name of the default config"}], "id": "setDefault(String)", "name": "setDefault(name)"}], "static": true, "name": "setDefault", "desc": " Sets the application's default config"}], "constructor": {"owner": "Lavaca.util.Map", "signatures": [{"params": [{"type": "String", "name": "name", "desc": "The name of the map"}, {"type": "String", "name": "src", "desc": "The URL of the map's data (or null if code is supplied)"}, {"type": "String", "name": "code", "desc": "The raw string data for the map (or null if src is supplied)"}], "id": "Config(String,String,String)", "name": "Config(name, src, code)", "desc": "Constructor"}], "name": "Config"}, "superType": "Lavaca.util.Map", "ns": "Lavaca.util", "staticFields": [], "desc": " Configuration management type"});
+    </script>
+  </body>
+</html>
