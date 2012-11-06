@@ -40,9 +40,11 @@ source/ios/www/*
 *build.log
 
 samples/sink/www/*
+samples/sink/ios/www/*
 samples/sink/src/scripts.xml
 samples/sink/src/styles.xml
 
 samples/todos/www/*
+samples/todos/ios/www/*
 samples/todos/src/scripts.xml
 samples/todos/src/styles.xml
