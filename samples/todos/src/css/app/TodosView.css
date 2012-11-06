@@ -42,7 +42,7 @@
   margin-top: -10px;
   width: 20px;
   height: 20px;
-  background: url(/img/app/x.png) no-repeat;
+  background: url(../../img/app/x.png) no-repeat;
   background-size: 20px 20px;
   display: block;
   text-align: center;
@@ -55,6 +55,7 @@
   -ms-transition: color 300ms linear;
   -o-transition: color 300ms linear;
   transition: color 300ms linear;
+  margin-left: 10px;
 }
 .view.todos li.done label {
   text-decoration: line-through;

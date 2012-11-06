@@ -46,7 +46,7 @@ class Config(FileManager):
             'js_src': 'js',
             'css_src': 'css',
             'js_dst': 'js',
-            'css_dst': 'css',
+            'css_dst': 'css/app',
             'combine_js': True,
             'combine_css': True,
             'compress_js': True,
@@ -118,6 +118,12 @@ class Config(FileManager):
         return os.path.abspath(self.get('test'))
     def get_js_src_folder(self):
         return os.path.join(self.get_src_folder(), self.get('js_src'))
+    def get_index_page(self):
+        return os.path.join(self.get_src_folder(), self.get('index_page'))
+    def get_js_package_def(self):
+        return os.path.join(self.get_src_folder(), self.get('js_package_def'))
+    def get_css_package_def(self):
+        return os.path.join(self.get_src_folder(), self.get('css_package_def'))
     def get_css_src_folder(self):
         return os.path.join(self.get_src_folder(), self.get('css_src'))
     def get_js_dst_folder(self):
@@ -222,6 +228,102 @@ class PackageCompiler(FileManager):
             package['code'] = self.no_crunch(assembled_path, dst_path)
         os.remove(assembled_path)
         logging.debug('Finished compiling package "%s".' % package['name'])
+
+class XmlConfigCompiler():
+    
+    def __init__(self):
+        self.config = Config()
+        self.index_page_path = self.config.get_index_page()
+        self.index_page_string = self.read_index_page()
+    
+    def read_index_page(self):    
+        with open(self.index_page_path, 'r') as f:
+            index_html = f.read()
+        return index_html
+    
+    def findPackages(self,pattern):
+        package_list = []
+        
+        packages = re.findall(pattern,self.index_page_string, re.DOTALL)
+        
+        for package in packages:
+            package_list.append(package)
+        
+        return package_list
+    
+    def write_css_config(self,package_manifest):
+        package_def = self.config.get_css_package_def()
+        
+        with open(package_def, 'w') as f:
+            f.write('<styles>\n')
+            for item in package_manifest:
+                f.write('\t<package name="%s">\n' % item)
+                for script in package_manifest[item]:
+                    f.write('\t\t<file>%s</file>\n' % script)
+                f.write('\t</package>\n')
+            f.write('</styles>\n')
+    
+    def write_js_config(self,package_manifest):
+        package_def = self.config.get_js_package_def()
+        
+        with open(package_def, 'w') as f:
+            f.write('<scripts>\n')
+            for item in package_manifest:
+                f.write('\t<package name="%s">\n' % item)
+                for script in package_manifest[item]:
+                    f.write('\t\t<file>%s</file>\n' % script)
+                f.write('\t</package>\n')
+            f.write('</scripts>\n')
+    
+    def build_css_package_manifest(self,package_list):
+        package_manifest = {}
+        for package_search in package_list:
+            stylesheets = re.search('<!--css:'+package_search+'-->.*?<!--/css:'+package_search+'-->',self.index_page_string, re.DOTALL).group()
+            files = []
+            srcs = re.findall('href="(.*?)"',stylesheets)
+            for src in srcs:
+                files.append('/' + src)
+            
+            package_manifest[package_search] = files
+            files = []
+            
+        return package_manifest
+    
+    def build_js_package_manifest(self,package_list):
+        package_manifest = {}
+        for package_search in package_list:
+            scripts = re.search('<!--js:'+package_search+'-->.*?<!--/js:'+package_search+'-->',self.index_page_string, re.DOTALL).group()
+            files = []
+            srcs = re.findall('type="text/javascript" src="(.*?)"',scripts)
+            for src in srcs:
+                files.append('/' + src)
+            
+            package_manifest[package_search] = files
+            files = []
+            
+        return package_manifest
+    
+    def generate_js_config_xml(self):
+        msg = 'building js xml config...'
+        print msg
+        logging.info(msg)
+        package_list = self.findPackages('<!--js:(.*?)-->')
+        
+        package_manifest = self.build_js_package_manifest(package_list)
+        
+        self.write_js_config(package_manifest)
+        
+            
+    def generate_css_config_xml(self):
+        msg = 'building css xml config...'
+        print msg
+        logging.info(msg)
+        package_list = self.findPackages('<!--css:(.*?)-->')
+        
+        package_manifest = self.build_css_package_manifest(package_list)
+            
+        self.write_css_config(package_manifest)
+
 
 class JSCompiler(PackageCompiler):
     suffix = '.js'
@@ -411,6 +513,9 @@ class AndroidBuilder(CordovaBuilder):
 class Builder(BaseBuilder):
     def __init__(self):
         self.config = Config()
+        self.xml_config_compiler = XmlConfigCompiler()
+        self.xml_config_compiler.generate_js_config_xml()
+        self.xml_config_compiler.generate_css_config_xml()
         self.js_compiler = JSCompiler(self.config)
         self.css_compiler = CSSCompiler(self.config)
         self.test_generator = TestGenerator(self.config)
@@ -475,7 +580,7 @@ class Builder(BaseBuilder):
                             cf = open(os.path.join(os.path.dirname(src), target_config['src']), 'r')
                             target_config['code'] = cf.read()
                             cf.close();
-                        html = (script + re.sub('\s+', ' ', target_config['code']) + '</script>').join(re.split('<!--mm:configs-->.*?<!--/mm:configs-->', html))
+                        html = (script + re.sub('\s+', ' ', target_config['code']) + '</script>').join(re.split('<!--Lavaca:configs-->.*?<!--/Lavaca:configs-->', html))
                 if self.config.get('remove_comments'):
                     html = re.sub('<!--(?!cordova\:)(.*?)-->', '', html)
                 logging.debug('Deploying %s...' % src_name)
@@ -558,5 +663,7 @@ if __name__ == '__main__':
     if overrides:
         for k, v in overrides.items():
             builder.config.override(k, v)
+    
+    
     builder.config.load()
     builder.run()

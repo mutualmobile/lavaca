@@ -121,6 +121,71 @@ describe('A Collection', function() {
       .set('color', 'grey');
     expect(noop.addItem).toHaveBeenCalled();
   });
+  it('can sort via a specified attribute name', function() {
+    testCollection.add([
+    	{ testVal: 'B' },
+    	{ testVal: 'C' },
+    	{ testVal: 'A' }
+    ]);
+    expect(testCollection.sort('testVal').toObject()).toEqual({
+    	items: [
+				{ testVal: 'A' },
+				{ testVal: 'B' },
+				{ testVal: 'C' }
+    	]
+    });
+  });
+  it('can sort via a specified attribute name in descending order', function() {
+    testCollection.add([
+    	{ testVal: 'B' },
+    	{ testVal: 'C' },
+    	{ testVal: 'A' }
+    ]);
+    expect(testCollection.sort('testVal', true).toObject()).toEqual({
+    	items: [
+				{ testVal: 'C' },
+				{ testVal: 'B' },
+				{ testVal: 'A' }
+    	]
+    });
+  });
+  it('can sort via a compare function', function() {
+    testCollection.add([
+    	{ testVal: 'B' },
+    	{ testVal: 'C' },
+    	{ testVal: 'A' }
+    ]);
+    var compareFunc = function(modelA, modelB) {
+    	var a = modelA.get('testVal'),
+    			b = modelB.get('testVal');
+    	return a == b
+    						? 0
+    						: a < b
+    							? -1
+    							: 1;
+    }
+    expect(testCollection.sort(compareFunc).toObject()).toEqual({
+    	items: [
+				{ testVal: 'A' },
+				{ testVal: 'B' },
+				{ testVal: 'C' }
+    	]
+    });
+  });
+  it('can reverse order of models', function() {
+    testCollection.add([
+    	{ testVal: 'A' },
+    	{ testVal: 'B' },
+    	{ testVal: 'C' }
+    ]);
+    expect(testCollection.reverse().toObject()).toEqual({
+    	items: [
+				{ testVal: 'C' },
+				{ testVal: 'B' },
+				{ testVal: 'A' }
+    	]
+    });
+  });
 
 });
 
