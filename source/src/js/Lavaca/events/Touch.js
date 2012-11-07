@@ -118,8 +118,13 @@ function _removeEndHandler(id) {
 })();
  
 function _getPoint(touchEvent, index) {
-  if (touchEvent.touches) {
+  if (!touchEvent.touches && touchEvent.originalEvent) {
+    touchEvent = touchEvent.originalEvent;
+  } 
+  if (touchEvent.touches && touchEvent.touches.length) {
     touchEvent = touchEvent.touches[index || 0];
+  } else if (touchEvent.changedTouches && touchEvent.changedTouches.length) {
+    touchEvent = touchEvent.changedTouches[index || 0];
   }
   return new EventPoint(touchEvent);
 }
