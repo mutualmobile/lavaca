@@ -176,7 +176,6 @@ ns.Collection = Model.extend(function(models, map) {
       return this.add.apply(this, arguments[0]);
     }
     var result = false,
-        ArrayUtils = Lavaca.util.ArrayUtils,
         obj,
         i,
         j,
