@@ -27,6 +27,8 @@ window.app = new Lavaca.mvc.Application(function() {
   Lavaca.net.Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
   // Initialize the models cache
   app.models.init();
+
+  app.models.set('example', new Lavaca.mvc.Model);
   // Initialize the routes
   app.router.add({
     '/': [app.net.ExampleController, 'home'],

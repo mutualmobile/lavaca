@@ -8,60 +8,38 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns, $, ScrollableView) {
+(function(ns, $, View) {
 
 /**
  * @class app.ui.ExampleView
  * @super app.ui.ScrollableView
  * Example view type
  */
-ns.ExampleView = ScrollableView.extend(function(){
-  ScrollableView.apply(this);
-
-  var exampleModel = app.models.get('example');
-
-  exampleModel.set('name', 'Kelly');
-
-  this
-    .mapChildView({
-      '.item' : {
-                 TView: ns.ExampleChildView,
-                 model: exampleModel
-                },
-      '.otherItem' : {
-                 TView: ns.ExampleChildView,
-                 model: exampleModel
-                }
-    });
-
-  var childEvents = {
-    'itemClick' : {
-                    TView: ns.ExampleChildView,
-                    callback: this.itemClick  
-                  }
-  };
-
-  this.mapChildViewEvent(childEvents);
-
+ns.ExampleChildView = View.extend(function(el, model, parentView){
+  View.call(this, el, model, parentView);
+  this.mapEvent({
+    'div': { 'tap': $.proxy(this.onTap, this)}
+  });
 },{
   /**
    * @field {String} template
    * @default 'example'
    * The name of the template used by the view
    */
-  template: 'example',
+  template: 'exampleChild',
   /**
    * @field {String} className
    * @default 'example'
    * A class name added to the view container
    */
-  className: 'example',
+  className: 'exampleChild',
 
-  itemClick : function(params){
-    Lavaca.log('A child View fired and event!');
-    Lavaca.log($(params).text());
+  autoRender : true,
+
+  onTap : function(e){
+    this.trigger('itemClick', e.currentTarget);
   }
-  
+
 });
 
-})(app.ui.views, Lavaca.$, app.ui.views.ScrollableView);
+})(app.ui.views, Lavaca.$, Lavaca.mvc.View);

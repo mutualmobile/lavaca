@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns, $, View) {
+(function(ns, $, PageView) {
 
 var UNDEFINED;
 
@@ -19,10 +19,10 @@ var UNDEFINED;
  * A View from which all other application Views can extend.
  * Adds support for animating between views.
  */
-ns.BaseView = View.extend(function() {
-	View.apply(this, arguments);
+ns.BaseView = PageView.extend(function() {
+	PageView.apply(this, arguments);
 	this
-  	.mapWidget('.scrollable', Lavaca.ui.Scrollable)
+  	// .mapWidget('.scrollable', Lavaca.ui.Scrollable)
   	.mapEvent('.cancel', 'tap', this.onTapCancel);
 }, {
   /**
@@ -53,7 +53,7 @@ ns.BaseView = View.extend(function() {
    *   that contains the template's rendered HTML output.
    */
   onRenderSuccess: function(e) {
-    View.prototype.onRenderSuccess.apply(this, arguments);
+    PageView.prototype.onRenderSuccess.apply(this, arguments);
     if (app.animations) {
       this.shell.addClass(this.animation);
     }
@@ -79,7 +79,7 @@ ns.BaseView = View.extend(function() {
    * @return {Lavaca.util.Promise} A promise
    */
   enter: function(container, exitingViews) {
-    return View.prototype.enter.apply(this, arguments)
+    return PageView.prototype.enter.apply(this, arguments)
       .then(function() {
         if (app.animations && (this.layer > 0 || exitingViews.length > 0)) {
           this.shell.removeClass('reverse');
@@ -138,4 +138,4 @@ ns.BaseView = View.extend(function() {
   }
 });
 
-})(Lavaca.resolve('app.ui.views', true), Lavaca.$, Lavaca.mvc.View);
+})(Lavaca.resolve('app.ui.views', true), Lavaca.$, Lavaca.resolve('Lavaca.mvc.PageView', true));

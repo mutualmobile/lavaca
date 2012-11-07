@@ -33,7 +33,7 @@ ns.ViewManager = Disposable.extend(function(el) {
    * @default new Lavaca.util.Cache()
    * A cache containing all views
    */
-  this.views = new util.Cache();
+  this.pageViews = new util.Cache();
   /**
    * @field {Array} layers
    * @default []
@@ -45,13 +45,13 @@ ns.ViewManager = Disposable.extend(function(el) {
    * @default []
    * A list containing all views that are currently exiting
    */
-  this.exitingViews = [];
+  this.exitingPageViews = [];
   /**
    * @field {Array} enteringViews
    * @default []
    * A list containing all views that are currently entering
    */
-  this.enteringViews = [];
+  this.enteringPageViews = [];
 }, {
   /**
    * @field {Boolean} locked
@@ -69,7 +69,7 @@ ns.ViewManager = Disposable.extend(function(el) {
    * @param {Number} layer  The index of the layer on which the view will sit
    * @return {Lavaca.util.Promise}  A promise
    */
-  load: function(cacheKey, TView, model, layer) {
+  load: function(cacheKey, TPageView, model, layer) {
     if (this.locked) {
       return (new Promise(this)).reject('locked');
     } else {
@@ -77,7 +77,7 @@ ns.ViewManager = Disposable.extend(function(el) {
     }
     layer = layer || 0;
     var self = this,
-        view = this.views.get(cacheKey),
+        pageView = this.pageViews.get(cacheKey),
         promise = new Promise(this),
         enterPromise = new Promise(promise),
         renderPromise = null,
@@ -85,27 +85,27 @@ ns.ViewManager = Disposable.extend(function(el) {
     promise.always(function() {
       this.locked = false;
     });
-    if (!view) {
-      view = new TView(model, layer);
-      renderPromise = view.render();
+    if (!pageView) {
+      pageView = new TPageView(null, model, layer);
+      renderPromise = pageView.render();
       if (cacheKey !== null) {
-        this.views.set(cacheKey, view);
-        view.cacheKey = cacheKey;
+        this.pageViews.set(cacheKey, pageView);
+        pageView.cacheKey = cacheKey;
       }
     }
     function lastly() {
-      self.enteringViews = [view];
+      self.enteringViews = [pageView];
       promise.success(function() {
         Lavaca.delay(function() {
           self.enteringViews = [];
         });
       });
-      exitPromise = self.dismissLayersAbove(layer - 1, view);
-      if (self.layers[layer] != view) {
+      exitPromise = self.dismissLayersAbove(layer - 1, pageView);
+      if (self.layers[layer] != pageView) {
         enterPromise
-          .when(view.enter(self.el, self.exitingViews), exitPromise)
+          .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
           .then(promise.resolve);
-        self.layers[layer] = view;
+        self.layers[layer] = pageView;
       } else {
         promise.when(exitPromise);
       }
@@ -133,7 +133,7 @@ ns.ViewManager = Disposable.extend(function(el) {
   dismiss: function(layer) {
     if (typeof layer == 'number') {
       this.dismissLayersAbove(layer - 1);
-    } else if (layer instanceof Lavaca.mvc.View) {
+    } else if (layer instanceof Lavaca.mvc.PageView) {
       this.dismiss(layer.layer);
     } else {
       layer = $(layer);
@@ -169,7 +169,7 @@ ns.ViewManager = Disposable.extend(function(el) {
     for (i = this.layers.length - 1; i > index; i--) {
       if ((layer = this.layers[i]) && (!exceptForView || exceptForView != layer)) {
         (function(layer) {
-          this.exitingViews.push(layer);
+          this.exitingPageViews.push(layer);
           promise
             .when(layer.exit(this.el, this.enteringViews))
             .success(function() {
@@ -198,17 +198,17 @@ ns.ViewManager = Disposable.extend(function(el) {
     // Don't dispose of any views that are currently displayed
     //flush individual cacheKey
     if(cacheKey){
-      this.views.remove(cacheKey);
+      this.pageViews.remove(cacheKey);
     } else {
       var i = -1,
         layer;
       while (layer = this.layers[++i]) {
         if (layer.cacheKey) {
-          this.views.remove(layer.cacheKey);
+          this.pageViews.remove(layer.cacheKey);
         }
       }
-      this.views.dispose();
-      this.views = new util.Cache();  
+      this.pageViews.dispose();
+      this.pageViews = new util.Cache();  
     }
   },
   /**

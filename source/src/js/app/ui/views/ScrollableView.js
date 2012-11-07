@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 ns.ScrollableView = BaseView.extend(function() {
 	BaseView.apply(this, arguments);
-	this.mapWidget('self', Lavaca.ui.Scrollable);
+	// this.mapWidget('self', Lavaca.ui.Scrollable);
 });
 
 })(app.ui.views, Lavaca.$, app.ui.views.BaseView);

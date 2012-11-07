@@ -23,18 +23,16 @@ var UNDEFINED;
  * @event exit
  *
  * @constructor
+ * @param {Object} el The element the view is bound to
  * @param {Object} model  The model used by the view
- * @param {Number} layer  The index of the layer on which the view sits
  *
  * @constructor
+ * @param {Object} el The element that the childView is bound to
  * @param {Object} model  The model used by the view
- * @param {Number} layer  The index of the layer on which the view sits
- * @param {Object} eventMap  A dictionary of selectors and event types in the form
- *   {eventType: {delegate: 'xyz', callback: func}}
- * @param {Object} widgetMap  A dictionary of selectors and widget types in the form
- *   {selector: widgetType}
+ * @param {Lavaca.mvc.View} parentView  The View that contains the childView
  */
-ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
+
+ns.View = EventDispatcher.extend(function(el, model, parentView) {
   EventDispatcher.call(this);
   /**
    * @field {Object} model
@@ -42,32 +40,58 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
    * The model used by the view
    */
   this.model = model || null;
+ 
   /**
-   * @field {Number} layer
-   * @default 0
-   * The index of the layer on which the view sits
+   * @field {String} id
+   * @default generated from className and unique identifier
+   * An id is applied to a data attribute on the views container
    */
-  this.layer = layer || 0;
+  this.id = this.className + '-' + Lavaca.uuid();
+
+  /**
+   * @field {Object} parentView
+   * @default null
+   * If the view is created in the context of a childView, the parent view is assigned to this view
+   */
+  this.parentView = parentView || null;
+
+  /**
+   * @field {Object} el
+   * @default null
+   * The element that is either assigned to the view if in the context of a childView, or is created for the View
+   *  if it is a PageView
+   */
+  this.el = el || null;
+
   /**
    * @field {Object} eventMap
    * @default {}
    * A dictionary of selectors and event types in the form
    *   {eventType: {delegate: 'xyz', callback: func}}
    */
-  this.eventMap = eventMap || {};
+  this.eventMap = {};
   /**
-   * @field {Object} widgetMap
+   * @field {Object} childViewMap
    * @default {}
-   * A dictionary of selectors and widget types in the form
-   *   {selector: widgetType}
+   * A dictionary of selectors, View types and models in the form
+   *   {selector: {TView: TView, model: model}}}
    */
-  this.widgetMap = widgetMap || {};
+  this.childViewMap = {};
   /**
-   * @field {Lavaca.util.Cache} widgets
+   * @field {Lavaca.util.Cache} childViews
    * @default new Lavaca.util.Cache()
    * Interactive elements used by the view
    */
-  this.widgets = new Lavaca.util.Cache();
+  this.childViews = new Lavaca.util.Cache();
+
+  /**
+   * @field {Object} childViewEventMap
+   * @default {}
+   * A map of all the events to be applied to child Views in the form of 
+   *  {type: {TView: TView, callback : callback}}
+   */
+  this.childViewEventMap = {};
+
   this
     .on('rendersuccess', this.onRenderSuccess)
     .on('rendererror', this.onRenderError);
@@ -78,12 +102,6 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
    * The element associated with the view
    */
   el: null,
-  /**
-   * @field {jQuery} shell
-   * @default null
-   * The element containing the view
-   */
-  shell: null,
   /**
    * @field {String} template
    * @default null
@@ -97,23 +115,11 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
    */
   className: null,
   /**
-   * @method wrapper
-   * Creates the view's wrapper element
-   *
-   * @return {jQuery}  The wrapper element
+   * @field {Boolean} AutoRender
+   * @default false
+   * When autoRender is set to true, the view when created from applyChildView will be rendered automatically
    */
-  wrapper: function() {
-    return $('<div class="view"></div>');
-  },
-  /**
-   * @method interior
-   * Creates the view's interior content wrapper element
-   *
-   * @return {jQuery} The interior content wrapper element
-   */
-  interior: function() {
-    return $('<div class="view-interior"></div>');
-  },
+  autoRender: false,
   /**
    * @method render
    * Renders the view using its template and model
@@ -131,16 +137,7 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
     if (model instanceof ns.Model) {
       model = model.toObject();
     }
-    if (this.el) {
-      this.el.detach();
-    }
-    this.shell = this.wrapper();
-    this.el = this.interior();
-    this.shell.append(this.el);
-    this.shell.attr('data-layer-index', this.layer);
-    if (this.className) {
-      this.shell.addClass(this.className);
-    }
+    
     promise
       .success(function(html) {
         this.trigger('rendersuccess', {html: html});
@@ -148,11 +145,16 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
       .error(function(err) {
         this.trigger('rendererror', {err: err});
       });
-    this.shell.addClass('tmpl-' + this.template.toLowerCase().replace(/\s/g, '-'));
     template
       .render(model)
       .success(promise.resolver())
-      .error(promise.rejector());
+      .error(promise.rejector())
+      .then(function(html) {
+        self.el.addClass(self.className);
+        self.el.attr('data-child-view-id', self.id);
+        self.el.html(html);
+      });
+    
     return promise;
   },
   /**
@@ -232,9 +234,6 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
       selector = null;
     } else if (!selector) {
       replaceAll = true;
-    }
-    if(!this.hasRendered) {
-      return redrawPromise.rejector('View has not been rendered yet and cannot be redrawn.');
     }
     model = model || this.model;
     if (model instanceof ns.Model) {
@@ -371,115 +370,103 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
     return this;
   },
   /**
-   * @method createWidgets
-   * Initializes widgets on the view
+   * @method createChildViews
+   * Initializes child views on the view, called from onRenderSuccess
    */
-  createWidgets: function() {
-    var cache = this.widgets,
-        widget,
+  createChildViews: function() {
+    var cache = this.childViews,
+        childView,
+        id,
         n,
+        self = this,
         o;
-    for (n in this.widgetMap) {
-      o = this.widgetMap[n];
-      (n == 'self' ? this.el : this.el.find(n))
+    for (n in this.childViewMap) {
+      o = this.childViewMap[n];
+      this.el.find(n)
         .each(function(index, item) {
-          widget = new o($(item));
-          cache.set(widget.id, widget);
+          //update for new constructor
+          childView = new o['TView']($(item), o['model'], self);
+          if (childView.autoRender){
+            childView.render();
+          }
+          cache.set(childView.id, childView);
         });
     }
   },
   /**
-   * @method mapWidget
+   * @method mapChildView
    *
    * @sig
-   * Assigns multiple widget types to elements on the view
-   * @param {Object} map  A hash of selectors to widget types to be bound when the view is rendered.
-   *     The map should be in the form {selector: TWidget}. For example, {'form': Lavaca.ui.Form}
+   * Assigns multiple Views to elements on the view
+   * @param {Object} map  A hash of selectors to view types and models to be bound when the view is rendered.
+   *     The map should be in the form {selector: {TView : TView, model : Lavaca.mvc.Model}}. For example, {'form': {TView : Lavaca.mvc.ExampleView, model : Lavaca.mvc.Model}}
    * @return {Lavaca.mvc.View}  This view (for chaining)
    *
    * @sig
-   * Assigns a widget type to be created for elements matching a selector when the view is rendered
-   * @param {String} selector  The selector for the root element of the widget
-   * @param {Function} TWidget  The [[Lavaca.ui.Widget]]-derived type of widget to create
+   * Assigns a View type to be created for elements matching a selector when the view is rendered
+   * @param {String} selector  The selector for the root element of the View
+   * @param {Function} TView  The [[Lavaca.mvc.View]]-derived type of view to create
+   * @param {Function} model  The [[Lavaca.mvc.Model]]-derived model instance to use in the child view
    * @return {Lavaca.mvc.View}  This view (for chaining)
    */
-  mapWidget: function(selector, TWidget) {
+  mapChildView: function(selector, TView, model) {
     if (typeof selector == 'object') {
-      var widgetTypes = selector;
-      for (selector in widgetTypes) {
-        this.mapWidget(selector, widgetTypes[selector]);
+      var childViewTypes = selector;
+      for (selector in childViewTypes) {
+        this.mapChildView(selector, childViewTypes[selector].TView, childViewTypes[selector].model);
       }
     } else {
-      this.widgetMap[selector] = TWidget;
+      this.childViewMap[selector] = { TView :TView, model: model };
     }
     return this;
   },
+
   /**
-   * @method insertInto
-   * Adds this view to a container
+   * @method mapChildViewEvent
+   * Creates a map of events to add as listeners on the child views of a view
+   * 
+   * @param {String} type The type of event you want to listen on in the child views
+   * @param {Function} callback The method to execute when this event type has occured
+   * @param {Lavaca.mvc.View} TView The type of view to limit teh scope of the listener to only certain types of child views
    *
-   * @param {jQuery} container  The containing element
+   * @sig
+   * Maps multiple child event types
+   * @param {Object} map A hash of event types with callbacks and TView's associated with that type
+   *  The map shoudl be in the form {type : {callback : {Function}, TView : TView}}
    */
-  insertInto: function(container) {
-    if (!this.shell.parent()[0] != container[0]) {
-      var layers = container.children('[data-layer-index]'),
-          i = -1,
-          layer,
-          insertionPoint;
-      while (layer = layers[++i]) {
-        layer = $(layer);
-        if (layer.attr('data-layer-index') > this.index) {
-          this.shell.insertBefore(layer);
-          return;
-        }
+  mapChildViewEvent: function(type, callback, TView){
+    if (typeof type == 'object'){
+      var eventTypes = type;
+      for (type in eventTypes){
+        //add in view type to limit events created
+        this.mapChildViewEvent(type, eventTypes[type].callback, eventTypes[type].TView);
       }
-      container.append(this.shell);
-    }
-  },
-  /**
-   * @method enter
-   * Executes when the user navigates to this view
-   *
-   * @param {jQuery} container  The parent element of all views
-   * @param {Array} exitingViews  The views that are exiting as this one enters
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  enter: function(container, exitingViews) {
-    var promise = new Promise(this),
-        renderPromise;
-    container = $(container);
-    if (!this.hasRendered) {
-      renderPromise = this
-        .render()
-        .error(promise.rejector());
-    }
-    this.insertInto(container);
-    if (renderPromise) {
-      promise.when(renderPromise);
     } else {
-      Lavaca.delay(promise.resolver());
+      this.childViewEventMap[type] = {
+                                    TView: TView,
+                                    callback: callback    
+                                 };
     }
-    promise.then(function() {
-      this.trigger('enter');
-    });
-    return promise;
   },
+
   /**
-   * @method exit
-   * Executes when the user navigates away from this view
+   * @method applyChildViewEvent
+   * Called from onRenderSuccess of the view, adds listeners to all childviews if present
    *
-   * @param {jQuery} container  The parent element of all views
-   * @param {Array} enteringViews  The views that are entering as this one exits
-   * @return {Lavaca.util.Promise}  A promise
    */
-  exit: function(container, enteringViews) {
-    var promise = new Promise(this);
-    this.shell.detach();
-    Lavaca.delay(promise.resolver());
-    promise.then(function() {
-      this.trigger('exit');
-    });
-    return promise;
+  applyChildViewEvents: function(){
+    var childViewEventMap = this.childViewEventMap;
+    for (type in childViewEventMap){
+      this.childViews.each(function(key, item){
+        if (childViewEventMap[type].TView){
+          if (item instanceof childViewEventMap[type].TView){
+            item.on(type, childViewEventMap[type].callback)          
+          }  
+        } else {
+          item.on(type, childViewEventMap[type].callback)
+        }
+      });  
+    }
   },
   /**
    * @method onRenderSuccess
@@ -491,7 +478,8 @@ ns.View = EventDispatcher.extend(function(model, layer, eventMap, widgetMap) {
   onRenderSuccess: function(e) {
     this.el.html(e.html);
     this.applyEvents(this.el);
-    this.createWidgets(this.el);
+    this.createChildViews(this.el);
+    this.applyChildViewEvents();
     this.hasRendered = true;
   },
   /**
