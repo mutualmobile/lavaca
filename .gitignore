@@ -4,6 +4,7 @@
 source/docs
 source/www
 source/www-production
+source/www-staging
 source/test/$src.html
 source/test/$www.html
 source/src/scripts.xml
@@ -13,23 +14,7 @@ source/libs/atnotate/atnotate.pyc
 
 source/build.log
 
-spring/source/.project
-spring/sample/app-web/.project
-spring/source/lavaca-web/.project
-
-spring/source/.classpath
-spring/sample/app-web/.classpath
-spring/source/lavaca-web/.classpath
-
-spring/source/.settings/*
-spring/sample/app-web/.settings/*
-spring/source/lavaca-web/.settings/*
-
-spring/sample/app-web/target/*
-spring/source/lavaca-web/target/*
-
 source/android/.classpath
-
 source/android/.project
 source/android/bin/*
 source/android/gen/*
@@ -43,8 +28,24 @@ samples/sink/www/*
 samples/sink/ios/www/*
 samples/sink/src/scripts.xml
 samples/sink/src/styles.xml
+samples/sink/android/assets/www/*
+samples/sink/android/.project
+samples/sink/android/bin/*
+samples/sink/android/gen/*
+samples/sink/android/.classpath
+samples/sink/docs/*
+samples/sink/www-production
+samples/sink/www-staging
 
 samples/todos/www/*
 samples/todos/ios/www/*
 samples/todos/src/scripts.xml
 samples/todos/src/styles.xml
+samples/todos/android/assets/www/*
+samples/todos/android/.project
+samples/todos/android/bin/*
+samples/todos/android/gen/*
+samples/todos/android/.classpath
+samples/todos/docs/*
+samples/todos/www-production
+samples/todos/www-staging

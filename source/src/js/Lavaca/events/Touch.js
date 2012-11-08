@@ -534,6 +534,7 @@ $.fn.tap = function(delegate, callback, thisp) {
         callback.apply(thisp || this, arguments);
       }
     });
+    this.on('click', delegate, function(e) { e.preventDefault(); });
   } else {
     this.on('click', delegate, function() { callback.apply(thisp || this, arguments); });
   }
