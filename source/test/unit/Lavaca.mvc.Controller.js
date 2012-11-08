@@ -70,8 +70,8 @@ describe('A Controller', function() {
     });
     it('with a view helper method', function() {
       var controller = new testController(router, viewManager),
-          myPageView = PageView.extend({
-            template: 'hello-world'
+          var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
+            template: 'hello-world',
           }),
           promise,
           response;
@@ -80,7 +80,7 @@ describe('A Controller', function() {
         });
         waitsFor(function() {
           promise.success(function() {
-            response = this.viewManager.views.get('myView').hasRendered;
+            response = this.viewManager.pageViews.get('myView').hasRendered;
           });
           return response;
         }, 'a view to be rendered', 300);
