@@ -1,4 +1,4 @@
-(function(Controller, Router, ViewManager, $, Promise) { 
+(function(Controller, Router, ViewManager, PageView, $, Promise) { 
 
 var router,
     viewManager,
@@ -70,13 +70,13 @@ describe('A Controller', function() {
     });
     it('with a view helper method', function() {
       var controller = new testController(router, viewManager),
-          myView = Lavaca.mvc.View.extend({
+          myPageView = PageView.extend({
             template: 'hello-world'
           }),
           promise,
           response;
         runs(function() {
-          promise = controller.view('myView', myView);
+          promise = controller.view('myView', myPageView);
         });
         waitsFor(function() {
           promise.success(function() {
@@ -174,4 +174,4 @@ describe('A Controller', function() {
   });
 });
 
-})(Lavaca.resolve('Lavaca.mvc.Controller', true), Lavaca.resolve('Lavaca.mvc.Router', true), Lavaca.resolve('Lavaca.mvc.ViewManager', true), Lavaca.$, Lavaca.resolve('Lavaca.util.Promise', true));
+})(Lavaca.resolve('Lavaca.mvc.Controller', true), Lavaca.resolve('Lavaca.mvc.Router', true), Lavaca.resolve('Lavaca.mvc.ViewManager', true), Lavaca.resolve('Lavaca.mvc.PageView', true), Lavaca.$, Lavaca.resolve('Lavaca.util.Promise', true));

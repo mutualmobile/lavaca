@@ -1,4 +1,4 @@
-(function(Controller, Router, ViewManager, View, $, Promise) { 
+(function(Controller, Router, ViewManager, View, PageView, $, Promise) { 
 
 var viewManager;
 
@@ -16,17 +16,17 @@ describe('A ViewManager', function() {
 		expect(viewManager instanceof ViewManager).toBe(true);
   });
   it('can load a view', function() {
-    var myView = Lavaca.mvc.View.extend({
+    var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
           template: 'hello-world'
         }),
         promise,
         response;
     runs(function() {
-      promise = viewManager.load('myView', myView);
+      promise = viewManager.load('myView', myPageView);
     });
     waitsFor(function() {
       promise.success(function() {
-        response = viewManager.views.get('myView').hasRendered;
+        response = viewManager.pageViews.get('myView').hasRendered;
       });
       return response;
     }, 'a view to be rendered', 300);
@@ -36,15 +36,15 @@ describe('A ViewManager', function() {
   });
   describe('can remove', function() {
     it('a view on a layer and all views above', function() {
-      var myView = Lavaca.mvc.View.extend({
-            template: 'hello-world'
+      var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
+          template: 'hello-world'
           }),
           promise,
           secondP,
           response;
 
       runs(function() {
-        promise = viewManager.load('myView', myView);
+        promise = viewManager.load('myView', myPageView);
       });
       waitsFor(function() {
         promise.success(function() {
@@ -53,7 +53,7 @@ describe('A ViewManager', function() {
         return response;
       }, 'a view to be rendered', 300);
       runs(function() {
-        secondP = viewManager.load('anotherView', myView, null, 1);
+        secondP = viewManager.load('anotherView', myPageView, null, 1);
       });
       waitsFor(function() {
         secondP.success(function() {
@@ -68,15 +68,15 @@ describe('A ViewManager', function() {
       });
     });
     it('a view on layer without removing views below', function() {
-      var myView = Lavaca.mvc.View.extend({
-            template: 'hello-world'
+      var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
+          template: 'hello-world'
           }),
           promise,
           secondP,
           response;
 
       runs(function() {
-        promise = viewManager.load('myView', myView);
+        promise = viewManager.load('myView', myPageView);
       });
       waitsFor(function() {
         promise.success(function() {
@@ -85,7 +85,7 @@ describe('A ViewManager', function() {
         return response;
       }, 'a view to be rendered', 300);
       runs(function() {
-        secondP = viewManager.load('anotherView', myView, null, 1);
+        secondP = viewManager.load('anotherView', myPageView, null, 1);
       });
       waitsFor(function() {
         secondP.success(function() {
@@ -100,18 +100,18 @@ describe('A ViewManager', function() {
       });
     });
     it('a layer by an el', function() {
-      var myView = Lavaca.mvc.View.extend({
+      var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
             template: 'hello-world',
             className: 'test-view'
           }),
           promise,
           response;
       runs(function() {
-        promise = viewManager.load('myView', myView);
+        promise = viewManager.load('myView', myPageView);
       });
       waitsFor(function() {
         promise.success(function() {
-          response = viewManager.views.get('myView').hasRendered;
+          response = viewManager.pageViews.get('myView').hasRendered;
         });
         return response;
       }, 'a view to be rendered', 300);
@@ -121,37 +121,37 @@ describe('A ViewManager', function() {
       });
     });
     it('a layer relative to view object in the cache', function() {
-      var myView = Lavaca.mvc.View.extend({
+      var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
             template: 'hello-world',
             className: 'test-view'
           }),
           promise,
           response;
       runs(function() {
-        promise = viewManager.load('myView', myView);
+        promise = viewManager.load('myView', myPageView);
       });
       waitsFor(function() {
         promise.success(function() {
-          response = viewManager.views.get('myView').hasRendered;
+          response = viewManager.pageViews.get('myView').hasRendered;
         });
         return response;
       }, 'a view to be rendered', 300);
       runs(function() {
-        viewManager.dismiss(viewManager.views.get('myView'));
+        viewManager.dismiss(viewManager.pageViews.get('myView'));
         expect($('#view-root').children().length).toBe(0);
       });
     });
   });
   it('can empty the view cache', function() {
-    var myView = Lavaca.mvc.View.extend({
-          template: 'hello-world'
+    var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
+            template: 'hello-world',
         }),
         promise,
         secondP,
         response;
 
     runs(function() {
-      promise = viewManager.load('myView', myView);
+      promise = viewManager.load('myView', myPageView);
     });
     waitsFor(function() {
       promise.success(function() {
@@ -160,7 +160,7 @@ describe('A ViewManager', function() {
       return response;
     }, 'a view to be rendered', 300);
     runs(function() {
-      secondP = viewManager.load('anotherView', myView, null, 1);
+      secondP = viewManager.load('anotherView', myPageView, null, 1);
     });
     waitsFor(function() {
       secondP.success(function() {
@@ -171,11 +171,11 @@ describe('A ViewManager', function() {
     runs(function() {
       viewManager.dismiss(1);
       viewManager.flush();
-      expect(viewManager.views).toEqual(new Lavaca.util.Cache);
+      expect(viewManager.pageViews).toEqual(new Lavaca.util.Cache);
       expect(viewManager.layers[0].cacheKey).toEqual('myView');
     });
   });
 
 });
 
-})(Lavaca.resolve('Lavaca.mvc.Controller', true), Lavaca.resolve('Lavaca.mvc.Router', true), Lavaca.resolve('Lavaca.mvc.ViewManager', true), Lavaca.resolve('Lavaca.mvc.View', true), Lavaca.$, Lavaca.resolve('Lavaca.util.Promise', true));
+})(Lavaca.resolve('Lavaca.mvc.Controller', true), Lavaca.resolve('Lavaca.mvc.Router', true), Lavaca.resolve('Lavaca.mvc.ViewManager', true), Lavaca.resolve('Lavaca.mvc.View', true), Lavaca.resolve('Lavaca.mvc.PageView', true), Lavaca.$, Lavaca.resolve('Lavaca.util.Promise', true));

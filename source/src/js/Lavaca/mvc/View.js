@@ -150,7 +150,9 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
       .success(promise.resolver())
       .error(promise.rejector())
       .then(function(html) {
-        self.el.addClass(self.className);
+        if (self.className){
+          self.el.addClass(self.className);  
+        }
         self.el.attr('data-child-view-id', self.id);
         self.el.html(html);
       });
@@ -384,7 +386,6 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
       o = this.childViewMap[n];
       this.el.find(n)
         .each(function(index, item) {
-          //update for new constructor
           childView = new o['TView']($(item), o['model'], self);
           if (childView.autoRender){
             childView.render();

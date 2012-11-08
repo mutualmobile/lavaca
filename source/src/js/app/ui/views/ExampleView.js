@@ -15,35 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * @super app.ui.ScrollableView
  * Example view type
  */
-ns.ExampleView = ScrollableView.extend(function(){
-  ScrollableView.apply(this);
-
-  var exampleModel = app.models.get('example');
-
-  exampleModel.set('name', 'Kelly');
-
-  this
-    .mapChildView({
-      '.item' : {
-                 TView: ns.ExampleChildView,
-                 model: exampleModel
-                },
-      '.otherItem' : {
-                 TView: ns.ExampleChildView,
-                 model: exampleModel
-                }
-    });
-
-  var childEvents = {
-    'itemClick' : {
-                    TView: ns.ExampleChildView,
-                    callback: this.itemClick  
-                  }
-  };
-
-  this.mapChildViewEvent(childEvents);
-
-},{
+ns.ExampleView = ScrollableView.extend({
   /**
    * @field {String} template
    * @default 'example'
@@ -55,12 +27,7 @@ ns.ExampleView = ScrollableView.extend(function(){
    * @default 'example'
    * A class name added to the view container
    */
-  className: 'example',
-
-  itemClick : function(params){
-    Lavaca.log('A child View fired and event!');
-    Lavaca.log($(params).text());
-  }
+  className: 'example'
   
 });
 
