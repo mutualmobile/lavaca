@@ -124,7 +124,7 @@ ns.BaseView = PageView.extend(function() {
       this.shell
         .nextAnimationEnd(function(e) {
           self.shell.removeClass('in out show');
-          View.prototype.exit.apply(self, arguments).then(function() {
+          PageView.prototype.exit.apply(self, arguments).then(function() {
             promise.resolve();
           });
         })
@@ -133,7 +133,7 @@ ns.BaseView = PageView.extend(function() {
       return promise;
     } else {
       this.shell.removeClass('show');
-      return View.prototype.exit.apply(this, arguments);
+      return PageView.prototype.exit.apply(this, arguments);
     }
   }
 });
