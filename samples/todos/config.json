@@ -13,5 +13,7 @@
   "log_file": "build.log",
   "log_level": "DEBUG",
   "target": "local",
-  "run_doc": true
+  "run_doc": true,
+  "run_src_tests": false,
+  "run_dst_tests": false
 }

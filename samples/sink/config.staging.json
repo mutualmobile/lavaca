@@ -10,5 +10,7 @@
   "run_dst_tests": true,
   "log_file": "build.log",
   "log_level": "INFO",
-  "target": "staging"
+  "target": "staging",
+  "run_src_tests": false,
+  "run_dst_tests": false
 }
