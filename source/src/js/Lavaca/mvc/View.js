@@ -504,6 +504,7 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
     // Do not dispose of template or model
     this.template
       = this.model
+      = this.parentView
       = null;
     EventDispatcher.prototype.dispose.apply(this, arguments);
   }
