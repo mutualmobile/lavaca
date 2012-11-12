@@ -20,6 +20,7 @@ source/android/bin/*
 source/android/gen/*
 
 source/ios/www/*
+source/android/assets/www/*
 
 *atnotate.pyc
 *build.log
