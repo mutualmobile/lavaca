@@ -239,6 +239,10 @@ ns.DustTemplate = Template.extend(function(name, src, code) {
   }
 });
 
+ns.DustTemplate.getCompiledTemplates = function() {
+  return dust.cache;
+};
+
 // Register the Dust template type for later use
 ns.Template.register('text/dust-template', ns.DustTemplate);
 

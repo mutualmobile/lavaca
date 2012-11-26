@@ -74,12 +74,26 @@ ns.Template.get = function(name) {
  */
 ns.Template.init = function(scope) {
   var i = -1,
-      type;
+      type, templates, templateName, template;
   while (type = _types[++i]) {
     function construct(name, src, code) {
       return new type.js(name, src, code);
     }
-    Map.init(_cache, type.mime, construct, scope);
+
+    // Load pre-compiled templates
+    if (typeof type.js.getCompiledTemplates == "function") {
+      templates = type.js.getCompiledTemplates();
+      for (templateName in templates) {
+        template = construct(templateName, null, templates[templateName]);
+        template.compiled = true;
+        _cache.set(templateName, template);
+      }
+    }
+
+    // Load un-compiled templates
+    if (type.mime) {
+      Map.init(_cache, type.mime, construct, scope);
+    }
   }
 };
 /**
@@ -110,12 +124,20 @@ ns.Template.render = function(name, model) {
 /**
  * @method register
  * @static
- * Registers a type of template to look for on intilization
+ * Registers a type of template to look for on intilization.
  *
+ * @sig
  * @param {String} mimeType  The mime-type associated with the template
+ * @param {Function} TTemplate  The JavaScript type used for the template (should derive from [[Lavaca.ui.Template]])
+ *
+ * @sig
  * @param {Function} TTemplate  The JavaScript type used for the template (should derive from [[Lavaca.ui.Template]])
  */
 ns.Template.register = function(mimeType, TTemplate) {
+  if (typeof mimeType == "function") {
+    TTemplate = mimeType;
+    mimeType = null;
+  }
   _types[_types.length] = {mime: mimeType, js: TTemplate};
 };
 
