@@ -1,5 +1,5 @@
 /*
-Lavaca 1.0.4
+Lavaca 1.0.5
 Copyright (c) 2012 Mutual Mobile
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -110,7 +110,8 @@ ns.Application = EventDispatcher.extend(function(callback) {
     var link = $(e.currentTarget),
         url = link.attr('href'),
         rel = link.attr('rel'),
-        target = link.attr('target');
+        target = link.attr('target'),
+        isExternal = link.is('[data-external]');
     if (/^((mailto)|(tel)|(sms))\:/.test(url)) {
       location.href = url;
       return true;
@@ -119,7 +120,7 @@ ns.Application = EventDispatcher.extend(function(callback) {
     }
     if (rel == 'back') {
       Lavaca.net.History.back();
-    } else if (rel == 'nofollow' || target == '_blank') {
+    } else if (isExternal || rel == 'nofollow' || target == '_blank') {
       e.stopPropagation();
       plugins.childBrowser.showWebPage(url);
     } else if (rel == 'cancel') {

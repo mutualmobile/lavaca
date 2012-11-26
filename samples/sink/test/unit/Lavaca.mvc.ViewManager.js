@@ -4,7 +4,7 @@ var viewManager;
 
 describe('A ViewManager', function() {
   beforeEach(function(){
-    $('body').append('<div id="view-root"></div><script type="text/x-dust-template" data-name="hello-world">Hello World</script>');
+    $('body').append('<div id="view-root"></div><script type="text/dust-template" data-name="hello-world">Hello World</script>');
     Lavaca.ui.Template.init();
     viewManager = new ViewManager('#view-root');
   });
