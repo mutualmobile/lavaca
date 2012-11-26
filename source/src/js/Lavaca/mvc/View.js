@@ -83,7 +83,19 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
    * Interactive elements used by the view
    */
   this.childViews = new Lavaca.util.Cache();
-
+  /**
+   * @field {Object} widgetMap
+   * @default {}
+   * A dictionary of selectors and widget types in the form
+   *   {selector: widgetType}
+   */
+  this.widgetMap = widgetMap || {};
+  /**
+   * @field {Lavaca.util.Cache} widgets
+   * @default new Lavaca.util.Cache()
+   * Interactive elements used by the view
+   */
+  this.widgets = new Lavaca.util.Cache();
   /**
    * @field {Object} childViewEventMap
    * @default {}
@@ -372,6 +384,50 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
     return this;
   },
   /**
+   * @method createWidgets
+   * Initializes widgets on the view
+   */
+  createWidgets: function() {
+    var cache = this.widgets,
+        widget,
+        n,
+        o;
+    for (n in this.widgetMap) {
+      o = this.widgetMap[n];
+      (n == 'self' ? this.el : this.el.find(n))
+        .each(function(index, item) {
+          widget = new o($(item));
+          cache.set(widget.id, widget);
+        });
+    }
+  },
+  /**
+   * @method mapWidget
+   *
+   * @sig
+   * Assigns multiple widget types to elements on the view
+   * @param {Object} map  A hash of selectors to widget types to be bound when the view is rendered.
+   *     The map should be in the form {selector: TWidget}. For example, {'form': Lavaca.ui.Form}
+   * @return {Lavaca.mvc.View}  This view (for chaining)
+   *
+   * @sig
+   * Assigns a widget type to be created for elements matching a selector when the view is rendered
+   * @param {String} selector  The selector for the root element of the widget
+   * @param {Function} TWidget  The [[Lavaca.ui.Widget]]-derived type of widget to create
+   * @return {Lavaca.mvc.View}  This view (for chaining)
+   */
+  mapWidget: function(selector, TWidget) {
+    if (typeof selector == 'object') {
+      var widgetTypes = selector;
+      for (selector in widgetTypes) {
+        this.mapWidget(selector, widgetTypes[selector]);
+      }
+    } else {
+      this.widgetMap[selector] = TWidget;
+    }
+    return this;
+  },
+  /**
    * @method createChildViews
    * Initializes child views on the view, called from onRenderSuccess
    */
@@ -479,6 +535,7 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
   onRenderSuccess: function(e) {
     this.el.html(e.html);
     this.applyEvents(this.el);
+    this.createWidgets(this.el);
     this.createChildViews(this.el);
     this.applyChildViewEvents();
     this.hasRendered = true;
