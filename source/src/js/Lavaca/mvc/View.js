@@ -89,7 +89,7 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
    * A dictionary of selectors and widget types in the form
    *   {selector: widgetType}
    */
-  this.widgetMap = widgetMap || {};
+  this.widgetMap = {};
   /**
    * @field {Lavaca.util.Cache} widgets
    * @default new Lavaca.util.Cache()
