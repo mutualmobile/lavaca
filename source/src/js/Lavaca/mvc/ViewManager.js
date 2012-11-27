@@ -47,7 +47,7 @@ ns.ViewManager = Disposable.extend(function(el) {
    */
   this.exitingPageViews = [];
   /**
-   * @field {Array} enteringViews
+   * @field {Array} enteringPageViews
    * @default []
    * A list containing all views that are currently entering
    */
@@ -94,10 +94,10 @@ ns.ViewManager = Disposable.extend(function(el) {
       }
     }
     function lastly() {
-      self.enteringViews = [pageView];
+      self.enteringPageViews = [pageView];
       promise.success(function() {
         Lavaca.delay(function() {
-          self.enteringViews = [];
+          self.enteringPageViews = [];
         });
       });
       exitPromise = self.dismissLayersAbove(layer - 1, pageView);
@@ -171,10 +171,10 @@ ns.ViewManager = Disposable.extend(function(el) {
         (function(layer) {
           this.exitingPageViews.push(layer);
           promise
-            .when(layer.exit(this.el, this.enteringViews))
+            .when(layer.exit(this.el, this.enteringPageViews))
             .success(function() {
               Lavaca.delay(function() {
-                ArrayUtils.remove(this.exitingViews, layer);
+                ArrayUtils.remove(this.exitingPageViews, layer);
                 if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey == layer.cacheKey)) {
                   layer.dispose();
                 }
