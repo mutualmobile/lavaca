@@ -189,7 +189,7 @@ ns.Map.init = function(cache, mimeType, construct, scope) {
       var item = $(this),
           src = item.attr('data-src'),
           name = item.attr('data-name'),
-          isDefault = item.attr('data-default') !== null,
+          isDefault = typeof item.attr('data-default') == 'string',
           code = item.text(),
           map;
       map = construct(name, src, code);

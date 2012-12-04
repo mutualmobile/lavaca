@@ -166,7 +166,6 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
           self.el.addClass(self.className);  
         }
         self.el.attr('data-child-view-id', self.id);
-        self.el.html(html);
       });
     
     return promise;
