@@ -443,7 +443,8 @@ ns.View = EventDispatcher.extend(function(el, model, parentView) {
       (n == 'self' ? this.el : this.el.find(n))
         .each(function(index, item) {
           var $el = $(item),
-              widgetMap = $el.data('widgets') || {};
+              widgetMap = $el.data('widgets') || {},
+              widget;
           if (!widgetMap[n]) {
             widget = new o($(item));
             widgetMap[n] = widget;
