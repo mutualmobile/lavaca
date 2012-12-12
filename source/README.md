@@ -96,17 +96,17 @@ Runs the aforementioned build task first, starts a static server at `localhost:8
 
 - __Run with local config__
 ```bash
-grunt run
+$ grunt run
 ```
 
 - __Run with staging config__
 ```bash
-grunt run-staging
+$ grunt run-staging
 ```
 
 - __Run with production config__
 ```bash
-grunt run-production
+$ grunt run-production
 ```
 
 ## Adding javaScript, CSS and unit test files
