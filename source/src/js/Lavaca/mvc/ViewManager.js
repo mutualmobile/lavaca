@@ -224,7 +224,7 @@ ns.ViewManager = Disposable.extend(function(el) {
         }
       }
       this.pageViews.dispose();
-      this.pageViews = new util.Cache();  
+      this.pageViews = new util.Cache();
     }
   },
   /**
