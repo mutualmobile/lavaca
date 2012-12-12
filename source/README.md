@@ -8,14 +8,17 @@ Lavaca with grunt is a Lavaca branch optimized for build processes with command 
 ```bash
 $ git clone git@github.com:mutualmobile/lavaca.git [my_app]
 ```
+
 2. __Get the branch__
 ```bash
 $ cd [my_app] && git checkout -b grunt origin/grunt
 ```
+
 3. __Install grunt__
 ```bash
 $ npm install -g grunt
 ```
+
 4. __Install dev dependencies for our tasks to work__
 ```bash
 $ cd source && npm install
@@ -33,10 +36,12 @@ Concats and minifies all css and javaScript files, generates `index.html` based 
 ```bash
 $ grunt build
 ```
+
 - __Build with staging config__ (a copy of the build will also be available in `www-staging` folder)
 ```bash
 $ grunt build-staging
 ```
+
 - __Build with production config__ (a copy of the build will also be available in `www-production` folder)
 ```bash
 $ grunt build-production
@@ -93,6 +98,7 @@ Runs the aforementioned build task first, starts a static server at `localhost:8
 ```bash
 grunt run
 ```
+
 - __Run with staging config__
 ```bash
 grunt run-staging
