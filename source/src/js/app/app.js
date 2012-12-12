@@ -28,7 +28,7 @@ window.app = new Lavaca.mvc.Application(function() {
   // Initialize the models cache
   app.models.init();
 
-  app.models.set('example', new Lavaca.mvc.Model);
+  app.models.set('example', new Lavaca.mvc.Model());
   // Initialize the routes
   app.router.add({
     '/': [app.net.ExampleController, 'home'],

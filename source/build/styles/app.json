@@ -1,0 +1,6 @@
+{
+	"src": [
+		"css/app/app.css",
+		"css/app/ExampleView.css"
+	]
+}

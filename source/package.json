@@ -1,0 +1,22 @@
+{
+  "name": "lavaca",
+  "version": "1.0.6",
+  "description": "A sample Lavaca app",
+  "main": "grunt.js",
+  "scripts": {},
+  "devDependencies": {
+    "grunt-jasmine-runner": "latest",
+    "grunt-css": "latest",
+    "grunt-contrib-copy": "latest",
+    "dustjs-linkedin": "latest",
+    "connect": "latest"
+  },
+  "repository": "git@github.com:mutualmobile/lavaca.git",
+  "keywords": [
+    "Lavaca",
+    "mvc",
+    "javascript"
+  ],
+  "author": "Mutual Mobile",
+  "license": "MIT"
+}

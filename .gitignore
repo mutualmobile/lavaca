@@ -9,9 +9,9 @@ source/test/$src.html
 source/test/$www.html
 source/src/scripts.xml
 source/src/styles.xml
-
+source/node_modules
 source/libs/atnotate/atnotate.pyc
-
+source/_SpecRunner.html
 source/build.log
 
 source/android/.classpath
