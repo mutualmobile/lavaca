@@ -1,6 +1,7 @@
 {
 	"src": [
 		"js/app/app.js",
+		"js/app/ui/templates.js",
 	  "js/app/models/models.js",
 	  "js/app/net/ExampleController.js",
 	  "js/app/ui/views/BaseView.js",

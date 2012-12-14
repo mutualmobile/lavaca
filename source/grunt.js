@@ -1,6 +1,7 @@
 /*global module:false*/
 
-var dust = require('dustjs-linkedin');
+var dust = require('dustjs-linkedin'),
+    exec = require('child_process').exec;
 
 module.exports = task;
 
@@ -48,6 +49,10 @@ function task(grunt) {
     grunt.task.run('copy');
   }
 
+  function renderDocs() {
+    exec('python ' + ATNOTATE_BASE_DIR + 'atnotate.py -s ' + BASE_DIR + ' -d ' + DOCS_DIST_DIR + ' -t ' + ATNOTATE_BASE_DIR + 'templates');
+  }
+
   var _ = grunt.utils._;
 
   var connect = require('connect');
@@ -69,6 +74,8 @@ function task(grunt) {
       ANDROID_BASE_DIR = './android/assets/www/',
       IOS_BASE_DIR = './ios/www/',
       WEB_BASE_DIR = './www/',
+      ATNOTATE_BASE_DIR = './libs/atnotate/',
+      DOCS_DIST_DIR = './docs/',
       STAGING_BASE_DIR = 'www-' + STAGING + '/',
       PRODUCTION_BASE_DIR = 'www-' + PRODUCTION + '/',
       CONF_BASE_DIR = BASE_DIR + 'configs/',
@@ -76,10 +83,11 @@ function task(grunt) {
       CSS_JSON_DIR = BUILD_BASE_DIR + 'styles/',
       JS_DIST_DIR = DIST_BASE_DIR + 'js/',
       CSS_DIST_DIR = DIST_BASE_DIR + 'css/app/',
+      TEMPLATES_BASE_DIR = BASE_DIR + 'templates/',
+      CSS_BASE_DIR = BASE_DIR + 'css/',
       STATIC_DIRS = ['img/', 'messages/', 'mock/', 'templates/'],
       lavacaScripts = require(JS_JSON_DIR + LAVACA).src.map(appendBaseDir),
       appScripts = require(JS_JSON_DIR + APP).src.map(appendBaseDir),
-      lavacaStyles = require(CSS_JSON_DIR + LAVACA).src.map(appendBaseDir),
       appStyles = require(CSS_JSON_DIR + APP).src.map(appendBaseDir),
       testScripts = require(JS_JSON_DIR + TEST).specs;
 
@@ -99,11 +107,6 @@ function task(grunt) {
             }
           },
           css: {
-            lavaca: {
-              src: lavacaStyles,
-              dest: CSS_DIST_DIR + LAVACA + CSS_EXT,
-              minDest: CSS_DIST_DIR + LAVACA + CSS_MIN_EXT
-            },
             app: {
               src: appStyles,
               dest: CSS_DIST_DIR + APP + CSS_EXT,
@@ -116,7 +119,6 @@ function task(grunt) {
           }
         }
       };
-
   var config = _.extend({}, buildConfig, {
     meta: {
       version: '0.1.0'
@@ -132,7 +134,6 @@ function task(grunt) {
     concat: {
       jsLavaca: buildConfig.build.js.lavaca,
       jsApp: buildConfig.build.js.app,
-      cssLavaca: buildConfig.build.css.lavaca,
       cssApp: buildConfig.build.css.app
     },
     min: {
@@ -146,13 +147,19 @@ function task(grunt) {
       }
     },
     cssmin: {
-      cssLavaca: {
-        src: '<config:concat.cssLavaca.dest>',
-        dest: buildConfig.build.css.lavaca.minDest
-      },
       cssApp: {
         src: '<config:concat.cssApp.dest>',
         dest: buildConfig.build.css.app.minDest
+      }
+    },
+    less: {
+      minified: {
+        options: {
+          compress: true
+        },
+        files: {
+          'src/css/app/app.css': 'src/css/app/app.less'
+        }
       }
     },
     jasmine : {
@@ -171,6 +178,19 @@ function task(grunt) {
     },
     'jasmine-server': {
       browser : true
+    },
+    dustjs: {
+      compile: {
+        files: {
+          'src/js/app/ui/templates.js': [TEMPLATES_BASE_DIR+ '**/*.html']
+        }
+      }
+    },
+    docs: {
+      dist : {
+        src: buildConfig.build.test.src, 
+        dest: 'docs'
+      }
     },
     test: {
       unminified: {
@@ -240,11 +260,13 @@ function task(grunt) {
       }
     }
   });
-  
+
 
   grunt.loadNpmTasks('grunt-css');
   grunt.loadNpmTasks('grunt-jasmine-runner');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-dustjs');
+  grunt.loadNpmTasks('grunt-contrib-less');
   // Project configuration.
   grunt.initConfig(config);
 
@@ -252,6 +274,10 @@ function task(grunt) {
     //grunt.config.set('jasmine.server.port', this.data.port);
     grunt.config.set('jasmine.src', this.data.src);
     grunt.task.run('jasmine-server');
+  });
+
+  grunt.registerMultiTask('docs', 'Generates documentation using atnotate', function(env) {
+    renderDocs.call(this, this.data);
   });
 
   grunt.registerMultiTask('index', 'Generates index.html from layout template', function(env) {
@@ -271,7 +297,7 @@ function task(grunt) {
       grunt.config.set('watch.tasks', 'build-' + env);
     }
     grunt.task.run('watch');
-    
+
   });
 
   grunt.registerTask('static-server', function(root, port) {
@@ -284,21 +310,20 @@ function task(grunt) {
       .on('close', done);
   });
 
-  grunt.registerTask('build', 'concat min cssmin index copy-static copy-device');
+  grunt.registerTask('build', 'dustjs concat min less cssmin index copy-static copy-device');
   grunt.registerTask('build-staging', 'concat min cssmin index::staging copy-static copy-env:staging copy-device');
   grunt.registerTask('build-production', 'concat min cssmin index::production copy-static copy-env:production copy-device');
   grunt.registerTask('run', 'build server watch-all');
   grunt.registerTask('run-staging', 'build-staging server watch-all:staging');
   grunt.registerTask('run-production', 'build-production server watch-all:production');
 
-  grunt.registerTask('default', 'build test:minified');
+  grunt.registerTask('default', 'docs build test:minified');
 
   grunt.registerHelper('getFileMap', function(isMin, env) {
     var fileMap = {},
         json;
     fileMap.lavacaScripts = isMin ? stripBaseDir(buildConfig.build.js.lavaca.minDest) : require(JS_JSON_DIR + LAVACA).src;
     fileMap.appScripts = isMin ? stripBaseDir(buildConfig.build.js.app.minDest) : require(JS_JSON_DIR + APP).src;
-    fileMap.lavacaStyles = isMin ? stripBaseDir(buildConfig.build.css.lavaca.minDest) : require(CSS_JSON_DIR + LAVACA).src;
     fileMap.appStyles = isMin ? stripBaseDir(buildConfig.build.css.app.minDest) : require(CSS_JSON_DIR + APP).src;
     fileMap.configs = {};
     if (STAGING === env) {
@@ -312,5 +337,5 @@ function task(grunt) {
     fileMap.configs.json = json;
     return fileMap;
   });
-  
+
 }

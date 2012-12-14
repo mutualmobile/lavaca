@@ -9,7 +9,9 @@
     "grunt-css": "latest",
     "grunt-contrib-copy": "latest",
     "dustjs-linkedin": "latest",
-    "connect": "latest"
+    "connect": "latest",
+    "grunt-dustjs": "latest",
+    "grunt-contrib-less": "latest"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [
