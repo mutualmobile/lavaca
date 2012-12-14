@@ -59,7 +59,7 @@ $ grunt test:unminified
 - __Test with JavaScripts source files from `www/js` folder__ (minified)
 ```bash
 $ grunt test:minified
-``` 
+```
 
 When you return to terminal, please do `control + C` to terminate the server before you run more tasks. This task is not smart enough to shut down the server when tests are done.
 
