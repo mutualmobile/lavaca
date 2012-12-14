@@ -1,6 +1,6 @@
 # Lavaca with grunt
 
-Lavaca with grunt is a Lavaca branch optimized for build processes with command line build tool [Grunt](http://gruntjs.com). All the grunt build tasks are defined in grunt.js. This branch is highly experimental and welcomes any changes made towards the grunt taks to make the build process better and even more automatic. 
+Lavaca with grunt is a Lavaca branch optimized for build processes with command line build tool [Grunt](http://gruntjs.com). All the grunt build tasks are defined in grunt.js. This branch is highly experimental and welcomes any changes made towards the grunt tasks to make the build process better and even more automated. 
 
 ## Setup
 
@@ -30,7 +30,7 @@ Make sure you are always in `source` directory when you run the following comman
 
 ### Build
 
-Concats and minifies all css and javaScript files, generates `index.html` based on dust template file `layout.html`, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
+Precompiles LESS and Dust templates, concats and minifies all CSS and JavaScript files, generates `index.html` based on Dust template file `layout.html`, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
 
 - __Build with local config__
 ```bash
@@ -51,21 +51,48 @@ $ grunt build-production
 
 Starts a local server and runs unit tests defined in `test/unit` directory with [Jasmine](http://pivotal.github.com/jasmine/). This task will open a new window in the system default browser to show the test results.
 
-- __Test with javaScripts source files from `src/js` folder__ (unminified)
+- __Test with JavaScripts source files from `src/js` folder__ (unminified)
 ```bash
 $ grunt test:unminified
 ```
 
-- __Test with javaScripts source files from `www/js` folder__ (minified)
+- __Test with JavaScripts source files from `www/js` folder__ (minified)
 ```bash
 $ grunt test:minified
 ``` 
 
 When you return to terminal, please do `control + C` to terminate the server before you run more tasks. This task is not smart enough to shut down the server when tests are done.
 
+### Docs
+
+Generates JavaScript documentation using [Atnotate](https://github.com/mutualmobile/lavaca/wiki/5.4.-Documentation-Generation-with-Atnotate). The resulting documentation is outputed to the `docs` folder.
+
+- __Generate JavaScript Documentation__
+```bash
+$ grunt docs
+```
+
+### Dust JS
+
+Precompiles Dust templates in `src/templates` to `src/js/app/ui/templates.js`.
+
+- __Compile Dust templates__
+```bash
+$ grunt dustjs
+```
+
+### LESS
+
+Precompiles LESS in `src/css` to `src/css/app/app.css`.
+
+- __Compile LESS__
+```bash
+$ grunt less
+```
+
 ### Default
 
-A convenient task that does a build with local config and runs unit tests with minified source immediately after.
+A convenient task generates generated docs, builds with local config, and runs unit tests with minified source immediately after.
 
 ```bash
 $ grunt
@@ -73,7 +100,7 @@ $ grunt
 
 Behind the scenes, grunt is actually running the following for you:
 ```bash
-$ grunt build && grunt test:minified
+$ grunt docs && grunt build && grunt test:minified
 ```
 
 ### Server
@@ -109,7 +136,7 @@ $ grunt run-staging
 $ grunt run-production
 ```
 
-## Adding javaScript, CSS and unit test files
+## Adding JavaScript, CSS and unit test files
 
 Since `index.html` is generated with `layout.html` template, all the script and css file references are not managed in `index.html` anymore. Every time, a script, css or unit test file is added, please add a reference to one of the following JSON files so grunt can pick it up.
 ```
