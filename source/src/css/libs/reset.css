@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   line-height: 1;
-  -webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: none;
 }
 article,
