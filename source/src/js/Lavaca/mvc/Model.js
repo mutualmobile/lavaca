@@ -141,8 +141,13 @@ ns.Model = EventDispatcher.extend(function(map) {
    * @return {Object}  The value of the attribute, or null if there is no value
    */
   get: function(attribute) {
-    var attr = this.attributes.get(attribute);
-    return typeof attr === 'function' ? attr.call(this) : attr;
+    var attr = this.attributes.get(attribute),
+        flags;
+    if (typeof attr == 'function') {
+      flags = this.flags[ns.Model.DO_NOT_COMPUTE];
+      return !flags || ArrayUtils.indexOf(flags, attribute) == -1 ? attr.call(this) : attr;
+    }
+    return attr;
   },
   /**
    * @method canSet
@@ -486,10 +491,14 @@ ns.Model = EventDispatcher.extend(function(map) {
    * @return {Object}  The key-value hash
    */
   toObject: function() {
-    var obj = this.attributes.toObject();
+    var obj = this.attributes.toObject(),
+        flags;
     for(var key in obj) {
       if(typeof obj[key] === "function") {
-        obj[key] = obj[key].call(this);
+        flags = this.flags[ns.Model.DO_NOT_COMPUTE];
+        if (!flags || ArrayUtils.indexOf(flags, key) == -1) {
+          obj[key] = obj[key].call(this);
+        }
       }
     }
     return obj;
@@ -555,5 +564,13 @@ ns.Model = EventDispatcher.extend(function(map) {
  * Flag indicating that data is sensitive
  */
 ns.Model.SENSITIVE = 'sensitive';
+/**
+ * @field {String} DO_NOT_COMPUTE
+ * @static
+ * @default 'do_not_compute'
+ * Flag indicating that the selected attribute should not be executed
+ * as a computed property and should instead just return the function.
+ */
+ns.Model.DO_NOT_COMPUTE = 'do_not_compute';
 
 })(Lavaca.resolve('Lavaca.mvc', true), Lavaca.events.EventDispatcher, Lavaca.util.Cache, Lavaca.util.Promise, Lavaca.util.ArrayUtils);
