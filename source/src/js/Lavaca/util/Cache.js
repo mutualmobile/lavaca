@@ -109,6 +109,21 @@ ns.Cache = Disposable.extend({
    */
   toJSON: function() {
     return JSON.stringify(this.toObject());
+  },
+   /**
+   * @method toArray
+   * Serializes the cache to an array
+   *
+   * @return {Object}  The resulting array with elements being index based and keys stored in an array on the 'ids' property
+   */
+  toArray: function() {
+    var results = [];
+    results['ids'] = [];
+    this.each(function(prop, value) {
+      results.push(typeof value.toObject === 'function' ? value.toObject() : value);
+      results['ids'].push(prop); 
+    });
+    return results;
   }
 });
 
