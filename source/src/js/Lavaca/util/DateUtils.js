@@ -443,9 +443,9 @@ ns.fn = {
     },
     o: function(date) {
       var z = date.getTimezoneOffset(),
-          sign = z < 0 ? '-' : '+',
+          sign = z > 0 ? '-' : '+',
           m = z % 60,
-          h = (z - m) / 60;
+          h = Math.abs((z - m) / 60);
       return sign + _pad(h, 2) + ':' + _pad(Math.abs(m), 2);
     }
   }
