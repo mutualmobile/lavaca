@@ -5,13 +5,13 @@
   "main": "grunt.js",
   "scripts": {},
   "devDependencies": {
-    "grunt-jasmine-runner": "latest",
-    "grunt-css": "latest",
-    "grunt-contrib-copy": "latest",
-    "dustjs-linkedin": "latest",
-    "connect": "latest",
-    "grunt-dustjs": "latest",
-    "grunt-contrib-less": "latest"
+    "grunt-jasmine-runner": "0.6.0",
+    "grunt-css": "0.3.2",
+    "grunt-contrib-copy": "0.3.2",
+    "dustjs-linkedin": "1.1.1",
+    "connect": "2.4.4",
+    "grunt-dustjs": "0.2.1",
+    "grunt-contrib-less": "0.3.2"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [
