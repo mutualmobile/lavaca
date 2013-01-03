@@ -89,9 +89,12 @@ ns.EventDispatcher = Disposable.extend({
         if (list) {
           newList = calls[type] = [];
           while (handler = list[++i]) {
-            isCallback = handler.fn == callback || handler.fn.fn == callback;
+            isCallback = handler.fn == callback ||
+                         handler.fn.fn == callback ||
+                         (handler.fn.guid && handler.fn.guid == callback.guid) || // Check if is jQuery proxy of callback
+                         (handler.fn._zid && handler.fn._zid == callback._zid); // Check if is Zepto proxy of callback
             isThisp = thisp && (handler.thisp == thisp || handler.fn.thisp == thisp);
-            if (!isCallback || (isCallback && (!thisp || !isThisp))) {
+            if (!isCallback || (thisp && !isThisp)) {
               newList[newList.length] = handler;
             }
           }
