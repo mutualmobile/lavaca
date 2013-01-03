@@ -11,19 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 (function(ns, $, Widget, iScroll) {
 
 var _props = ['overflowScrolling', 'webkitOverflowScrolling', 'MozOverflowScrolling', 'OOverflowScrolling', 'MSOverflowScrolling'],
-    _prop,
-    _isSupported;
+    _isSupported,
+    _isIOS5;
 
 (function() {
-  var style = document.createElement('div').style,
+  var div = document.createElement('div'),
+      style = div.style,
       i = -1,
       s;
+
+  _isIOS5 = /OS 5_\d(_\d)? like Mac OS X/i.test(navigator.userAgent);
   while (s = _props[++i]) {
     if (s in style) {
-      _prop = s;
-      break;
+      _isSupported = true;
+      return;
     }
   }
+  _isSupported = typeof div.ontouchstart != 'function';
 })();
 
 /**
@@ -49,9 +53,9 @@ ns.Scrollable = Widget.extend(function() {
   /**
    * @field {Boolean} supportsOverflow
    * @default false
-   * True when overflowScrolling is supported in the Browser 
+   * True when overflowScrolling is supported in the Browser
    */
-  supportsOverflow: !!_prop,
+  supportsOverflow: _isSupported,
   /**
    * @field {String} className
    * @default 'overflow-scroll'
@@ -78,7 +82,9 @@ ns.Scrollable = Widget.extend(function() {
    * Initializes native overflow scrolling
    */
   initOverflowScroll: function() {
-    this.el.addClass(this.className);
+    Lavaca.delay(function() {
+      this.addOverflowClass();
+    }, this);
     this.preventParentScroll();
   },
   /**
@@ -122,8 +128,13 @@ ns.Scrollable = Widget.extend(function() {
    refresh: function() {
      if (!this.supportsOverflow) {
        Lavaca.delay(function() {
-         this.iScroll.refresh();
+         this.iScroll && this.iScroll.refresh();
        }, this, 10);
+     } else if (_isIOS5) {
+        this.el.removeClass(this.className);
+        Lavaca.delay(function() {
+          this.addOverflowClass();
+        }, this, 10);
      }
    },
    /**
@@ -139,7 +150,7 @@ ns.Scrollable = Widget.extend(function() {
    */
   preventParentScroll: function() {
     var el = this.el[0];
-    this.el.on('touchstart', function(e) {
+    this.el.off('.preventParentScroll').on('touchstart.preventParentScroll', function(e) {
       startTopScroll = el.scrollTop;
       if (startTopScroll <= 0) {
         el.scrollTop = 1;
@@ -149,16 +160,29 @@ ns.Scrollable = Widget.extend(function() {
       }
     });
   },
+  addOverflowClass: function() {
+    // Fix iOS5 scrolling bug
+    if (_isIOS5) {
+      var rawEl = this.el[0];
+      if (rawEl.scrollHeight > rawEl.clientHeight) {
+        this.el.addClass(this.className);
+      } else {
+        this.el.removeClass(this.className);
+      }
+    } else {
+      this.el.addClass(this.className);
+    }
+  },
    /**
     * @method dispose
     * Cleans up the widget
     */
-   dispose: function() {
-     if (this.isScroll) {
-       this.iScroll.destroy();
-     }
-     Widget.prototype.dispose.call(this);
-   }
+  dispose: function() {
+    if (this.isScroll) {
+      this.iScroll.destroy();
+    }
+    Widget.prototype.dispose.call(this);
+  }
 });
 
 })(Lavaca.ui, Lavaca.$, Lavaca.ui.Widget, iScroll);
