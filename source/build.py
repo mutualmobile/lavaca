@@ -493,6 +493,7 @@ class IOSBuilder(CordovaBuilder):
         'splash-320x480.png': 'Default.png',
         'splash-640x960.png': 'Default@2x.png',
         'splash-768x1004.png': 'Default-Portrait.png',
+        'splash-640x1136.png': 'Default-568h@2x.png',
         'splash-1536x2008.png': 'Default-Portrait@2x.png',
         'splash-1024x748.png': 'Default-Landscape.png',
         'splash-2048x1496.png': 'Default-Landscape@2x.png'
