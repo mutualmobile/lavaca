@@ -68,6 +68,7 @@ When you return to terminal, please do `control + C` to terminate the server bef
 Generates JavaScript documentation using [Atnotate](https://github.com/mutualmobile/lavaca/wiki/5.4.-Documentation-Generation-with-Atnotate). The resulting documentation is outputed to the `docs` folder.
 
 - __Generate JavaScript Documentation__
+
 ```bash
 $ grunt docs
 ```
@@ -77,6 +78,7 @@ $ grunt docs
 Precompiles Dust templates in `src/templates` to `src/js/app/ui/templates.js`.
 
 - __Compile Dust templates__
+
 ```bash
 $ grunt dustjs
 ```
@@ -86,6 +88,7 @@ $ grunt dustjs
 Precompiles LESS in `src/css` to `src/css/app/app.css`.
 
 - __Compile LESS__
+
 ```bash
 $ grunt less
 ```
@@ -99,6 +102,7 @@ $ grunt
 ```
 
 Behind the scenes, grunt is actually running the following for you:
+
 ```bash
 $ grunt docs && grunt build && grunt test:minified
 ```
