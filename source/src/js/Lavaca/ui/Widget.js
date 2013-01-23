@@ -30,7 +30,6 @@ ns.Widget = EventDispatcher.extend(function(el) {
   var id = el.attr('id');
   if (!id) {
     id = 'widget-' + Lavaca.uuid();
-    el.attr('id', id);
   }
   /**
    * @field {String} id

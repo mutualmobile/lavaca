@@ -112,7 +112,7 @@ ns.PageView = View.extend(function(el, model, layer) {
       model = model.toObject();
     }
     if (this.el) {
-      this.el.detach();
+      this.el.remove();
     }
 
     this.shell = this.wrapper();

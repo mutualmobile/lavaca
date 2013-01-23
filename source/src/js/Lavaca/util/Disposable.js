@@ -22,7 +22,11 @@ function _disposeOf(obj) {
           o.dispose();
         } else if (o instanceof Array) {
           for (i = o.length - 1; i > -1; i--) {
-            _disposeOf(o[i]);
+            if (typeof o[i].dispose == 'function') {
+              o[i].dispose();
+            } else {
+              _disposeOf(o[i]);
+            }
           }
         }
       }

@@ -69,8 +69,8 @@ describe('A Controller', function() {
       $('script[data-name="hello-world"]').remove();
     });
     it('with a view helper method', function() {
-      var controller = new testController(router, viewManager);
-          var myPageView = Lavaca.mvc.PageView.extend(function(){PageView.apply(this, arguments);},{
+      var controller = new testController(router, viewManager),
+          myPageView = Lavaca.mvc.PageView.extend({
             template: 'hello-world'
           }),
           promise,

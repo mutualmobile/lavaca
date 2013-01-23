@@ -307,6 +307,8 @@ var Zepto = (function() {
     },
     remove: function(){
       return this.each(function(){
+        $.removeData(this.getElementsByTagName('*'))
+        $.removeData(this)
         if (this.parentNode != null)
           this.parentNode.removeChild(this)
       })
@@ -387,7 +389,10 @@ var Zepto = (function() {
       }), selector)
     },
     empty: function(){
-      return this.each(function(){ this.innerHTML = '' })
+      return this.each(function(){
+        $.removeData(this.getElementsByTagName('*'))
+        this.innerHTML = ''
+      })
     },
     // `pluck` is borrowed from Prototype.js
     pluck: function(property){
@@ -1353,3 +1358,97 @@ window.Zepto = Zepto
     $.fn[m] = function(callback){ return this.bind(m, callback) }
   })
 })(Zepto);
+
+//     Zepto.js
+//     (c) 2010-2012 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
+
+// The following code is heavily inspired by jQuery's $.fn.data()
+
+;(function($) {
+  var data = {}, dataAttr = $.fn.data, camelize = $.zepto.camelize,
+    exp = $.expando = 'Zepto' + (+new Date())
+
+  function deserializeValue(value) {
+    var num
+    try {
+      return value ?
+        value == "true" ||
+        ( value == "false" ? false :
+          value == "null" ? null :
+          !isNaN(num = Number(value)) ? num :
+          /^[\[\{]/.test(value) ? $.parseJSON(value) :
+          value )
+        : value
+    } catch(e) {
+      return value
+    }
+  }
+  $.zepto.deserializeValue = deserializeValue;
+
+  // Get value from node:
+  // 1. first try key as given,
+  // 2. then try camelized key,
+  // 3. fall back to reading "data-*" attribute.
+  function getData(node, name) {
+    var id = node[exp], store = id && data[id]
+    if (name === undefined) return store || setData(node)
+    else {
+      if (store) {
+        if (name in store) return store[name]
+        var camelName = camelize(name)
+        if (camelName in store) return store[camelName]
+      }
+      return dataAttr.call($(node), name)
+    }
+  }
+
+  // Store value under camelized key on node
+  function setData(node, name, value) {
+    var id = node[exp] || (node[exp] = ++$.uuid),
+      store = data[id] || (data[id] = attributeData(node))
+    if (name !== undefined) store[camelize(name)] = value
+    return store
+  }
+
+  // Read all "data-*" attributes from a node
+  function attributeData(node) {
+    var store = {}
+    $.each(node.attributes, function(i, attr){
+      if (attr.name.indexOf('data-') == 0)
+        store[camelize(attr.name.replace('data-', ''))] =
+          $.zepto.deserializeValue(attr.value)
+    })
+    return store
+  }
+
+  $.fn.data = function(name, value) {
+    return value === undefined ?
+      // set multiple values via object
+      $.isPlainObject(name) ?
+        this.each(function(i, node){
+          $.each(name, function(key, value){ setData(node, key, value) })
+        }) :
+        // get value from first element
+        this.length == 0 ? undefined : getData(this[0], name) :
+      // set value on all elements
+      this.each(function(){ setData(this, name, value) })
+  }
+
+  $.removeData = function(node, names) {
+    if (node.length) return $.each(node, function() { $.removeData(this) })
+    var id = node[exp], store = id && data[id]
+    if (store) {
+      if (names) $.each(names, function(){ delete store[camelize(this)] })
+      else {
+        delete data[id]
+        delete node[exp]
+      }
+    }
+  }
+
+  $.fn.removeData = function(names) {
+    if (typeof names == 'string') names = names.split(/\s+/)
+    return this.each(function(){ $.removeData(this, names) })
+  }
+})(Zepto)

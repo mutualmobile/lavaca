@@ -530,7 +530,7 @@ $.fn.tap = function(delegate, callback, thisp) {
   }
   if (_supportsTouchEvents) {
     ns.bind(this, delegate, null, null, function(e) {
-      if (!e.hasMoved && callback) {
+      if ( !e.hasMoved && callback && (!e.originalEvent.isPropagationStopped || !e.originalEvent.isPropagationStopped()) ) {
         callback.apply(thisp || this, arguments);
       }
     });

@@ -41,7 +41,7 @@ ns.ViewManager = Disposable.extend(function(el) {
    */
   this.layers = [];
   /**
-   * @field {Array} exitingViews
+   * @field {Array} exitingPageViews
    * @default []
    * A list containing all views that are currently exiting
    */
@@ -74,7 +74,7 @@ ns.ViewManager = Disposable.extend(function(el) {
    * @param {String} cacheKey  The cache key associated with the view
    * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
    * @param {Object} model  The views model
-   * @param {Object} params  Parameters to be mapped to the view prototype.  Can contain the index of the layer on which the view will sit
+   * @param {Object} params  Parameters to be mapped to the view
    * @return {Lavaca.util.Promise}  A promise
    */
   load: function(cacheKey, TPageView, model, params) {
@@ -83,13 +83,9 @@ ns.ViewManager = Disposable.extend(function(el) {
     } else {
       this.locked = true;
     }
-    var layer = 0;
-    if (typeof params === 'number') {
-      layer = params;
-    } else if (typeof params === 'object' && typeof params.layer ==='number') {
-      layer = params.layer;
-    }
+    params = params || {};
     var self = this,
+        layer = layer || 0,
         pageView = this.pageViews.get(cacheKey),
         promise = new Promise(this),
         enterPromise = new Promise(promise),
@@ -98,6 +94,11 @@ ns.ViewManager = Disposable.extend(function(el) {
     promise.always(function() {
       this.locked = false;
     });
+    if (typeof params === 'number') {
+      layer = params;
+    } else if (params.layer) {
+      layer = params.layer;
+    }
     if (!pageView) {
       pageView = new TPageView(null, model, layer);
       if (typeof params === 'object') {
