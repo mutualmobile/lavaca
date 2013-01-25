@@ -8,50 +8,58 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns, Device) {
+define(function(require) {
 
-/**
- * @class Lavaca.env.ChildBrowser
- * @super Lavaca.events.EventDispatcher
- * A sub-browser management utility (also accessible via window.plugins.childBrowser)
- *
- * @event open
- * @event close
- * @event change
- *
- * @constructor
- */
-ns.ChildBrowser = Lavaca.events.EventDispatcher.extend({
+  var EventDispatcher = require('lavaca/events/EventDispatcher');
+  var Device = require('lavaca/env/Device');
+  var Promise = require('lavaca/util/Promise');
+
+
   /**
-   * @method showWebPage
-   * Opens a web page in the child browser (or navigates to it)
+   * @class Lavaca.env.ChildBrowser
+   * @super Lavaca.events.EventDispatcher
+   * A sub-browser management utility (also accessible via window.plugins.childBrowser)
    *
-   * @param {String} loc  The URL to open
-   * @return {Lavaca.util.Promise}  A promise
+   * @event open
+   * @event close
+   * @event change
+   *
+   * @constructor
    */
-  showWebPage: function(loc) {
-    if (Device.isCordova()) {
-      return Device
-        .exec('ChildBrowser', 'showWebPage', [loc])
-        .error(function() {
-          window.location.href = loc;
-        });
-    } else {
-      window.open(loc);
-      return new Lavaca.util.Promise(window).resolve();
+  var ChildBrowser = EventDispatcher.extend({
+    /**
+     * @method showWebPage
+     * Opens a web page in the child browser (or navigates to it)
+     *
+     * @param {String} loc  The URL to open
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    showWebPage: function(loc) {
+      if (Device.isCordova()) {
+        return Device
+          .exec('ChildBrowser', 'showWebPage', [loc])
+          .error(function() {
+            window.location.href = loc;
+          });
+      } else {
+        window.open(loc);
+        return new Promise(window).resolve();
+      }
+    },
+    /**
+     * @method close
+     * Closes the child browser, if it's open
+     *
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    close: function() {
+      return Device.exec('ChildBrowser', 'close', []);
     }
-  },
-  /**
-   * @method close
-   * Closes the child browser, if it's open
-   *
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  close: function() {
-    return Device.exec('ChildBrowser', 'close', []);
-  }
+  });
+
+  Device.register('childBrowser', ChildBrowser);
+
+
+  return ChildBrowser;
+
 });
-
-Device.register('childBrowser', ns.ChildBrowser);
-
-})(Lavaca.env, Lavaca.env.Device);

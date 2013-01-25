@@ -8,62 +8,69 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns, $, Widget) {
+define(function(require) {
 
-/**
- * @class Lavaca.ui.LoadingIndicator
- * @super Lavaca.ui.Widget
- * Type that shows/hides a loading indicator
- *
- * @constructor
- * @param {jQuery} el  The DOM element that is the root of the widget
- */
-ns.LoadingIndicator = Widget.extend({
+  var $ = require('$');
+  var Widget = require('./Widget');
+
+
   /**
-   * @field {String} className
-   * @default 'loading'
-   * Class name applied to the root
+   * @class Lavaca.ui.LoadingIndicator
+   * @super Lavaca.ui.Widget
+   * Type that shows/hides a loading indicator
+   *
+   * @constructor
+   * @param {jQuery} el  The DOM element that is the root of the widget
    */
-  className: 'loading',
-  /**
-   * @method show
-   * Activates the loading indicator
+  var LoadingIndicator = Widget.extend({
+    /**
+     * @field {String} className
+     * @default 'loading'
+     * Class name applied to the root
+     */
+    className: 'loading',
+    /**
+     * @method show
+     * Activates the loading indicator
+     */
+    show: function() {
+      this.el.addClass(this.className);
+    },
+    /**
+     * @method hide
+     * Deactivates the loading indicator
+     */
+    hide: function() {
+      this.el.removeClass(this.className);
+    }
+  });
+  /** 
+   * @method init
+   * @static
+   * Creates a loading indicator and binds it to the document's AJAX events
+   *
+   * @sig
+   *
+   * @sig
+   * @param {Function} TLoadingIndicator  The type of loading indicator to create (should derive from [[Lavaca.ui.LoadingIndicator]])
    */
-  show: function() {
-    this.el.addClass(this.className);
-  },
-  /**
-   * @method hide
-   * Deactivates the loading indicator
-   */
-  hide: function() {
-    this.el.removeClass(this.className);
-  }
+  LoadingIndicator.init = function(TLoadingIndicator) {
+    TLoadingIndicator = TLoadingIndicator || LoadingIndicator;
+    var indicator = new TLoadingIndicator(document.body);
+    function show() {
+      indicator.show();
+    }
+    function hide() {
+      indicator.hide();
+    }
+    $(document)
+      .on('ajaxStart', show)
+      .on('ajaxStop', hide)
+      .on('ajaxError', hide);
+    return indicator;
+  };
+
+
+  return LoadingIndicator;
+
 });
-/** 
- * @method init
- * @static
- * Creates a loading indicator and binds it to the document's AJAX events
- *
- * @sig
- *
- * @sig
- * @param {Function} TLoadingIndicator  The type of loading indicator to create (should derive from [[Lavaca.ui.LoadingIndicator]])
- */
-ns.LoadingIndicator.init = function(TLoadingIndicator) {
-  TLoadingIndicator = TLoadingIndicator || ns.LoadingIndicator;
-  var indicator = new TLoadingIndicator(document.body);
-  function show() {
-    indicator.show();
-  }
-  function hide() {
-    indicator.hide();
-  }
-  $(document)
-    .on('ajaxStart', show)
-    .on('ajaxStop', hide)
-    .on('ajaxError', hide);
-  return indicator;
-};
-
-})(Lavaca.ui, Lavaca.$, Lavaca.ui.Widget);

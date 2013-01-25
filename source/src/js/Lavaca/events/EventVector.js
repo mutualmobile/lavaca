@@ -8,40 +8,46 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns) {
+define(function(require) {
 
-/**
- * @class Lavaca.events.EventVector
- * An object indicating a direction
- *
- * @constructor
- * @param {Number} length  The length of the vector
- * @param {String} axis  The axis of the vector
- * @param {String} compass  The cardinal direction of the vector
- */
-ns.EventVector = Lavaca.extend(function(length, axis, compass) {
-  this.length = length;
-  this.axis = axis;
-  this.compass = compass;
-}, {
+  var extend = require('lavaca/util/extend');
+
+
   /**
-   * @field {Number} length
-   * @default 0
-   * The number of pixels covered by the vector
+   * @class Lavaca.events.EventVector
+   * An object indicating a direction
+   *
+   * @constructor
+   * @param {Number} length  The length of the vector
+   * @param {String} axis  The axis of the vector
+   * @param {String} compass  The cardinal direction of the vector
    */
-  length: 0,
-  /**
-   * @field {String} axis
-   * @default 'vertical'
-   * The axis to which the vector most closely aligns (either "horizontal" or "vertical")
-   */
-  axis: 'vertical',
-  /**
-   * @field {String} compass
-   * @default 'north'
-   * The cardinal direction toward which the vector primarily points ("north", "south", "east", or "west")
-   */
-  compass: 'north'
+  var EventVector = extend(function(length, axis, compass) {
+    this.length = length;
+    this.axis = axis;
+    this.compass = compass;
+  }, {
+    /**
+     * @field {Number} length
+     * @default 0
+     * The number of pixels covered by the vector
+     */
+    length: 0,
+    /**
+     * @field {String} axis
+     * @default 'vertical'
+     * The axis to which the vector most closely aligns (either "horizontal" or "vertical")
+     */
+    axis: 'vertical',
+    /**
+     * @field {String} compass
+     * @default 'north'
+     * The cardinal direction toward which the vector primarily points ("north", "south", "east", or "west")
+     */
+    compass: 'north'
+  });
+
+
+  return EventVector;
+
 });
-
-})(Lavaca.resolve('Lavaca.events', true));

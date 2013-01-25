@@ -8,47 +8,53 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(ns) {
+define(function(require) {
 
-function _disposeOf(obj) {
-  var n,
-      o,
-      i;
-  for (n in obj) {
-    if (obj.hasOwnProperty(n)) {
-      o = obj[n];
-      if (o) {
-        if (typeof o.dispose == 'function') {
-          o.dispose();
-        } else if (o instanceof Array) {
-          for (i = o.length - 1; i > -1; i--) {
-            if (typeof o[i].dispose == 'function') {
-              o[i].dispose();
-            } else {
-              _disposeOf(o[i]);
+  var extend = require('./extend');
+
+
+  function _disposeOf(obj) {
+    var n,
+        o,
+        i;
+    for (n in obj) {
+      if (obj.hasOwnProperty(n)) {
+        o = obj[n];
+        if (o) {
+          if (typeof o.dispose === 'function') {
+            o.dispose();
+          } else if (o instanceof Array) {
+            for (i = o.length - 1; i > -1; i--) {
+              if (typeof o[i].dispose === 'function') {
+                o[i].dispose();
+              } else {
+                _disposeOf(o[i]);
+              }
             }
           }
         }
       }
+      delete obj[n];
     }
-    delete obj[n];
   }
-}
 
-/** 
- * @class Lavaca.util.Disposable
- * Abstract type for types that need to ready themselves for GC
- *
- * @constructor
- */
-ns.Disposable = Lavaca.extend({
-  /**
-   * @method dispose
-   * Readies the object to be garbage collected
+  /** 
+   * @class Lavaca.util.Disposable
+   * Abstract type for types that need to ready themselves for GC
+   *
+   * @constructor
    */
-  dispose: function() {
-    _disposeOf(this);
-  }
-});
+  var Disposable = extend({
+    /**
+     * @method dispose
+     * Readies the object to be garbage collected
+     */
+    dispose: function() {
+      _disposeOf(this);
+    }
+  });
 
-})(Lavaca.resolve('Lavaca.util', true));
+
+  return Disposable;
+
+});
