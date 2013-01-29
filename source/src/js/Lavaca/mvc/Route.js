@@ -12,7 +12,7 @@ define(function(require) {
 
   var Disposable = require('lavaca/util/Disposable');
   var delay = require('lavaca/util/delay');
-  var clone = require('mout/lang/clone');
+  var clone = require('mout/lang/deepClone');
   var merge = require('mout/object/merge');
 
 

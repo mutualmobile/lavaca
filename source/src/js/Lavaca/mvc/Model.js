@@ -12,10 +12,10 @@ define(function(require) {
 
   var Cache = require('lavaca/util/Cache');
   var Promise = require('lavaca/util/Promise');
-  var EventDispatcher = require('lavaca/util/EventDispatcher');
+  var EventDispatcher = require('lavaca/events/EventDispatcher');
   var Connectivity = require('lavaca/net/Connectivity');
   var ArrayUtils = require('lavaca/util/ArrayUtils');
-  var clone = require('mout/lang/clone');
+  var clone = require('mout/lang/deepClone');
   var merge = require('mout/object/merge');
 
 

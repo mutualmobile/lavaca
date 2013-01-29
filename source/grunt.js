@@ -193,14 +193,8 @@ function task(grunt) {
       }
     },
     test: {
-      unminified: {
-        src: '<config:build.test.src>',
-        port: '8888'
-      },
-      minified: {
-        src: ['<config:min.jsLavaca.dest>', '<config:min.jsApp.dest>'],
-        port: '8888'
-      }
+      mode: 'jasmine',
+      include: 'test/unit/**/*.js'
     },
     watch: {
       files: [BUILD_BASE_DIR + '**/*', BASE_DIR  + '**/*'],
@@ -258,23 +252,47 @@ function task(grunt) {
       android: {
         files: copyDirMap(DIST_BASE_DIR, ANDROID_BASE_DIR)
       }
+    },
+    checkrequire: {
+      include: ['src/js/**/*.js', 'test/unit/**/*.js']
+    },
+    requirejs: {
+      baseUrl: 'src/js',
+      optimize: 'none',
+      paths: {
+        '$': 'libs/zepto-1.0rc1',
+        'mout': 'libs/mout',
+        'dust': 'libs/dust-full-1.1.1',
+        'lz77': 'libs/lz77',
+        'iScroll': 'libs/iscroll-lite-4.1.6',
+        'lavaca': 'Lavaca'
+      },
+      shim: {
+        lz77: {
+          exports: 'LZ77'
+        }
+      },
+      keepBuildDir: true,
+      locale: "en-us",
+      useStrict: false,
+      skipModuleInsertion: false,
+      findNestedDependencies: false,
+      removeCombined: false,
+      preserveLicenseComments: false,
+      logLevel: 0
     }
   });
 
 
   grunt.loadNpmTasks('grunt-css');
-  grunt.loadNpmTasks('grunt-jasmine-runner');
+  //grunt.loadNpmTasks('grunt-jasmine-runner');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-dustjs');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-amd-test');
+  grunt.loadNpmTasks('grunt-amd-checkrequire');
   // Project configuration.
   grunt.initConfig(config);
-
-  grunt.registerMultiTask('test', 'Unit testing with Jasmine', function() {
-    //grunt.config.set('jasmine.server.port', this.data.port);
-    grunt.config.set('jasmine.src', this.data.src);
-    grunt.task.run('jasmine-server');
-  });
 
   grunt.registerMultiTask('docs', 'Generates documentation using atnotate', function(env) {
     renderDocs.call(this, this.data);

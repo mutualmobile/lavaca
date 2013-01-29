@@ -14,7 +14,7 @@ define(function(require) {
   var Promise = require('lavaca/util/Promise');
   var ArrayUtils = require('lavaca/util/ArrayUtils');
   var Connectivity = require('lavaca/net/Connectivity');
-  var clone = require('mout/lang/clone');
+  var clone = require('mout/lang/deepClone');
   var merge = require('mout/object/merge');
 
 
