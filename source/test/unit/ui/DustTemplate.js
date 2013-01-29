@@ -1,12 +1,19 @@
-(function(DustTemplate, Translation) {
+define(function(require) {
+
+  var $ = require('$');
+  var DustTemplate = require('lavaca/ui/DustTemplate');
+  var Translation = require('lavaca/util/Translation');
+  var Template = require('lavaca/ui/Template');
+  var Config = require('lavaca/util/Config');
+
   var noop,
       template;
 
   function _newTemplate(code, name) {
     name = name || 'tmpl';
     $('body').append('<script data-name="' + name + '" type="text/dust-template" class="script-tmpl">' + code + '</script>');
-    Lavaca.ui.Template.init();
-    return Lavaca.ui.Template.get(name);
+    Template.init();
+    return Template.get(name);
   }
 
   function _newTranslation(code) {
@@ -86,10 +93,8 @@
     });
     it('can use an include', function() {
       var parentSource = '<h1>{name}</h1>{@include name="titleTmpl"/}',
-          childSource = '<h2>{title}</h2>',
           context = {name: 'Larry', title: 'Developer'},
-          parentTemplate = _newTemplate(parentSource),
-          childTemplate = _newTemplate(childSource, 'titleTmpl');
+          parentTemplate = _newTemplate(parentSource);
 
       parentTemplate.render(context)
         .success(function(html) {
@@ -103,9 +108,9 @@
       var source = '<p>{@config key="test_key" environment="test-environment" /}</p>',
           context = {},
           template = _newTemplate(source);
-          
+
       $('body').append('<script type="text/x-config" data-name="test-environment" id="temp-config-script">{"test_key": "test value"}</script>');
-      Lavaca.util.Config.init();
+      Config.init();
 
       template.render(context)
         .success(function(html) {
@@ -114,34 +119,34 @@
         .error(noop.error);
 
       expect(noop.error).not.toHaveBeenCalled();
-      Lavaca.util.Config.dispose();
-	  	$('#temp-config-script').remove();
+      Config.dispose();
+      $('#temp-config-script').remove();
     });
     it('can selectively render content based on current config environment', function() {
       var source = '<p>{@config only="test-local"}Yes{:else}No{/config}</p>' + 
-      						 '<p>{@config only="test-staging"}Yes{:else}No{/config}</p>' + 
-      						 '<p>{@config only="test-production"}Yes{:else}No{/config}</p>' +
-      						 '<p>{@config not="test-local"}Yes{:else}No{/config}</p>' + 
-      						 '<p>{@config not="test-staging"}Yes{:else}No{/config}</p>' + 
-      						 '<p>{@config not="test-production"}Yes{:else}No{/config}</p>',
-          context = {},
-          template = _newTemplate(source);
-          
+        '<p>{@config only="test-staging"}Yes{:else}No{/config}</p>' + 
+        '<p>{@config only="test-production"}Yes{:else}No{/config}</p>' +
+        '<p>{@config not="test-local"}Yes{:else}No{/config}</p>' + 
+        '<p>{@config not="test-staging"}Yes{:else}No{/config}</p>' + 
+        '<p>{@config not="test-production"}Yes{:else}No{/config}</p>',
+      context = {},
+      template = _newTemplate(source);
+
       $('body').append('<script type="text/x-config" data-name="test-local" class="test-configs">{"test_key": "test-local"}</script>');
       $('body').append('<script type="text/x-config" data-name="test-staging" class="test-configs">{"test_key": "test-staging"}</script>');
       $('body').append('<script type="text/x-config" data-name="test-production" class="test-configs">{"test_key": "test-production"}</script>');
-      Lavaca.util.Config.init();
-      
+      Config.init();
+
       // Test first environment
-      Lavaca.util.Config.setDefault('test-local');
+      Config.setDefault('test-local');
       template.render(context)
-        .success(function(html) {
-          expect(html).toEqual('<p>Yes</p><p>No</p><p>No</p><p>No</p><p>Yes</p><p>Yes</p>');
+      .success(function(html) {
+        expect(html).toEqual('<p>Yes</p><p>No</p><p>No</p><p>No</p><p>Yes</p><p>Yes</p>');
         })
         .error(noop.error);
-      
+
       // Test second environment
-      Lavaca.util.Config.setDefault('test-production');
+      Config.setDefault('test-production');
       template.render(context)
         .success(function(html) {
           expect(html).toEqual('<p>No</p><p>No</p><p>Yes</p><p>Yes</p><p>Yes</p><p>No</p>');
@@ -149,10 +154,10 @@
         .error(noop.error);
 
       expect(noop.error).not.toHaveBeenCalled();
-      Lavaca.util.Config.dispose();
-	  	$('script.test-configs').remove();
+      Config.dispose();
+      $('script.test-configs').remove();
     });
   });
 
-})(Lavaca.resolve('Lavaca.ui.DustTemplate', true), Lavaca.resolve('Lavaca.util.Translation', true));
+});
 
