@@ -5,14 +5,18 @@
   "main": "grunt.js",
   "scripts": {},
   "devDependencies": {
+    "yeoman": "0.9.x",
+    "preprocess": "1.0.x",
     "grunt-jasmine-runner": "0.6.0",
     "grunt-css": "0.3.2",
     "grunt-contrib-copy": "0.3.2",
     "dustjs-linkedin": "1.1.1",
     "connect": "2.4.4",
     "grunt-dustjs": "0.2.1",
+    "grunt-contrib-clean": "0.3.x",
     "grunt-contrib-less": "0.3.2",
     "grunt-amd-checkrequire": "git://github.com/zship/grunt-amd-checkrequire",
+    "grunt-amd-dist": "git://github.com/zship/grunt-amd-dist",
     "grunt-amd-test": "git://github.com/zship/grunt-amd-test",
     "mout": "git://github.com/mout/mout.git#v0.2.0"
   },

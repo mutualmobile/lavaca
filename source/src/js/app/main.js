@@ -10,19 +10,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
+  var models = require('./models/models');
   var ExampleController = require('./net/ExampleController');
   var Application = require('lavaca/mvc/Application');
   var Model = require('lavaca/mvc/Model');
   var Connectivity = require('lavaca/net/Connectivity');
+  var History = require('lavaca/net/History');
   var LoadingIndicator = require('lavaca/ui/LoadingIndicator');
   var Translation = require('lavaca/util/Translation');
+  var State = require('./models/State');
+  require('lavaca/ui/DustTemplate');
 
-  /*
   // Uncomment this section to use hash-based browser history instead of HTML5 history.
   // You should use hash-based history if there's no server-side component supporting your app's routes.
-
-  Lavaca.net.History.overrideStandardsMode();
-  */
+  History.overrideStandardsMode();
 
   /**
    * @class app
@@ -30,19 +31,20 @@ define(function(require) {
    * Global application-specific object
    */
   var app = new Application(function() {
-    // Setup offline AJAX handler
-    Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
     // Initialize the models cache
-    app.models.init();
+    this.models = models;
+    this.models.init();
 
-    app.models.set('example', new Model());
+    this.models.set('example', new Model());
     // Initialize the routes
-    app.router.add({
+    this.router.add({
       '/': [ExampleController, 'home'],
       '/lang': [ExampleController, 'lang']
     });
+    State.set('lang', localStorage.getItem('app:lang') || 'en_US');
+    Translation.init(State.get('lang'));
     // Initialize the loading indicator
-    app.loadingIndicator = LoadingIndicator.init();
+    this.loadingIndicator = LoadingIndicator.init();
   });
 
   /**
@@ -64,5 +66,10 @@ define(function(require) {
     var hasLoaded = Translation.hasLoaded;
     window.plugins.notification.alert(hasLoaded ? Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
   };
+
+  // Setup offline AJAX handler
+  Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
+
+  return app;
 
 });

@@ -59,6 +59,14 @@ define(function(require) {
   };
 
   /**
+   * @field {Boolean} animations
+   * @static
+   * @default true
+   * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
+   */
+  Device.animations = !Device.mobileBrowser().android;
+
+  /**
    * @method register
    * @static
    * Registers a plugin to be initialized when the device is ready
@@ -108,7 +116,10 @@ define(function(require) {
    * @param {Function} callback  The handler to execute when the device is ready
    */
   Device.init = function(callback) {
-    if (document.addEventListener) {
+    if (!Cordova) {
+      $(document).ready(callback);
+    }
+    else if (document.addEventListener) {
       // Android fix
       document.addEventListener('deviceready', callback, false);
     } else {
@@ -118,23 +129,24 @@ define(function(require) {
 
   $(document).ready(function() {
     var i = -1,
-        installPlugin,
-        e;
+        installPlugin;
     while (!!(installPlugin = _onInit[++i])) {
       installPlugin();
     }
     _initHasRun = true;
-    if (!Cordova) {
-      if (document.createEvent) {
-        e = document.createEvent('Events');
-        e.initEvent('deviceready', true, false);
-        document.dispatchEvent(e);
-      } else if (document.fireEvent) {
-        e = document.createEventObject();
-        e.eventType = 'deviceready';
-        document.fireEvent('ondeviceready', e);
-      }
-    }
+    /*
+     *if (!Cordova) {
+     *  if (document.createEvent) {
+     *    e = document.createEvent('Events');
+     *    e.initEvent('deviceready', true, false);
+     *    document.dispatchEvent(e);
+     *  } else if (document.fireEvent) {
+     *    e = document.createEventObject();
+     *    e.eventType = 'deviceready';
+     *    document.fireEvent('ondeviceready', e);
+     *  }
+     *}
+     */
   });
 
   return Device;

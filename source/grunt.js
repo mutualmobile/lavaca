@@ -1,7 +1,10 @@
 /*global module:false*/
 
 var dust = require('dustjs-linkedin'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    preprocess = require('preprocess'),
+    fs = require('fs'),
+    path = require('path');
 
 module.exports = task;
 
@@ -119,6 +122,7 @@ function task(grunt) {
           }
         }
       };
+
   var config = _.extend({}, buildConfig, {
     meta: {
       version: '0.1.0'
@@ -128,22 +132,30 @@ function task(grunt) {
       //   '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
       //   'YOUR_NAME; Licensed MIT */'
     },
+    //yeoman
+    staging: 'temp',
+    output: 'www',
+    //end yeoman
+    clean: {
+      build: ['temp', 'www']
+    },
+    'usemin-handler': {
+      html: 'temp/index.html'
+    },
+    usemin: {
+      html: ['temp/index.html']
+    },
+    rev: {
+      js: 'temp/js/app.built.min.js',
+      css: 'temp/css/app/app.css'
+    },
     lint: {
       files: ['grunt.js', BASE_DIR + '**/*.js', 'test/**/*.js']
     },
-    concat: {
-      jsLavaca: buildConfig.build.js.lavaca,
-      jsApp: buildConfig.build.js.app,
-      cssApp: buildConfig.build.css.app
-    },
     min: {
-      jsLavaca: {
-        src: '<config:concat.jsLavaca.dest>',
-        dest: buildConfig.build.js.lavaca.minDest
-      },
-      jsApp: {
-        src: '<config:concat.jsApp.dest>',
-        dest: buildConfig.build.js.app.minDest
+      build: {
+        src: 'temp/js/app.built.js',
+        dest: 'temp/js/app.built.min.js'
       }
     },
     cssmin: {
@@ -152,14 +164,30 @@ function task(grunt) {
         dest: buildConfig.build.css.app.minDest
       }
     },
+    preprocess: {
+      build: {
+        src: 'temp/index.html',
+        dest: 'temp/index.html',
+        locals: {
+          css: 'test',
+          js: 'test'
+        }
+      }
+    },
     less: {
-      minified: {
+      build: {
         options: {
           compress: true
         },
         files: {
-          'src/css/app/app.css': 'src/css/app/app.less'
+          'temp/css/app.css': 'temp/css/app/app.less'
         }
+      }
+    },
+    concat: {
+      css: {
+        dest: 'temp/css/app.built.css',
+        src: ['temp/css/app.css']
       }
     },
     jasmine : {
@@ -231,7 +259,30 @@ function task(grunt) {
         destDirs: [DIST_BASE_DIR]
       }
     },
-    copy: {},
+    copy: {
+      temp: {
+        files: {
+          'temp/': 'src/**'
+        }
+      },
+      www: {
+        files: {
+          'www/': 'temp/index.html',
+          'www/css/': 'temp/css/*.built.css',
+          'www/js/': 'temp/js/*.built.min.js'
+        }
+      },
+      ios: {
+        files: {
+          'ios/www/': 'www/**'
+        }
+      },
+      android: {
+        files: {
+          'android/assets/www/': 'www/**'
+        }
+      }
+    },
     'copy-static': {
       dist: {
         files: copyStaticDirMap(BASE_DIR, DIST_BASE_DIR)
@@ -260,32 +311,17 @@ function task(grunt) {
       module: 'src/js/Lavaca/util/Map.js',
       include: ['src/js/**/*.js', 'test/unit/**/*.js']
     },
+    dist: {
+      out: 'temp/js/app.built.js',
+      standalone: false,
+      include: 'temp/js/app/**/*.js',
+      excludeBuilt: [],
+      excludeShallow: []
+    },
     requirejs: {
       baseUrl: 'src/js',
+      mainConfigFile: 'src/js/app/boot.js',
       optimize: 'none',
-      paths: {
-        '$': 'libs/zepto-1.0rc1',
-        'mout': 'libs/mout',
-        'dust': 'libs/dust-full-1.1.1',
-        'dust-helpers': 'libs/dust-helpers-1.1.0',
-        'lz77': 'libs/lz77',
-        'iScroll': 'libs/iscroll-lite-4.1.6',
-        'lavaca': 'Lavaca'
-      },
-      shim: {
-        $: {
-          exports: '$'
-        },
-        dust: {
-          exports: 'dust'
-        },
-        'dust-helpers': {
-          deps: ['dust']
-        },
-        lz77: {
-          exports: 'LZ77'
-        }
-      },
       keepBuildDir: true,
       locale: "en-us",
       useStrict: false,
@@ -297,16 +333,27 @@ function task(grunt) {
     }
   });
 
+  grunt.initConfig(config);
 
   grunt.loadNpmTasks('grunt-css');
-  //grunt.loadNpmTasks('grunt-jasmine-runner');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-dustjs');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-amd-checkrequire');
-  // Project configuration.
-  grunt.initConfig(config);
+
+
+  grunt.registerMultiTask('preprocess', 'Preprocess HTML containing special comments', function() {
+    var src = this.data.src;
+    var dest = this.data.dest;
+    preprocess.preprocessFileSync(src,dest,this.data.locals);
+  });
+
+
+  grunt.registerTask('build', 'clean copy:temp less concat dist min preprocess copy:www copy:ios copy:android');
+
 
   grunt.registerMultiTask('docs', 'Generates documentation using atnotate', function(env) {
     renderDocs.call(this, this.data);
@@ -342,7 +389,7 @@ function task(grunt) {
       .on('close', done);
   });
 
-  grunt.registerTask('build', 'dustjs concat min less cssmin index copy-static copy-device');
+  //grunt.registerTask('build', 'dustjs concat min less cssmin index copy-static copy-device');
   grunt.registerTask('build-staging', 'concat min cssmin index::staging copy-static copy-env:staging copy-device');
   grunt.registerTask('build-production', 'concat min cssmin index::production copy-static copy-env:production copy-device');
   grunt.registerTask('run', 'build server watch-all');

@@ -22,6 +22,7 @@ define(function(require) {
   var Config = require('lavaca/util/Config');
   var Promise = require('lavaca/util/Promise');
   var Translation = require('lavaca/util/Translation');
+  require('lavaca/events/Touch'); //jquery plugins
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -50,11 +51,11 @@ define(function(require) {
    * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
-    Device.init($.proxy(this.init, this));
     $(window).on('unload', $.proxy(this.dispose, this));
     if (callback) {
-      this.on('init', callback);
+      this.on('init', callback.bind(this));
     }
+    Device.init($.proxy(this.init, this));
   }, {
     /**
      * @field {Function} TViewManager
@@ -92,12 +93,6 @@ define(function(require) {
      * The default params object to supply the initial route
      */
     initParams: null,
-    /**
-     * @field {String} initLocale
-     * @default "en_US"
-     * The default locale to use
-     */
-    initLocale: 'en_US',
     /**
      * @field {String} viewRootSelector
      * @default "#view-root"
@@ -141,7 +136,7 @@ define(function(require) {
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
-        this.router.exec(url, null, link.dataAttrs()).error(this.onInvalidRoute);
+        this.router.exec(url, null, null).error(this.onInvalidRoute);
       }
     },
     /**
@@ -177,15 +172,12 @@ define(function(require) {
        * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
        */
       this.animations = !this.mobileBrowser.android;
-      /** 
+      /**
        * @field {Lavaca.mvc.Model} state
        * @default null
        * Model used for application state management
        */
-      this.state = new this.TState();
       Config.init();
-      this.state.set('lang', localStorage.getItem('app:lang') || this.initLocale);
-      Translation.init(app.state.get('lang'));
       Template.init();
       /**
        * @field {Lavaca.mvc.ViewManager} viewManager
@@ -208,7 +200,7 @@ define(function(require) {
           this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
         );
         if (this.initState) {
-          History.replace(this.initState.state, this.initState.title, this.initState.url); 
+          History.replace(this.initState.state, this.initState.title, this.initState.url);
         }
       } else {
         promise.resolve();
