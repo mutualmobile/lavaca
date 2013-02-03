@@ -11,10 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var $ = require('$');
-  var iScroll = require('iScroll');
   var Widget = require('./Widget');
+  var iScroll = require('iScroll');
   var delay = require('lavaca/util/delay');
-
 
   var _props = ['overflowScrolling', 'webkitOverflowScrolling', 'MozOverflowScrolling', 'OOverflowScrolling', 'MSOverflowScrolling'],
       _isSupported,
@@ -190,7 +189,6 @@ define(function(require) {
       Widget.prototype.dispose.call(this);
     }
   });
-
 
   return Scrollable;
 

@@ -11,10 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var $ = require('$');
-  var EventVector = require('./EventVector');
   var EventPoint = require('./EventPoint');
+  var EventVector = require('./EventVector');
   var uuid = require('lavaca/util/uuid');
-
 
   var Touch = {};
 
@@ -686,7 +685,6 @@ define(function(require) {
     Touch.bind(this, delegate, onSwipeStart, onMove, onEnd);
     return this;
   };
-
 
   return Touch;
 

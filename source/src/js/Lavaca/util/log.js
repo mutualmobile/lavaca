@@ -15,7 +15,6 @@ define(function() {
     }
   };
 
-
   return log;
 
 });

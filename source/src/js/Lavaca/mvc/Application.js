@@ -11,18 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var $ = require('$');
+  var Device = require('lavaca/env/Device');
   var EventDispatcher = require('lavaca/events/EventDispatcher');
+  var Model = require('lavaca/mvc/Model');
+  var Router = require('lavaca/mvc/Router');
+  var ViewManager = require('lavaca/mvc/ViewManager');
   var Connectivity = require('lavaca/net/Connectivity');
   var History = require('lavaca/net/History');
-  var Device = require('lavaca/env/Device');
-  var Config = require('lavaca/util/Config');
-  var Translation = require('lavaca/util/Translation');
-  var Promise = require('lavaca/util/Promise');
-  var ViewManager = require('lavaca/mvc/ViewManager');
-  var Router = require('lavaca/mvc/Router');
-  var Model = require('lavaca/mvc/Model');
   var Template = require('lavaca/ui/Template');
-
+  var Config = require('lavaca/util/Config');
+  var Promise = require('lavaca/util/Promise');
+  var Translation = require('lavaca/util/Translation');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -114,7 +113,7 @@ define(function(require) {
       // If the error is equal to "locked", it means that the router or view manager was
       // busy while while the user was attempting to navigate
       if (err !== 'locked') {
-        plugiApplication.notification.alert('An error occurred while trying to display this URL.');
+        window.plugins.notification.alert('An error occurred while trying to display this URL.');
       }
     },
     /**
@@ -138,7 +137,7 @@ define(function(require) {
         History.back();
       } else if (isExternal || rel === 'nofollow' || target === '_blank') {
         e.stopPropagation();
-        plugiApplication.childBrowser.showWebPage(url);
+        window.plugins.childBrowser.showWebPage(url);
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
@@ -238,7 +237,6 @@ define(function(require) {
       return _matchHashRoute(hash);
     })(window.location.hash)
   });
-
 
   return Application;
 

@@ -12,7 +12,6 @@ define(function(require) {
 
   var extend = require('./extend');
 
-
   function _disposeOf(obj) {
     var n,
         o,
@@ -38,7 +37,7 @@ define(function(require) {
     }
   }
 
-  /** 
+  /**
    * @class Lavaca.util.Disposable
    * Abstract type for types that need to ready themselves for GC
    *
@@ -53,7 +52,6 @@ define(function(require) {
       _disposeOf(this);
     }
   });
-
 
   return Disposable;
 

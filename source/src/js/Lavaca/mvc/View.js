@@ -13,12 +13,11 @@ define(function(require) {
   var $ = require('$');
   var EventDispatcher = require('lavaca/events/EventDispatcher');
   var Model = require('lavaca/mvc/Model');
-  var Promise = require('lavaca/util/Promise');
-  var Cache = require('lavaca/util/Cache');
   var Template = require('lavaca/ui/Template');
+  var Cache = require('lavaca/util/Cache');
+  var Promise = require('lavaca/util/Promise');
   var log = require('lavaca/util/log');
   var uuid = require('lavaca/util/uuid');
-
 
   /**
    * @class Lavaca.mvc.View
@@ -635,7 +634,6 @@ define(function(require) {
       EventDispatcher.prototype.dispose.apply(this, arguments);
     }
   });
-
 
   return View;
 

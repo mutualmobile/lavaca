@@ -13,7 +13,6 @@ define(function(require) {
   var $ = require('$');
   var Transform = require('./Transform');
 
-
   var Animation = {};
 
   var _props = {
@@ -260,7 +259,6 @@ define(function(require) {
       return this;
     }
   };
-
 
   return Animation;
 

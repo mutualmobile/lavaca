@@ -10,14 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Cache = require('lavaca/util/Cache');
-  var Promise = require('lavaca/util/Promise');
   var EventDispatcher = require('lavaca/events/EventDispatcher');
   var Connectivity = require('lavaca/net/Connectivity');
   var ArrayUtils = require('lavaca/util/ArrayUtils');
+  var Cache = require('lavaca/util/Cache');
+  var Promise = require('lavaca/util/Promise');
   var clone = require('mout/lang/deepClone');
   var merge = require('mout/object/merge');
-
 
   var UNDEFINED;
 
@@ -581,7 +580,6 @@ define(function(require) {
    * as a computed property and should instead just return the function.
    */
   Model.DO_NOT_COMPUTE = 'do_not_compute';
-
 
   return Model;
 

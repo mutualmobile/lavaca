@@ -15,7 +15,6 @@ define(function(require) {
   var clone = require('mout/lang/deepClone');
   var merge = require('mout/object/merge');
 
-
   function _multivariablePattern() {
     return new RegExp('\\{\\*(.*?)\\}', 'g');
   }
@@ -193,7 +192,6 @@ define(function(require) {
       return promise;
     }
   });
-
 
   return Route;
 

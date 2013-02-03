@@ -13,7 +13,6 @@ define(function(require) {
   var Disposable = require('lavaca/util/Disposable');
   var merge = require('mout/object/merge');
 
-
   /** 
    * @class Lavaca.events.EventDispatcher
    * @super Lavaca.util.Disposable
@@ -155,7 +154,6 @@ define(function(require) {
       });
     }
   });
-
 
   return EventDispatcher;
 

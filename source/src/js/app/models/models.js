@@ -12,106 +12,109 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * @class app.models
  *  Application models cache
  */
-(function(ns) {
+define(function(require) {
 
-var _modelsCache,
-    _flags = {};
+  var Disposable = require('lavaca/util/Disposable');
+  var Cache = require('lavaca/util/Cache');
 
-/** 
- * @field {String} SENSITIVE
- * @static
- * @default "sensitive"
- * The sensitive flag
- */
-ns.SENSITIVE = 'sensitive';
+  var models = {};
+  var _modelsCache;
+  var _flags = {};
 
-/**
- * @method get
- * @static
- * Gets a model by name
- *
- * @param {String} name  The name under which the model is stored
- * @return {Object} The model stored under that name
- */
-ns.get = function(name) {
-  return _modelsCache.get(name);
-};
+  /** 
+   * @field {String} SENSITIVE
+   * @static
+   * @default "sensitive"
+   * The sensitive flag
+   */
+  models.SENSITIVE = 'sensitive';
 
-/**
- * @method set
- * @static
- * Sets a model
- *
- * @sig
- * @param {String} name  The name under which to store the value
- * @param {Object} value  The value to store
- *
- * @sig
- * @param {String} name  The name under which to store the value
- * @param {Object} value  The value to store
- * @param {String} flag  A meta data flag to assign to the data
- */
-ns.set = function(name, value, flag) {
-  _modelsCache.set(name, value);
-  if (flag) {
-    var keys = _flags[flag];
-    if (!keys) {
-      keys = _flags[flag] = [];
+  /**
+   * @method get
+   * @static
+   * Gets a model by name
+   *
+   * @param {String} name  The name under which the model is stored
+   * @return {Object} The model stored under that name
+   */
+  models.get = function(name) {
+    return _modelsCache.get(name);
+  };
+
+  /**
+   * @method set
+   * @static
+   * Sets a model
+   *
+   * @sig
+   * @param {String} name  The name under which to store the value
+   * @param {Object} value  The value to store
+   *
+   * @sig
+   * @param {String} name  The name under which to store the value
+   * @param {Object} value  The value to store
+   * @param {String} flag  A meta data flag to assign to the data
+   */
+  models.set = function(name, value, flag) {
+    _modelsCache.set(name, value);
+    if (flag) {
+      var keys = _flags[flag] = _flags[flag] || [];
+      keys.push(name);
     }
-    keys.push(name);
-  }
-};
+  };
 
-/**
- * @method clear
- * @static
- *
- * @sig
- * Removes all cached model data
- *
- * @sig
- * Removes all flagged cached model data
- * @param {String} flag  The meta data flag assigned to the data
- */
-ns.clear = function(flag) {
-  if (flag) {
-    var keys = _flags[flag] || [],
-        i = -1,
-        key,
-        item;
-    while (key = keys[++i]) {
-      item = _modelsCache.get(key);
-      if (item && item instanceof Lavaca.utils.Disposable) {
-        item.dispose();
+  /**
+   * @method clear
+   * @static
+   *
+   * @sig
+   * Removes all cached model data
+   *
+   * @sig
+   * Removes all flagged cached model data
+   * @param {String} flag  The meta data flag assigned to the data
+   */
+  models.clear = function(flag) {
+    if (flag) {
+      var keys = _flags[flag] || [],
+          i = -1,
+          key,
+          item;
+      while (!!(key = keys[++i])) {
+        item = _modelsCache.get(key);
+        if (item && item instanceof Disposable) {
+          item.dispose();
+        }
+        _modelsCache.remove(key);
       }
-      _modelsCache.remove(key);
+      _flags[flag] = [];
+    } else {
+      models.init();
     }
-    _flags[flag] = [];
-  } else {
-    ns.init();
-  }
-};
+  };
 
-/**
- * @method init
- * @static
- * Readies the models cache for use
- */
-ns.init = function() {
-  ns.dispose();
-  _modelsCache = new Lavaca.util.Cache();
-};
+  /**
+   * @method init
+   * @static
+   * Readies the models cache for use
+   */
+  models.init = function() {
+    models.dispose();
+    _modelsCache = new Cache();
+  };
 
-/**
- * @method dispose
- * @static
- * Destroys the models cache
- */
-ns.dispose = function() {
-  if (_modelsCache) {
-    _modelsCache.dispose();
-    _modelsCache = null;
-  }
-};
+  /**
+   * @method dispose
+   * @static
+   * Destroys the models cache
+   */
+  models.dispose = function() {
+    if (_modelsCache) {
+      _modelsCache.dispose();
+      _modelsCache = null;
+    }
+  };
 
-})(Lavaca.resolve('app.models', true));
+  return models;
+
+});

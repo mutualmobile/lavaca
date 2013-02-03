@@ -14,7 +14,6 @@ define(function(require) {
   var Cordova = require('cordova');
   var Promise = require('lavaca/util/Promise');
 
-
   /**
    * @class Lavaca.env.Device
    * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
@@ -137,7 +136,6 @@ define(function(require) {
       }
     }
   });
-
 
   return Device;
 

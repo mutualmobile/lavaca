@@ -39,7 +39,6 @@ define(function() {
     return o;
   };
 
-
   return resolve;
 
 });

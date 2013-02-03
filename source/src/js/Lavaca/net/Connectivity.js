@@ -14,7 +14,6 @@ define(function(require) {
   var Promise = require('lavaca/util/Promise');
   var resolve = require('lavaca/util/resolve');
 
-
   /**
    * @class Lavaca.net.Connectivity
    * A utility type for working under different network connectivity situatioConnectivity.
@@ -98,7 +97,6 @@ define(function(require) {
   Connectivity.registerOfflineAjaxHandler = function(callback) {
     _offlineAjaxHandlers.push(callback);
   };
-
 
   return Connectivity;
 

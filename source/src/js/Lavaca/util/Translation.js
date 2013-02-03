@@ -10,9 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Map = require('./Map');
   var Cache = require('./Cache');
-
+  var Map = require('./Map');
 
   var _cache = new Cache();
 
@@ -166,7 +165,6 @@ define(function(require) {
   Translation.dispose = function() {
     Map.dispose(_cache);
   };
-
 
   return Translation;
 

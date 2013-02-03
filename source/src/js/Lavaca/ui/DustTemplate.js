@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var dust = require('dust');
-  var Promise = require('lavaca/util/Promise');
+  require('dust-helpers');
   var Template = require('lavaca/ui/Template');
-  var Translation = require('lavaca/util/Translation');
-  var StringUtils = require('lavaca/util/StringUtils');
   var Config = require('lavaca/util/Config');
-
+  var Promise = require('lavaca/util/Promise');
+  var StringUtils = require('lavaca/util/StringUtils');
+  var Translation = require('lavaca/util/Translation');
 
   /**
    * @class Lavaca.ui.DustTemplate
@@ -253,7 +253,6 @@ define(function(require) {
 
   // Register the Dust template type for later use
   Template.register('text/dust-template', DustTemplate);
-
 
   return DustTemplate;
 

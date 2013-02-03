@@ -12,7 +12,6 @@ define(function(require) {
 
   var Disposable = require('lavaca/util/Disposable');
 
-
   function _notImplemented() {
     throw 'Not implemented';
   }
@@ -35,7 +34,7 @@ define(function(require) {
      * @param {String} id  The ID of the stored object
      * @return {Object}  The stored object
      */
-    get: function(id) {
+    get: function() {
       _notImplemented();
     },
     /**
@@ -44,7 +43,7 @@ define(function(require) {
      * @param {String} id  The ID of the object to store
      * @param {Object} value  The value to store
      */
-    set: function(id, value) {
+    set: function() {
       _notImplemented();
     },
     /**
@@ -52,7 +51,7 @@ define(function(require) {
      * Removes an object from storage
      * @param {String} id  The ID of the object to remove from storage
      */
-    remove: function(id) {
+    remove: function() {
       _notImplemented();
     },
     /**
@@ -64,7 +63,6 @@ define(function(require) {
       _notImplemented();
     }
   });
-
 
   return Store;
 

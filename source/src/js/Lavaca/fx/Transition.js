@@ -12,7 +12,6 @@ define(function(require) {
 
   var $ = require('$');
 
-
   var Transition = {};
 
   var _props = {
@@ -199,7 +198,6 @@ define(function(require) {
       return this;
     }
   };
-
 
   return Transition;
 

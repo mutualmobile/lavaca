@@ -24,7 +24,6 @@ define(function() {
     }, ms || 0);
   };
 
-
   return delay;
 
 });

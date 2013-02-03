@@ -12,7 +12,6 @@ define(function(require) {
 
   var $ = require('$');
 
-
   var _props = {
         transform: 'transform',
         webkitTransform: '-webkit-transform',
@@ -293,7 +292,6 @@ define(function(require) {
     }
     return this;
   };
-
 
   return Transform;
 

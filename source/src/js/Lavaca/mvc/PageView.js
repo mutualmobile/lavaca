@@ -17,7 +17,6 @@ define(function(require) {
   var Promise = require('lavaca/util/Promise');
   var delay = require('lavaca/util/delay');
 
-
   /**
    * @class Lavaca.mvc.View
    * @super Lavaca.events.EventDispatcher
@@ -149,7 +148,7 @@ define(function(require) {
      * @param {Array} exitingViews  The views that are exiting as this one enters
      * @return {Lavaca.util.Promise}  A promise
      */
-    enter: function(container, exitingViews) {
+    enter: function(container) {
       var promise = new Promise(this),
           renderPromise;
       container = $(container);
@@ -177,7 +176,7 @@ define(function(require) {
      * @param {Array} enteringViews  The views that are entering as this one exits
      * @return {Lavaca.util.Promise}  A promise
      */
-    exit: function(container, enteringViews) {
+    exit: function() {
       var promise = new Promise(this);
       this.shell.detach();
       delay(promise.resolver());
@@ -187,7 +186,6 @@ define(function(require) {
       return promise;
     }
   });
-
 
   return PageView;
 

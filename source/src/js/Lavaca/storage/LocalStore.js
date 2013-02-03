@@ -11,9 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var Store = require('./Store');
-  var StringUtils = require('lavaca/util/StringUtils');
   var ArrayUtils = require('lavaca/util/ArrayUtils');
-
+  var StringUtils = require('lavaca/util/StringUtils');
 
   function _saveManifest(store) {
     localStorage.setItem(store.id + '@manifest', JSON.stringify(store.manifest));
@@ -91,7 +90,6 @@ define(function(require) {
       return result;
     }
   });
-
 
   return LocalStore;
 

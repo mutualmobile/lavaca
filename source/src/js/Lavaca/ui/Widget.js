@@ -14,7 +14,6 @@ define(function(require) {
   var EventDispatcher = require('lavaca/events/EventDispatcher');
   var uuid = require('lavaca/util/uuid');
 
-
   /**
    * @class Lavaca.ui.Widget
    * @super Lavaca.events.EventDispatcher
@@ -43,7 +42,6 @@ define(function(require) {
      */
     this.id = id;
   });
-
 
   return Widget;
 

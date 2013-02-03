@@ -12,7 +12,6 @@ define(function(require) {
 
   var extend = require('lavaca/util/extend');
 
-
   var _coordNames = ['screenX', 'screenY', 'clientX', 'clientY', 'pageX', 'pageY'];
 
   /**
@@ -77,7 +76,6 @@ define(function(require) {
       }
     }
   });
-
 
   return EventPoint;
 

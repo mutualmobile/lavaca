@@ -12,7 +12,6 @@ define(function(require) {
 
   var extend = require('./extend');
 
-
   /**
    * @class Lavaca.util.Promise
    * Utility type for asynchronous programming
@@ -227,7 +226,6 @@ define(function(require) {
         args = [].slice.call(arguments, thispIsPromise ? 0 : 1);
     return promise.when.apply(promise, args);
   };
-
 
   return Promise;
 

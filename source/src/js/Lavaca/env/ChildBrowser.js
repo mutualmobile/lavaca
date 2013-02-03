@@ -10,10 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
   var Device = require('lavaca/env/Device');
+  var EventDispatcher = require('lavaca/events/EventDispatcher');
   var Promise = require('lavaca/util/Promise');
-
 
   /**
    * @class Lavaca.env.ChildBrowser
@@ -58,7 +57,6 @@ define(function(require) {
   });
 
   Device.register('childBrowser', ChildBrowser);
-
 
   return ChildBrowser;
 

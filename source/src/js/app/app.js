@@ -8,54 +8,61 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-(function(Lavaca, $) {
+define(function(require) {
 
-/*
-// Uncomment this section to use hash-based browser history instead of HTML5 history.
-// You should use hash-based history if there's no server-side component supporting your app's routes.
+  var ExampleController = require('./net/ExampleController');
+  var Application = require('lavaca/mvc/Application');
+  var Model = require('lavaca/mvc/Model');
+  var Connectivity = require('lavaca/net/Connectivity');
+  var LoadingIndicator = require('lavaca/ui/LoadingIndicator');
+  var Translation = require('lavaca/util/Translation');
 
-Lavaca.net.History.overrideStandardsMode();
-*/
+  /*
+  // Uncomment this section to use hash-based browser history instead of HTML5 history.
+  // You should use hash-based history if there's no server-side component supporting your app's routes.
 
-/**
- * @class app
- * @super Lavaca.mvc.Application
- * Global application-specific object
- */
-window.app = new Lavaca.mvc.Application(function() {
-  // Setup offline AJAX handler
-  Lavaca.net.Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
-  // Initialize the models cache
-  app.models.init();
+  Lavaca.net.History.overrideStandardsMode();
+  */
 
-  app.models.set('example', new Lavaca.mvc.Model());
-  // Initialize the routes
-  app.router.add({
-    '/': [app.net.ExampleController, 'home'],
-    '/lang': [app.net.ExampleController, 'lang']
+  /**
+   * @class app
+   * @super Lavaca.mvc.Application
+   * Global application-specific object
+   */
+  var app = new Application(function() {
+    // Setup offline AJAX handler
+    Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
+    // Initialize the models cache
+    app.models.init();
+
+    app.models.set('example', new Model());
+    // Initialize the routes
+    app.router.add({
+      '/': [ExampleController, 'home'],
+      '/lang': [ExampleController, 'lang']
+    });
+    // Initialize the loading indicator
+    app.loadingIndicator = LoadingIndicator.init();
   });
-  // Initialize the loading indicator
-  app.loadingIndicator = Lavaca.ui.LoadingIndicator.init();
+
+  /**
+   * @method showErrors
+   * Shows the errors dialog
+   *
+   * @param {Array} errors  A list of error messages
+   * @return {Lavaca.util.Promise}  A promise
+   */
+  app.showErrors = function(errors) {
+    return this.viewManager.load(null, app.ui.views.ErrorsView, {errors: errors}, 900);
+  };
+
+  /**
+   * @method onOfflineAjax
+   * Handles attempts to make an AJAX request when the application is offline
+   */
+  app.onOfflineAjax = function() {
+    var hasLoaded = Translation.hasLoaded;
+    window.plugins.notification.alert(hasLoaded ? Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
+  };
+
 });
-
-/**
- * @method showErrors
- * Shows the errors dialog
- *
- * @param {Array} errors  A list of error messages
- * @return {Lavaca.util.Promise}  A promise
- */
-app.showErrors = function(errors) {
-  return this.viewManager.load(null, app.ui.views.ErrorsView, {errors: errors}, 900);
-};
-
-/**
- * @method onOfflineAjax
- * Handles attempts to make an AJAX request when the application is offline
- */
-app.onOfflineAjax = function() {
-  var hasLoaded = Lavaca.util.Translation.hasLoaded;
-  plugins.notification.alert(hasLoaded ? Lavaca.util.Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
-};
-
-})(Lavaca, Lavaca.$);

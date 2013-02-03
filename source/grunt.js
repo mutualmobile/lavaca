@@ -256,6 +256,10 @@ function task(grunt) {
     checkrequire: {
       include: ['src/js/**/*.js', 'test/unit/**/*.js']
     },
+    whatrequires: {
+      module: 'src/js/Lavaca/util/Map.js',
+      include: ['src/js/**/*.js', 'test/unit/**/*.js']
+    },
     requirejs: {
       baseUrl: 'src/js',
       optimize: 'none',
@@ -263,11 +267,21 @@ function task(grunt) {
         '$': 'libs/zepto-1.0rc1',
         'mout': 'libs/mout',
         'dust': 'libs/dust-full-1.1.1',
+        'dust-helpers': 'libs/dust-helpers-1.1.0',
         'lz77': 'libs/lz77',
         'iScroll': 'libs/iscroll-lite-4.1.6',
         'lavaca': 'Lavaca'
       },
       shim: {
+        $: {
+          exports: '$'
+        },
+        dust: {
+          exports: 'dust'
+        },
+        'dust-helpers': {
+          deps: ['dust']
+        },
         lz77: {
           exports: 'LZ77'
         }

@@ -13,7 +13,6 @@ define(function(require) {
   var Disposable = require('lavaca/util/Disposable');
   var uuid = require('lavaca/util/uuid');
 
-
   /**
    * @class Lavaca.util.Cache
    * @super Lavaca.util.Disposable
@@ -128,7 +127,6 @@ define(function(require) {
       return results;
     }
   });
-
 
   return Cache;
 

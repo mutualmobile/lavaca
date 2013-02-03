@@ -13,7 +13,6 @@ define(function(require) {
   var $ = require('$');
   var Widget = require('./Widget');
 
-
   /**
    * @class Lavaca.ui.LoadingIndicator
    * @super Lavaca.ui.Widget
@@ -69,7 +68,6 @@ define(function(require) {
       .on('ajaxError', hide);
     return indicator;
   };
-
 
   return LoadingIndicator;
 

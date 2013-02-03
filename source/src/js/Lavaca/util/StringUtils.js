@@ -12,7 +12,6 @@ define(function(require) {
 
   var LZ77 = require('lz77');
 
-
   var _htmlEscapes = {
     '&': '&amp;',
     '<': '&lt;',
@@ -120,7 +119,6 @@ define(function(require) {
   StringUtils.decompress = function(s) {
     return new LZ77().decompress(s);
   };
-
 
   return StringUtils;
 

@@ -10,9 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Map = require('lavaca/util/Map');
   var Cache = require('lavaca/util/Cache');
-
+  var Map = require('lavaca/util/Map');
 
   var _cache = new Cache(),
       _types = [];
@@ -77,9 +76,9 @@ define(function(require) {
         type, templates, templateName, template;
 
     while (!!(type = _types[++i])) {
-      function construct(name, src, code) {
+      var construct = function(name, src, code) {
         return new type.js(name, src, code);
-      }
+      };
 
       // Load pre-compiled templates
       if (typeof type.js.getCompiledTemplates === "function") {
@@ -141,7 +140,6 @@ define(function(require) {
     }
     _types[_types.length] = {mime: mimeType, js: TTemplate};
   };
-
 
   return Template;
 

@@ -12,7 +12,6 @@ define(function(require) {
 
   var extend = require('lavaca/util/extend');
 
-
   /**
    * @class Lavaca.events.EventVector
    * An object indicating a direction
@@ -46,7 +45,6 @@ define(function(require) {
      */
     compass: 'north'
   });
-
 
   return EventVector;
 

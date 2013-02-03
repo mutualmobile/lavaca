@@ -11,14 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var $ = require('$');
+  var PageView = require('lavaca/mvc/PageView');
+  var ArrayUtils = require('lavaca/util/ArrayUtils');
+  var Cache = require('lavaca/util/Cache');
   var Disposable = require('lavaca/util/Disposable');
   var Promise = require('lavaca/util/Promise');
-  var Cache = require('lavaca/util/Cache');
-  var ArrayUtils = require('lavaca/util/ArrayUtils');
-  var PageView = require('lavaca/mvc/PageView');
   var delay = require('lavaca/util/delay');
   var merge = require('mout/object/merge');
-
 
   /**
    * @class Lavaca.mvc.ViewManager
@@ -246,7 +245,6 @@ define(function(require) {
       Disposable.prototype.dispose.call(this);
     }
   });
-
 
   return ViewManager;
 

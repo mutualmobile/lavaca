@@ -11,10 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var $ = require('$');
-  var Disposable = require('./Disposable');
   var Cache = require('./Cache');
+  var Disposable = require('./Disposable');
   var Connectivity = require('lavaca/net/Connectivity');
-
 
   function _absolute(url) {
     if (url && url.indexOf('http') !== 0) {
@@ -215,7 +214,6 @@ define(function(require) {
   Map.dispose = function(cache) {
     cache.dispose();
   };
-
 
   return Map;
 

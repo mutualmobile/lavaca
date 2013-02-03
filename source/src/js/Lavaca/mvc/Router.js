@@ -11,10 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 define(function(require) {
 
   var Route = require('./Route');
+  var History = require('lavaca/net/History');
   var Disposable = require('lavaca/util/Disposable');
   var Promise = require('lavaca/util/Promise');
-  var History = require('lavaca/net/History');
-
 
   /**
    * @class Lavaca.mvc.Router
@@ -169,7 +168,6 @@ define(function(require) {
       Disposable.prototype.dispose.apply(this, arguments);
     }
   });
-
 
   return Router;
 

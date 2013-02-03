@@ -12,7 +12,6 @@ define(function(require) {
 
   var Translation = require('./Translation');
 
-
   /**
    * @class Lavaca.util.DateUtils
    * Utility class for working with dates
@@ -575,7 +574,6 @@ define(function(require) {
     }
     return s.join('');
   };
-
 
   return DateUtils;
 
