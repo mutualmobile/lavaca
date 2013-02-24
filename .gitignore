@@ -1,29 +1,16 @@
-
 .DS_Store
 
-source/docs
-source/www
-source/www-production
-source/www-staging
-source/test/$src.html
-source/test/$www.html
-source/src/scripts.xml
-source/src/styles.xml
-source/node_modules
 source/libs/atnotate/atnotate.pyc
-source/_SpecRunner.html
-source/build.log
 
-source/android/.classpath
-source/android/.project
-source/android/bin/*
-source/android/gen/*
+source/src/android/.classpath
+source/src/android/.project
+source/src/android/bin/*
+source/src/android/gen/*
 
-source/ios/www/*
-source/android/assets/www/*
-
-*atnotate.pyc
-*build.log
+source/node_modules
+source/docs
+source/tmp
+source/build
 
 samples/sink/www/*
 samples/sink/ios/www/*
