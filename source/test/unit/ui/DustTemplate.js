@@ -92,13 +92,14 @@ define(function(require) {
       expect(noop.error).not.toHaveBeenCalled();
     });
     it('can use an include', function() {
+      _newTemplate('<h2>{title}</h2>', 'titleTmpl');
       var parentSource = '<h1>{name}</h1>{@include name="titleTmpl"/}',
           context = {name: 'Larry', title: 'Developer'},
           parentTemplate = _newTemplate(parentSource);
 
       parentTemplate.render(context)
         .success(function(html) {
-          expect(html).toEqual('<h1>Larry</h1><h2>Developer</h2>');
+          expect(html).toEqual('<h1>Larry</h1><h2>Developer</h2>', 'titleTmpl');
         })
         .error(noop.error);
 

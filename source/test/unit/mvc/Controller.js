@@ -1,6 +1,5 @@
 define(function(require) {
 
-  var app = window.app;
   var $ = require('$');
   var Controller = require('lavaca/mvc/Controller');
   var View = require('lavaca/mvc/View');
@@ -49,25 +48,6 @@ define(function(require) {
         expect(ob.foo).toHaveBeenCalled();
         expect(ob.foo.calls[0].args[0].one).toBe(1);
         expect(ob.foo.calls[0].args[0].two).toBe(2);
-      });
-    });
-    it('can make an ajax request', function() {
-      var controller = new testController(router, viewManager),
-          promise,
-          response;
-      runs(function() {
-        promise = controller.ajax({
-          success: new Promise().resolver()
-        });
-      });
-      waitsFor(function() {
-        promise.success(function(data) {
-          response = data;
-        });
-        return response;
-      }, 'The html to be received', 750);
-      runs(function() {
-        expect(response).not.toBeUndefined();
       });
     });
     describe('can load a view', function() {
@@ -144,7 +124,7 @@ define(function(require) {
       var controller = new testController(router, viewManager),
           response;
       $('body').append('<script type="text/x-translation" data-name="en" data-default>{"hello": "Hello {0}!"}</script>');
-      Translation.init(app.state.get('lang'));
+      Translation.init('en_US');
       response = controller.translate('hello', ['Tester']);
       expect(response).toEqual('Hello Tester!');
       $('script[type="text/x-translation"]').remove();
