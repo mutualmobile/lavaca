@@ -14,12 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 define(function(require) {
 
-  var Disposable = require('lavaca/util/Disposable');
-  var Cache = require('lavaca/util/Cache');
+  var Disposable = require('lavaca/util/Disposable'),
+      Cache = require('lavaca/util/Cache');
 
-  var models = {};
-  var _modelsCache;
-  var _flags = {};
+  var models = {},
+      _modelsCache,
+      _flags = {};
 
   /** 
    * @field {String} SENSITIVE

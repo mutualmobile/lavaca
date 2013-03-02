@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Widget = require('./Widget');
+  var $ = require('$'),
+      Widget = require('./Widget');
 
   /**
    * @class Lavaca.ui.LoadingIndicator

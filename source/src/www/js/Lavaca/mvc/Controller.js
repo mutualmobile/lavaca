@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Connectivity = require('lavaca/net/Connectivity');
-  var History = require('lavaca/net/History');
-  var Disposable = require('lavaca/util/Disposable');
-  var Promise = require('lavaca/util/Promise');
-  var StringUtils = require('lavaca/util/StringUtils');
-  var Translation = require('lavaca/util/Translation');
+  var Connectivity = require('lavaca/net/Connectivity'),
+      History = require('lavaca/net/History'),
+      Disposable = require('lavaca/util/Disposable'),
+      Promise = require('lavaca/util/Promise'),
+      StringUtils = require('lavaca/util/StringUtils'),
+      Translation = require('lavaca/util/Translation');
 
   /**
    * @class Lavaca.mvc.Controller

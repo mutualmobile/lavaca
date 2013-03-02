@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Cache = require('./Cache');
-  var Disposable = require('./Disposable');
-  var Connectivity = require('lavaca/net/Connectivity');
+  var $ = require('$'),
+      Cache = require('./Cache'),
+      Disposable = require('./Disposable'),
+      Connectivity = require('lavaca/net/Connectivity');
 
   function _absolute(url) {
     if (url && url.indexOf('http') !== 0) {

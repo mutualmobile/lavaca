@@ -10,18 +10,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Device = require('lavaca/env/Device');
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
-  var Model = require('lavaca/mvc/Model');
-  var Router = require('lavaca/mvc/Router');
-  var ViewManager = require('lavaca/mvc/ViewManager');
-  var Connectivity = require('lavaca/net/Connectivity');
-  var History = require('lavaca/net/History');
-  var Template = require('lavaca/ui/Template');
-  var Config = require('lavaca/util/Config');
-  var Promise = require('lavaca/util/Promise');
-  var Translation = require('lavaca/util/Translation');
+  var $ = require('$'),
+      Device = require('lavaca/env/Device'),
+      EventDispatcher = require('lavaca/events/EventDispatcher'),
+      Model = require('lavaca/mvc/Model'),
+      Router = require('lavaca/mvc/Router'),
+      ViewManager = require('lavaca/mvc/ViewManager'),
+      Connectivity = require('lavaca/net/Connectivity'),
+      History = require('lavaca/net/History'),
+      Template = require('lavaca/ui/Template'),
+      Config = require('lavaca/util/Config'),
+      Promise = require('lavaca/util/Promise'),
+      Translation = require('lavaca/util/Translation');
   require('lavaca/events/Touch'); //jquery plugins
 
   function _stopEvent(e) {

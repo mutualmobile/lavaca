@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var dust = require('dust');
+  var dust = require('dust'),
+      Template = require('lavaca/ui/Template'),
+      Config = require('lavaca/util/Config'),
+      Promise = require('lavaca/util/Promise'),
+      StringUtils = require('lavaca/util/StringUtils'),
+      Translation = require('lavaca/util/Translation');
   require('dust-helpers');
-  var Template = require('lavaca/ui/Template');
-  var Config = require('lavaca/util/Config');
-  var Promise = require('lavaca/util/Promise');
-  var StringUtils = require('lavaca/util/StringUtils');
-  var Translation = require('lavaca/util/Translation');
 
   /**
    * @class Lavaca.ui.DustTemplate

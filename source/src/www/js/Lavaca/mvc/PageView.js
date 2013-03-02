@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Model = require('lavaca/mvc/Model');
-  var View = require('lavaca/mvc/View');
-  var Template = require('lavaca/ui/Template');
-  var Promise = require('lavaca/util/Promise');
-  var delay = require('lavaca/util/delay');
+  var $ = require('$'),
+      Model = require('lavaca/mvc/Model'),
+      View = require('lavaca/mvc/View'),
+      Template = require('lavaca/ui/Template'),
+      Promise = require('lavaca/util/Promise'),
+      delay = require('lavaca/util/delay');
 
   /**
    * @class Lavaca.mvc.View

@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Model = require('lavaca/mvc/Model');
-  var Connectivity = require('lavaca/net/Connectivity');
-  var ArrayUtils = require('lavaca/util/ArrayUtils');
-  var Promise = require('lavaca/util/Promise');
-  var clone = require('mout/lang/deepClone');
-  var merge = require('mout/object/merge');
+  var Model = require('lavaca/mvc/Model'),
+      Connectivity = require('lavaca/net/Connectivity'),
+      ArrayUtils = require('lavaca/util/ArrayUtils'),
+      Promise = require('lavaca/util/Promise'),
+      clone = require('mout/lang/deepClone'),
+      merge = require('mout/object/merge');
 
   var UNDEFINED;
 

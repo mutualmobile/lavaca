@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Disposable = require('lavaca/util/Disposable');
-  var uuid = require('lavaca/util/uuid');
+  var Disposable = require('lavaca/util/Disposable'),
+      uuid = require('lavaca/util/uuid');
 
   /**
    * @class Lavaca.util.Cache

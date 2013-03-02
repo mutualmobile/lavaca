@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Disposable = require('lavaca/util/Disposable');
-  var delay = require('lavaca/util/delay');
-  var clone = require('mout/lang/deepClone');
-  var merge = require('mout/object/merge');
+  var Disposable = require('lavaca/util/Disposable'),
+      delay = require('lavaca/util/delay'),
+      clone = require('mout/lang/deepClone'),
+      merge = require('mout/object/merge');
 
   function _multivariablePattern() {
     return new RegExp('\\{\\*(.*?)\\}', 'g');

@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Widget = require('lavaca/ui/Widget');
-  var Promise = require('lavaca/util/Promise');
+  var $ = require('$'),
+      Widget = require('lavaca/ui/Widget'),
+      Promise = require('lavaca/util/Promise');
 
   function _required(value) {
     return value ? null : 'error_required';

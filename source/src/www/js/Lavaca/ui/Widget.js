@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
-  var uuid = require('lavaca/util/uuid');
+  var $ = require('$'),
+      EventDispatcher = require('lavaca/events/EventDispatcher'),
+      uuid = require('lavaca/util/uuid');
 
   /**
    * @class Lavaca.ui.Widget

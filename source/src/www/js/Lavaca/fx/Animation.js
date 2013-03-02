@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Transform = require('./Transform');
+  var $ = require('$'),
+      Transform = require('./Transform');
 
   var Animation = {};
 

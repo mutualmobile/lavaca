@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var Promise = require('lavaca/util/Promise');
-  var resolve = require('lavaca/util/resolve');
+  var $ = require('$'),
+      Promise = require('lavaca/util/Promise'),
+      resolve = require('lavaca/util/resolve');
 
   /**
    * @class Lavaca.net.Connectivity

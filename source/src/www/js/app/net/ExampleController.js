@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var ExampleView = require('app/ui/views/ExampleView');
-  var Controller = require('lavaca/mvc/Controller');
-  var Translation = require('lavaca/util/Translation');
-  var State = require('../models/State');
+  var ExampleView = require('app/ui/views/ExampleView'),
+      Controller = require('lavaca/mvc/Controller'),
+      Translation = require('lavaca/util/Translation'),
+      State = require('../models/State');
 
   /**
    * @class app.net.ExampleController

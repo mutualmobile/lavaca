@@ -10,14 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
-  var Model = require('lavaca/mvc/Model');
-  var Template = require('lavaca/ui/Template');
-  var Cache = require('lavaca/util/Cache');
-  var Promise = require('lavaca/util/Promise');
-  var log = require('lavaca/util/log');
-  var uuid = require('lavaca/util/uuid');
+  var $ = require('$'),
+      EventDispatcher = require('lavaca/events/EventDispatcher'),
+      Model = require('lavaca/mvc/Model'),
+      Template = require('lavaca/ui/Template'),
+      Cache = require('lavaca/util/Cache'),
+      Promise = require('lavaca/util/Promise'),
+      log = require('lavaca/util/log'),
+      uuid = require('lavaca/util/uuid');
 
   /**
    * @class Lavaca.mvc.View

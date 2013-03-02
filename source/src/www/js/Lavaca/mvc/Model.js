@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
-  var Connectivity = require('lavaca/net/Connectivity');
-  var ArrayUtils = require('lavaca/util/ArrayUtils');
-  var Cache = require('lavaca/util/Cache');
-  var Promise = require('lavaca/util/Promise');
-  var clone = require('mout/lang/deepClone');
-  var merge = require('mout/object/merge');
+  var EventDispatcher = require('lavaca/events/EventDispatcher'),
+      Connectivity = require('lavaca/net/Connectivity'),
+      ArrayUtils = require('lavaca/util/ArrayUtils'),
+      Cache = require('lavaca/util/Cache'),
+      Promise = require('lavaca/util/Promise'),
+      clone = require('mout/lang/deepClone'),
+      merge = require('mout/object/merge');
 
   var UNDEFINED;
 

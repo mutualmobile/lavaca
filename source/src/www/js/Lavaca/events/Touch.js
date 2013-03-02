@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var $ = require('$');
-  var EventPoint = require('./EventPoint');
-  var EventVector = require('./EventVector');
-  var uuid = require('lavaca/util/uuid');
+  var $ = require('$'),
+      EventPoint = require('./EventPoint'),
+      EventVector = require('./EventVector'),
+      uuid = require('lavaca/util/uuid');
 
   var Touch = {};
 

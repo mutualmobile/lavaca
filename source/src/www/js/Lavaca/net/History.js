@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var EventDispatcher = require('lavaca/events/EventDispatcher');
-  var uuid = require('lavaca/util/uuid');
+  var EventDispatcher = require('lavaca/events/EventDispatcher'),
+      uuid = require('lavaca/util/uuid');
 
   var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
       _standardsMode = !_isAndroid && typeof history.pushState === 'function',

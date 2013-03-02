@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var Device = require('lavaca/env/Device');
-  var PageView = require('lavaca/mvc/PageView');
-  var Promise = require('lavaca/util/Promise');
+  var Device = require('lavaca/env/Device'),
+      PageView = require('lavaca/mvc/PageView'),
+      Promise = require('lavaca/util/Promise');
   require('lavaca/fx/Animation'); //jquery plugins
 
   var UNDEFINED;
