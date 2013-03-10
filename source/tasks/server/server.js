@@ -94,17 +94,13 @@ module.exports = function(grunt) {
     base = grunt.config('server.base'),
     port = grunt.config('server.port'),
     server = startServer({
-        host: 'partnertest.kbb.com',
+        host: '',
         hourMs: 0*60*60,
         vhost: vhost,
         base: base,
         port: port,
         routes: [],
-        apiRoutes: [],
-        basicAuth: {
-          username: 'kbbqa',
-          password: 'pVggOeYtJLl35l0'
-        }
+        apiRoutes: []
     }),
     done = this.async();
 
