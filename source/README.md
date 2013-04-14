@@ -32,6 +32,7 @@ Make sure you are always in `source` directory when you run the following comman
 Precompiles Dust templates, starts development server, and watches the `www/templates` folder.
 
 - __Run Development Environment__
+
 ```bash
 $ grunt run
 ```
@@ -41,16 +42,19 @@ $ grunt run
 Precompiles LESS and Dust templates, concats and minifies all CSS and JavaScript files, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
 
 - __Build with local config__
+
 ```bash
 $ grunt build
 ```
 
 - __Build with staging config__ (a copy of the build will be available in `www` folder)
+
 ```bash
 $ grunt build:staging
 ```
 
 - __Build with production config__ (a copy of the build will be available in `www` folder)
+
 ```bash
 $ grunt build:production
 ```
