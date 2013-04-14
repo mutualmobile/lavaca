@@ -316,7 +316,10 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-amd-check');
 
-  grunt.registerTask('build', ['clean', 'copy:tmp', 'dustjs', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess', 'clean:tmp']);
+  grunt.registerTask('build', 'Builds app with specified config', function(env) {
+    env = env || 'local';
+    grunt.task.run('clean', 'copy:tmp', 'dustjs', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
+  });
   grunt.registerTask('test', ['amd-test', 'jasmine']);
 
 };

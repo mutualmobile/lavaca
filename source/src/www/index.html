@@ -67,6 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <!-- @exclude -->
     <script type="text/dust-template" data-name="example" data-src="templates/example.html"></script>
     <!-- @endexclude -->
+
   </head>
   <body>
     <!--Customize this area with your application's code-->
@@ -74,6 +75,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       <h1 class="logo">Lavaca</h1>
     </header>
     <div id="view-root"></div>
+
+    <!-- @exclude -->
+    <script type="text/x-config" data-name="local" data-src="configs/local.json" data-default></script>
+    <!-- @endexclude -->
+    <!-- @echo config -->
 
     <script type="text/x-translation" data-name="en_US" data-src="messages/en_US.json" data-default></script>
     <script type="text/x-translation" data-name="es_MX" data-src="messages/es_MX.json"></script>

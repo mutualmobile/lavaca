@@ -1,27 +1,26 @@
-# Lavaca with grunt
-
-Lavaca with grunt is a Lavaca branch optimized for build processes with command line build tool [Grunt](http://gruntjs.com). All the grunt build tasks are defined in grunt.js. This branch is highly experimental and welcomes any changes made towards the grunt tasks to make the build process better and even more automated. 
-
-## Setup
+# Getting Started
 
 1. __Get the code__
 ```bash
-$ git clone git@github.com:mutualmobile/lavaca.git [my_app]
+$ mkdir [my_app] && cd [my_app]
+$ git clone git@github.com:mutualmobile/lavaca.git .
 ```
 
 2. __Get the branch__
 ```bash
-$ cd [my_app] && git checkout -b grunt origin/grunt
+$ cd git checkout -b [my_branch] origin/amd
 ```
 
 3. __Install grunt__
+Note: this may require sudo
 ```bash
-$ npm install -g grunt
+$ npm install -g grunt-cli
 ```
 
 4. __Install dev dependencies for our tasks to work__
 ```bash
 $ cd source && npm install
+$ npm install grunt
 ```
 
 ## Usage
@@ -30,7 +29,7 @@ Make sure you are always in `source` directory when you run the following comman
 
 ### Build
 
-Precompiles LESS and Dust templates, concats and minifies all CSS and JavaScript files, generates `index.html` based on Dust template file `layout.html`, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
+Precompiles LESS and Dust templates, concats and minifies all CSS and JavaScript files, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
 
 - __Build with local config__
 ```bash
@@ -39,29 +38,22 @@ $ grunt build
 
 - __Build with staging config__ (a copy of the build will also be available in `www-staging` folder)
 ```bash
-$ grunt build-staging
+$ grunt build:staging
 ```
 
 - __Build with production config__ (a copy of the build will also be available in `www-production` folder)
 ```bash
-$ grunt build-production
+$ grunt build:production
 ```
 
 ### Test
 
-Starts a local server and runs unit tests defined in `test/unit` directory with [Jasmine](http://pivotal.github.com/jasmine/). This task will open a new window in the system default browser to show the test results.
+Runs unit tests defined in `test/unit` directory with [Jasmine](http://pivotal.github.com/jasmine/) in a headless instance of Webkit using [PhantomJS](http://phantomjs.org/).
 
-- __Test with JavaScripts source files from `src/js` folder__ (unminified)
+- __Run unit tests from `test/unit`__
 ```bash
-$ grunt test:unminified
+$ grunt test
 ```
-
-- __Test with JavaScripts source files from `www/js` folder__ (minified)
-```bash
-$ grunt test:minified
-```
-
-When you return to terminal, please do `control + C` to terminate the server before you run more tasks. This task is not smart enough to shut down the server when tests are done.
 
 ### Docs
 
@@ -73,83 +65,11 @@ Generates JavaScript documentation using [Atnotate](https://github.com/mutualmob
 $ grunt docs
 ```
 
-### Dust JS
-
-Precompiles Dust templates in `src/templates` to `src/js/app/ui/templates.js`.
-
-- __Compile Dust templates__
-
-```bash
-$ grunt dustjs
-```
-
-### LESS
-
-Precompiles LESS in `src/css` to `src/css/app/app.css`.
-
-- __Compile LESS__
-
-```bash
-$ grunt less
-```
-
-### Default
-
-A convenient task generates generated docs, builds with local config, and runs unit tests with minified source immediately after.
-
-```bash
-$ grunt
-```
-
-Behind the scenes, grunt is actually running the following for you:
-
-```bash
-$ grunt docs && grunt build && grunt test:minified
-```
-
 ### Server
 
 A task that simply runs a static server for local development and testing. Defaults to run on `localhost:8080` with `src` being the root directory.
 
 - __Run the default static server__
 ```bash
-$ grunt static-server
-```
-
-- __Run a custom server__
-```bash
-$ grunt static-server:[root_dir]:[port]
-```
-
-### Build, Watch & Build more automatically
-
-Runs the aforementioned build task first, starts a static server at `localhost:8080` with `src` being the root directory for debugging, then starts watching all dev changes made in `src` folder and continues to build whenever a files is changed, add, deleted, and etc.
-
-- __Run with local config__
-```bash
-$ grunt run
-```
-
-- __Run with staging config__
-```bash
-$ grunt run-staging
-```
-
-- __Run with production config__
-```bash
-$ grunt run-production
-```
-
-## Adding JavaScript, CSS and unit test files
-
-Since `index.html` is generated with `layout.html` template, all the script and css file references are not managed in `index.html` anymore. Every time, a script, css or unit test file is added, please add a reference to one of the following JSON files so grunt can pick it up.
-```
-build/
-  scripts/
-    app.json
-    lavaca.json
-    test.json
-  styles/
-    app.json
-    lavaca.json
+$ grunt server
 ```
