@@ -8,7 +8,7 @@ $ git clone git@github.com:mutualmobile/lavaca.git .
 
 2. __Get the branch__
 ```bash
-$ cd git checkout -b [my_branch] origin/amd
+$ git checkout -b [my_branch] origin/amd
 ```
 
 3. __Install grunt__
