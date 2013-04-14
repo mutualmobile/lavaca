@@ -27,6 +27,15 @@ $ npm install grunt
 
 Make sure you are always in `source` directory when you run the following commands
 
+### Run
+
+Precompiles Dust templates, starts development server, and watches the `www/templates` folder.
+
+- __Run Development Environment__
+```bash
+$ grunt run
+```
+
 ### Build
 
 Precompiles LESS and Dust templates, concats and minifies all CSS and JavaScript files, and builds all related files to `www`, `android/assets/www` and `ios/www` directories. 
