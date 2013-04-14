@@ -146,8 +146,8 @@ module.exports = function( grunt ) {
       all: {
         files: [
           {
-            src: '<%= paths.tmp.www %>/templates/**/*.html',
-            dest: '<%= paths.tmp.www %>/js/templates.js'
+            src: '<%= paths.src.www %>/templates/**/*.html',
+            dest: '<%= paths.src.www %>/js/app/ui/templates.js'
           }
         ]
       }
@@ -297,6 +297,11 @@ module.exports = function( grunt ) {
       removeCombined: false,
       preserveLicenseComments: false,
       logLevel: 0
+    },
+
+    watch: {
+      files: '<%= paths.src.www %>/templates/**/*',
+      tasks: ['watch-build']
     }
   });
 
@@ -312,14 +317,17 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-amd-check');
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
-    grunt.task.run('clean', 'copy:tmp', 'dustjs', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
+    grunt.task.run('clean', 'dustjs', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
   });
+  grunt.registerTask('run', ['clean', 'dustjs', 'server:watch', 'watch']);
+  grunt.registerTask('watch-build', ['dustjs']);
   grunt.registerTask('test', ['amd-test', 'jasmine']);
 
 };

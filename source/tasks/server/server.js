@@ -102,7 +102,8 @@ module.exports = function(grunt) {
         routes: [],
         apiRoutes: []
     }),
-    done = this.async();
+    args = this.args,
+    done = args[args.length-1] === 'watch' ? function() {} : this.async();
 
     server.on('close', done);
 

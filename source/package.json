@@ -23,6 +23,7 @@
     "grunt-contrib-uglify": "0.1.x",
     "grunt-contrib-jshint": "0.1.x",
     "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
+    "grunt-contrib-watch": "0.3.x",
     "grunt-amd-dist": "0.4.x",
     "grunt-amd-test": "0.4.x",
     "grunt-amd-check": "0.4.x"

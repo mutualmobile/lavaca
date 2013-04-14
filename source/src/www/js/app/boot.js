@@ -12,7 +12,8 @@ require.config({
     'dust-helpers': 'libs/dust-helpers-1.1.0',
     'lz77': 'libs/lz77',
     'iScroll': 'libs/iscroll-lite-4.1.6',
-    'lavaca': 'Lavaca'
+    'lavaca': 'Lavaca',
+    'templates': 'app/ui/templates'
   },
   shim: {
     $: {
@@ -22,6 +23,9 @@ require.config({
       exports: 'dust'
     },
     'dust-helpers': {
+      deps: ['dust']
+    },
+    templates: {
       deps: ['dust']
     },
     lz77: {
