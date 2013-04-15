@@ -58,10 +58,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <!-- @echo css -->
 
     <!-- @exclude -->
+	<script>
+      var less=less||{};
+      less.env='development';
+    </script>
     <script src="js/libs/require.js"></script>
     <script src="js/app/boot.js"></script>
     <script src="js/libs/less-1.3.3.min.js"></script>
-    <!-- @endexclude -->
+    <script>
+      less.watch();
+    </script>
+	<!-- @endexclude -->
     <!-- @echo js -->
 
   </head>
