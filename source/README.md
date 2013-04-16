@@ -11,7 +11,7 @@ $ git clone git@github.com:mutualmobile/lavaca.git .
 $ git checkout -b [my_branch] origin/amd
 ```
 
-3. __Install grunt__
+3. __Install grunt-cli globally__
 Note: this may require sudo
 ```bash
 $ npm install -g grunt-cli
@@ -20,21 +20,26 @@ $ npm install -g grunt-cli
 4. __Install dev dependencies for our tasks to work__
 ```bash
 $ cd source && npm install
-$ npm install grunt
 ```
 
-## Usage
+5. __Start Development Server__
+```bash
+$ grunt server
+```
+Your application should now be running on `localhost:8080`.
 
-Make sure you are always in `source` directory when you run the following commands
+## Grunt Tasks
 
-### Run
+Below is a list of grunt tasks to aid development and facilitate deployment. Make sure you are always in `source` directory when you run the following commands.
 
-Precompiles Dust templates, starts development server, and watches the `www/templates` folder.
+### Server
 
-- __Run Development Environment__
+A task that simply runs a static server for local development and testing. Defaults to run on `localhost:8080` with `src` being the root directory.
+
+- __Run the default static server__
 
 ```bash
-$ grunt run
+$ grunt server
 ```
 
 ### Build
@@ -77,14 +82,4 @@ Generates JavaScript documentation using [Atnotate](https://github.com/mutualmob
 
 ```bash
 $ grunt docs
-```
-
-### Server
-
-A task that simply runs a static server for local development and testing. Defaults to run on `localhost:8080` with `src` being the root directory.
-
-- __Run the default static server__
-
-```bash
-$ grunt server
 ```

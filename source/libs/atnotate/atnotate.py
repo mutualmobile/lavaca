@@ -295,7 +295,7 @@ class DocWriter(object):
                     current_item = current_type
                     types.append(current_type)
                 elif not current_type:
-                    self.error(path, 'Doc comment exists outside of @class')
+                    '''self.error(path, 'Doc comment exists outside of @class')'''
                     return types
                 elif line.startswith('@desc'):
                     current_type.desc = self.scrub('@desc', line)

@@ -1,8 +1,10 @@
 define(function() {
 
   var _uuid = 0;
-
   /**
+   * @class Lavaca.util.uuid
+   * Produces a app specific unique identifier
+   *
    * @method uuid
    * @static
    * Produces a unique identifier

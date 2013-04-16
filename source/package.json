@@ -1,13 +1,14 @@
 {
   "name": "lavaca",
-  "version": "1.0.6",
-  "description": "A sample Lavaca app",
-  "main": "grunt.js",
+  "version": "2.0.0",
+  "description": "A Lavaca app",
+  "main": "Gruntfile.js",
   "scripts": {},
   "dependencies": {
     "mout": "0.3.x"
   },
   "devDependencies": {
+    "grunt": "0.4.x",
     "express": "3.1.x",
     "json-lint": "0.1.x",
     "underscore": "1.4.x",

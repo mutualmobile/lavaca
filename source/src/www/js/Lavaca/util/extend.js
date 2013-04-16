@@ -1,6 +1,9 @@
 define(function() {
-
   /**
+   * @class Lavaca.util.extend
+   * Establishes inheritance between types. After a type is extended, it receives its own static
+   * convenience method, extend(TSub, overrides).
+   *
    * @method extend
    * @static
    * Establishes inheritance between types. After a type is extended, it receives its own static

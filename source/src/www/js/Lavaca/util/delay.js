@@ -1,6 +1,8 @@
 define(function() {
-
   /**
+   * @class Lavaca.util.delay
+   * Wraps setTimeout and delays the execution of a function
+   *
    * @method delay
    * @static
    * Delays the execution of a function
