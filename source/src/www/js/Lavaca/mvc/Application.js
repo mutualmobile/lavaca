@@ -53,7 +53,7 @@ define(function(require) {
   var Application = EventDispatcher.extend(function(callback) {
     $(window).on('unload', $.proxy(this.dispose, this));
     if (callback) {
-      this.on('init', callback.bind(this));
+      this.on('init', $.proxy(callback, this));
     }
     Device.init($.proxy(this.init, this));
   }, {

@@ -35,7 +35,7 @@ module.exports = function( grunt ) {
       },
       out: {
         index: 'index.html',
-        css: 'css/app.min.css',
+        css: 'css/app/app.min.css',
         js: 'js/app.min.js',
         cordova: 'js/cordova.min.js'
       },
