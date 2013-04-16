@@ -10,7 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var ScrollableView = require('./ScrollableView');
+  var ScrollableView = require('./ScrollableView'),
+      dust = require('dust');
+  require('rdust!templates/example');
 
   /**
    * @class app.ui.ExampleView
@@ -23,7 +25,7 @@ define(function(require) {
      * @default 'example'
      * The name of the template used by the view
      */
-    template: 'example',
+    template: 'templates/example',
     /**
      * @field {String} className
      * @default 'example'

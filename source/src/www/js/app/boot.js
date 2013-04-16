@@ -10,10 +10,10 @@ require.config({
     'mout': 'libs/mout/src',
     'dust': 'libs/dust-full-1.1.1',
     'dust-helpers': 'libs/dust-helpers-1.1.0',
+    'rdust': 'libs/require-dust',
     'lz77': 'libs/lz77',
     'iScroll': 'libs/iscroll-lite-4.1.6',
-    'lavaca': 'Lavaca',
-    'templates': 'app/ui/templates'
+    'lavaca': 'Lavaca'
   },
   shim: {
     $: {
