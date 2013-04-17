@@ -10,8 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var ScrollableView = require('./ScrollableView'),
-      dust = require('dust');
+  var ScrollableView = require('./ScrollableView');
   require('rdust!templates/example');
 
   /**
