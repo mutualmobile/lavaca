@@ -37,7 +37,7 @@ module.exports = function( grunt ) {
         index: 'index.html',
         css: 'css/app/app.min.css',
         js: 'js/app.min.js',
-        cordova: 'js/cordova.min.js'
+        cordova: 'js/cordova.js'
       },
       pkg: {
         root: 'pkg',
@@ -244,17 +244,7 @@ module.exports = function( grunt ) {
               dest: dest
             });
           });
-
-          files.push({
-            src: '<%= paths.lib.cordova.ios %>',
-            dest: '<%= paths.asset.ios %>/js/cordova.min.js'
-          });
-
-          files.push({
-            src: '<%= paths.lib.cordova.android %>',
-            dest: '<%= paths.asset.android %>/js/cordova.min.js'
-          });
-
+          
           return files;
         })()
       }

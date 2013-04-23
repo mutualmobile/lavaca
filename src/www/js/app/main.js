@@ -34,7 +34,6 @@ define(function(require) {
     // Initialize the models cache
     this.models = models;
     this.models.init();
-
     this.models.set('example', new Model());
     // Initialize the routes
     this.router.add({
