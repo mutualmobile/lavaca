@@ -38,7 +38,7 @@ $ npm install -g grunt-cli
 
 4. __Install dev dependencies for our tasks to work__
 ```bash
-$ cd npm install
+$ npm install
 ```
 
 5. __Start Development Server__
