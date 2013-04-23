@@ -38,7 +38,7 @@ $ npm install -g grunt-cli
 
 4. __Install dev dependencies for our tasks to work__
 ```bash
-$ cd source && npm install
+$ cd npm install
 ```
 
 5. __Start Development Server__
@@ -49,7 +49,7 @@ Your application should now be running on `localhost:8080`.
 
 ## Grunt Tasks
 
-Below is a list of grunt tasks to aid development and facilitate deployment. Make sure you are always in `source` directory when you run the following commands.
+Below is a list of grunt tasks to aid development and facilitate deployment.
 
 ### Server
 
