@@ -5,7 +5,7 @@ require.config({
     location: 'app'
   }],
   paths: {
-    '$': 'libs/jquery-1.9.1',
+    '$': 'libs/jquery-2.0.0',
     'cordova': 'libs/cordova',
     'mout': 'libs/mout/src',
     'dust': 'libs/dust-full-1.1.1',
