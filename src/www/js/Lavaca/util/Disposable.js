@@ -14,7 +14,7 @@ define(function(require) {
             o.dispose();
           } else if (o instanceof Array) {
             for (i = o.length - 1; i > -1; i--) {
-              if (typeof o[i].dispose === 'function') {
+              if (o[i] && typeof o[i].dispose === 'function') {
                 o[i].dispose();
               } else {
                 _disposeOf(o[i]);
