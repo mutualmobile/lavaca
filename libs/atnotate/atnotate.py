@@ -243,7 +243,8 @@ class DocMethod(DocField):
 class DocWriter(object):
     def __init__(self, templates):
         self.templates_folder = templates
-    def error(self, path, msg):
+    def error(self, index, path, msg):
+        print 'Error: {0} at line {1} of {2}'.format(msg, index, path)
         raise Exception(('File %s contains malformed Doc comments: ' % path) + msg)
     def scrub(self, tag, line):
         return line.replace(tag, '').strip()
@@ -278,7 +279,7 @@ class DocWriter(object):
         current_item = None
         is_in_block = False
         f = open(path, 'r')
-        for line in f.readlines():
+        for index, line in enumerate(f.readlines()):
             line = line.strip()
             if line.startswith('/**'):
                 is_in_block = True
@@ -295,7 +296,7 @@ class DocWriter(object):
                     current_item = current_type
                     types.append(current_type)
                 elif not current_type:
-                    '''self.error(path, 'Doc comment exists outside of @class')'''
+                    self.error(index, path, 'Doc comment exists outside of @class')
                     return types
                 elif line.startswith('@desc'):
                     current_type.desc = self.scrub('@desc', line)
@@ -317,7 +318,7 @@ class DocWriter(object):
                     current_item = current_field
                 elif line.startswith('@default'):
                     if not current_field:
-                        self.error('@default exists outside of @field')
+                        self.error(index, path, '@default exists outside of @field')
                     current_field.default = self.scrub('@default', line)
                 elif line.startswith('@method'):
                     current_method = current_sig = current_param = current_field = None
@@ -329,7 +330,7 @@ class DocWriter(object):
                 elif line.startswith('@sig'):
                     current_sig = current_param = None
                     if not current_method:
-                        self.error(path, '@sig exists outside of @method')
+                        self.error(index, path, '@sig exists outside of @method')
                     current_sig = DocSignature(self.scrub('@sig', line))
                     current_method.signatures.append(current_sig)
                     current_item = current_sig
@@ -342,7 +343,7 @@ class DocWriter(object):
                     current_item = current_param
                 elif line.startswith('@opt'):
                     if not current_param:
-                        self.error(path, '@opt exists outside of @param')
+                        self.error(index, path, '@opt exists outside of @param')
                     current_field = self.parse_field('@opt', line)
                     current_param.opts.append(current_field)
                     current_item = current_field
@@ -357,15 +358,15 @@ class DocWriter(object):
                     pass
                 elif line.startswith('@private'):
                     if not current_item:
-                        self.error(path, '@private exists outside of item')
+                        self.error(index, path, '@private exists outside of item')
                     current_item.is_private = True
                 elif line.startswith('@see'):
                     if not current_item:
-                        self.error(path, '@see exists outside of item')
+                        self.error(index, path, '@see exists outside of item')
                     current_item.see.append(self.scrub('@see', line))
                 elif line.startswith('@deprecated'):
                     if not current_item:
-                        self.error(path, '@deprecated exists outside of item')
+                        self.error(index, path, '@deprecated exists outside of item')
                     current_item.is_deprecated = True
                 elif current_item:
                     line = line.lstrip()
