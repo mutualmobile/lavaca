@@ -244,7 +244,7 @@ module.exports = function( grunt ) {
               dest: dest
             });
           });
-          
+
           return files;
         })()
       }

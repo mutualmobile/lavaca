@@ -370,12 +370,6 @@ define(function(require) {
             if (this.model && this.model instanceof EventDispatcher) {
               this.model.on(type, callback, this);
             }
-          } else if (type === 'tap' && el.tap) {
-            el.tap(delegate, callback);
-          } else if (type === 'taphold' && el.taphold) {
-            el.taphold(delegate, callback, opts ? opts.duration : undefined);
-          } else if (type === 'swipe' && el.swipe) {
-            el.swipe(delegate, callback, opts);
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
           } else if (type === 'transitionEnd' && el.transitionEnd) {

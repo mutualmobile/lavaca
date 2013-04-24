@@ -6,6 +6,8 @@ require.config({
   }],
   paths: {
     '$': 'libs/jquery-2.0.0',
+    'jquery': 'libs/jquery-2.0.0',
+    'jquery-mobile': 'libs/jquery-mobile',
     'cordova': 'libs/cordova',
     'mout': 'libs/mout/src',
     'dust': 'libs/dust-full-1.1.1',
@@ -17,6 +19,9 @@ require.config({
   },
   shim: {
     $: {
+      exports: '$'
+    },
+    jquery: {
       exports: '$'
     },
     dust: {

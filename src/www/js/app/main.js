@@ -20,6 +20,8 @@ define(function(require) {
   var Translation = require('lavaca/util/Translation');
   var State = require('./models/State');
   require('lavaca/ui/DustTemplate');
+  require('jquery-mobile/events/touch');
+  require('jquery-mobile/events/orientationchange');
 
   // Uncomment this section to use hash-based browser history instead of HTML5 history.
   // You should use hash-based history if there's no server-side component supporting your app's routes.

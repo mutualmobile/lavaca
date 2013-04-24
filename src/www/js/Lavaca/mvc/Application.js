@@ -12,7 +12,8 @@ define(function(require) {
       Config = require('lavaca/util/Config'),
       Promise = require('lavaca/util/Promise'),
       Translation = require('lavaca/util/Translation');
-  require('lavaca/events/Touch'); //jquery plugins
+  require('jquery-mobile/events/touch');
+  require('jquery-mobile/events/orientationchange');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -182,8 +183,8 @@ define(function(require) {
        */
       this.router = new this.TRouter(this.viewManager);
       $(document.body)
-        .tap('a', this.onTapLink, this)
-        .tap('.ui-blocker', _stopEvent);
+        .on('tap', 'a', this.onTapLink.bind(this))
+        .on('tap', '.ui-blocker', _stopEvent);
       this.trigger('init');
       if (!this.router.hasNavigated) {
         promise.when(

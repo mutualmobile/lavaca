@@ -5,7 +5,8 @@
   "main": "Gruntfile.js",
   "scripts": {},
   "dependencies": {
-    "mout": "0.3.x"
+    "mout": "0.3.x",
+    "jquery-mobile": "git://github.com/jquery/jquery-mobile.git#1.3-stable"
   },
   "devDependencies": {
     "grunt": "0.4.x",
