@@ -11,10 +11,6 @@ module.exports = function( grunt ) {
         android: '<%= paths.src.root %>/android'
       },
       lib: {
-        cordova: {
-          ios: 'libs/cordova/ios/cordova-2.2.0.min.js',
-          android: 'libs/cordova/android/cordova-2.2.0.min.js'
-        },
         atnotate: 'libs/atnotate'
       },
       tmp: {
@@ -308,7 +304,7 @@ module.exports = function( grunt ) {
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
-    grunt.task.run('clean', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
+    grunt.task.run('clean:tmp', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
   });
   grunt.registerTask('test', ['amd-test', 'jasmine']);
 

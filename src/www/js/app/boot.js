@@ -1,9 +1,5 @@
 require.config({
   baseUrl: 'js',
-  packages: [{
-    name: 'app',
-    location: 'app'
-  }],
   paths: {
     '$': 'libs/jquery-2.0.0',
     'jquery': 'libs/jquery-2.0.0',
@@ -39,4 +35,4 @@ require.config({
   }
 });
 
-require(['app']);
+require(['app/app']); // this is app.js

@@ -190,7 +190,19 @@ define(function(require) {
         ]
       });
     });
-
+    it('can clear models without clearing attributes', function() {
+      testCollection.add(colors);
+      testCollection.set('attrKey', 'attrValue');
+      expect(testCollection.count()).toEqual(4);
+      testCollection.clearModels();
+      expect(testCollection.get('attrKey')).toEqual('attrValue');
+      expect(testCollection.count()).toEqual(0);
+      expect(testCollection.changedOrder).toEqual(false);
+      ['addedItems', 'changedItems', 'models', 'removedItems'].forEach(function(key) {
+        expect(Array.isArray(testCollection[key])).toBe(true);
+        expect(testCollection[key].length).toEqual(0);
+      });
+    });
   });
 
 });

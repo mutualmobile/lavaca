@@ -512,6 +512,24 @@ define(function(require) {
         items[obj[prop].length] = idOnly && !item.isNew() ? item.id() : item.toObject();
       }
       return obj;
+    },
+    /**
+     * @method clearModels
+     * clears only the models in the collection
+     *
+     */
+    clearModels: function() {
+      var i = -1,
+          model;
+      while (model = this.models[++i]) {
+        this.remove(model);
+      }
+      this.changedOrder = false;
+      this.addedItems.length
+        = this.removedItems.length
+        = this.changedItems.length
+        = this.models.length 
+        = 0;
     }
   });
 
