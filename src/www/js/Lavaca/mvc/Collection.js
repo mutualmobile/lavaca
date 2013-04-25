@@ -169,18 +169,17 @@ define(function(require) {
      * @return {Boolean}  True if an item was added, false otherwise
      */
     add: function(/* item1, item2, itemN */) {
-      if (arguments.length && arguments[0] instanceof Array) {
-        return this.add.apply(this, arguments[0]);
-      }
       var result = false,
           obj,
           i,
           j,
           model,
           isModel,
-          isModelInArray;
-      for (i = 0, j = arguments.length; i < j; i++) {
-        model = arguments[i];
+          isModelInArray,
+          items;
+      items = arguments[0] instanceof Array && arguments.length ? arguments[0] : arguments;
+      for (i = 0, j = items.length; i < j; i++) {
+        model = items[i];
         isModel = model instanceof this.TModel;
         isModel || (obj = model);
         model = this.prepare(model);
@@ -196,6 +195,7 @@ define(function(require) {
           result = true;
         }
       }
+      this.trigger('addAll');
       return result;
     },
     /**

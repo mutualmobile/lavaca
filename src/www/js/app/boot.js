@@ -11,7 +11,8 @@ require.config({
     'rdust': 'libs/require-dust',
     'lz77': 'libs/lz77',
     'iScroll': 'libs/iscroll-lite-4.1.6',
-    'lavaca': 'Lavaca'
+    'lavaca': 'Lavaca',
+    'Lavaca': 'lavaca'
   },
   shim: {
     $: {

@@ -1,8 +1,7 @@
 define(function(require) {
 
   var Store = require('./Store'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
-      StringUtils = require('lavaca/util/StringUtils');
+      ArrayUtils = require('lavaca/util/ArrayUtils');
 
   function _saveManifest(store) {
     localStorage.setItem(store.id + '@manifest', JSON.stringify(store.manifest));
@@ -39,7 +38,7 @@ define(function(require) {
     get: function(id) {
       var obj = localStorage.getItem(this.key(id));
       if (obj) {
-        return JSON.parse(StringUtils.decompress(obj));
+        return JSON.parse(obj);
       } else {
         return null;
       }
@@ -51,7 +50,7 @@ define(function(require) {
      * @param {Object} value  The value to store
      */
     set: function(id, value) {
-      localStorage.setItem(this.key(id), StringUtils.compress(JSON.stringify(value)));
+      localStorage.setItem(this.key(id), JSON.stringify(value));
       ArrayUtils.pushIfNotExists(this.manifest, id);
       _saveManifest(this);
     },

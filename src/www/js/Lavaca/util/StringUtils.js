@@ -1,7 +1,5 @@
 define(function(require) {
 
-  var LZ77 = require('lz77');
-
   var _htmlEscapes = {
     '&': '&amp;',
     '<': '&lt;',
@@ -75,39 +73,6 @@ define(function(require) {
       s = s.split(n).join(_htmlEscapes[n]);
     }
     return s;
-  };
-
-  /**
-   * @method compress
-   * @static
-   *
-   * @sig
-   * LZMA-encodes a string
-   * @param {String} s  The string to encode
-   * @return {String}  The LZMA-encoded string
-   *
-   * @sig
-   * Converts an object to an LZMA-encoded JSON string
-   * @param {Object} o  The object to encode
-   * @return {String}  The LZMA-encoded JSON string
-   */
-  StringUtils.compress = function(s) {
-    if (typeof s !== 'string') {
-      s = JSON.stringify(s);
-    }
-    return new LZ77().compress(s);
-  };
-
-  /**
-   * @method decompress
-   * @static
-   * Decodes an LZMA-encoded string
-   *
-   * @param {String} s  The encoded string
-   * @return {String}  The decoded string
-   */
-  StringUtils.decompress = function(s) {
-    return new LZ77().decompress(s);
   };
 
   return StringUtils;

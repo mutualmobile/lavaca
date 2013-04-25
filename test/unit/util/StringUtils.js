@@ -13,15 +13,6 @@ define(function(require) {
       var str = '<div>"Ben & Jerry\'s"</div>';
       expect(StringUtils.escapeHTML(str)).toEqual('&lt;div&gt;&quot;Ben &amp; Jerry&apos;s&quot;&lt;/div&gt;');
     });
-    it('can compress and decompress a string or object', function() {
-      var compressed,
-          ob = {
-            name: 'Lavaca',
-            what: 'js framework'
-          };
-      compressed = StringUtils.compress(ob);
-      expect(StringUtils.decompress(compressed)).toEqual('{"name":"Lavaca","what":"js framework"}');
-    });
   });
 
 });

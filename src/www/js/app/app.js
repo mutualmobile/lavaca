@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 define(function(require) {
 
-  var models = require('./models/models');
+  var Cache = require('lavaca/util/Cache');
   var ExampleController = require('./net/ExampleController');
   var Application = require('lavaca/mvc/Application');
   var Model = require('lavaca/mvc/Model');
@@ -34,8 +34,7 @@ define(function(require) {
    */
   var app = new Application(function() {
     // Initialize the models cache
-    this.models = models;
-    this.models.init();
+    this.models = new Cache();
     this.models.set('example', new Model());
     // Initialize the routes
     this.router.add({
