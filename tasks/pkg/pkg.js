@@ -55,7 +55,7 @@ module.exports = function(grunt) {
               grunt.log.writeln(err);
             });
         }).then(function() {
-          var src = path.resolve(dir, 'bin/MainActivity-debug.apk');
+          var src = path.resolve(dir, 'bin/App-debug.apk');
           var dest = grunt.config.get('paths.pkg.android');
           grunt.file.copy(src, dest);
           grunt.log.writeln('Package saved to ' + dest);
