@@ -24,6 +24,16 @@ define(function(require) {
       expect(ArrayUtils.pushIfNotExists(arr, 5)).toEqual(5);
       expect(ArrayUtils.pushIfNotExists(arr, 1)).toEqual(0);
     });
+    it('can check if something is a true array with or without Array.isArray() native support', function () {
+      expect(ArrayUtils.isArray(arr)).toEqual(true);
+      expect(ArrayUtils.isArray('just a string')).toEqual(false);
+      expect(ArrayUtils.isArray({1: 1, 2:2, 3:3, 4:4})).toEqual(false);
+      Array.isArray = null;
+      expect(ArrayUtils.isArray(arr)).toEqual(true);
+      expect(ArrayUtils.isArray(999)).toEqual(false);
+      expect(ArrayUtils.isArray('just a string')).toEqual(false);
+      expect(ArrayUtils.isArray({1: 1, 2:2, 3:3, 4:4})).toEqual(false);
+    });
   });
 
 });

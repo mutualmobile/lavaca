@@ -2,6 +2,7 @@ define(function(require) {
 
   var Collection = require('lavaca/mvc/Collection');
   var Model = require('lavaca/mvc/Model');
+  var ArrayUtils = require('lavaca/util/ArrayUtils');
 
 
   describe('A Collection', function() {
@@ -199,9 +200,25 @@ define(function(require) {
       expect(testCollection.count()).toEqual(0);
       expect(testCollection.changedOrder).toEqual(false);
       ['addedItems', 'changedItems', 'models', 'removedItems'].forEach(function(key) {
-        expect(Array.isArray(testCollection[key])).toBe(true);
+        expect(ArrayUtils.isArray(testCollection[key])).toBe(true);
         expect(testCollection[key].length).toEqual(0);
       });
+    });
+    it('can remove one or more items by passing in comma separated params', function () {
+      testCollection.add(colors);
+      testCollection.remove({color: 'reb', primary: true});
+      expect(testCollection.count()).toEqual(3);
+      testCollection.remove({color: 'blue'}, {color: 'green'});
+      expect(testCollection.count()).toEqual(1);
+      expect(testCollection.first({color: 'blue'})).toEqual(null);
+      expect(testCollection.first({color: 'green'})).toEqual(null);
+    });
+    it('can remove one or more items by passing in an array', function () {
+      testCollection.add(colors);
+      testCollection.remove([{color: 'reb', primary: true}, {color: 'blue'}]);
+      expect(testCollection.count()).toEqual(2);
+      expect(testCollection.first({color: 'red'})).toEqual(null);
+      expect(testCollection.first({color: 'blue'})).toEqual(null);
     });
   });
 

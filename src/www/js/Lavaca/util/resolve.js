@@ -19,13 +19,13 @@ define(function() {
    * as an empty object
    * @return {Object}  The resolved object
    */
-  var resolve = function(name, createIfNotExists) {
+  var resolve = function(name, createIfNotExists, root) {
     if (!name) {
       return null;
     }
     name = name.split('.');
-    var last = window,
-        o = window,
+    var last = root || window,
+        o = root || window,
         i = -1,
         segment;
     while (!!(segment = name[++i])) {

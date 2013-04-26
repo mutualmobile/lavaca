@@ -77,6 +77,16 @@ define(function() {
     }
     return index;
   };
+  /**
+   * @method isArray
+   * @static
+   *
+   * @param {Object} a  Any value of any type
+   * @return {Boolean}  True if a is a true array
+   */
+  ArrayUtils.isArray = function(a) {
+    return Array.isArray === 'function' ? Array.isArray(a) : Object.prototype.toString.call(a) === '[object Array]';
+  };
 
   return ArrayUtils;
 

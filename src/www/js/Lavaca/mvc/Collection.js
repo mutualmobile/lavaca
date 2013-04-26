@@ -161,14 +161,14 @@ define(function(require) {
      * @event add
      *
      * @sig
-     * @params {Object} item  The items to add to the collection
+     * @params {Object} item  One or more items to add to the collection
      * @return {Boolean}  True if an item was added, false otherwise
      *
      * @sig
      * @params {Array} items  An array of items to add to the collection
      * @return {Boolean}  True if an item was added, false otherwise
      */
-    add: function(/* item1, item2, itemN */) {
+    add: function(item /*, item1, item2, item3...*/) {
       var result = false,
           obj,
           i,
@@ -177,7 +177,7 @@ define(function(require) {
           isModel,
           isModelInArray,
           items;
-      items = arguments[0] instanceof Array && arguments.length ? arguments[0] : arguments;
+      items = ArrayUtils.isArray(arguments[0]) && arguments.length ? item : arguments;
       for (i = 0, j = items.length; i < j; i++) {
         model = items[i];
         isModel = model instanceof this.TModel;
@@ -236,17 +236,38 @@ define(function(require) {
      * @return {Boolean}  True if an item was removed, false otherwise
      *
      * @sig
-     * @param {Object} attributes  A set of attributes matching any models to remove
+     * @param {Object} item  One object containing attributes matching any models to remove
      * @return {Boolean}  True if at least one item was removed, false otherwise
+     *
+     * @sig
+     * @param {Object} item  N number of object arguments containing attributes matching any models to remove
+     * @return {Array}  An array of booleans indicating if at least one item was removed by matching each argument
+     *
+     * @sig
+     * @param {Object} item  An array of objects containing attributes matching any models to remove
+     * @return {Array}  An array of booleans indicating if at least one item was removed by matching each element in the array
      *
      * @sig
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be removed
      * @return {Boolean}  True if at least one item was removed, false otherwise
      */
-    remove: function(item) {
+    remove: function(item /*, item1, item2, item3...*/) {
+      var n, it, items, index, i, removed;
+      
+      if (arguments.length === 1 && ArrayUtils.isArray(item)) {
+        n = 0;
+        removed = [];
+        while (!!(it = item[n++])) {
+          removed.push(this.remove(it));
+        }
+        return removed;
+      } else if (arguments.length > 1) {
+        return this.remove([].slice.call(arguments));
+      }
+
       if (item instanceof this.TModel) {
-        var index = ArrayUtils.remove(this.models, item);
+        index = ArrayUtils.remove(this.models, item);
         if (index > -1) {
           if (!this.suppressTracking) {
             ArrayUtils.remove(this.addedItems, item);
@@ -264,9 +285,9 @@ define(function(require) {
           return false;
         }
       } else {
-        var items = this.filter(item),
-            i = -1,
-            removed = false;
+        items = this.filter(item),
+        i = -1,
+        removed = false;
         while (!!(item = items[++i])) {
           removed = this.remove(item) || removed;
         }

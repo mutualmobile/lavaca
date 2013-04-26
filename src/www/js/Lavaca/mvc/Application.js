@@ -42,7 +42,7 @@ define(function(require) {
    * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
-    $(window).on('unload', $.proxy(this.dispose, this));
+    Config.init();  
     if (callback) {
       this.on('init', $.proxy(callback, this));
     }
@@ -163,12 +163,6 @@ define(function(require) {
        * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
        */
       this.animations = !this.mobileBrowser.android;
-      /**
-       * @field {Lavaca.mvc.Model} state
-       * @default null
-       * Model used for application state management
-       */
-      Config.init();
       Template.init();
       /**
        * @field {Lavaca.mvc.ViewManager} viewManager
