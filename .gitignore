@@ -9,5 +9,6 @@ src/android/gen/*
 
 node_modules
 docs
+pkg
 tmp
 build
