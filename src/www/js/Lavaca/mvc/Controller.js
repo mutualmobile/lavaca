@@ -99,30 +99,6 @@ define(function(require) {
       return Promise.when(this, this.viewManager.load(cacheKey, TView, model, layer));
     },
     /**
-     * @method ajaxThenView
-     * Makes an AJAX request and then loads a view if successful
-     *
-     * @param {Object} opts  jQuery AJAX options
-     * @param {Function} responseToModel  A function that converts the AJAX response to
-     *   a model for the view
-     * @param {String} cacheKey  The key under which to cache the view
-     * @param {Function} TView  The type of view (should derive from [[Lavaca.mvc.View]])
-     * @param {Number} layer  The layer on which the view sits
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    ajaxThenView: function(opts, responseToModel, cacheKey, TView, layer) {
-      var promise = new Promise(this),
-          self = this;
-      this.ajax(opts)
-        .success(function() {
-          promise.when(this.view(cacheKey, TView, responseToModel.apply(self, arguments), layer));
-        })
-        .error(function() {
-          promise.reject.apply(promise, arguments);
-        });
-      return promise;
-    },
-    /**
      * @method history
      * Adds a state to the browser history
      *
@@ -185,27 +161,6 @@ define(function(require) {
      */
     redirect: function(str, args) {
       return this.router.unlock().exec(this.url(str, args || []));
-    },
-    /**
-     * @method ajaxThenRedirect
-     * Makes an AJAX request and then redirects to an action if successful
-     *
-     * @param {Object} opts  jQuery AJAX options
-     * @param {Function} responseToURL  A function to call after the AJAX operation completes
-     *    that returns the URL to which to redirect
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    ajaxThenRedirect: function(opts, responseToURL) {
-      var promise = new Promise(this),
-          self = this;
-      this.ajax(opts)
-        .success(function() {
-          promise.when(this.redirect(responseToURL.apply(self, arguments)));
-        })
-        .error(function() {
-          promise.reject.apply(promise, arguments);
-        });
-      return promise;
     },
     /**
      * @method dispose
