@@ -1,9 +1,9 @@
 define(function(require) {
 
   var Disposable = require('lavaca/util/Disposable'),
-      merge = require('mout/object/merge');
+      deepMixIn = require('mout/object/deepMixIn');
 
-  /** 
+  /**
    * @class Lavaca.events.EventDispatcher
    * @super Lavaca.util.Disposable
    * Basic event dispatcher type
@@ -137,7 +137,7 @@ define(function(require) {
      * @return {Object}  The event object
      */
     createEvent: function(type, params) {
-      return merge({}, params || {}, {
+      return deepMixIn({}, params || {}, {
         type: type,
         target: params && params.target ? params.target : this,
         currentTarget: this
