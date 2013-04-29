@@ -82,32 +82,6 @@ define(function(require) {
             expect(response).toBe(true);
           });
       });
-      xit('with ajaxThenView helper method', function() {
-        var controller = new testController(router, viewManager),
-            myView = View.extend({
-              template: 'hello-world'
-            }),
-            promise,
-            response;
-        runs(function() {
-          promise = controller.ajaxThenView(
-            {},
-            noop.success,
-            'myView',
-            myView
-          );
-        });
-        waitsFor(function() {
-          promise.success(function() {
-            response = this.viewManager.views.get('myView').hasRendered;
-          });
-          return response;
-        }, 'a view to be rendered', 100);
-        runs(function() {
-          expect(response).not.toBeUndefined();
-          expect(noop.success).toHaveBeenCalled();
-        });
-      });
     });
     it('can add a state to the browser history', function() {
       var controller = new testController(router, viewManager),
@@ -143,25 +117,6 @@ define(function(require) {
         promise = controller.redirect('/foo');
         promise.success(function() {
           expect(ob.foo).toHaveBeenCalled();
-        });
-      });
-      it('after an ajax request', function() {
-        var controller = new testController(router, viewManager),
-            promise,
-            response = true;
-        runs(function() {
-          promise = controller.ajaxThenRedirect({}, function() {
-            return '/foo';
-          });
-        });
-        waitsFor(function() {
-          promise.success(function() {
-            response = this.foo.wasCalled;
-          });
-          return response;
-        }, 'a redirect to occur', 300);
-        runs(function() {
-          expect(response).toEqual(true);
         });
       });
     });
