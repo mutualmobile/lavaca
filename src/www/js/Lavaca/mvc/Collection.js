@@ -195,7 +195,9 @@ define(function(require) {
           result = true;
         }
       }
-      this.trigger('addAll');
+      if (result) {
+        this.trigger('addAll');
+      }
       return result;
     },
     /**
