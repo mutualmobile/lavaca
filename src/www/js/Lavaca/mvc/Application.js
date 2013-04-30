@@ -42,11 +42,16 @@ define(function(require) {
    * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
-    Config.init();  
+    Config.init();
     if (callback) {
-      this.on('init', $.proxy(callback, this));
+      //this.on('init', callback.bind(this));
+      this._callback = callback.bind(this);
     }
-    Device.init($.proxy(this.init, this));
+    //Device.init($.proxy(this.init, this));
+    Device.init(function() {
+      this.beforeInit(Config)
+        .then(this.init.bind(this));
+    }.bind(this));
   }, {
     /**
      * @field {Function} TViewManager
@@ -143,14 +148,17 @@ define(function(require) {
     },
     /**
      * @method init
+     * @param {Object} args  Data of any type from a resolved promise returned by Application.beforeInit(). Defaults to null.
      * @event init
      * @event ready
      * Initializes the application
      *
      * @return {Lavaca.util.Promise}  A promise that resolves when the application is ready for use
      */
-    init: function() {
-      var promise = new Promise(this);
+    init: function(args) {
+      var promise = new Promise(this),
+          _cbPromise,
+          lastly;
       /**
        * @field {Object} mobileBrowser
        * @default true
@@ -176,20 +184,32 @@ define(function(require) {
        * Router used to manage application traffic and URLs
        */
       this.router = new this.TRouter(this.viewManager);
+
+
+      lastly = function() {
+        if (!this.router.hasNavigated) {
+          promise.when(
+            this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
+          );
+          if (this.initState) {
+            History.replace(this.initState.state, this.initState.title, this.initState.url);
+          }
+        } else {
+          promise.resolve();
+        }
+      }.bind(this);
+
       $(document.body)
         .on('tap', 'a', this.onTapLink.bind(this))
         .on('tap', '.ui-blocker', _stopEvent);
-      this.trigger('init');
-      if (!this.router.hasNavigated) {
-        promise.when(
-          this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
-        );
-        if (this.initState) {
-          History.replace(this.initState.state, this.initState.title, this.initState.url);
-        }
+
+      if (this._callback) {
+        _cbPromise = this._callback(args);
+        _cbPromise instanceof Promise ? _cbPromise.then(lastly, promise.rejector()) : lastly();
       } else {
-        promise.resolve();
+        lastly();
       }
+      
       return promise.then(function() {
         this.trigger('ready');
       });
@@ -212,7 +232,18 @@ define(function(require) {
      */
     initialHashRoute: (function(hash) {
       return _matchHashRoute(hash);
-    })(window.location.hash)
+    })(window.location.hash),
+    /**
+     * @method {String} beforeInit
+     * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
+     * @param {Lavaca.util.Config} Config cache that's been initialized
+     *
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    beforeInit: function(Config) {
+      var promise = new Promise();
+      return promise.resolve(null);
+    }
   });
 
   return Application;
