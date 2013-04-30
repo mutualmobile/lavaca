@@ -1,5 +1,4 @@
 define(function(require) {
-  require('libs/es5-shim.js');
   var Cache = require('lavaca/util/Cache');
   var ExampleController = require('./net/ExampleController');
   var Application = require('lavaca/mvc/Application');

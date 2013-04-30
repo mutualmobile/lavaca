@@ -1,6 +1,7 @@
 require.config({
   baseUrl: 'js',
   paths: {
+    'es5-shim': 'libs/es5-shim',
     '$': 'libs/jquery-2.0.0',
     'jquery': 'libs/jquery-2.0.0',
     'jquery-mobile': 'libs/jquery-mobile',
@@ -11,7 +12,7 @@ require.config({
     'rdust': 'libs/require-dust',
     'iScroll': 'libs/iscroll-lite-4.1.6',
     'lavaca': 'Lavaca',
-    'Lavaca': 'lavaca'
+    'Lavaca': 'lavaca',
   },
   shim: {
     $: {
@@ -31,5 +32,5 @@ require.config({
     }
   }
 });
-
+require(['es5-shim']);
 require(['app/app']); // this is app.js
