@@ -157,7 +157,8 @@ module.exports = function( grunt ) {
         files: [
           {
             src: '<%= paths.src.www %>',
-            dest: 'docs'
+            dest: 'docs',
+            exclude: ['es5-shim.js', 'jquery-2.0.0.js', 'require-dust.js', 'require.js']
           }
         ]
       }

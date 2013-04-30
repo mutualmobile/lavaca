@@ -381,11 +381,11 @@ class DocWriter(object):
             for method in filter(lambda m: len(m.signatures) < 1, t.methods):
                 method.signatures.append(DocSignature(method.desc))
         return types
-    def load_types(self, path, ext='.js'):
+    def load_types(self, path, exclude, ext='.js'):
         types = {}
         ns = {}
         for r, d, f in os.walk(path):
-            for files in filter(lambda x: x.endswith(ext), f):
+            for files in filter(lambda x: x.endswith(ext) and not any(x in s for s in exclude), f):
                 p = os.path.join(r, files)
                 types.update(dict([(t.qualified_name(), t) for t in self.process_file(p)]))
         for t in filter(lambda t: t.super_type and t.super_type in types and not t.constructor, types.values()):
@@ -406,13 +406,13 @@ class DocWriter(object):
         f = open(out_path, 'w')
         f.write(data)
         f.close()
-    def process_dir(self, path, out_dir, write_json=False, write_html=True, ext='.js'):
+    def process_dir(self, path, out_dir, write_json=False, write_html=True, ext='.js', exclude=[]):
         ns = {}
         out_dir = os.path.abspath(out_dir)
         if os.path.exists(out_dir):
             shutil.rmtree(out_dir)
         os.makedirs(out_dir)
-        types = self.load_types(path, ext=ext)
+        types = self.load_types(path, exclude, ext=ext,)
         shutil.copytree(os.path.join(self.templates_folder, 'assets'), os.path.join(out_dir, 'assets'))
         docs_dir = out_dir
         if not os.path.exists(docs_dir):
@@ -473,10 +473,11 @@ def usage():
     print '-x, --ext: Script file extension'
     print '-m, --html: Generate HTML files'
     print '-j, --json: Generate JSON files'
+    print '-e, --exclude: A list of comma-delimited filenames to exclude'
 
 if __name__ == '__main__':
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hs:d:t:x:h:j:', ['help', 'src', 'dst', 'templates', 'ext', 'html', 'json'])
+        opts, args = getopt.getopt(sys.argv[1:], 'hs:d:t:x:h:j:e:', ['help', 'src', 'dst', 'templates', 'ext', 'html', 'json', 'exclude'])
     except getopt.GetoptError, err:
         print str(err)
         usage()
@@ -487,6 +488,7 @@ if __name__ == '__main__':
     ext = '.js'
     write_json = False
     write_html = True
+    exclude = []
     for o, a in opts:
         if o in ('-h', '--help'):
             usage()
@@ -503,4 +505,6 @@ if __name__ == '__main__':
             write_html = a.lower() == 'true'
         elif o in ('-j', '--json'):
             write_json = a.lower() == 'true'
-    DocWriter(templates).process_dir(src, dst, write_json=write_json, write_html=write_html, ext=ext)
+        elif o in ('-e', '--exclude'):
+            exclude = a.split(',')
+    DocWriter(templates).process_dir(src, dst, write_json=write_json, write_html=write_html, ext=ext, exclude=exclude)
