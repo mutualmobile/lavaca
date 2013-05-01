@@ -59,6 +59,22 @@ define(function(require) {
      */
     locked: false,
     /**
+     * @method setEl
+     * Sets the el property on the instance
+     * 
+     * @sig
+     * @param {jQuery} el  A jQuery object of the element that contains all layers
+     * @return {Lavaca.mvc.ViewManager}  This View Manager instance
+     *
+     * @sig
+     * @param {String} el  A CSS selector matching the element that contains all layers
+     * @return {Lavaca.mvc.ViewManager}  This View Manager instance
+     */
+    setEl: function(el) {
+      this.el = typeof el === 'string' ? $(el) : el;
+      return this;
+    },
+    /**
      * @method load
      * Loads a view
      *
@@ -236,6 +252,6 @@ define(function(require) {
     }
   });
 
-  return ViewManager;
+  return new ViewManager(null);
 
 });

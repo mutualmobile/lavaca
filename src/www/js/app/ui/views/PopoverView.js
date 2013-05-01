@@ -4,8 +4,8 @@ define(function(require) {
       BaseView = require('./BaseView');
 
   /**
-   * @class app.ui.PopoverView
-   * @super app.ui.BaseView
+   * @class app.ui.views.PopoverView
+   * @super app.ui.views.BaseView
    * Base popover view type
    */
   var PopoverView = BaseView.extend({

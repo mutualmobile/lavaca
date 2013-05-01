@@ -47,6 +47,17 @@ define(function(require) {
      */
     hasNavigated: false,
     /**
+     * @method setEl
+     * Sets the viewManager property on the instance which is the view manager used by this router
+     * 
+     * @param {Lavaca.mvc.ViewManager} viewManager
+     * @return {Lavaca.mvc.Router}  This Router instance
+     */
+    setViewManager: function(viewManager) {
+      this.viewManager = viewManager;
+      return this;
+    },
+    /**
      * @method add
      *
      * @sig Adds multiple routes
@@ -159,6 +170,6 @@ define(function(require) {
     }
   });
 
-  return Router;
+  return new Router();
 
 });

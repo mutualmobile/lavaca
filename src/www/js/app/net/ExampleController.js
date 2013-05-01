@@ -1,6 +1,7 @@
 define(function(require) {
 
   var ExampleView = require('app/ui/views/ExampleView'),
+      TestView = require('app/ui/views/TestView'),
       Controller = require('lavaca/mvc/Controller'),
       Translation = require('lavaca/util/Translation'),
       State = require('../models/State');
@@ -42,6 +43,14 @@ define(function(require) {
       this.viewManager.flush();
       State.set('lang', locale);
       return this.redirect('/?lang={0}', [locale]);
+    },
+    test: function(params, model) {
+      if (!model) {
+        model = {};
+      }
+      return this
+        .view(null, TestView, model)
+        .then(this.history(model, 'Test Page', params.url));
     }
   });
 

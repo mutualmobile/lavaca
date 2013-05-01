@@ -2,13 +2,13 @@ define(function(require) {
 
   var Device = require('lavaca/env/Device'),
       PageView = require('lavaca/mvc/PageView'),
-      Promise = require('lavaca/util/Promise');
+      Promise = require('lavaca/util/Promise'),
+      viewManager = require('lavaca/mvc/ViewManager');
   require('lavaca/fx/Animation'); //jquery plugins
-
   var UNDEFINED;
 
   /**
-   * @class app.ui.BaseView
+   * @class app.ui.views.BaseView
    * @super Lavaca.mvc.View
    *
    * A View from which all other application Views can extend.
@@ -61,7 +61,7 @@ define(function(require) {
      */
     onTapCancel: function(e) {
       e.preventDefault();
-      app.viewManager.dismiss(e.currentTarget);
+      viewManager.dismiss(e.currentTarget);
     },
     /**
      * @method enter

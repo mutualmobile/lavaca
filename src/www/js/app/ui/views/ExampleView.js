@@ -1,14 +1,14 @@
 define(function(require) {
 
-  var ScrollableView = require('./ScrollableView');
+  var BaseView = require('./BaseView');
   require('rdust!templates/example');
 
   /**
-   * @class app.ui.ExampleView
-   * @super app.ui.ScrollableView
+   * @class app.ui.views.ExampleView
+   * @super app.ui.views.BaseView
    * Example view type
    */
-  var ExampleView = ScrollableView.extend({
+  var ExampleView = BaseView.extend({
     /**
      * @field {String} template
      * @default 'example'

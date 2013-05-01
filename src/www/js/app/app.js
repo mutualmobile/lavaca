@@ -28,7 +28,8 @@ define(function(require) {
     // Initialize the routes
     this.router.add({
       '/': [ExampleController, 'home'],
-      '/lang': [ExampleController, 'lang']
+      '/lang': [ExampleController, 'lang'],
+      '/test': [ExampleController, 'test']
     });
     State.set('lang', localStorage.getItem('app:lang') || 'en_US');
     Translation.init(State.get('lang'));
@@ -36,28 +37,11 @@ define(function(require) {
     this.loadingIndicator = LoadingIndicator.init();
   });
 
-  /**
-   * @method showErrors
-   * Shows the errors dialog
-   *
-   * @param {Array} errors  A list of error messages
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  app.showErrors = function(errors) {
-    return this.viewManager.load(null, app.ui.views.ErrorsView, {errors: errors}, 900);
-  };
-
-  /**
-   * @method onOfflineAjax
-   * Handles attempts to make an AJAX request when the application is offline
-   */
-  app.onOfflineAjax = function() {
-    var hasLoaded = Translation.hasLoaded;
-    window.plugins.notification.alert(hasLoaded ? Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
-  };
-
   // Setup offline AJAX handler
-  Connectivity.registerOfflineAjaxHandler(app.onOfflineAjax);
+  Connectivity.registerOfflineAjaxHandler(function() {
+    var hasLoaded = Translation.hasLoaded;
+    alert(hasLoaded ? Translation.get('error_offline') : 'No internet connection available. Please check your settings and connection and try again.');
+  });
 
   return app;
 
