@@ -1,8 +1,6 @@
 define(function(require) {
 
   var BaseView = require('./BaseView');
-  var viewManager = require('lavaca/mvc/ViewManager');
-  var router = require('lavaca/mvc/Router');
 
   require('rdust!templates/test');
 
@@ -13,10 +11,6 @@ define(function(require) {
    */
   var TestView = BaseView.extend(function() {
     BaseView.apply(this, arguments);
-    setTimeout(function() {
-      console.log(viewManager);
-      router.exec('/');
-    }, 2000);
   }, {
     /**
      * @field {String} template

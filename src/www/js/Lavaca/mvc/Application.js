@@ -1,13 +1,13 @@
 define(function(require) {
 
   var $ = require('$'),
+      History = require('lavaca/net/History'),
       Device = require('lavaca/env/Device'),
       EventDispatcher = require('lavaca/events/EventDispatcher'),
       Model = require('lavaca/mvc/Model'),
       router = require('lavaca/mvc/Router'),
       viewManager = require('lavaca/mvc/ViewManager'),
       Connectivity = require('lavaca/net/Connectivity'),
-      History = require('lavaca/net/History'),
       Template = require('lavaca/ui/Template'),
       Config = require('lavaca/util/Config'),
       Promise = require('lavaca/util/Promise'),
@@ -175,6 +175,7 @@ define(function(require) {
 
 
       lastly = function() {
+        this.router.startHistory();
         if (!this.router.hasNavigated) {
           promise.when(
             this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)

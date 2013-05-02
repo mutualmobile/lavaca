@@ -25,7 +25,7 @@ define(function(require) {
         model = {};
       }
       return this
-        .view('home', ExampleView, model)
+        .view(null, ExampleView, model)
         .then(this.history(model, 'Home Page', params.url));
     },
     /**

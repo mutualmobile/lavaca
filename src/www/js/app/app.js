@@ -1,10 +1,10 @@
 define(function(require) {
+  var History = require('lavaca/net/History');
   var Cache = require('lavaca/util/Cache');
   var ExampleController = require('./net/ExampleController');
-  var Application = require('lavaca/mvc/Application');
   var Model = require('lavaca/mvc/Model');
   var Connectivity = require('lavaca/net/Connectivity');
-  var History = require('lavaca/net/History');
+  var Application = require('lavaca/mvc/Application');
   var LoadingIndicator = require('lavaca/ui/LoadingIndicator');
   var Translation = require('lavaca/util/Translation');
   var State = require('./models/State');
@@ -15,7 +15,7 @@ define(function(require) {
   // Uncomment this section to use hash-based browser history instead of HTML5 history.
   // You should use hash-based history if there's no server-side component supporting your app's routes.
   History.overrideStandardsMode();
-
+  
   /**
    * @class app
    * @super Lavaca.mvc.Application

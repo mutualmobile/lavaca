@@ -78,7 +78,7 @@ define(function(require) {
             _pushCount--;
             code = hash.split('#@')[1];
             while (!!(item = self.sequence[++i])) {
-              if (item.id === code) {
+              if (item.id === parseInt(code, 10)) {
                 record = item;
                 this.position = i;
                 break;
@@ -136,7 +136,7 @@ define(function(require) {
         if (_standardsMode) {
           history.pushState({state: state, title: title, url: url}, title, url);
         } else {
-          _insertState(this, ++this.position, uuid(), state, title, url);
+          _insertState(this, ++this.position, uuid('history'), state, title, url);
         }
       } else {
         this.replace(state, title, url);
@@ -159,7 +159,7 @@ define(function(require) {
         if (this.position < 0) {
           this.position = 0;
         }
-        var currentRecord = this.current() || {id: uuid()};
+        var currentRecord = this.current() || {id: uuid('history')};
         _insertState(this, this.position, currentRecord.id, state, title, url);
       }
     },
