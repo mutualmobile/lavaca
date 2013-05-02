@@ -2,20 +2,16 @@ define(function(require) {
 
   var $ = require('$');
   var Controller = require('lavaca/mvc/Controller');
-  var View = require('lavaca/mvc/View');
   var Model = require('lavaca/mvc/Model');
   var History = require('lavaca/net/History');
-  var Router = require('lavaca/mvc/Router');
-  var ViewManager = require('lavaca/mvc/ViewManager');
+  var router = require('lavaca/mvc/Router');
+  var viewManager = require('lavaca/mvc/ViewManager');
   var PageView = require('lavaca/mvc/PageView');
-  var Promise = require('lavaca/util/Promise');
   var Translation = require('lavaca/util/Translation');
   var Template = require('lavaca/ui/Template');
 
 
-  var router,
-      viewManager,
-      testController,
+  var testController,
       ob = {
         foo: function() {}
       };
@@ -23,8 +19,8 @@ define(function(require) {
   describe('A Controller', function() {
     beforeEach(function(){
       $('body').append('<div id="view-root"></div>');
-      viewManager = new ViewManager('#view-root');
-      router = new Router(viewManager);
+      viewManager = (new viewManager.constructor()).setEl('#view-root');
+      router = (new router.constructor()).setViewManager(viewManager);
       spyOn(ob, 'foo').andCallThrough();
       testController = Controller.extend(ob);
       router.add({

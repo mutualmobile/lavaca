@@ -2,24 +2,23 @@ define(function(require) {
 
   var $ = require('$');
   var PageView = require('lavaca/mvc/PageView');
-  var ViewManager = require('lavaca/mvc/ViewManager');
   var Cache = require('lavaca/util/Cache');
   var Template = require('lavaca/ui/Template');
+  var viewManager = require('lavaca/mvc/ViewManager');
 
-  var viewManager;
-
-  describe('A ViewManager', function() {
+  describe('A viewManager', function() {
     beforeEach(function(){
       $('body').append('<div id="view-root"></div><script type="text/dust-template" data-name="hello-world">Hello World</script>');
       Template.init();
-      viewManager = new ViewManager('#view-root');
+      viewManager = new viewManager.constructor();
+      viewManager.setEl('#view-root');
     });
     afterEach(function(){
       $('#view-root').remove();
       $('script[data-name="hello-world"]').remove();
     });
-    it('can be instantiated', function() {
-      expect(viewManager instanceof ViewManager).toBe(true);
+    it('can be instantiated via its module constructor', function() {
+      expect(viewManager instanceof viewManager.constructor).toBe(true);
     });
     it('can load a view', function() {
       var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{

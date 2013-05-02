@@ -1,21 +1,19 @@
 define(function(require) {
 
   var $ = require('$');
-  var Router = require('lavaca/mvc/Router');
+  var router = require('lavaca/mvc/Router');
+  var viewManager = require('lavaca/mvc/ViewManager');
   var Controller = require('lavaca/mvc/Controller');
-  var ViewManager = require('lavaca/mvc/ViewManager');
 
-  var router,
-      viewManager,
-      ob = {
+  var ob = {
         foo: function() {}
       };
 
   describe('A Router', function() {
     beforeEach(function(){
       $('body').append('<div id="view-root"></div>');
-      viewManager = new ViewManager('#view-root');
-      router = new Router(viewManager);
+      viewManager = new viewManager.constructor('#view-root');
+      router = new router.constructor(viewManager);
       spyOn(ob, 'foo').andCallThrough();
     });
     afterEach(function(){
