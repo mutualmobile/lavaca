@@ -16,9 +16,6 @@ define(function(require) {
    */
   var BaseView = PageView.extend(function() {
     PageView.apply(this, arguments);
-    //this
-      // .mapWidget('.scrollable', Lavaca.ui.Scrollable)
-      //.mapEvent('.cancel', 'tap', this.onTapCancel);
   }, {
     /**
      * @field {Number} column

@@ -6,7 +6,9 @@ define(function(require) {
       Cache = require('lavaca/util/Cache'),
       Promise = require('lavaca/util/Promise'),
       clone = require('mout/lang/deepClone'),
-      merge = require('mout/object/merge');
+      merge = require('mout/object/merge'),
+      Config = require('lavaca/util/Config');
+
 
   var UNDEFINED;
 
@@ -369,6 +371,9 @@ define(function(require) {
      */
     onFetchSuccess: function(response) {
       response = this.parse(response);
+      if (this.responseFilter && typeof this.responseFilter === 'function') {
+        response = this.responseFilter(response);
+      }
       this.apply(response, true);
       this.trigger('fetchSuccess', {response: response});
     },
@@ -383,7 +388,7 @@ define(function(require) {
     },
     /**
      * @method fetch
-     * Loads the data for this model from the server (Note: Does not clear the model first)
+     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
      *
      * @event fetchSuccess
      * @event fetchError
@@ -393,16 +398,42 @@ define(function(require) {
      * @return {Lavaca.util.Promise}  A promise
      *
      * @sig
+     * @param {Object} options  jQuery AJAX settings. If url property is missing, fetch() will try to use the url property on this model
+     * @return {Lavaca.util.Promise}  A promise
+     *
+     * @sig
      * @param {String} url  The URL from which to load the data
      * @param {Object} options  jQuery AJAX settings
      * @return {Lavaca.util.Promise}  A promise
      */
     fetch: function(url, options) {
-      options = clone(options || {});
-      options.url = url;
+      if (typeof url === 'object') {
+        options = url;
+      } else {
+        options = clone(options || {});
+        options.url = url;
+      }
+      options.url = this.getApiURL(options.url || this.url);
       return Promise.when(this, Connectivity.ajax(options))
         .success(this.onFetchSuccess)
         .error(this.onFetchError);
+    },
+    /**
+     * @method getApiURL
+     * Converts a relative path to an absolute api url based on environment config 'apiRoot'
+     *
+     * @param {String} relPath  A relative path
+     * @return {String}  A formated api url or an apparently bad url '/please_set_model_url' if relPath argument is faslsy
+     */
+    getApiURL: function(relPath) {
+      var badURL = '/please_set_model_url',
+          apiRoot = Config.get('apiRoot'),
+          apiURL;
+      if (!relPath) {
+        return badURL;
+      }
+      apiURL = apiRoot || '' + relPath;
+      return apiURL;
     },
     /**
      * @method save
@@ -553,6 +584,16 @@ define(function(require) {
       handler.fn = callback;
       handler.thisp = thisp;
       return EventDispatcher.prototype.on.call(this, type, handler, thisp);
+    },
+    /**
+    * @method responseFilter
+    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
+    *
+    * @param {Object} response  The raw response passed in onFetchSuccess()
+    * @return {Object}  An object to be applied to this model instance
+    */
+    responseFilter: function(response) {
+      return response;
     }
   });
   /**

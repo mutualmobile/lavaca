@@ -483,8 +483,12 @@ define(function(require) {
      * @param {Object} response  The response data
      */
     onFetchSuccess: function(response) {
+      var list;
       response = this.parse(response);
-      var list = response;
+      if (this.responseFilter && typeof this.responseFilter === 'function') {
+        response = this.responseFilter(response);
+      }
+      list = response;
       if (!(list instanceof Array)) {
         this.apply(response);
         list = response[this.itemsProperty];
@@ -544,7 +548,7 @@ define(function(require) {
     clearModels: function() {
       var i = -1,
           model;
-      while (model = this.models[++i]) {
+      while (!!(model = this.models[++i])) {
         this.remove(model);
       }
       this.changedOrder = false;
@@ -553,6 +557,16 @@ define(function(require) {
         = this.changedItems.length
         = this.models.length 
         = 0;
+    },
+    /**
+    * @method responseFilter
+    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
+    *
+    * @param {Object} response  The raw response passed in onFetchSuccess()
+    * @return {Object}  An object or array to be applied to this collection instance
+    */
+    responseFilter: function(response) {
+      return response;
     }
   });
 
