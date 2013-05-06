@@ -104,6 +104,12 @@ define(function(require) {
      * The name of the property containing the collection's items when using toObject()
      */
     itemsProperty: 'items',
+    /** 
+     * @field {Boolean} allowDuplicatedIds
+     * @default false
+     * Whether to allow duplicated IDs in collection items. If false, a later added item will overwrite the one with same ID.
+     */
+    allowDuplicatedIds: false,
     /**
      * @method clear
      * Removes and disposes of all models in the collection
@@ -156,9 +162,11 @@ define(function(require) {
     },
     /**
      * @method add
-     * Adds one or more items to the collection
+     * Adds one or more items to the collection. New items with IDs matching those in this collection will replace instead of add.
      *
-     * @event add
+     * @event addItem
+     * @event replaceItem
+     * @event addAll
      *
      * @sig
      * @params {Object} item  One or more items to add to the collection
@@ -170,21 +178,30 @@ define(function(require) {
      */
     add: function(item /*, item1, item2, item3...*/) {
       var result = false,
+          idAttribute = this.TModel.prototype.idAttribute,
           obj,
           i,
           j,
           model,
           isModel,
-          isModelInArray,
+          index,
           items;
       items = ArrayUtils.isArray(arguments[0]) && arguments.length ? item : arguments;
       for (i = 0, j = items.length; i < j; i++) {
-        model = items[i];
-        isModel = model instanceof this.TModel;
-        isModel || (obj = model);
-        model = this.prepare(model);
-        isModelInArray = this.first(obj || model.toObject());
-        if (!isModelInArray) {
+        obj = items[i];
+        isModel = obj instanceof this.TModel;
+        isModel ? (model = obj) : (model = this.prepare(obj));
+        obj = isModel ? model.toObject() : obj;
+        index = this.getItemIndexById(obj ? obj[idAttribute] : null, idAttribute);
+        if (index > -1 && !this.allowDuplicatedIds) {
+          this.models[index] = model;
+          if (!this.suppressTracking) {
+            ArrayUtils.remove(this.removedItems, model);
+            ArrayUtils.remove(this.changedItems, model);
+          }
+          _triggerItemEvent(this, 'replaceItem', null, this.models.length - 1, model);
+          result = true;
+        } else if (!this.first(obj)) {
           this.models.push(model);
           if (!this.suppressTracking) {
             ArrayUtils.remove(this.removedItems, model);
@@ -567,6 +584,17 @@ define(function(require) {
     */
     responseFilter: function(response) {
       return response;
+    },
+
+    getItemIndexById: function(id, idAttribute) {
+     var tmp, modelFound;
+      if (id) {
+        tmp = {};
+        tmp[idAttribute] = id;
+        modelFound = this.first(tmp);
+        return modelFound ? ArrayUtils.indexOf(this.models, modelFound) : -1;
+      }
+      return -1;
     }
   });
 

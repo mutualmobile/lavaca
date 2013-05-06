@@ -7,14 +7,15 @@ define(function(require) {
 
   describe('A Collection', function() {
     var testCollection,
-        colors = [
-          {color: 'reb', primary: true},
-          {color: 'green', primary: true},
-          {color: 'blue', primary: true},
-          {color: 'yellow', primary: false}
-        ];
+        colors;
     beforeEach(function() {
       testCollection = new Collection();
+      colors = [
+        {id: 1, color: 'red', primary: true},
+        {id: 2, color: 'green', primary: true},
+        {id: 3, color: 'blue', primary: true},
+        {id: 4, color: 'yellow', primary: false}
+      ];
     }); 
     afterEach(function() {
      // testCollection.clear();
@@ -206,7 +207,7 @@ define(function(require) {
     });
     it('can remove one or more items by passing in comma separated params', function () {
       testCollection.add(colors);
-      testCollection.remove({color: 'reb', primary: true});
+      testCollection.remove({color: 'red', primary: true});
       expect(testCollection.count()).toEqual(3);
       testCollection.remove({color: 'blue'}, {color: 'green'});
       expect(testCollection.count()).toEqual(1);
@@ -215,10 +216,37 @@ define(function(require) {
     });
     it('can remove one or more items by passing in an array', function () {
       testCollection.add(colors);
-      testCollection.remove([{color: 'reb', primary: true}, {color: 'blue'}]);
+      testCollection.remove([{color: 'red', primary: true}, {color: 'blue'}]);
       expect(testCollection.count()).toEqual(2);
       expect(testCollection.first({color: 'red'})).toEqual(null);
       expect(testCollection.first({color: 'blue'})).toEqual(null);
+    });
+    it('should replace the old item(s) when trying to add items with duplicated IDs', function () {
+      testCollection.add(colors);
+      testCollection.add({ color: 'grey'});
+      expect(testCollection.count()).toEqual(5);
+      testCollection.add({ id: 1, color: '#f0f0f0'});
+      expect(testCollection.count()).toEqual(5);
+      expect(testCollection.first({id: 1}).get('color')).toEqual('#f0f0f0');
+    });
+    it('should not keep items with duplicated IDs when Collection.allowDuplicatedIds flag is default to false', function () {
+      var obj = {id: 4, color: '#efefef', primary: false};
+      colors.push(obj, obj);
+      testCollection.add(colors);
+      expect(testCollection.count()).toEqual(4);
+      colors.splice(-3, 2);
+      expect(testCollection.toObject().items).toEqual(colors);
+    });
+    it('should keep items with duplicated IDs if Collection.allowDuplicatedIds flag is set to true', function () {
+      var TCollection = Collection.extend({
+        allowDuplicatedIds: true
+      });
+      var items = [{id: 4, color: '#efefef', primary: false}, {id: 3, color: 'transparent', primary: true}];
+      var testCollection;
+      [].push.apply(colors, items);
+      testCollection = new TCollection(colors);
+      expect(testCollection.count()).toEqual(colors.length);
+      expect(testCollection.toObject().items).toEqual(colors);
     });
   });
 
