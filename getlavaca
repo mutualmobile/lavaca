@@ -19,6 +19,10 @@ rm $tmp
 mv "lavaca-$branch" $dir
 for NAME in $use_npm; do
 	if [ $NAME = $branch ]; then
+		npm ls -g grunt-cli
+		if [ $? -ne 0 ]; then
+			npm install -g grunt-cli
+		fi
 		cd $dir && npm install
 	fi
 done
