@@ -1,0 +1,25 @@
+#!/bin/sh
+repo_url="https://github.com/mutualmobile/lavaca/archive/"
+branches="master 1.0.6 amd grunt"
+use_npm="amd grunt"
+tmp="lavaca.zip"
+default_app_name=lavaca_app
+echo "Which branch of Lavaca you need?"
+select branch in $branches; do
+	break
+done
+echo "What's your app's (directory) name? [$default_app_name]"
+read dir
+if [ -z "$dir" ]; then
+	dir=$default_app_name
+fi
+curl -L -o $tmp "$repo_url$branch.zip"
+unzip $tmp
+rm $tmp
+mv "lavaca-$branch" $dir
+for NAME in $use_npm; do
+	if [ $NAME = $branch ]; then
+		cd $dir && npm install
+	fi
+done
+exit 0
