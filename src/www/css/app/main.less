@@ -15,35 +15,33 @@ a:active,
 a:hover {
   color: #00a3de;
 }
+html {
+  font-size: 10px;
+}
 body {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-box;
-  display: -o-box;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -ms-box-orient: vertical;
-  -o-box-orient: vertical;
   font-family: Helvetica, Arial, sans-serif;
   background: #e8ebed;
+  position: relative;
 }
-#nav-header,
-#view-root {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -ms-box-flex: 1;
-  -o-box-flex: 1;
-}
+
 #view-root {
   overflow: hidden;
-  position: relative;
+  position: absolute;
+  top: 68px;
+  top: 6.8rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 #nav-header {
-  position: relative;
+  position: absolute;
   z-index: 100;
-  max-height: 48px;
+  height: 68px;
   border-bottom: solid 4px #ccd4db;
   padding: 5px 10px;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 #nav-header .logo {
   background: url(../../img/logo.png);
@@ -68,6 +66,7 @@ body {
   min-width: 100%;
   min-height: 100%;
   visibility: hidden;
+  font-size: 1.2rem;
 }
 .view.show,
 .view.in,
@@ -102,7 +101,7 @@ body {
 }
 .view h1 {
   font-size: 2em;
-  margin: 10px 20px .5em;
+  padding: 10px 20px .5em;
   color: #5d798f;
   font-weight: bold;
   font-family: 'Helvetica Bold', Helvetica, 'Arial Bold', Arial, sans-serif;
