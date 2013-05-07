@@ -19,6 +19,22 @@ Lavaca has a ton packed into it, and is designed to work well as a cohesive whol
 
 # Getting Started
 
+## Qucik Start
+1. __Install *getlavaca* CLI tool__
+```bash
+$ curl https://raw.github.com/mutualmobile/lavaca/amd/getlavaca > /usr/local/bin/getlavaca && chmod +x /usr/local/bin/getlavaca
+```
+
+2. __Go to your prefered root directory then run__
+```bash
+$ getlavaca
+```
+then follow instructions. You're good to go.
+
+
+
+## Slow Start
+
 1. __Get the code__
 ```bash
 $ mkdir [my_app] && cd [my_app]
