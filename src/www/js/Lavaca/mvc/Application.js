@@ -44,10 +44,8 @@ define(function(require) {
   var Application = EventDispatcher.extend(function(callback) {
     Config.init();
     if (callback) {
-      //this.on('init', callback.bind(this));
       this._callback = callback.bind(this);
     }
-    //Device.init($.proxy(this.init, this));
     Device.init(function() {
       this.beforeInit(Config)
         .then(this.init.bind(this));
@@ -147,18 +145,6 @@ define(function(require) {
       var promise = new Promise(this),
           _cbPromise,
           lastly;
-      /**
-       * @field {Object} mobileBrowser
-       * @default true
-       * A hash of user agent tests.
-       */
-      this.mobileBrowser = Device.mobileBrowser();
-      /**
-       * @field {Boolean} animations
-       * @default true
-       * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
-       */
-      this.animations = !this.mobileBrowser.android;
       Template.init();
       /**
        * @field {Lavaca.mvc.ViewManager} viewManager

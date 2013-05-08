@@ -1,13 +1,15 @@
 define(function(require) {
   var History = require('lavaca/net/History');
-  var Cache = require('lavaca/util/Cache');
+  var Detection = require('lavaca/env/Detection');
   var ExampleController = require('./net/ExampleController');
-  var Model = require('lavaca/mvc/Model');
   var Connectivity = require('lavaca/net/Connectivity');
   var Application = require('lavaca/mvc/Application');
   var LoadingIndicator = require('lavaca/ui/LoadingIndicator');
   var Translation = require('lavaca/util/Translation');
-  var State = require('./models/State');
+  var localStore = require('./cache/localStore');
+  var models = require('./cache/models');
+  var globalUI = require('./cache/globalUI');
+  var state = models.get('state');
   require('lavaca/ui/DustTemplate');
   require('jquery-mobile/events/touch');
   require('jquery-mobile/events/orientationchange');
@@ -15,25 +17,31 @@ define(function(require) {
   // Uncomment this section to use hash-based browser history instead of HTML5 history.
   // You should use hash-based history if there's no server-side component supporting your app's routes.
   History.overrideStandardsMode();
-  
+
   /**
    * @class app
    * @super Lavaca.mvc.Application
    * Global application-specific object
    */
   var app = new Application(function() {
-    // Initialize the models cache
-    this.models = new Cache();
-    this.models.set('example', new Model());
+     // Demonstration of extending Detection module
+    Detection.addCustomDetection(!Detection.mobileOS || Detection.otherBrowser, 'nonMobile');
+    Detection.addCustomDetection(function() {
+      return Detection.agent.search(/chrome|safari/i) > -1 && Detection.viewportWidth > 1024;
+    }, 'wideWebkit');
     // Initialize the routes
     this.router.add({
       '/': [ExampleController, 'home'],
       '/lang': [ExampleController, 'lang'],
       '/test': [ExampleController, 'test']
     });
-    State.set('lang', localStorage.getItem('app:lang') || 'en_US');
-    Translation.init(State.get('lang'));
-    // Initialize the loading indicator
+    state.set('lang', localStore.get('lang') || 'en_US');
+    Translation.init(state.get('lang'));
+    // render global views
+    globalUI.toArray().forEach(function(view) {
+      view.render();
+    });
+     // Initialize the loading indicator
     this.loadingIndicator = LoadingIndicator.init();
   });
 

@@ -24,6 +24,10 @@ define(function(require) {
    * @param {Object} model  The model used by the view
    *
    * @constructor
+   * @param {String} el The CSS selector matching the element the view is bound to
+   * @param {Object} model  The model used by the view
+   *
+   * @constructor
    * @param {Object} el The element that the childView is bound to
    * @param {Object} model  The model used by the view
    * @param {Lavaca.mvc.View} parentView  The View that contains the childView
@@ -57,7 +61,7 @@ define(function(require) {
      * The element that is either assigned to the view if in the context of a childView, or is created for the View
      *  if it is a PageView
      */
-    this.el = el || null;
+    this.el = typeof el === 'string' ? $(el) : (el || null);
 
     /**
      * @field {Object} eventMap

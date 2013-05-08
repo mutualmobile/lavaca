@@ -1,6 +1,6 @@
 define(function(require) {
 
-  var Device = require('lavaca/env/Device'),
+  var Detection = require('lavaca/env/Detection'),
       PageView = require('lavaca/mvc/PageView'),
       Promise = require('lavaca/util/Promise'),
       viewManager = require('lavaca/mvc/ViewManager');
@@ -46,7 +46,7 @@ define(function(require) {
      */
     onRenderSuccess: function() {
       PageView.prototype.onRenderSuccess.apply(this, arguments);
-      if (Device.animations) {
+      if (Detection.animationEnabled) {
         this.shell.addClass(this.animation);
       }
     },
@@ -73,7 +73,7 @@ define(function(require) {
     enter: function(container, exitingViews) {
       return PageView.prototype.enter.apply(this, arguments)
         .then(function() {
-          if (Device.animations && (this.layer > 0 || exitingViews.length > 0)) {
+          if (Detection.animationEnabled && (this.layer > 0 || exitingViews.length > 0)) {
             this.shell.removeClass('reverse');
             if (exitingViews.length || container[0].childNodes.length) {
               if (this.column !== UNDEFINED) {
@@ -113,7 +113,7 @@ define(function(require) {
      * @return {Lavaca.util.Promise} A promise
      */
     exit: function(container, enteringViews) {
-      if (Device.animations && (this.layer > 0 || enteringViews.length > 0)) {
+      if (Detection.animationEnabled && (this.layer > 0 || enteringViews.length > 0)) {
         this.shell.removeClass('reverse');
         var self = this,
             promise = new Promise(this);

@@ -24,38 +24,6 @@ define(function(require) {
   Device.isCordova = function() {
     return !!Cordova;
   };
-
-  Device.mobileBrowser = function() {
-    var mobileBrowser = {};
-    mobileBrowser.agent = navigator.userAgent.toLowerCase();
-    mobileBrowser.scrWidth = screen.width;
-    mobileBrowser.scrHeight = screen.height;
-    mobileBrowser.elemWidth = document.documentElement.clientWidth;
-    mobileBrowser.elemHeight = document.documentElement.clientHeight;
-    mobileBrowser.otherBrowser = (mobileBrowser.agent.indexOf('series60') !== -1) || (mobileBrowser.agent.indexOf('symbian') !== -1) || (mobileBrowser.agent.indexOf('windows ce') !== -1) || (mobileBrowser.agent.indexOf('blackberry') !== -1);
-    mobileBrowser.mobileOS = typeof orientation !== 'undefined' ? true : false;
-    mobileBrowser.touchOS = ('ontouchstart' in document.documentElement) ? true : false;
-    mobileBrowser.blackberry = mobileBrowser.agent.indexOf('blackberry') > -1;
-    mobileBrowser.ipad = mobileBrowser.agent.indexOf('ipad') !== -1 ? true : false;
-    mobileBrowser.ipod = mobileBrowser.agent.indexOf('ipod') !== -1 ? true : false;
-    mobileBrowser.iphone = mobileBrowser.agent.indexOf('iphone') !== -1 ? true : false;
-    mobileBrowser.palm = mobileBrowser.agent.indexOf('palm') !== -1 ? true : false;
-    mobileBrowser.symbian = mobileBrowser.agent.indexOf('symbian') !== -1 ? true : false;
-    mobileBrowser.iOS = (mobileBrowser.iphone || mobileBrowser.ipod || mobileBrowser.ipad) ? true : false;
-    mobileBrowser.android = (mobileBrowser.agent.indexOf('android') !== -1) || (!mobileBrowser.iOS && !mobileBrowser.otherBrowser && mobileBrowser.touchOS && mobileBrowser.mobileOS) ? true : false;
-    mobileBrowser.android2 = mobileBrowser.android && (mobileBrowser.agent.indexOf('android 2') !== -1) ? true : false;
-    mobileBrowser.isMobile = (mobileBrowser.android || mobileBrowser.iOS || mobileBrowser.mobileOS || mobileBrowser.touchOS) ? true : false;
-    return mobileBrowser;
-  };
-
-  /**
-   * @field {Boolean} animations
-   * @static
-   * @default true
-   * Flag indicating whether animations are turned on or off. On Android devices, this defaults to <code>false</code>.
-   */
-  Device.animations = !Device.mobileBrowser().android;
-
   /**
    * @method register
    * @static
@@ -124,19 +92,6 @@ define(function(require) {
       installPlugin();
     }
     _initHasRun = true;
-    /*
-     *if (!Cordova) {
-     *  if (document.createEvent) {
-     *    e = document.createEvent('Events');
-     *    e.initEvent('deviceready', true, false);
-     *    document.dispatchEvent(e);
-     *  } else if (document.fireEvent) {
-     *    e = document.createEventObject();
-     *    e.eventType = 'deviceready';
-     *    document.fireEvent('ondeviceready', e);
-     *  }
-     *}
-     */
   });
 
   return Device;

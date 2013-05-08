@@ -7,6 +7,7 @@ require.config({
     'jquery-mobile': 'libs/jquery-mobile',
     'cordova': 'libs/cordova',
     'mout': 'libs/mout/src',
+    'docCookies': 'libs/docCookies',
     'dust': 'libs/dust-full-1.1.1',
     'dust-helpers': 'libs/dust-helpers-1.1.0',
     'rdust': 'libs/require-dust',
