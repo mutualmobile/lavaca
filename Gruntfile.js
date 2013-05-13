@@ -236,7 +236,7 @@ module.exports = function( grunt ) {
                 '<%= paths.out.index %>',
                 '<%= paths.out.css %>',
                 '<%= paths.out.js %>',
-                'img/**/*',
+                'assets/**/*',
                 'messages/**/*'
               ],
               dest: dest
