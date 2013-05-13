@@ -2,17 +2,17 @@ define(function(require) {
 
   var ExampleView = require('app/ui/views/ExampleView'),
       TestView = require('app/ui/views/TestView'),
-      Controller = require('lavaca/mvc/Controller'),
+      BaseController = require('app/net/BaseController'),
       Translation = require('lavaca/util/Translation'),
       localStore = require('../cache/localStore'),
       state = require('../cache/models').get('state');
 
   /**
    * @class app.net.ExampleController
-   * @super Lavaca.mvc.Controller
+   * @super app.net.BaseController
    * Example controller
    */
-  var ExampleController = Controller.extend({
+  var ExampleController = BaseController.extend({
     /**
      * @method home
      * Home action, creates a history state and shows a view
@@ -27,7 +27,7 @@ define(function(require) {
       }
       return this
         .view(null, ExampleView, model)
-        .then(this.history(model, 'Home Page', params.url));
+        .then(this.updateState(model, 'Home Page', params.url));
     },
     /**
      * @method lang
@@ -51,7 +51,7 @@ define(function(require) {
       }
       return this
         .view(null, TestView, model)
-        .then(this.history(model, 'Test Page', params.url));
+        .then(this.updateState(model, 'Test Page', params.url));
     }
   });
 

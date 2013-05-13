@@ -8,7 +8,15 @@ define(function(require) {
    * @super Lavaca.mvc.View
    * Header view type
    */
-  var HeaderView = View.extend({
+  var HeaderView = View.extend(function(){
+      View.apply(this, arguments);
+
+      this.mapEvent({
+        model: {
+          change: this.onModelChange.bind(this)
+        }
+      });
+    }, {
     /**
      * @field {String} template
      * @default 'templates/header'
@@ -20,7 +28,11 @@ define(function(require) {
      * @default 'header'
      * A class name added to the view container
      */
-    className: 'header'
+    className: 'header',
+    
+    onModelChange: function() {
+      this.redraw('.title');
+    }
   });
 
   return HeaderView;
