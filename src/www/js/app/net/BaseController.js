@@ -9,7 +9,7 @@ define(function(require) {
    * @super Lavaca.mvc.Controller
    * Base controller
    */
-  var ExampleController = Controller.extend(function(){
+  var BaseController = Controller.extend(function(){
       Controller.apply(this, arguments);
     }, {
     updateState: function(historyState, title, url, stateProps){
@@ -22,6 +22,6 @@ define(function(require) {
     }
   });
 
-  return ExampleController;
+  return BaseController;
 
 });
