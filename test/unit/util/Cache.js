@@ -38,19 +38,40 @@ define(function(require) {
       cache.each(noop.cb);
       expect(noop.cb.callCount).toBe(4);
     });
+    it('can stop iteration early', function() {
+      var ops = {
+            cb: function(key, val) {
+              if (val === 3) {
+                return false;
+              }
+            }
+          };
+      spyOn(ops, 'cb').andCallThrough();
+      cache.set('a', 1);
+      cache.set('b', 2);
+      cache.set('c', 3);
+      cache.set('d', 4);
+      cache.each(ops.cb);
+      expect(ops.cb.callCount).toBe(3);
+    });
     it('can return an object of the key-value hash', function() {
-      cache.add('red');
-      cache.add('green');
-      cache.set('special', 'blue');
-      cache.add('yellow');
-      expect(typeof cache.toObject()).toEqual('object');
+      cache.set('a', 1);
+      cache.set('b', 2);
+      cache.set('c', 3);
+      cache.set('d', 4);
+      expect(cache.toObject()).toEqual({
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 4
+      });
     });
     it('can return JSON string of the key-value hash', function() {
-      cache.add('red');
-      cache.add('green');
-      cache.set('special', 'blue');
-      cache.add('yellow');
-      expect(typeof cache.toJSON()).toEqual('string');
+      cache.set('a', 1);
+      cache.set('b', 2);
+      cache.set('c', 3);
+      cache.set('d', 4);
+      expect(cache.toJSON()).toEqual('{"a":1,"b":2,"c":3,"d":4}');
     });
   });
 

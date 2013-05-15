@@ -62,7 +62,8 @@ define(function(require) {
     },
     /**
      * @method each
-     * Executes a callback for each cached item
+     * Executes a callback for each cached item. To stop iteration immediately,
+     * return false from the callback.
      *
      * @sig
      * @param {Function} callback  A function to execute for each item, callback(key, item)
@@ -72,10 +73,13 @@ define(function(require) {
      * @param {Object} thisp  The context of the callback
      */
     each: function(cb, thisp) {
-      var prop;
+      var prop, returned;
       for (prop in this) {
         if (this.hasOwnProperty(prop) && prop.indexOf('@') === 0) {
-          cb.call(thisp || this, prop.slice(1), this[prop]);
+          returned = cb.call(thisp || this, prop.slice(1), this[prop]);
+          if (returned === false) {
+            break;
+          }
         }
       }
     },

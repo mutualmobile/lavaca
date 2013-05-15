@@ -16,7 +16,7 @@ define(function(require) {
         {id: 3, color: 'blue', primary: true},
         {id: 4, color: 'yellow', primary: false}
       ];
-    }); 
+    });
     afterEach(function() {
      // testCollection.clear();
     });
@@ -94,7 +94,18 @@ define(function(require) {
       testCollection.each(function(i, item) {
         if(item.get('primary')) {
           myCount++;
-        } 
+        }
+      });
+      expect(myCount).toEqual(3);
+    });
+    it('can stop iteration early', function() {
+      var myCount = 0;
+      testCollection = new Collection(colors);
+      testCollection.each(function(i, item) {
+        myCount++;
+        if (item.get('color') === 'blue') {
+          return false;
+        }
       });
       expect(myCount).toEqual(3);
     });
@@ -114,7 +125,7 @@ define(function(require) {
     });
     it('triggers changeItem event when a model is changed', function() {
       var noop = {
-            addItem: function(e) { 
+            addItem: function(e) {
               expect(e.model).toEqual(testCollection.itemAt(4));
             }
           };

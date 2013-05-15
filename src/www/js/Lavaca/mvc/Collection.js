@@ -408,7 +408,8 @@ define(function(require) {
     },
     /**
      * @method each
-     * Executes a callback for each model in the collection
+     * Executes a callback for each model in the collection. To stop iteration immediately,
+     * return false from the callback.
      *
      * @sig
      * @param {Function} callback  A function to execute for each item, callback(index, model)
@@ -419,9 +420,13 @@ define(function(require) {
      */
     each: function(cb, thisp) {
       var i = -1,
+          returned,
           item;
       while (!!(item = this.itemAt(++i))) {
-        cb.call(thisp || this, i, item);
+        returned = cb.call(thisp || this, i, item);
+        if (returned === false) {
+          break;
+        }
       }
     },
     /**
