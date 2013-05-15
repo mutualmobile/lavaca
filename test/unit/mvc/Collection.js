@@ -232,6 +232,18 @@ define(function(require) {
       expect(testCollection.first({color: 'red'})).toEqual(null);
       expect(testCollection.first({color: 'blue'})).toEqual(null);
     });
+    it('can remove an item by passing in an index', function () {
+      testCollection.add(colors);
+      testCollection.remove(2);
+      expect(testCollection.count()).toEqual(3);
+      expect(testCollection.first({color: 'red'})).toBeTruthy();
+      expect(testCollection.first({color: 'blue'})).toEqual(null);
+    });
+    it('returns false when trying to remove an item at an invalid index', function () {
+      testCollection.add(colors);
+      expect(testCollection.remove(testCollection.count())).toEqual(false);
+      expect(testCollection.remove(-1)).toEqual(false);
+    });
     it('should replace the old item(s) when trying to add items with duplicated IDs', function () {
       testCollection.add(colors);
       testCollection.add({ color: 'grey'});

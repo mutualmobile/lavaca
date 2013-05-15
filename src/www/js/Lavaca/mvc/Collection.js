@@ -251,6 +251,10 @@ define(function(require) {
      * @event remove
      *
      * @sig
+     * @params {Number} index  The index of the model to remove
+     * @return {Boolean}  True if an item was removed, false otherwise
+     *
+     * @sig
      * @params {Lavaca.mvc.Model} item  The models to remove from the collection
      * @return {Boolean}  True if an item was removed, false otherwise
      *
@@ -263,7 +267,7 @@ define(function(require) {
      * @return {Array}  An array of booleans indicating if at least one item was removed by matching each argument
      *
      * @sig
-     * @param {Object} item  An array of objects containing attributes matching any models to remove
+     * @param {Array} items  An array of objects containing attributes matching any models to remove
      * @return {Array}  An array of booleans indicating if at least one item was removed by matching each element in the array
      *
      * @sig
@@ -273,7 +277,7 @@ define(function(require) {
      */
     remove: function(item /*, item1, item2, item3...*/) {
       var n, it, items, index, i, removed;
-      
+
       if (arguments.length === 1 && ArrayUtils.isArray(item)) {
         n = 0;
         removed = [];
@@ -300,6 +304,12 @@ define(function(require) {
             .off('saveError', this.onItemEvent);
           _triggerItemEvent(this, 'removeItem', index, null, item);
           return true;
+        } else {
+          return false;
+        }
+      } else if (typeof item === 'number' && item % 1 === 0) { // is integer
+        if (item > 0 && item < this.count()) {
+          return this.remove(this.itemAt(item));
         } else {
           return false;
         }
