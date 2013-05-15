@@ -11,6 +11,7 @@ define(function(require) {
       Template = require('lavaca/ui/Template'),
       Config = require('lavaca/util/Config'),
       Promise = require('lavaca/util/Promise'),
+      ChildBrowser = require('lavaca/env/ChildBrowser'),
       Translation = require('lavaca/util/Translation');
   require('jquery-mobile/events/touch');
   require('jquery-mobile/events/orientationchange');
@@ -114,7 +115,7 @@ define(function(require) {
         History.back();
       } else if (isExternal || rel === 'nofollow' || target === '_blank') {
         e.stopPropagation();
-        window.plugins.childBrowser.showWebPage(url);
+        new ChildBrowser().showWebPage(url);
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
