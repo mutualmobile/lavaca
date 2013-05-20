@@ -43,7 +43,6 @@ define(function(require) {
    * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
-    Config.init();
     if (callback) {
       this._callback = callback.bind(this);
     }
