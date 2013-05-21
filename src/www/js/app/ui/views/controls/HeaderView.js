@@ -36,5 +36,5 @@ define(function(require) {
     }
   });
 
-  return new HeaderView('#nav-header');
+  return new HeaderView('#nav-header', stateModel);
 });

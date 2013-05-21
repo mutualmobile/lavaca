@@ -8,7 +8,7 @@ define(function(require) {
   var Translation = require('lavaca/util/Translation');
   var localStore = require('./cache/localStore');
   var stateModel = require('app/models/StateModel');
-  var HeaderView = require('app/ui/views/controls/HeaderView');
+  var headerView = require('app/ui/views/controls/HeaderView');
   require('lavaca/ui/DustTemplate');
   require('jquery-mobile/events/touch');
   require('jquery-mobile/events/orientationchange');
@@ -38,7 +38,7 @@ define(function(require) {
 
     Translation.init(stateModel.get('lang'));
     //render header view
-    HeaderView.render();
+    headerView.render();
      // Initialize the loading indicator
     this.loadingIndicator = LoadingIndicator.init();
   });
