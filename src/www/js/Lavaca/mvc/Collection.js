@@ -98,13 +98,13 @@ define(function(require) {
      * The type of model object to use for items in this collection
      */
     TModel: Model,
-    /** 
+    /**
      * @field {String} itemsProperty
      * @default 'items'
      * The name of the property containing the collection's items when using toObject()
      */
     itemsProperty: 'items',
-    /** 
+    /**
      * @field {Boolean} allowDuplicatedIds
      * @default false
      * Whether to allow duplicated IDs in collection items. If false, a later added item will overwrite the one with same ID.
@@ -116,6 +116,14 @@ define(function(require) {
      */
     clear: function() {
       Model.prototype.clear.apply(this, arguments);
+      this.clearModels();
+    },
+    /**
+     * @method clearModels
+     * clears only the models in the collection
+     *
+     */
+    clearModels: function() {
       var i = -1,
           model;
       while (!!(model = this.models[++i])) {
@@ -125,7 +133,8 @@ define(function(require) {
       this.addedItems.length
         = this.removedItems.length
         = this.changedItems.length
-        = this.models.length = 0;
+        = this.models.length
+        = 0;
     },
     /**
      * @method prepare
@@ -571,24 +580,6 @@ define(function(require) {
         items[obj[prop].length] = idOnly && !item.isNew() ? item.id() : item.toObject();
       }
       return obj;
-    },
-    /**
-     * @method clearModels
-     * clears only the models in the collection
-     *
-     */
-    clearModels: function() {
-      var i = -1,
-          model;
-      while (!!(model = this.models[++i])) {
-        this.remove(model);
-      }
-      this.changedOrder = false;
-      this.addedItems.length
-        = this.removedItems.length
-        = this.changedItems.length
-        = this.models.length 
-        = 0;
     },
     /**
     * @method responseFilter
