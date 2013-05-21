@@ -2,7 +2,7 @@ define(function(require) {
 
   var Controller = require('lavaca/mvc/Controller');
   var merge = require('mout/object/merge');
-  var state = require('../cache/models').get('state');
+  var stateModel = require('app/models/StateModel');
 
   /**
    * @class app.net.BaseController
@@ -17,8 +17,8 @@ define(function(require) {
       this.history(historyState, title, url)();
 
       stateProps = merge(stateProps || {}, defaultStateProps);
-      state.apply(stateProps, true);
-      state.trigger('change');
+      stateModel.apply(stateProps, true);
+      stateModel.trigger('change');
     }
   });
 

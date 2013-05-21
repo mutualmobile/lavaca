@@ -7,9 +7,8 @@ define(function(require) {
   var LoadingIndicator = require('lavaca/ui/LoadingIndicator');
   var Translation = require('lavaca/util/Translation');
   var localStore = require('./cache/localStore');
-  var models = require('./cache/models');
-  var globalUI = require('./cache/globalUI');
-  var state = models.get('state');
+  var stateModel = require('app/models/StateModel');
+  var HeaderView = require('app/ui/views/controls/HeaderView');
   require('lavaca/ui/DustTemplate');
   require('jquery-mobile/events/touch');
   require('jquery-mobile/events/orientationchange');
@@ -35,12 +34,11 @@ define(function(require) {
       '/lang': [ExampleController, 'lang'],
       '/test': [ExampleController, 'test']
     });
-    state.set('lang', localStore.get('lang') || 'en_US');
-    Translation.init(state.get('lang'));
-    // render global views
-    globalUI.toArray().forEach(function(view) {
-      view.render();
-    });
+    stateModel.set('lang', localStore.get('lang') || 'en_US');
+
+    Translation.init(stateModel.get('lang'));
+    //render header view
+    HeaderView.render();
      // Initialize the loading indicator
     this.loadingIndicator = LoadingIndicator.init();
   });

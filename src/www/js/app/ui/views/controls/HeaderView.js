@@ -1,6 +1,7 @@
 define(function(require) {
 
-  var View = require('lavaca/mvc/View');
+  var View = require('lavaca/mvc/View'),
+      stateModel = require('app/models/StateModel');
   require('rdust!templates/header');
 
   /**
@@ -29,11 +30,11 @@ define(function(require) {
      * A class name added to the view container
      */
     className: 'header',
-    
+
     onModelChange: function() {
       this.redraw('.title');
     }
   });
 
-  return HeaderView;
+  return new HeaderView('#nav-header');
 });

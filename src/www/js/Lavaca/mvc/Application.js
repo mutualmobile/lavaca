@@ -4,7 +4,6 @@ define(function(require) {
       History = require('lavaca/net/History'),
       Device = require('lavaca/env/Device'),
       EventDispatcher = require('lavaca/events/EventDispatcher'),
-      Model = require('lavaca/mvc/Model'),
       router = require('lavaca/mvc/Router'),
       viewManager = require('lavaca/mvc/ViewManager'),
       Connectivity = require('lavaca/net/Connectivity'),
@@ -51,12 +50,6 @@ define(function(require) {
         .then(this.init.bind(this));
     }.bind(this));
   }, {
-    /**
-     * @field {Function} TState
-     * @default Lavaca.mvc.Model
-     * The type of the state model used by the application
-     */
-    TState: Model,
     /**
      * @field {String} initRoute
      * @default "/"
@@ -184,7 +177,6 @@ define(function(require) {
       } else {
         lastly();
       }
-      
       return promise.then(function() {
         this.trigger('ready');
       });
