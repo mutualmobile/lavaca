@@ -34,4 +34,4 @@ require.config({
   }
 });
 require(['es5-shim']);
-require(['app/app']); // this is app.js
+require(['app/app']);
