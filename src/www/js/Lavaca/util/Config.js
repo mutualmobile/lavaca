@@ -79,6 +79,8 @@ define(function(require) {
     Map.dispose(_cache);
   };
 
+  Config.init();
+  
   return Config;
 
 });

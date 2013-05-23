@@ -73,6 +73,11 @@ define(function(require) {
       cache.set('d', 4);
       expect(cache.toJSON()).toEqual('{"a":1,"b":2,"c":3,"d":4}');
     });
+    it('can be cleared', function() {
+      cache.set('foo', 'bar');
+      cache.clear();
+      expect(cache.get('foo')).toBeNull();
+    });
   });
 
 });

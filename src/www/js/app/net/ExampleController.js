@@ -4,8 +4,8 @@ define(function(require) {
       TestView = require('app/ui/views/TestView'),
       BaseController = require('app/net/BaseController'),
       Translation = require('lavaca/util/Translation'),
-      localStore = require('../cache/localStore'),
-      state = require('../cache/models').get('state');
+      localStore = require('app/cache/localStore'),
+      stateModel = require('app/models/StateModel');
 
   /**
    * @class app.net.ExampleController
@@ -42,7 +42,7 @@ define(function(require) {
       Translation.setDefault(locale);
       localStore.set('lang', locale);
       this.viewManager.flush();
-      state.set('lang', locale);
+      stateModel.set('lang', locale);
       return this.redirect('/?lang={0}', [locale]);
     },
     test: function(params, model) {

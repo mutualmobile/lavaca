@@ -20,10 +20,10 @@ define(function(require) {
       </script>');
       result.push('<script type="text/x-translation" data-name="es_MX" data-default>\
         {\
-          "hello": "ÁHola!",\
-          "goodbye": "ÁAdi—s mundo cruel!",\
+          "hello": "ï¿½Hola!",\
+          "goodbye": "ï¿½Adiï¿½s mundo cruel!",\
           "apple": "manzana",\
-          "banana": "pl‡tano",\
+          "banana": "plï¿½tano",\
           "cherry": "cereza"\
         }\
       </script>'); 
@@ -37,13 +37,13 @@ define(function(require) {
     });
     it('can be intitialized with a cache of translations', function() {
       expect(Translation.get('hello')).toEqual('Hello!');
-      expect(Translation.get('es', 'hello')).toEqual('ÁHola!');
+      expect(Translation.get('es', 'hello')).toEqual('ï¿½Hola!');
       expect(Translation.get('yellow')).toBeNull();
     });
     it('can set the default locale', function() {
       expect(Translation.get('hello')).toEqual('Hello!');
       Translation.setDefault('es');
-      expect(Translation.get('hello')).toEqual('ÁHola!');
+      expect(Translation.get('hello')).toEqual('ï¿½Hola!');
     });
     it('can be disposed', function() {
       Translation.dispose();

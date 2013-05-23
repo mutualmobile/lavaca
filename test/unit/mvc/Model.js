@@ -25,11 +25,8 @@ define(function(require) {
       expect(testModel.get('myNumber')).toEqual(12);
       expect(testModel.get('myString')).toEqual('Hello, World!');
     });
-    it('should be disposable, and rendered unusable on disposal', function() {
-      testModel.set('myAttribute', true);
-      testModel.dispose();
-      expect(testModel.attributes).toEqual(undefined);
-      testModel = new Model();
+    it('should be disposable', function() {
+      expect(typeof testModel.dispose === 'function').toEqual(true);
     });
     it('should remove all attributes on clear', function() {
       testModel.set('myAttribute', true);

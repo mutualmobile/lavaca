@@ -119,6 +119,24 @@ define(function(require) {
         results['ids'].push(prop); 
       });
       return results;
+    },
+
+    /**
+     * @method clear
+     * removes all items from the cache
+     */
+    clear: function() {
+       this.each(function(key, item) {
+         this.remove(key);
+       }, this);
+    },
+
+    /**
+     * @method dispose
+     * Clears all items from the cache on dispose
+     */
+    dispose: function() {
+      this.clear();
     }
   });
 

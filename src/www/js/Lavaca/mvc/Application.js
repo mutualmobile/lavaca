@@ -4,7 +4,6 @@ define(function(require) {
       History = require('lavaca/net/History'),
       Device = require('lavaca/env/Device'),
       EventDispatcher = require('lavaca/events/EventDispatcher'),
-      Model = require('lavaca/mvc/Model'),
       router = require('lavaca/mvc/Router'),
       viewManager = require('lavaca/mvc/ViewManager'),
       Connectivity = require('lavaca/net/Connectivity'),
@@ -43,7 +42,6 @@ define(function(require) {
    * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
-    Config.init();
     if (callback) {
       this._callback = callback.bind(this);
     }
@@ -52,12 +50,6 @@ define(function(require) {
         .then(this.init.bind(this));
     }.bind(this));
   }, {
-    /**
-     * @field {Function} TState
-     * @default Lavaca.mvc.Model
-     * The type of the state model used by the application
-     */
-    TState: Model,
     /**
      * @field {String} initRoute
      * @default "/"
@@ -185,22 +177,9 @@ define(function(require) {
       } else {
         lastly();
       }
-      
       return promise.then(function() {
         this.trigger('ready');
       });
-    },
-    /**
-     * @method dispose
-     * @event dispose
-     * Readies the application to be garbage collected
-     */
-    dispose: function() {
-      this.trigger('dispose');
-      Config.dispose();
-      Translation.dispose();
-      Template.dispose();
-      EventDispatcher.prototype.dispose.call(this);
     },
     /**
      * @field {String} initialStandardRoute
