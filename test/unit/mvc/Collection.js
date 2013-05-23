@@ -74,16 +74,20 @@ define(function(require) {
       expectedResult = [colors[0]].concat(items).concat([colors[1]]);
       expect(testCollection.toObject().items).toEqual(expectedResult);
     });
-    // it('can find the index of a model matching an attribute hash', function() {
-    //   testCollection = new Collection(colors);
-    //   expect(testCollection.indexOf({id: 2, color: 'green'})).toEqual(1);
-    //   expect(testCollection.indexOf({id: 500, color: 'green'})).toEqual(-1);
-    // });
-    // it('can find the index of a model matching a functional test', function() {
-    //   testCollection = new Collection(colors);
-    //   expect(testCollection.indexOf({id: 2, color: 'green'})).toEqual(1);
-    //   expect(testCollection.indexOf({id: 500, color: 'green'})).toEqual(-1);
-    // });
+    it('can find the index of a model matching an attribute hash', function() {
+      testCollection = new Collection(colors);
+      expect(testCollection.indexOf({id: 2, color: 'green'})).toEqual(1);
+      expect(testCollection.indexOf({id: 500, color: 'green'})).toEqual(-1);
+    });
+    it('can find the index of a model matching a functional test', function() {
+      var testFunc = function(index, model) {
+            return model.get('id') === 2;
+          };
+      testCollection = new Collection(colors);
+      expect(testCollection.indexOf(testFunc)).toEqual(1);
+      testCollection.remove(1);
+      expect(testCollection.indexOf(testFunc)).toEqual(-1);
+    });
     it('can move an item to a new index', function() {
       testCollection = new Collection(colors);
       testCollection.on('moveItem', function(e) {
@@ -257,7 +261,6 @@ define(function(require) {
               var testVal = e.model.get('testVal'),
                   index = e.index,
                   previousIndex = e.previousIndex;
-              console.log('moved ' + testVal + ' from ' + previousIndex + ' to ' + index);
             }
           };
 
