@@ -257,11 +257,7 @@ define(function(require) {
     });
     it('can sort via a compare function', function() {
       var noop = {
-            moveItem: function(e) {
-              var testVal = e.model.get('testVal'),
-                  index = e.index,
-                  previousIndex = e.previousIndex;
-            }
+            moveItem: function() {}
           };
 
       function compareFunc(modelA, modelB) {
