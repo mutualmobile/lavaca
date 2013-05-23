@@ -35,7 +35,7 @@ define(function(require) {
       '/test': [ExampleController, 'test']
     });
     stateModel.set('lang', localStore.get('lang') || 'en_US');
-
+    //initialize translations
     Translation.init(stateModel.get('lang'));
     //render header view
     headerView.render();
