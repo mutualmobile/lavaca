@@ -182,18 +182,6 @@ define(function(require) {
       });
     },
     /**
-     * @method dispose
-     * @event dispose
-     * Readies the application to be garbage collected
-     */
-    dispose: function() {
-      this.trigger('dispose');
-      Config.dispose();
-      Translation.dispose();
-      Template.dispose();
-      EventDispatcher.prototype.dispose.call(this);
-    },
-    /**
      * @field {String} initialStandardRoute
      * Gets initial route based on query string returned by server 302 redirect
      */
