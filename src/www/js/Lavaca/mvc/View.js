@@ -335,7 +335,8 @@ define(function(require) {
      */
     clearModelEvents: function() {
       var type,
-          callback;
+          callback,
+          dotIndex;
       if (this.eventMap
           && this.eventMap.model
           && this.model
@@ -345,7 +346,11 @@ define(function(require) {
           if (typeof callback === 'object') {
             callback = callback.on;
           }
-          this.model.off(type, callback, this);
+          dotIndex = type.indexOf('.');
+          if (dotIndex !== -1) {
+            type = type.substr(0, dotIndex);
+          }
+          this.model.off(type, callback);
         }
       }
     },
@@ -357,11 +362,16 @@ define(function(require) {
       var el = this.el,
           callbacks,
           callback,
+          attribute,
           delegate,
           type,
+          dotIndex,
           opts;
       for (delegate in this.eventMap) {
         callbacks = this.eventMap[delegate];
+        if (delegate === 'self') {
+          delegate = null;
+        }
         for (type in callbacks) {
           callback = callbacks[type];
           if (typeof callback === 'object') {
@@ -371,8 +381,13 @@ define(function(require) {
             opts = undefined;
           }
           if (delegate === 'model') {
-            if (this.model && this.model instanceof EventDispatcher) {
-              this.model.on(type, callback, this);
+            if (this.model && this.model instanceof Model) {
+              dotIndex = type.indexOf('.');
+              if (dotIndex !== -1) {
+                attribute = type.substr(dotIndex+1);
+                type = type.substr(0, dotIndex);
+              }
+              this.model.on(type, attribute, callback, this);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
