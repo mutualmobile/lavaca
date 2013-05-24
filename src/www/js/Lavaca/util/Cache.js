@@ -137,6 +137,7 @@ define(function(require) {
      */
     dispose: function() {
       this.clear();
+      Disposable.prototype.dispose.apply(this, arguments);
     }
   });
 

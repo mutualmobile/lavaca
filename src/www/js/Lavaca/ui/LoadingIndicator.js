@@ -59,6 +59,6 @@ define(function(require) {
     return indicator;
   };
 
-  return LoadingIndicator;
+  return LoadingIndicator.init();
 
 });
