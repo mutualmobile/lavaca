@@ -80,7 +80,7 @@ define(function(require) {
   };
 
   Config.init();
-  
+
   return Config;
 
 });
