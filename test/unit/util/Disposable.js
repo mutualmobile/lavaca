@@ -19,10 +19,17 @@ define(function(require) {
         item0: 1,
         item1: 2
       };
+      ob.obj2 = new Type();
+
+      spyOn(ob.obj2, 'dispose');
     });
     it('provides a dispose function', function() {
       expect(typeof ob.dispose ==='function').toEqual(true);
     });
+    it('calls the dispose method of nested objects', function() {
+      ob.dispose();
+      expect(ob.obj2.dispose).toHaveBeenCalled();
+    })
   });
 
 });
