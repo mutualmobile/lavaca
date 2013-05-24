@@ -2,6 +2,7 @@ define(function(require) {
 
   var BaseView = require('./BaseView');
   require('rdust!templates/example');
+  var Config = require('lavaca/util/Config');
 
   /**
    * @class app.ui.views.ExampleView
