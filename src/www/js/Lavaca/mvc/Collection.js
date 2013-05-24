@@ -68,7 +68,6 @@ define(function(require) {
    * @event invalidItem
    * @event saveSuccessItem
    * @event saveErrorItem
-   * @event moveItem
    *
    * @constructor
    *
@@ -113,6 +112,8 @@ define(function(require) {
     /**
      * @method clear
      * Removes and disposes of all models in the collection
+     *
+     * @event removeItem
      */
     clear: function() {
       Model.prototype.clear.apply(this, arguments);
@@ -170,12 +171,70 @@ define(function(require) {
       return attribute !== this.itemsProperty;
     },
     /**
-     * @method add
-     * Adds one or more items to the collection. New items with IDs matching those in this collection will replace instead of add.
+     * @method insert
+     * Inserts one or more items into the collection at the specified index
      *
      * @event addItem
-     * @event replaceItem
-     * @event addAll
+     *
+     * @sig
+     * @param {Number} insertIndex  index at which items will be inserted
+     * @param {Array} newItems  Array of objects or Models to insert
+     * @return {Boolean}  false if no items were able to be added, true otherwise.
+     *
+     * @sig
+     * @param {Number} insertIndex  index at which items will be inserted
+     * @params {Object} items  One or more objects or Models to insert
+     * @return {Boolean}  false if no items were able to be added, true otherwise.
+     */
+    insert: function(insertIndex, item /*, item1, item2, item3...*/) {
+      var result = false,
+          idAttribute = this.TModel.prototype.idAttribute,
+          compareObj = {},
+          id,
+          i,
+          j,
+          model,
+          index,
+          items;
+      items = item && ArrayUtils.isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
+      for (i = 0, j = items.length; i < j; i++) {
+        model = items[i];
+        if (typeof model === 'object') {
+          if (!(model instanceof this.TModel)) {
+            model = this.prepare(model);
+          }
+
+          // If it's a duplicate, remove the old item
+          id = model.get(idAttribute);
+          if (id !== null) {
+            compareObj[idAttribute] = id;
+            index = this.indexOf(compareObj);
+            if (index > -1 && !this.allowDuplicatedIds) {
+              this.remove(index);
+            }
+          }
+
+          this.models.splice(insertIndex, 0, model);
+          if (!this.suppressTracking) {
+            ArrayUtils.remove(this.removedItems, model);
+            ArrayUtils.remove(this.changedItems, model);
+            ArrayUtils.pushIfNotExists(this.addedItems, model);
+          }
+          _triggerItemEvent(this, 'addItem', null, insertIndex, this.models[i]);
+          insertIndex++;
+          result = true;
+        } else {
+          throw 'Only objects can be added to a Collection.';
+        }
+      }
+
+      return result;
+    },
+    /**
+     * @method add
+     * Adds one or more items to the collection. Items with IDs matching an item already in this collection will replace instead of add.
+     *
+     * @event addItem
      *
      * @sig
      * @params {Object} item  One or more items to add to the collection
@@ -185,50 +244,17 @@ define(function(require) {
      * @params {Array} items  An array of items to add to the collection
      * @return {Boolean}  True if an item was added, false otherwise
      */
-    add: function(item /*, item1, item2, item3...*/) {
-      var result = false,
-          idAttribute = this.TModel.prototype.idAttribute,
-          obj,
-          i,
-          j,
-          model,
-          isModel,
-          index,
-          items;
-      items = ArrayUtils.isArray(arguments[0]) && arguments.length ? item : arguments;
-      for (i = 0, j = items.length; i < j; i++) {
-        obj = items[i];
-        isModel = obj instanceof this.TModel;
-        isModel ? (model = obj) : (model = this.prepare(obj));
-        obj = isModel ? model.toObject() : obj;
-        index = this.getItemIndexById(obj ? obj[idAttribute] : null, idAttribute);
-        if (index > -1 && !this.allowDuplicatedIds) {
-          this.models[index] = model;
-          if (!this.suppressTracking) {
-            ArrayUtils.remove(this.removedItems, model);
-            ArrayUtils.remove(this.changedItems, model);
-          }
-          _triggerItemEvent(this, 'replaceItem', null, this.models.length - 1, model);
-          result = true;
-        } else if (!this.first(obj)) {
-          this.models.push(model);
-          if (!this.suppressTracking) {
-            ArrayUtils.remove(this.removedItems, model);
-            ArrayUtils.remove(this.changedItems, model);
-            ArrayUtils.pushIfNotExists(this.addedItems, model);
-          }
-          _triggerItemEvent(this, 'addItem', null, this.models.length - 1, model);
-          result = true;
-        }
+    add: function(/* item1, item2, itemN */) {
+      if (arguments.length && arguments[0] instanceof Array) {
+        return this.add.apply(this, arguments[0]);
       }
-      if (result) {
-        this.trigger('addAll');
-      }
-      return result;
+      return this.insert.call(this, this.count(), Array.prototype.slice.call(arguments, 0));
     },
     /**
      * @method moveTo
      * Moves an item
+     *
+     * @event moveItem
      *
      * @sig
      * @param {Lavaca.mvc.Model} model  The model to move
@@ -257,7 +283,7 @@ define(function(require) {
      * @method remove
      * Removes an item from the collection
      *
-     * @event remove
+     * @event removeItem
      *
      * @sig
      * @params {Number} index  The index of the model to remove
@@ -295,7 +321,13 @@ define(function(require) {
         }
         return removed;
       } else if (arguments.length > 1) {
-        return this.remove([].slice.call(arguments));
+        // Prevent passing multiple numeric arguments,
+        // which could have unexpected behavior
+        if (typeof item === 'number' && item % 1 === 0) { // is integer
+          return this.remove(item);
+        } else {
+          return this.remove([].slice.call(arguments));
+        }
       }
 
       if (item instanceof this.TModel) {
@@ -317,7 +349,7 @@ define(function(require) {
           return false;
         }
       } else if (typeof item === 'number' && item % 1 === 0) { // is integer
-        if (item > 0 && item < this.count()) {
+        if (item >= 0 && item < this.count()) {
           return this.remove(this.itemAt(item));
         } else {
           return false;
@@ -407,6 +439,25 @@ define(function(require) {
       return this.filter(test, 1)[0] || null;
     },
     /**
+     * @method indexOf
+     *
+     * @sig
+     * Finds the index of the first item matching an attribute hash
+     * @param {Object} attributes  The attributes to test against each model
+     * @return {Number}  Index of the matching model, or -1 if no match is found
+     *
+     * @sig
+     * Finds the index of the first item that passed a functional test
+     * @param {Function} test  A function to check each model in the collection in the form
+     *     test(index, model). If the test function returns true, the model will be included
+     *     as the result
+     * @return {Number}  Index of the matching model, or -1 if no match is found
+     */
+    indexOf: function(test) {
+      var match = this.first(test);
+      return match ? ArrayUtils.indexOf(this.models, match) : -1;
+    },
+    /**
      * @method itemAt
      * Gets the item at a specific index
      *
@@ -451,6 +502,8 @@ define(function(require) {
     /**
      * @method sort
      *
+     * @event moveItem
+     *
      * @sig
      * Sorts the models in the collection using the specified attribute, in ascending order.
      * @param {String} attribute  Attribute to sort by
@@ -473,27 +526,45 @@ define(function(require) {
      */
     sort: function(attribute, descending) {
       var comparator = typeof attribute === "function" ? attribute : _getComparator(attribute, descending),
-          oldModels = clone(this.models);
+          oldModels = clone(this.models),
+          oldIndex;
       this.models.sort(comparator, this);
       if (!this.suppressTracking) {
         this.changedOrder = true;
       }
-      this.trigger('rearrange', {oldModels: oldModels, newModels: this.models});
+      if (!this.suppressEvents) {
+        this.each(function(index, model) {
+          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          if (oldIndex !== index) {
+            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+          }
+        });
+      }
       return this;
     },
     /**
      * @method reverse
      * Reverses the order of the models in the collection
      *
+     * @event moveItem
+     *
      * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
      */
     reverse: function() {
-      var oldModels = clone(this.models);
+      var oldModels = clone(this.models),
+          oldIndex;
       this.models.reverse();
       if (!this.suppressTracking) {
         this.changedOrder = true;
       }
-      this.trigger('rearrange', {oldModels: oldModels, newModels: this.models});
+      if (!this.suppressEvents) {
+        this.each(function(index, model) {
+          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          if (oldIndex !== index) {
+            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+          }
+        });
+      }
       return this;
     },
     /**
@@ -590,17 +661,6 @@ define(function(require) {
     */
     responseFilter: function(response) {
       return response;
-    },
-
-    getItemIndexById: function(id, idAttribute) {
-     var tmp, modelFound;
-      if (id) {
-        tmp = {};
-        tmp[idAttribute] = id;
-        modelFound = this.first(tmp);
-        return modelFound ? ArrayUtils.indexOf(this.models, modelFound) : -1;
-      }
-      return -1;
     }
   });
 

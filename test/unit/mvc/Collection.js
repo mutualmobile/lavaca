@@ -50,6 +50,44 @@ define(function(require) {
       testCollection = new colorCollection(colors);
       expect(testCollection.models[0] instanceof colorModel).toEqual(true);
     });
+    it('can insert models at a specified index', function() {
+      var items = [
+            {id: 3, color: 'blue', primary: true},
+            {id: 4, color: 'yellow', primary: false},
+            {id: 5, color: 'orange', primary: false},
+            {id: 6, color: 'purple', primary: false},
+            {id: 7, color: 'magenta', primary: false}
+          ],
+          noop = {
+            addItem: function() {},
+            removedItem: function() {}
+          },
+          expectedResult = [];
+      spyOn(noop, 'addItem');
+      spyOn(noop, 'removedItem');
+      testCollection = new Collection(colors);
+      testCollection.on('addItem', noop.addItem);
+      testCollection.on('removeItem', noop.removedItem);
+      testCollection.insert(1, items);
+      expect(noop.addItem.callCount).toEqual(5);
+      expect(noop.removedItem.callCount).toEqual(2);
+      expectedResult = [colors[0]].concat(items).concat([colors[1]]);
+      expect(testCollection.toObject().items).toEqual(expectedResult);
+    });
+    it('can find the index of a model matching an attribute hash', function() {
+      testCollection = new Collection(colors);
+      expect(testCollection.indexOf({id: 2, color: 'green'})).toEqual(1);
+      expect(testCollection.indexOf({id: 500, color: 'green'})).toEqual(-1);
+    });
+    it('can find the index of a model matching a functional test', function() {
+      var testFunc = function(index, model) {
+            return model.get('id') === 2;
+          };
+      testCollection = new Collection(colors);
+      expect(testCollection.indexOf(testFunc)).toEqual(1);
+      testCollection.remove(1);
+      expect(testCollection.indexOf(testFunc)).toEqual(-1);
+    });
     it('can move an item to a new index', function() {
       testCollection = new Collection(colors);
       testCollection.on('moveItem', function(e) {
@@ -121,58 +159,108 @@ define(function(require) {
       testCollection = new Collection(colors);
       testCollection.on('addItem', noop.addItem);
       testCollection.add({color: 'purple', primary: false});
-      expect(noop.addItem).toHaveBeenCalled();
+      expect(noop.addItem.callCount).toEqual(1);
     });
     it('triggers changeItem event when a model is changed', function() {
       var noop = {
-            addItem: function(e) {
+            changeItem: function(e) {
               expect(e.model).toEqual(testCollection.itemAt(4));
             }
           };
-      spyOn(noop, 'addItem').andCallThrough();
+      spyOn(noop, 'changeItem').andCallThrough();
       testCollection = new Collection(colors);
-      testCollection.on('changeItem', noop.addItem);
+      testCollection.on('changeItem', noop.changeItem);
       testCollection.add({color: 'purple', primary: false});
       testCollection
         .itemAt(4)
         .set('color', 'grey');
-      expect(noop.addItem).toHaveBeenCalled();
+      expect(noop.changeItem).toHaveBeenCalled();
+    });
+    it('triggers moveItem events when models are moved', function() {
+      var noop = {
+            moveItem: function(e) {
+              moveRecords.push([e.model.get('testVal'), e.previousIndex, e.index]);
+            }
+          },
+          moveRecords = [];
+      spyOn(noop, 'moveItem').andCallThrough();
+      testCollection.on('moveItem', noop.moveItem);
+      testCollection.add([
+        { testVal: 'B' },
+        { testVal: 'C' },
+        { testVal: 'A' },
+        { testVal: 'D' }
+      ]);
+      testCollection.moveTo(2, 1);
+      expect(testCollection.sort('testVal').toObject().items).toEqual([
+        { testVal: 'A' },
+        { testVal: 'B' },
+        { testVal: 'C' },
+        { testVal: 'D' }
+      ]);
+      expect(noop.moveItem.callCount).toEqual(3);
+      expect(moveRecords).toEqual([
+        ['A', 2, 1],
+        ['A', 1, 0],
+        ['B', 0, 1]
+      ]);
+    });
+    it('triggers removeItem event models items are removed', function() {
+       var noop = {
+            removedItem: function(e) {
+              expect(e.model).toEqual(model);
+            }
+          },
+          model;
+      spyOn(noop, 'removedItem').andCallThrough();
+      testCollection = new Collection(colors);
+      testCollection.on('removeItem', noop.removedItem);
+      model = testCollection.itemAt(1);
+      testCollection.remove(1);
+      expect(noop.removedItem).toHaveBeenCalled();
     });
     it('can sort via a specified attribute name', function() {
+      var noop = {
+        moveItem: function() {}
+      };
+      spyOn(noop, 'moveItem');
+      testCollection.on('moveItem', noop.moveItem);
       testCollection.add([
         { testVal: 'B' },
         { testVal: 'C' },
         { testVal: 'A' }
       ]);
-      expect(testCollection.sort('testVal').toObject()).toEqual({
-        items: [
-          { testVal: 'A' },
-          { testVal: 'B' },
-          { testVal: 'C' }
-        ]
-      });
+      expect(testCollection.sort('testVal').toObject().items).toEqual([
+        { testVal: 'A' },
+        { testVal: 'B' },
+        { testVal: 'C' }
+      ]);
+      expect(noop.moveItem.callCount).toEqual(3);
     });
     it('can sort via a specified attribute name in descending order', function() {
+      var noop = {
+        moveItem: function() {}
+      };
+      spyOn(noop, 'moveItem');
+      testCollection.on('moveItem', noop.moveItem);
       testCollection.add([
         { testVal: 'B' },
         { testVal: 'C' },
         { testVal: 'A' }
       ]);
-      expect(testCollection.sort('testVal', true).toObject()).toEqual({
-        items: [
-          { testVal: 'C' },
-          { testVal: 'B' },
-          { testVal: 'A' }
-        ]
-      });
+      expect(testCollection.sort('testVal', true).toObject().items).toEqual([
+        { testVal: 'C' },
+        { testVal: 'B' },
+        { testVal: 'A' }
+      ]);
+      expect(noop.moveItem.callCount).toEqual(2);
     });
     it('can sort via a compare function', function() {
-      testCollection.add([
-        { testVal: 'B' },
-        { testVal: 'C' },
-        { testVal: 'A' }
-      ]);
-      var compareFunc = function(modelA, modelB) {
+      var noop = {
+            moveItem: function() {}
+          };
+
+      function compareFunc(modelA, modelB) {
         var a = modelA.get('testVal'),
             b = modelB.get('testVal');
         return a === b
@@ -180,14 +268,20 @@ define(function(require) {
                   : a < b
                     ? -1
                     : 1;
-      };
-      expect(testCollection.sort(compareFunc).toObject()).toEqual({
-        items: [
-          { testVal: 'A' },
-          { testVal: 'B' },
-          { testVal: 'C' }
-        ]
-      });
+      }
+      spyOn(noop, 'moveItem').andCallThrough();
+      testCollection.on('moveItem', noop.moveItem);
+      testCollection.add([
+        { testVal: 'B' },
+        { testVal: 'C' },
+        { testVal: 'A' }
+      ]);
+      expect(testCollection.sort(compareFunc).toObject().items).toEqual([
+        { testVal: 'A' },
+        { testVal: 'B' },
+        { testVal: 'C' }
+      ]);
+      expect(noop.moveItem.callCount).toEqual(3);
     });
     it('can reverse order of models', function() {
       testCollection.add([
@@ -195,13 +289,11 @@ define(function(require) {
         { testVal: 'B' },
         { testVal: 'C' }
       ]);
-      expect(testCollection.reverse().toObject()).toEqual({
-        items: [
-          { testVal: 'C' },
-          { testVal: 'B' },
-          { testVal: 'A' }
-        ]
-      });
+      expect(testCollection.reverse().toObject().items).toEqual([
+        { testVal: 'C' },
+        { testVal: 'B' },
+        { testVal: 'A' }
+      ]);
     });
     it('can clear models without clearing attributes', function() {
       testCollection.add(colors);
@@ -245,14 +337,17 @@ define(function(require) {
       expect(testCollection.remove(-1)).toEqual(false);
     });
     it('should replace the old item(s) when trying to add items with duplicated IDs', function () {
+      var filtered;
       testCollection.add(colors);
       testCollection.add({ color: 'grey'});
       expect(testCollection.count()).toEqual(5);
       testCollection.add({ id: 1, color: '#f0f0f0'});
       expect(testCollection.count()).toEqual(5);
-      expect(testCollection.first({id: 1}).get('color')).toEqual('#f0f0f0');
+      filtered = testCollection.filter({id: 1});
+      expect(filtered.length).toEqual(1);
+      expect(filtered[0].get('color')).toEqual('#f0f0f0');
     });
-    it('should not keep items with duplicated IDs when Collection.allowDuplicatedIds flag is default to false', function () {
+    it('should not keep items with duplicated IDs when Collection.allowDuplicatedIds flag is false (default)', function () {
       var obj = {id: 4, color: '#efefef', primary: false};
       colors.push(obj, obj);
       testCollection.add(colors);
