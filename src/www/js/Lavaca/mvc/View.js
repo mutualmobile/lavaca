@@ -408,10 +408,11 @@ define(function(require) {
      *     that will be bound when the view is rendered. The map should be in
      *     the form <code>{delegate: {eventType: callback}}</code>. For example,
      *     <code>{'.button': {click: onClickButton}}</code>. The events defined in
-     *     [[Lavaca.events.Touch]], [[Lavaca.fx.Animation]], and [[Lavaca.fx.Transition]]
-     *     are also supported. To pass in options to a Lavaca event, use a wrapper object:
-     *     <code>{'.taphold-me': {taphold: {on: onTapHoldButton, duration: 1000}}}</code>
-     *     or <code>{'.swipe-me': {swipe: {on: onSwipeButton, direction: 'vertical'}}}</code>
+     *     [[Lavaca.fx.Animation]] and [[Lavaca.fx.Transition]] are also supported.
+     *     To map an event to the view's el, use 'self' as the delegate. To map
+     *     events to the view's model, use 'model' as the delegate. To limit events
+     *     to only a particular attribute on the model, use a period-seperated
+     *     syntax such as <code>{model: {'change.myAttribute': myCallback}}</code>
      * @return {Lavaca.mvc.View}  This view (for chaining)
      *
      * @sig
