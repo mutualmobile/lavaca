@@ -340,7 +340,8 @@ define(function(require) {
      */
     clearModelEvents: function() {
       var type,
-          callback;
+          callback,
+          dotIndex;
       if (this.eventMap
           && this.eventMap.model
           && this.model
@@ -350,7 +351,11 @@ define(function(require) {
           if (typeof callback === 'object') {
             callback = callback.on;
           }
-          this.model.off(type, callback, this);
+          dotIndex = type.indexOf('.');
+          if (dotIndex !== -1) {
+            type = type.substr(0, dotIndex);
+          }
+          this.model.off(type, callback);
         }
       }
     },
@@ -362,11 +367,16 @@ define(function(require) {
       var el = this.el,
           callbacks,
           callback,
+          attribute,
           delegate,
           type,
+          dotIndex,
           opts;
       for (delegate in this.eventMap) {
         callbacks = this.eventMap[delegate];
+        if (delegate === 'self') {
+          delegate = null;
+        }
         for (type in callbacks) {
           callback = callbacks[type];
           if (typeof callback === 'object') {
@@ -376,8 +386,13 @@ define(function(require) {
             opts = undefined;
           }
           if (delegate === 'model') {
-            if (this.model && this.model instanceof EventDispatcher) {
-              this.model.on(type, callback, this);
+            if (this.model && this.model instanceof Model) {
+              dotIndex = type.indexOf('.');
+              if (dotIndex !== -1) {
+                attribute = type.substr(dotIndex+1);
+                type = type.substr(0, dotIndex);
+              }
+              this.model.on(type, attribute, callback, this);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
@@ -398,10 +413,11 @@ define(function(require) {
      *     that will be bound when the view is rendered. The map should be in
      *     the form <code>{delegate: {eventType: callback}}</code>. For example,
      *     <code>{'.button': {click: onClickButton}}</code>. The events defined in
-     *     [[Lavaca.events.Touch]], [[Lavaca.fx.Animation]], and [[Lavaca.fx.Transition]]
-     *     are also supported. To pass in options to a Lavaca event, use a wrapper object:
-     *     <code>{'.taphold-me': {taphold: {on: onTapHoldButton, duration: 1000}}}</code>
-     *     or <code>{'.swipe-me': {swipe: {on: onSwipeButton, direction: 'vertical'}}}</code>
+     *     [[Lavaca.fx.Animation]] and [[Lavaca.fx.Transition]] are also supported.
+     *     To map an event to the view's el, use 'self' as the delegate. To map
+     *     events to the view's model, use 'model' as the delegate. To limit events
+     *     to only a particular attribute on the model, use a period-seperated
+     *     syntax such as <code>{model: {'change.myAttribute': myCallback}}</code>
      * @return {Lavaca.mvc.View}  This view (for chaining)
      *
      * @sig
