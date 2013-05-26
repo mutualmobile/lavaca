@@ -7,13 +7,13 @@ define(function(require) {
 
   describe('A View', function() {
     var testView,
-        el = $('<div/>'),
+        el = $('<div><div class="childView"></div></div>'),
         model;
     beforeEach(function() {
       $('body').append('<script type="text/dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>');
       model = new Model({color: 'blue', primary: true});
       Template.init();
-      testView = new View();
+      testView = new View(el);
     });
     afterEach(function() {
       $('script[data-name="hello-world"]').remove();
@@ -28,7 +28,12 @@ define(function(require) {
       expect(testView.el).toEqual(el);
       expect(testView.model).toEqual(model);
     });
-
+    it('can contain a childView', function() {
+      testView.mapChildView('.childView', View, model);
+      testView.createChildViews();
+      var childView = testView.childViews.toArray()[0];
+      expect(childView instanceof View).toEqual(true);
+    });
     it('can redraw whole view', function() {
       var promise;
       $('body').append('<script type="text/dust-template" data-name="model-tmpl"><h2>Hello World</h2><p>Color is {color}.</p></script>');

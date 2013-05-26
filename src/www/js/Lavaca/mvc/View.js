@@ -266,8 +266,8 @@ define(function(require) {
       templateRenderPromise
         .success(function(html) {
           if (replaceAll) {
-            self.disposeChildViews(this.el);
-            self.disposeWidgets(this.el);
+            this.disposeChildViews(this.el);
+            this.disposeWidgets(this.el);
             this.el.html(html);
             processMaps();
             redrawPromise.resolve(html);
@@ -299,10 +299,12 @@ define(function(require) {
         .error(templateRenderPromise.rejector());
       return redrawPromise;
     },
+
     // dispose old widgets and child views
     // currently in local caches
     disposeChildViews: function ($el) {
-      var childViewSearch;
+      var childViewSearch,
+          self = this;
 
       // Remove child views
       childViewSearch = $el.find('[data-view-id]');
@@ -617,13 +619,19 @@ define(function(require) {
       if (this.model) {
         this.clearModelEvents();
       }
+      if (this.childViews.count) {
+        this.disposeChildViews(this.el);
+      }
+      if (this.widgets.count) {
+        this.disposeWidgets(this.el);
+      }
+
       // Do not dispose of template or model
       this.template
         = this.model
         = this.parentView
         = null;
-      this.disposeChildViews(this.el);
-      this.disposeWidgets(this.el);
+
       EventDispatcher.prototype.dispose.apply(this, arguments);
     }
   });
