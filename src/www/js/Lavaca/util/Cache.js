@@ -132,6 +132,17 @@ define(function(require) {
     },
 
     /**
+     * @method length
+     * returns number of items in cache
+     */
+    length: function() {
+      var length = 0;
+      this.each(function(key, item) {
+        length++;
+      }, this);
+    },
+
+    /**
      * @method dispose
      * Clears all items from the cache on dispose
      */
