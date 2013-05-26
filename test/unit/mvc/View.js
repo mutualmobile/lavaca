@@ -7,20 +7,16 @@ define(function(require) {
 
   describe('A View', function() {
     var testView,
-        el,
+        el = $('<div><div class="childView"></div></div>'),
         model;
     beforeEach(function() {
-      el = $('<div/>');
-      $('body')
-        .append('<script type="text/dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>')
-        .append(el);
+      $('body').append('<script type="text/dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>');
       model = new Model({color: 'blue', primary: true});
       Template.init();
-      testView = new View();
+      testView = new View(el);
     });
     afterEach(function() {
       $('script[data-name="hello-world"]').remove();
-      el.remove();
       testView.dispose();
     });
     it('can be initialized', function() {
@@ -32,7 +28,12 @@ define(function(require) {
       expect(testView.el).toEqual(el);
       expect(testView.model).toEqual(model);
     });
-
+    it('can contain a childView', function() {
+      testView.mapChildView('.childView', View, model);
+      testView.createChildViews();
+      var childView = testView.childViews.toArray()[0];
+      expect(childView instanceof View).toEqual(true);
+    });
     it('can redraw whole view', function() {
       var promise;
       $('body').append('<script type="text/dust-template" data-name="model-tmpl"><h2>Hello World</h2><p>Color is {color}.</p></script>');
@@ -149,89 +150,6 @@ define(function(require) {
       });
       $('script[data-name="model-tmpl"]').remove();
     });
-    describe('can map events', function() {
-      var initWithEventMap = function(map, callback) {
-            var myView;
-            runs(function() {
-              var MyView = View.extend(function MyView() {
-                    View.apply(this, arguments);
-                    this.mapEvent(map);
-                  }, {
-                    template: 'hello-world',
-                    onRenderSuccess: function() {
-                      View.prototype.onRenderSuccess.apply(this, arguments);
-                      setTimeout(function() {
-                        renderSuccesful = true;
-                      });
-                    }
-                  });
-              myView = new MyView(el, model);
-              myView.render();
-            });
-            waitsFor(function() {
-              return !!renderSuccesful;
-            });
-            runs(function() {
-              callback(myView);
-            });
-          },
-          renderSuccesful;
-
-      beforeEach(function() {
-        renderSuccesful = false;
-      });
-
-
-      it('to it\'s own el', function() {
-        var clickHandler = jasmine.createSpy('clickHandler');
-        initWithEventMap({
-          self: {
-            click: clickHandler
-          }
-        }, function(myView) {
-          myView.el.trigger('click');
-          expect(clickHandler.callCount).toBe(1);
-          myView.dispose();
-        });
-      });
-      it('to a child of it\'s el', function() {
-        var formHandler = jasmine.createSpy('formHandler'),
-            buttonHandler = jasmine.createSpy('buttonHandler');
-        initWithEventMap({
-          'form': {
-            click: formHandler
-          },
-          '.button': {
-            click: buttonHandler
-          }
-        }, function(myView) {
-          myView.el.find('form').trigger('click');
-          expect(formHandler.callCount).toBe(1);
-          expect(buttonHandler.callCount).toBe(0);
-          myView.dispose();
-        });
-      });
-      it('to it\'s model', function() {
-        var changeHandler = jasmine.createSpy('changeHandler'),
-            myPropHandler = jasmine.createSpy('myPropHandler'),
-            otherPropHandler = jasmine.createSpy('otherPropHandler');
-        initWithEventMap({
-          model: {
-            'change': changeHandler,
-            'change.myProp': myPropHandler,
-            'change.otherProp': otherPropHandler
-          }
-        }, function(myView) {
-          model.set('myProp', 'test');
-          // Make sure model event handlers are
-          // removed when the view is disposed
-          myView.dispose();
-          model.set('myProp', 'test2');
-          expect(changeHandler.callCount).toBe(1);
-          expect(myPropHandler.callCount).toBe(1);
-          expect(otherPropHandler.callCount).toBe(0);
-        });
-      });
-    });
   });
+
 });
