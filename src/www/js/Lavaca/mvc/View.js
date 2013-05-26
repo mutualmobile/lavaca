@@ -256,38 +256,6 @@ define(function(require) {
         model = model.toObject();
       }
 
-      // dispose old widgets and child views
-      // currently in local caches
-      function disposeOldItems($el) {
-        var childViewSearch;
-
-        // Remove widgets
-        $el.add($el.find('[data-has-widgets]')).each(function(index, item) {
-          var $item = $(item),
-              widgets = $item.data('widgets'),
-              selector, widget;
-          for (selector in widgets) {
-            widget = widgets[selector];
-            self.widgets.remove(widget.id);
-            widget.dispose();
-          }
-        });
-        $el.removeData('widgets');
-
-        // Remove child views
-        childViewSearch = $el.find('[data-view-id]');
-        if ($el !== self.el && $el.is('[data-view-id]')) {
-          childViewSearch = childViewSearch.add($el);
-        }
-        childViewSearch.each(function(index, item) {
-          var $item = $(item),
-              childView = $item.data('view');
-
-          self.childViews.remove(childView.id);
-          childView.dispose();
-        });
-
-      }
       // process widget, child view, and
       // child view event maps
       function processMaps() {
@@ -298,7 +266,8 @@ define(function(require) {
       templateRenderPromise
         .success(function(html) {
           if (replaceAll) {
-            disposeOldItems(this.el);
+            self.disposeChildViews(this.el);
+            self.disposeWidgets(this.el);
             this.el.html(html);
             processMaps();
             redrawPromise.resolve(html);
@@ -310,7 +279,8 @@ define(function(require) {
             if($newEl.length === $oldEl.length) {
               $oldEl.each(function(index) {
                 var $el = $(this);
-                disposeOldItems($el);
+                self.disposeChildViews($el);
+                self.disposeWidgets($el);
                 $el.replaceWith($newEl.eq(index)).remove();
               });
               processMaps();
@@ -328,6 +298,39 @@ define(function(require) {
         .success(templateRenderPromise.resolver())
         .error(templateRenderPromise.rejector());
       return redrawPromise;
+    },
+    // dispose old widgets and child views
+    // currently in local caches
+    disposeChildViews: function ($el) {
+      var childViewSearch;
+
+      // Remove child views
+      childViewSearch = $el.find('[data-view-id]');
+      if ($el !== self.el && $el.is('[data-view-id]')) {
+        childViewSearch = childViewSearch.add($el);
+      }
+      childViewSearch.each(function(index, item) {
+        var $item = $(item),
+          childView = $item.data('view');
+
+        self.childViews.remove(childView.id);
+        childView.dispose();
+      });
+    },
+
+    disposeWidgets: function ($el) {
+      // Remove widgets
+      $el.add($el.find('[data-has-widgets]')).each(function(index, item) {
+        var $item = $(item),
+          widgets = $item.data('widgets'),
+          selector, widget;
+        for (selector in widgets) {
+          widget = widgets[selector];
+          self.widgets.remove(widget.id);
+          widget.dispose();
+        }
+      });
+      $el.removeData('widgets');
     },
     /**
      * @method clearModelEvents
@@ -619,6 +622,8 @@ define(function(require) {
         = this.model
         = this.parentView
         = null;
+      this.disposeChildViews(this.el);
+      this.disposeWidgets(this.el);
       EventDispatcher.prototype.dispose.apply(this, arguments);
     }
   });
