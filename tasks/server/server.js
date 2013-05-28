@@ -15,6 +15,7 @@ module.exports = function(grunt) {
     base = config.base,
     port = config.port,
     host = config.host,
+    apiURL = config.apiURL || '/api*',
     routes = config.routes,
     apiRoutes = config.apiRoutes,
     basicAuth = config.basicAuth;
@@ -77,7 +78,7 @@ module.exports = function(grunt) {
       });
     });
 
-    server.all('/api*', proxyRequest);
+    server.all(apiURL, proxyRequest);
 
     // apiRoutes.forEach(function(route) {
     //   server.all(route, proxyRequest);

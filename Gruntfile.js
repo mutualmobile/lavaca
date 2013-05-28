@@ -191,8 +191,8 @@ module.exports = function( grunt ) {
 
     server: {
       port: 8080,
-      //base: BASE_DIR
-      base: 'src/www'
+      base: 'src/www',
+      apiURL: '/api*'
     },
 
     copy: {
