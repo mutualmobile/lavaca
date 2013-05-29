@@ -60,7 +60,6 @@ module.exports = function(grunt) {
       });
 
       if ('POST' === request.method) {
-        //console.log(postData);
         req.write(postData);
       }
 
@@ -80,26 +79,21 @@ module.exports = function(grunt) {
 
     server.all(apiURL, proxyRequest);
 
-    // apiRoutes.forEach(function(route) {
-    //   server.all(route, proxyRequest);
-    // });
-
-    //server.use(express.vhost(vhost, server));
     server.listen(port);
     return server;
   };
 
 
-  grunt.registerTask('server', 'Runs a static web and proxy server', function() {
-    var vhost = 'localhost',
-    base = grunt.config('server.base'),
-    port = grunt.config('server.port'),
-    server = startServer({
+  grunt.registerMultiTask('server', 'Runs a static web and proxy server', function() {
+    var options = this.options({
+    });
+    var server = startServer({
         host: '',
         hourMs: 0*60*60,
-        vhost: vhost,
-        base: base,
-        port: port,
+        vhost: options.vhost,
+        base: options.base,
+        port: options.port,
+        apiURL: options.apiURL,
         routes: [],
         apiRoutes: []
     }),
@@ -108,7 +102,7 @@ module.exports = function(grunt) {
 
     server.on('close', done);
 
-    console.log('Express server running at %s:%d', vhost, port);
+    console.log('Express server running at %s:%d', options.vhost, options.port);
   });
 
 };
