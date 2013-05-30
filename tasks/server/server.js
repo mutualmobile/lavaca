@@ -3,22 +3,19 @@ module.exports = function(grunt) {
 
   /* server.js */
   var express = require('express'),
-  util = require('util'),
-  http = require('http'),
-  jsonlint = require('json-lint');
+      util = require('util'),
+      http = require('http');
 
   var startServer = function(config) {
     config = config || {};
     var server = express();
     var hourMs = config.hourMs || 0*60*60,
-    vhost = config.vhost || 'localhost',
-    base = config.base,
-    port = config.port,
-    host = config.host,
-    apiURL = config.apiURL || '/api*',
-    routes = config.routes,
-    apiRoutes = config.apiRoutes,
-    basicAuth = config.basicAuth;
+        vhost = config.vhost || 'localhost',
+        base = config.base,
+        port = config.port,
+        host = config.host,
+        apiPrefix = config.apiPrefix || '/api',
+        basicAuth = config.basicAuth;
 
     function proxyRequest(request, response) {
       var postData = request.body;
@@ -26,9 +23,10 @@ module.exports = function(grunt) {
         host: host,
         port: '80',
         method: request.method,
-        path: request.originalUrl,
+        path: request.originalUrl.replace(new RegExp(apiPrefix), ''),
         headers: {}
       };
+      var jsonData;
       options.headers.host = host;
       if (basicAuth) {
         options.headers.Authorization = "Basic " + new Buffer(basicAuth.username + ":" + basicAuth.password).toString("base64");
@@ -44,13 +42,17 @@ module.exports = function(grunt) {
           output += chunk;
         });
         res.on('end', function() {
-          var lint = jsonlint(output);
           response
-          .status(res.statusCode);
-          if (lint.error) {
-            response.send(output);
+            .status(res.statusCode);
+          try {
+            jsonData = JSON.parse(output);
+          } catch(e) {
+            jsonData = null;
+          }
+          if (typeof jsonData === 'object') {
+            response.json(jsonData);
           } else {
-            response.json(JSON.parse(output));
+            response.send(output);
           }
         });
       });
@@ -66,18 +68,20 @@ module.exports = function(grunt) {
       req.end();
     }
 
-    server.use(express['static'](base, {maxAge: 0}));
+    server.use(express['static'](base, {maxAge: hourMs}));
     server.use(express.directory(base, {icons: true}));
     server.use(express.bodyParser());
     server.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
-    routes.forEach(function(route) {
-      server.get(route, function(req, res) {
-        res.redirect(util.format('/#%s#', req.originalUrl));
-      });
+    server.all(apiPrefix + '*', proxyRequest);
+ 
+    server.get('/*', function(req, res) {
+      res.redirect(util.format('/#%s#', req.originalUrl));
     });
 
-    server.all(apiURL, proxyRequest);
+    if (vhost) {
+      server.use(express.vhost(vhost, server));
+    }
 
     server.listen(port);
     return server;
@@ -88,14 +92,12 @@ module.exports = function(grunt) {
     var options = this.options({
     });
     var server = startServer({
-        host: '',
+        host: 'localhost', // override this with your third party API host, such as 'search.twitter.com'.
         hourMs: 0*60*60,
         vhost: options.vhost,
         base: options.base,
         port: options.port,
-        apiURL: options.apiURL,
-        routes: [],
-        apiRoutes: []
+        apiPrefix: options.apiPrefix
     }),
     args = this.args,
     done = args[args.length-1] === 'watch' ? function() {} : this.async();
