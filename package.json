@@ -26,7 +26,7 @@
     "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
     "grunt-amd-dist": "0.4.x",
     "grunt-amd-test": "0.4.x",
-    "grunt-amd-check": "0.5.x",
+    "grunt-amd-check": "0.5.x"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [
