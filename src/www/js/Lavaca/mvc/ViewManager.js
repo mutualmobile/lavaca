@@ -7,7 +7,8 @@ define(function(require) {
       Disposable = require('lavaca/util/Disposable'),
       Promise = require('lavaca/util/Promise'),
       delay = require('lavaca/util/delay'),
-      merge = require('mout/object/merge');
+      merge = require('mout/object/merge'),
+      History = require('lavaca/net/History');
 
   /**
    * @class Lavaca.mvc.ViewManager
@@ -115,14 +116,18 @@ define(function(require) {
         layer = params.layer;
       }
       if (!pageView) {
-        pageView = new TPageView(null, model, layer);
-        if (typeof params === 'object') {
-          merge(pageView, params);
-        }
-        renderPromise = pageView.render();
-        if (cacheKey !== null) {
-          this.pageViews.set(cacheKey, pageView);
-          pageView.cacheKey = cacheKey;
+        if (History.isRoutingBack && self.layers[layer] instanceof TPageView) {
+          pageView = self.layers[layer];
+        } else {
+          pageView = new TPageView(null, model, layer);
+          if (typeof params === 'object') {
+            merge(pageView, params);
+          }
+          renderPromise = pageView.render();
+          if (cacheKey !== null) {
+            this.pageViews.set(cacheKey, pageView);
+            pageView.cacheKey = cacheKey;
+          }
         }
       }
       function lastly() {

@@ -32,6 +32,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  .backface-visibility(hidden);
+  .perspective(1200px);
+  background: #888888;
 }
 #nav-header {
   position: absolute;
@@ -76,11 +79,18 @@ body {
   min-height: 100%;
   visibility: hidden;
   font-size: 1.2rem;
+  .backface-visibility(hidden);
+  .transform(translate3d(0,0,0));
+  .transform-style(preserve-3d);
 }
 .view.show,
-.view.in,
-.view.out {
+.view.current {
   visibility: visible;
+  z-index: 1;
+}
+.view.page-ontop,
+.view.pt-page-ontop {
+  z-index: 999;
 }
 .view.popover,
 .dialog {
@@ -91,11 +101,7 @@ body {
   background: -ms-linear-gradient(#e8ebed, #dfe4e8);
   background: -o-linear-gradient(#e8ebed, #dfe4e8);
   background: linear-gradient(#e8ebed, #dfe4e8);
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
-  backface-visibility: hidden;
+  .backface-visibility(hidden);
 }
 .view-interior {
   min-width: 100%;

@@ -3,9 +3,9 @@ define(function(require) {
   var Detection = require('lavaca/env/Detection'),
       PageView = require('lavaca/mvc/PageView'),
       Promise = require('lavaca/util/Promise'),
-      viewManager = require('lavaca/mvc/ViewManager');
+      viewManager = require('lavaca/mvc/ViewManager'),
+      History = require('lavaca/net/History');
   require('lavaca/fx/Animation'); //jquery plugins
-  var UNDEFINED;
 
   /**
    * @class app.ui.views.BaseView
@@ -16,13 +16,9 @@ define(function(require) {
    */
   var BaseView = PageView.extend(function() {
     PageView.apply(this, arguments);
+    this.mapEvent('.cancel', 'tap', this.onTapCancel);
   }, {
-    /**
-     * @field {Number} column
-     * @default 0
-     * The horizontal column in which the view should live
-     */
-    column: 0,
+
     /**
      * @field {String} template
      * @default 'default'
@@ -30,11 +26,16 @@ define(function(require) {
      */
     template: 'default',
     /**
-     * @field {String} animation
-     * @default 'slide'
-     * The name of the animation used by the view
+     * @field {Object} pageTransition
+     * @default 'default'
+     * The name of the template used by the view
      */
-    animation: 'slide',
+    pageTransition: {
+      'in': '',
+      'out': '',
+      'inReverse': '',
+      'outReverse': ''
+    },
     /**
      * @method onRenderSuccess
      * Executes when the template renders successfully. This implementation
@@ -46,9 +47,6 @@ define(function(require) {
      */
     onRenderSuccess: function() {
       PageView.prototype.onRenderSuccess.apply(this, arguments);
-      if (Detection.animationEnabled) {
-        this.shell.addClass(this.animation);
-      }
     },
     /**
      * @method onTapCancel
@@ -73,31 +71,54 @@ define(function(require) {
     enter: function(container, exitingViews) {
       return PageView.prototype.enter.apply(this, arguments)
         .then(function() {
-          if (Detection.animationEnabled && (this.layer > 0 || exitingViews.length > 0)) {
-            this.shell.removeClass('reverse');
-            if (exitingViews.length || container[0].childNodes.length) {
-              if (this.column !== UNDEFINED) {
-                var i = -1,
-                    exitingView;
-                while (!!(exitingView = exitingViews[++i])) {
-                  if (exitingView.layer === this.layer
-                      && exitingView.column !== UNDEFINED
-                      && exitingView.column > this.column) {
-                    this.shell.addClass('reverse');
-                    exitingView.shell.addClass('reverse');
-                  }
-                }
-              }
-              var self = this;
-              this.shell
-                .nextAnimationEnd(function() {
-                  self.trigger('entercomplete');
-                })
-                .removeClass('out')
-                .addClass('in');
+          if (History.isRoutingBack) {
+            if (History.animationBreadcrumb.length > 0) {
+              this.pageTransition = History.animationBreadcrumb.pop();
             }
           } else {
+            History.animationBreadcrumb.push(this.pageTransition);
+          }
+          var animationIn = History.isRoutingBack ? this.pageTransition['inReverse']:this.pageTransition['in'],
+              animationOut = History.isRoutingBack ? this.pageTransition['outReverse']:this.pageTransition['out'],
+              i = -1,
+              exitingView;
+
+          var triggerEnterComplete = function() {
+            this.trigger('entercomplete');
+            this.shell.removeClass(animationIn);
+          };
+
+          this.shell.addClass('current');
+
+          if (Detection.animationEnabled && animationIn !== '') {
+
+            if (exitingViews.length) {
+              i = -1;
+              while (!!(exitingView = exitingViews[++i])) {
+                exitingView.shell.addClass(animationOut);
+              }
+            }
+
+            if ((this.layer > 0 || exitingViews.length > 0)) {
+              this.shell
+                  .nextAnimationEnd(triggerEnterComplete.bind(this))
+                  .addClass(animationIn);
+            } else {
+              this.trigger('entercomplete');
+            }
+            
+          } else {
             this.shell.addClass('show');
+            if (exitingViews.length > 0) {
+              i = -1;
+              while (!!(exitingView = exitingViews[++i])) {
+                exitingView.shell.removeClass('show');
+                if (exitingView.exitPromise) {
+                  exitingView.exitPromise.resolve();
+                  exitingView.shell.detach();
+                }
+              }
+            }
             this.trigger('entercomplete');
           }
         });
@@ -113,20 +134,26 @@ define(function(require) {
      * @return {Lavaca.util.Promise} A promise
      */
     exit: function(container, enteringViews) {
-      if (Detection.animationEnabled && (this.layer > 0 || enteringViews.length > 0)) {
-        this.shell.removeClass('reverse');
-        var self = this,
-            promise = new Promise(this);
+      var animation = enteringViews.length === 0 ? this.pageTransition['out'] : '';
+
+      if (History.isRoutingBack && this.shell.data('layer-index') > 0) {
+        this.pageTransition = History.animationBreadcrumb.pop();
+        animation = this.pageTransition['outReverse'];
+      }
+
+      if (Detection.animationEnabled) {
+        this.exitPromise = new Promise(this);
+
         this.shell
           .nextAnimationEnd(function() {
-            self.shell.removeClass('in out show');
-            PageView.prototype.exit.apply(self, arguments).then(function() {
-              promise.resolve();
+            PageView.prototype.exit.apply(this, arguments).then(function() {
+              this.exitPromise.resolve();
             });
-          })
-          .removeClass('in')
-          .addClass('out');
-        return promise;
+            this.shell.removeClass(animation);
+          }.bind(this))
+          .addClass(animation);
+
+        return this.exitPromise;
       } else {
         this.shell.removeClass('show');
         return PageView.prototype.exit.apply(this, arguments);

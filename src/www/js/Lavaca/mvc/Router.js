@@ -45,7 +45,10 @@ define(function(require) {
     startHistory: function() {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
-          this.exec(e.url, e);
+          History.isRoutingBack = true;
+          this.exec(e.url, e).always(function() {
+            History.isRoutingBack = false;
+          });
         }
       };
       History.on('popstate', this.onpopstate, this);

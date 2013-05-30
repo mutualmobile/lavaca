@@ -286,6 +286,18 @@ define(function(require) {
     _standardsMode = false;
   };
 
+  /**
+   * @field {Array} animationBreadcrumb
+   * Stores the page transition animations so that if you route back, it will animate correctly
+   */
+  History.animationBreadcrumb = [];
+
+  /**
+   * @field {Boolean} isRoutingBack
+   * Flag to notify when history back is being called
+   */
+  History.isRoutingBack = false;
+
   return History;
 
 });

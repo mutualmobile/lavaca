@@ -116,12 +116,12 @@
 
 
 
-.backface {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
+.backface-visibility (@value: animation-1) {
+  backface-visibility: @arguments;
+  -webkit-backface-visibility: @arguments;
+  -moz-backface-visibility: @arguments;
+  -ms-backface-visibility: @arguments;
+  -o-backface-visibility: @arguments;
 }
 .transition (@args) {
   transition: @arguments;
@@ -130,7 +130,7 @@
   -ms-transition: @arguments;
   -o-transition: @arguments;
 }
-.transitionTransform (@value) {
+.transition-transform (@value) {
   transition: transform @arguments;
   -moz-transition: -moz-transform @arguments;
   -webkit-transition: -webkit-transform @arguments;
