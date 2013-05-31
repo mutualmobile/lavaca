@@ -322,6 +322,9 @@ module.exports = function( grunt ) {
     env = env || 'local';
     grunt.task.run('clean:tmp', 'clean:build', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
   });
+
+  grunt.registerTask('default', ['amd-test', 'jasmine', 'server']);
+
   grunt.registerTask('test', ['amd-test', 'jasmine']);
 
 };
