@@ -321,6 +321,8 @@ define(function(require) {
     },
 
     disposeWidgets: function ($el) {
+      var self = this;
+
       // Remove widgets
       $el.add($el.find('[data-has-widgets]')).each(function(index, item) {
         var $item = $(item),
