@@ -249,6 +249,7 @@ module.exports = function( grunt ) {
                 '<%= paths.out.index %>',
                 '<%= paths.out.css %>',
                 '<%= paths.out.js %>',
+                'configs/**/*',
                 'assets/**/*',
                 'messages/**/*'
               ],
