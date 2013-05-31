@@ -195,7 +195,7 @@ module.exports = function( grunt ) {
           port: 8080,
           vhost: 'localhost',
           base: 'src/www',
-          apiURL: '/api*'
+          apiPrefix: '/api*'
         }
       },
       prod: {
@@ -203,7 +203,7 @@ module.exports = function( grunt ) {
           port: 8080,
           vhost: 'localhost',
           base: 'build/www',
-          apiURL: '/api*'
+          apiPrefix: '/api*'
         }
       }
     },
@@ -320,7 +320,7 @@ module.exports = function( grunt ) {
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
-    grunt.task.run('clean:tmp', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
+    grunt.task.run('clean:tmp', 'clean:build', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
   });
   grunt.registerTask('test', ['amd-test', 'jasmine']);
 
