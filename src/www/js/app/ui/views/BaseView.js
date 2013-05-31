@@ -96,6 +96,10 @@ define(function(require) {
               i = -1;
               while (!!(exitingView = exitingViews[++i])) {
                 exitingView.shell.addClass(animationOut);
+                if (animationOut === '') {
+                  exitingView.exitPromise.resolve();
+                  exitingView.shell.detach();
+                }
               }
             }
 
