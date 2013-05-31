@@ -13,4 +13,4 @@ pkg
 tmp
 build
 
-src/www/js/Lavaca/net/.tern-port
+.tern-port
