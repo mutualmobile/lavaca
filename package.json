@@ -14,7 +14,7 @@
     "underscore": "1.4.x",
     "preprocess": "1.0.x",
     "connect": "2.4.4",
-    "deferreds": "0.2.x",
+    "deferreds": "1.x",
     "dustjs-linkedin": "1.1.1",
     "grunt-dustjs": "0.2.x",
     "grunt-contrib-clean": "0.4.x",
@@ -26,7 +26,9 @@
     "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
     "grunt-amd-dist": "0.4.x",
     "grunt-amd-test": "0.4.x",
-    "grunt-amd-check": "0.5.x"
+    "grunt-amd-check": "0.5.x",
+    "xml2js": "0.2.x",
+    "promisemonkey": "0.1.x"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [

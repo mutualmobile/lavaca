@@ -35,26 +35,26 @@ module.exports = function( grunt ) {
         js: 'js/app.min.js',
         cordova: 'js/cordova.js'
       },
-      pkg: {
-        root: 'pkg',
-        android: '<%= paths.pkg.root %>/<%= pkg.name %>.apk',
-        ios: '<%= paths.pkg.root %>/<%= pkg.name %>.ipa'
+      package: {
+        root: 'package',
+        android: '<%= paths.package.root %>/<%= package.name %>.apk',
+        ios: '<%= paths.package.root %>/<%= package.name %>.ipa'
       },
       docs: 'docs'
     },
 
-    pkg: grunt.file.readJSON('package.json'),
+    package: grunt.file.readJSON('package.json'),
 
     clean: {
       tmp: ['<%= paths.tmp.root %>'],
       build: ['<%= paths.build.root %>'],
-      pkg: ['<%= paths.pkg.root %>']
+      package: ['<%= paths.package.root %>']
     },
 
     uglify: {
       all: {
         options: {
-          banner: '/*! <%= pkg.title %> v<%= pkg.version %> | License: <%= pkg.license %> */\n',
+          banner: '/*! <%= package.title %> v<%= package.version %> | License: <%= package.license %> */\n',
           report: 'gzip'
         },
         files: [
@@ -259,6 +259,31 @@ module.exports = function( grunt ) {
 
           return files;
         })()
+      }
+    },
+
+    pkg: {
+      options: {
+        name: 'App'
+      },
+      ios: {
+        options: {
+          identity: 'iPhone Distribution: Mutual Mobile'
+        },
+        files: [
+          {
+            src: '<%= paths.build.ios %>',
+            dest: '<%= paths.package.ios %>'
+          }
+        ]
+      },
+      android: {
+        files: [
+          {
+            src: '<%= paths.build.android %>',
+            dest: '<%= paths.package.android %>'
+          }
+        ]
       }
     },
 
