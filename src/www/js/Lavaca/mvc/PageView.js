@@ -122,7 +122,6 @@ define(function(require) {
         .error(function(err) {
           this.trigger('rendererror', {err: err});
         });
-      this.shell.addClass('tmpl-' + this.template.toLowerCase().replace(/\s/g, '-'));
       template
         .render(model)
         .success(promise.resolver())
