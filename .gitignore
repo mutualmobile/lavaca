@@ -1,16 +1,16 @@
 .DS_Store
 
-libs/atnotate/atnotate.pyc
+./libs/atnotate/atnotate.pyc
 
-src/android/.classpath
-src/android/.project
-src/android/bin/*
-src/android/gen/*
+./src/android/.classpath
+./src/android/.project
+./src/android/bin/*
+./src/android/gen/*
 
-node_modules
-docs
-pkg
-tmp
-build
+./node_modules
+./docs
+./pkg
+./tmp
+./build
 
 .tern-port
