@@ -24,11 +24,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .ui-page {
   outline: none;
 }
-/* native overflow scrolling */
-.content {
-  /* some level of transform keeps elements from blinking out of visibility on iOS */
-  -webkit-transform: rotateY(0);
-}
 .overflow-scroll, .synthetic-scroll {
 	position: absolute;
 	top:0;
@@ -44,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -ms-overflow-scrolling: touch;
   overflow-scrolling: touch;
 }
-.overflow-scroll .content {
-	overflow: hidden;
+.overflow-scroll > .overflow-scroll-inner {
+	/* some level of transform keeps elements from blinking out of visibility on iOS */
+  -webkit-transform: rotateY(0);
 }
