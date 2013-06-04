@@ -1,4 +1,4 @@
-Lavaca amd branch
+Lavaca 2.0.0
 ======
 
 [![Build Status](https://travis-ci.org/mutualmobile/lavaca.png?branch=amd)](https://travis-ci.org/mutualmobile/lavaca)
