@@ -136,7 +136,13 @@ module.exports = function( grunt ) {
     },
 
     jasmine: {
-      all: ['test/runner.html']
+      all: ['test/runner.html'],
+      options: {
+        junit: {
+          path: 'log/tests',
+          consolidate: true
+        }
+      }
     },
 
     dustjs: {
