@@ -10,7 +10,6 @@ Changed in 2.0
 * Enhanced collection of page transitions
 * Added new way of specifying page transitions in Views
 * Ability to listen for model attribute events in mapEvent method in Views
-*
 
 Changed in 1.0.5
 ======
