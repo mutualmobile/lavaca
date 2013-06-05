@@ -1,6 +1,7 @@
 .DS_Store
 
 /libs/atnotate/atnotate.pyc
+.idea
 
 /src/android/.classpath
 /src/android/.project
@@ -12,5 +13,6 @@
 /pkg
 /tmp
 /build
+/log
 
 .tern-port
