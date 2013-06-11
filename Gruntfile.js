@@ -54,8 +54,7 @@ module.exports = function( grunt ) {
     uglify: {
       all: {
         options: {
-          banner: '/*! <%= package.title %> v<%= package.version %> | License: <%= package.license %> */\n',
-          report: 'gzip'
+          banner: '/*! <%= package.title %> v<%= package.version %> | License: <%= package.license %> */\n'
         },
         files: [
           {
