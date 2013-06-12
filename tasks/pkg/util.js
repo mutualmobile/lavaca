@@ -35,7 +35,9 @@ var _partial = function() {
 util.cmd = function(command, cwd, rejectOnError) {
   grunt.verbose.write('\n$ ' + command + '\n');
   cwd = cwd || process.cwd();
-  rejectOnError = rejectOnError || true;
+  if (rejectOnError === undefined) {
+    rejectOnError = true;
+  }
 
   var deferred = new Deferred();
 

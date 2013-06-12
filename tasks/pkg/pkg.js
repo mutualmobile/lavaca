@@ -168,7 +168,14 @@ module.exports = function(grunt) {
         cmd: 'ideviceinstaller --install ' + pkg,
         msg: 'Installing "' + pkg + '" to device...'
       }
-    ]);
+    ], false).then(null, function(err) {
+      //`ideviceinstaller --install` writes to stderr when archive is missing
+      //some common files. App still installs and functions properly, however.
+      if (err.search(/ERROR: could not locate/) !== -1) {
+        return true; //continue
+      }
+      throw err;
+    });
   };
 
 
