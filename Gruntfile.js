@@ -35,20 +35,20 @@ module.exports = function( grunt ) {
         js: 'js/app.min.js',
         cordova: 'js/cordova.js'
       },
-      package: {
-        root: 'package',
+      'package': {
+        root: 'pkg',
         android: '<%= paths.package.root %>/<%= package.name %>.apk',
         ios: '<%= paths.package.root %>/<%= package.name %>.ipa'
       },
       docs: 'docs'
     },
 
-    package: grunt.file.readJSON('package.json'),
+    'package': grunt.file.readJSON('package.json'),
 
     clean: {
       tmp: ['<%= paths.tmp.root %>'],
       build: ['<%= paths.build.root %>'],
-      package: ['<%= paths.package.root %>']
+      'package': ['<%= paths.package.root %>']
     },
 
     uglify: {
@@ -268,9 +268,6 @@ module.exports = function( grunt ) {
     },
 
     pkg: {
-      options: {
-        name: 'App'
-      },
       ios: {
         options: {
           identity: 'iPhone Distribution: Mutual Mobile'
@@ -356,5 +353,4 @@ module.exports = function( grunt ) {
   grunt.registerTask('default', ['amd-test', 'jasmine', 'server']);
 
   grunt.registerTask('test', ['amd-test', 'jasmine']);
-
 };
