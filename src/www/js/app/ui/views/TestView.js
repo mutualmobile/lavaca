@@ -23,7 +23,7 @@ define(function(require) {
      * @default 'example'
      * A class name added to the view container
      */
-    className: 'example'
+    className: 'test'
 
   });
 

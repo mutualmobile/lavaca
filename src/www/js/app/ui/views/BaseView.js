@@ -88,8 +88,6 @@ define(function(require) {
             this.shell.removeClass(animationIn);
           };
 
-          this.shell.addClass('current');
-
           if (Detection.animationEnabled && animationIn !== '') {
 
             if (exitingViews.length) {
@@ -98,7 +96,6 @@ define(function(require) {
                 exitingView.shell.addClass(animationOut);
                 if (animationOut === '') {
                   exitingView.exitPromise.resolve();
-                  exitingView.shell.detach();
                 }
               }
             }
@@ -106,20 +103,20 @@ define(function(require) {
             if ((this.layer > 0 || exitingViews.length > 0)) {
               this.shell
                   .nextAnimationEnd(triggerEnterComplete.bind(this))
-                  .addClass(animationIn);
+                  .addClass(animationIn + ' current');
             } else {
+              this.shell.addClass('current');
               this.trigger('entercomplete');
             }
             
           } else {
-            this.shell.addClass('show');
+            this.shell.addClass('current');
             if (exitingViews.length > 0) {
               i = -1;
               while (!!(exitingView = exitingViews[++i])) {
-                exitingView.shell.removeClass('show');
+                exitingView.shell.removeClass('current');
                 if (exitingView.exitPromise) {
                   exitingView.exitPromise.resolve();
-                  exitingView.shell.detach();
                 }
               }
             }
@@ -138,14 +135,14 @@ define(function(require) {
      * @return {Lavaca.util.Promise} A promise
      */
     exit: function(container, enteringViews) {
-      var animation = enteringViews.length === 0 ? this.pageTransition['out'] : '';
+      var animation = History.isRoutingBack ? this.pageTransition['out'] : (enteringViews.length ? enteringViews[0].pageTransition['out'] : '');
 
       if (History.isRoutingBack && this.shell.data('layer-index') > 0) {
         this.pageTransition = History.animationBreadcrumb.pop();
         animation = this.pageTransition['outReverse'];
       }
 
-      if (Detection.animationEnabled) {
+      if (Detection.animationEnabled && animation) {
         this.exitPromise = new Promise(this);
 
         this.shell
@@ -153,13 +150,13 @@ define(function(require) {
             PageView.prototype.exit.apply(this, arguments).then(function() {
               this.exitPromise.resolve();
             });
-            this.shell.removeClass(animation);
+            this.shell.removeClass(animation + ' current');
           }.bind(this))
           .addClass(animation);
 
         return this.exitPromise;
       } else {
-        this.shell.removeClass('show');
+        this.shell.removeClass('current');
         return PageView.prototype.exit.apply(this, arguments);
       }
     }
