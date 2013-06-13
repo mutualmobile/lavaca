@@ -24,6 +24,7 @@
         <div class="logo">
           <h1>Lavaca by Mutual Mobile</h1>
         </div>
+        <a href="https://github.com/mutualmobile/lavaca"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
         <div class="download">
           <div class="content-wrap">
             <h3>Get started with Lavaca.</h3>
@@ -39,29 +40,42 @@
           </div>
         </div>
       </header>
-      <nav>
-        <a href="https://github.com/mutualmobile/lavaca/wiki">Wiki</a>
-        <a href="docs/index.html">JavaScript Docs</a>
-      </nav>
       <article>
-        <p>Introducing <strong>Lavaca</strong>, the open source, HTML5 application framework by Mutual Mobile. Jumpstart development of your project by basing them off of Lavaca and using Lavaca's build tools.</p>
-        <h4>Lavaca features:</h4>
-        <ul>
-          <li>A build system supporting multiple configurations for different environments</li>
-          <li>An HTML, JavaScript, and CSS packaging and minification system</li>
-          <li>A JavaScript documentation generation system</li>
-          <li>A unit testing framework</li>
-          <li>A JavaScript MVC framework</li>
-          <li>A templating framework</li>
-          <li>A translation framework</li>
-          <li>&hellip;as well as many other essential components for modern web applications.</li>
-        </ul>
-        <p>Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.</p>
+        <p class="intro">Introducing <strong>Lavaca</strong>, the open source, HTML5 application framework by Mutual Mobile. Jumpstart development of your project by basing them off of Lavaca and using Lavaca's build tools.</p>
+        <div class="col-2 features">
+          <h4>Lavaca features:</h4>
+          <ul>
+            <li>A JavaScript MVC framework</li>
+            <li>A build system supporting multiple configurations for different environments</li>
+            <li>An HTML, JavaScript, and CSS packaging and minification system</li>
+            <li>A templating framework</li>
+            <li>A translation framework</li>
+            <li>A unit testing framework</li>
+            <li>A JavaScript documentation generation system</li>
+            <li>&hellip;as well as many other essential components for modern web applications.</li>
+          </ul>
+          <a href="docs/index.html">View the Docs</a>
+        </div>
+        <div class="col-2">
+          <div class="video-container"></div>
+        </div>
+        <p class="clearfix">Lavaca has a ton packed into it, and is designed to work well as a cohesive whole, while still remaining lightweight. Lavaca is built with extensibility in mind and allows you to easily extend components and build your own on top of its framework.</p>
       </article>
       <footer>
         &copy; 2012 <a href="http://www.mutualmobile.com/" rel="nofollow">Mutual Mobile</a> &ndash; All Rights Reserved.  
       </footer>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+      $.ajax({
+        url: 'http://fast.wistia.net/oembed?url=http%3A//home.wistia.com/medias/gp1h7od17x',
+        success: function(data) {
+          $('article').find('.video-container').html(data.html);
+        }
+      });
+    });
+    </script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-33117894-1']);

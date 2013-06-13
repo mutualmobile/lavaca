@@ -25,13 +25,25 @@ html {
   line-height: 1.4em;
 }
 body {
-  background: rgb(5, 38, 56);
-  color: #eef1f3;
+  background: #edf1f3;
+  color: #082437;
   display: table;
   min-height: 100%;
   text-align: left;
   vertical-align: middle;
   width: 100%;
+  font-family: 'DINPro-Regular';
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.clearfix { 
+  display: inline-block; 
 }
 a {
   color: rgb(74, 163, 231);
@@ -43,6 +55,9 @@ header {
   text-align: center;
   overflow: hidden;
   height: 15em;
+}
+h1, h2, h3, h4 {
+  font-family: 'DINPro-Bold';
 }
 .logo {
   width: 50%;
@@ -80,7 +95,6 @@ header {
   position: relative;
 }
 .download h4 {
-  font-weight: normal;
   margin: .5em 0;
 }
 .download h4 strong {
@@ -94,7 +108,6 @@ header {
   display: inline-block;
   padding: .5em 1em;
   margin: .5em 1em 0;
-  font-weight: bold;
   color: #eef1f3;
   -webkit-border-radius: .5em;
   -moz-border-radius: .5em;
@@ -114,14 +127,14 @@ footer {
   width: 100%;
   text-align: right;
 }
-nav {
-  padding: .75em 10%;
-}
 nav a {
-  font-weight: bold;
-  text-transform: lowercase;
+  font-family: 'DINPro-Bold';
   font-size: 1.25em;
   margin-right: 1em;
+}
+.col-2 {
+  width: 50%;
+  float: left;
 }
 article {
   padding: 0 10%;
@@ -131,6 +144,24 @@ article p,
 article ul,
 article h4 {
   padding: 0 0 1em;
+}
+article .features ul {
+  margin-left: 20px;
+}
+.intro {
+  margin-top: .75em;
+}
+.video-container {
+  padding-bottom: 56.25%;
+  position: relative;
+  margin-bottom: 10px;
+}
+iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 @media all and (max-width: 925px) {
   .download .content-wrap {
@@ -146,6 +177,9 @@ article h4 {
     width: 80%;
   }
   .download menu a {
+    width: 100%;
+  }
+  .col-2 {
     width: 100%;
   }
 }
@@ -174,4 +208,50 @@ article h4 {
   nav a {
     font-size: 1em;
   }
+  article {
+    padding: 0 2%;
+  }
+  .col-2 {
+    width: 100%;
+  }
+}
+@font-face {
+    font-family: 'DINPro-Bold';
+    src: url('font/dinpro-bold.eot');
+    src: url('font/dinpro-bold.eot?#iefix') format('embedded-opentype'),
+         url('font/dinpro-bold.woff') format('woff'),
+         url('font/dinpro-bold.ttf') format('truetype'),
+         url('font/dinpro-bold.svg#dinpro-bold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'DINPro-Regular';
+    src: url('font/dinpro-regular.eot');
+    src: url('font/dinpro-regular.eot?#iefix') format('embedded-opentype'),
+         url('font/dinpro-regular.woff') format('woff'),
+         url('font/dinpro-regular.ttf') format('truetype'),
+         url('font/dinpro-regular.svg#dinpro-regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'DINPro-Light';
+    src: url('font/dinpro-light.eot');
+    src: url('font/dinpro-light.eot?#iefix') format('embedded-opentype'),
+         url('font/dinpro-light.woff') format('woff'),
+         url('font/dinpro-light.ttf') format('truetype'),
+         url('font/dinpro-light.svg#dinpro-light') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'DINPro-Medium';
+    src: url('font/dinpro-medium.eot');
+    src: url('font/dinpro-medium.eot?#iefix') format('embedded-opentype'),
+         url('font/dinpro-medium.woff') format('woff'),
+         url('font/dinpro-medium.ttf') format('truetype'),
+         url('font/dinpro-medium.svg#dinpro-medium') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
