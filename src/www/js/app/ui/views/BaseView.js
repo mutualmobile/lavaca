@@ -135,7 +135,7 @@ define(function(require) {
      * @return {Lavaca.util.Promise} A promise
      */
     exit: function(container, enteringViews) {
-      var animation = History.isRoutingBack ? this.pageTransition['out'] : (enteringViews.length ? enteringViews[0].pageTransition['out'] : '');
+      var animation = History.isRoutingBack ? this.pageTransition['outReverse'] : (enteringViews.length ? enteringViews[0].pageTransition['out'] : '');
 
       if (History.isRoutingBack && this.shell.data('layer-index') > 0) {
         this.pageTransition = History.animationBreadcrumb.pop();

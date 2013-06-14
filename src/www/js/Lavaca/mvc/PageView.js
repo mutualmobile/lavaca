@@ -99,6 +99,7 @@ define(function(require) {
      */
     render: function() {
       var promise = new Promise(this),
+          renderPromise = new Promise(this),
           template = Template.get(this.template),
           model = this.model;
       if (model instanceof Model) {
@@ -118,16 +119,18 @@ define(function(require) {
       promise
         .success(function(html) {
           this.trigger('rendersuccess', {html: html});
+          renderPromise.resolve();
         })
         .error(function(err) {
           this.trigger('rendererror', {err: err});
+          renderPromise.reject();
         });
       template
         .render(model)
         .success(promise.resolver())
         .error(promise.rejector());
 
-      return promise;
+      return renderPromise;
     },
     /**
      * @method enter
