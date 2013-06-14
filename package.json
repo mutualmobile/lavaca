@@ -21,7 +21,7 @@
     "grunt-contrib-copy": "0.4.x",
     "grunt-contrib-concat": "0.1.x",
     "grunt-contrib-less": "0.5.x",
-    "grunt-contrib-uglify": "0.1.x",
+    "grunt-contrib-uglify": "0.2.x",
     "grunt-contrib-jshint": "0.1.x",
     "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
     "grunt-amd-dist": "0.4.x",

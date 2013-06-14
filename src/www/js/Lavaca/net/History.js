@@ -8,6 +8,7 @@ define(function(require) {
       _hasPushed = false,
       _lastHash,
       _hist,
+      _currentId,
       _pushCount = 0;
 
   function _insertState(hist, position, id, state, title, url) {
@@ -51,13 +52,18 @@ define(function(require) {
        * @field {Function} onPopState
        * Auto-generated callback executed when a history event occurs
        */
+       var self = this;
       this.onPopState = function(e) {
         if (e.state) {
           _pushCount--;
+          var previousId = _currentId;
+          _currentId = e.state.id;
           self.trigger('popstate', {
             state: e.state.state,
             title: e.state.title,
-            url: e.state.url
+            url: e.state.url,
+            id: e.state.id,
+            direction: _currentId > previousId ? 'forward' : 'back'
           });
         }
       };
@@ -68,11 +74,13 @@ define(function(require) {
             code,
             record,
             item,
+            previousCode,
             i = -1;
         if (hash) {
           hash = hash.replace(/^#/, '');
         }
         if (hash !== _lastHash) {
+          previousCode = _lastHash.split('#@')[1];
           _lastHash = hash;
           if (hash) {
             _pushCount--;
@@ -90,7 +98,9 @@ define(function(require) {
               self.trigger('popstate', {
                 state: record.state,
                 title: record.title,
-                url: record.url
+                url: record.url,
+                id: record.id,
+                direction: record.id > parseInt(previousCode, 10) ? 'forward' : 'back'
               });
             }
           }
@@ -133,10 +143,11 @@ define(function(require) {
       _pushCount++;
       if (_hasPushed) {
         document.title = title;
+        _currentId = uuid('history');
         if (_standardsMode) {
-          history.pushState({state: state, title: title, url: url}, title, url);
+          history.pushState({state: state, title: title, url: url, id: _currentId}, title, url);
         } else {
-          _insertState(this, ++this.position, uuid('history'), state, title, url);
+          _insertState(this, ++this.position, _currentId, state, title, url);
         }
       } else {
         this.replace(state, title, url);
@@ -154,12 +165,12 @@ define(function(require) {
       _hasPushed = true;
       document.title = title;
       if (_standardsMode) {
-        history.replaceState({state: state, title: title, url: url}, title, url);
+        history.replaceState({state: state, title: title, url: url, id: _currentId}, title, url);
       } else {
         if (this.position < 0) {
           this.position = 0;
         }
-        var currentRecord = this.current() || {id: uuid('history')};
+        var currentRecord = this.current() || {id: _currentId || uuid('history')};
         _insertState(this, this.position, currentRecord.id, state, title, url);
       }
     },

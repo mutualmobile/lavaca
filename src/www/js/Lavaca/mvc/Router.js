@@ -45,7 +45,7 @@ define(function(require) {
     startHistory: function() {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
-          History.isRoutingBack = true;
+          History.isRoutingBack = e.direction === 'back';
           this.exec(e.url, e).always(function() {
             History.isRoutingBack = false;
           });

@@ -2,81 +2,17 @@ module.exports = function(grunt) {
   'use strict';
 
   var path = require('path');
-  var child = require('child_process');
-  var toArray = require('mout/lang/toArray');
-  var partial = require('mout/function/partial');
+
   var Deferred = require('deferreds/Deferred');
   var forEachSeries = require('deferreds/forEachSeries');
-  var series = require('deferreds/series');
-  var promisify = require('promisemonkey');
-  var parseString = promisify.convert(require('xml2js').parseString);
+
+  var util = require('./util');
 
 
-  var _partial = function() {
-    var args = toArray(arguments);
-    var ret = partial.apply(this, args);
-
-    ret.then = function(onFulfilled, onRejected) {
-      return function() {
-        return Deferred.fromAny(partial.apply(this, args))
-          .then(onFulfilled, onRejected);
-      };
-    };
-
-    return ret;
-  };
-
-
-  var _cmd = function(command, cwd) {
-    grunt.verbose.write('\n$ ' + command + '\n');
-    cwd = cwd || process.cwd();
-
-    var deferred = new Deferred();
-
-    var p = child.exec(command, {cwd: cwd, maxBuffer: 10000000}, function(err, stdout) {
-      if (err) {
-        deferred.reject(err);
-      }
-      else {
-        deferred.resolve(stdout);
-      }
-    });
-
-    if (grunt.option('verbose')) {
-      var firstline = true;
-
-      p.stdout.on('data', function(data) {
-        if (firstline) {
-          process.stdout.write('> ');
-          firstline = false;
-        }
-        process.stdout.write(data.toString().replace(/\n/g, '\n> '));
-      });
-
-      p.stderr.on('data', function(err) {
-        if (firstline) {
-          process.stderr.write('> ');
-          firstline = false;
-        }
-        process.stderr.write(err.toString().replace(/\n/g, '\n> '));
-      });
-    }
-
-    /*
-     *p.stderr.on('data', function(err) {
-     *  deferred.reject(err);
-     *  p.kill();
-     *});
-     */
-
-    return deferred.promise();
-  };
-
-
-  var _runCommands = function(tasks) {
+  var _runCommands = function(tasks, rejectOnError) {
     return forEachSeries(tasks, function(task) {
       grunt.log.write(task.msg);
-      var promise = _cmd(task.cmd, task.cwd);
+      var promise = util.cmd(task.cmd, task.cwd, rejectOnError);
       var timer = setInterval(function() {
         grunt.log.notverbose.write('.');
       }, 1000);
@@ -87,7 +23,6 @@ module.exports = function(grunt) {
         },
         function(err) {
           clearInterval(timer);
-          grunt.log.error();
           throw err;
         }
       );
@@ -115,7 +50,7 @@ module.exports = function(grunt) {
                 msg: '`ant` (Apache Ant) was not found in your PATH. It is required to build Android packages.'
               }
             ], function(task) {
-              return _cmd('type ' + task.exec + ' >/dev/null').then(
+              return util.cmd('type ' + task.exec + ' >/dev/null').then(
                 null,
                 function() {
                   grunt.log.error('WARNING: ' + task.msg);
@@ -137,13 +72,14 @@ module.exports = function(grunt) {
               }
             ]);
           }).then(function() {
-            var src = path.resolve(buildDir, 'bin', options.name + '-debug.apk');
+            var src = grunt.file.expand(path.resolve(buildDir, 'bin') + '/*-debug.apk')[0];
             grunt.file.copy(src, dest);
             grunt.log.writeln('Package saved to ' + dest);
           })
           .then(done, done);
         break;
       case 'ios':
+        var appName = util.getAppNameIos(buildDir);
         new Deferred().resolve()
           .then(function checkExecs() {
             return forEachSeries([
@@ -156,7 +92,7 @@ module.exports = function(grunt) {
                 msg: '`xcrun` from Xcode\'s "Command Line Tools" was not found in your PATH. It is required to build iOS packages.'
               }
             ], function(task) {
-              return _cmd('type ' + task.exec + ' >/dev/null').then(
+              return util.cmd('type ' + task.exec + ' >/dev/null').then(
                 null,
                 function() {
                   grunt.log.error('WARNING: ' + task.msg);
@@ -171,7 +107,7 @@ module.exports = function(grunt) {
             return _runCommands([
               {
                 cmd: 'xcodebuild' +
-                     ' -project ' + path.resolve(buildDir, options.name + '.xcodeproj') +
+                     ' -project ' + path.resolve(buildDir, appName + '.xcodeproj') +
                      ' -configuration Debug' +
                      ' -sdk iphoneos' +
                      ' CODE_SIGN_IDENTITY="' + options.identity + '"' +
@@ -183,15 +119,15 @@ module.exports = function(grunt) {
                 cmd: 'xcrun' +
                      ' -sdk iphoneos' +
                      ' PackageApplication' +
-                     ' -v ' + path.resolve(buildDir, 'build', options.name + '.app') +
-                     ' -o ' + path.resolve(buildDir, 'build', options.name + '.ipa') +
+                     ' -v ' + path.resolve(buildDir, 'build', appName + '.app') +
+                     ' -o ' + path.resolve(buildDir, 'build', appName + '.ipa') +
                      ' --sign "' + options.identity + '"' +
                      ' --embed "' + provisionFile + '"',
                 msg: 'Generating package archive...'
               }
             ]);
           }).then(function() {
-            var src = path.resolve(buildDir, 'build', options.name + '.ipa');
+            var src = path.resolve(buildDir, 'build', appName + '.ipa');
             grunt.file.copy(src, dest);
             grunt.log.writeln('Package saved to ' + dest);
           })
@@ -211,7 +147,14 @@ module.exports = function(grunt) {
         cmd: 'adb install ' + pkg,
         msg: 'Installing "' + pkg + '" to device...'
       }
-    ]);
+    ], false).then(null, function(err) {
+      //`adb install` writes to stderr when reporting bitrate. no idea why.
+      if (err.search(/\d*?\sbytes in/) !== -1) {
+        grunt.log.ok();
+        return true; //continue
+      }
+      throw err;
+    });
   };
 
 
@@ -225,21 +168,23 @@ module.exports = function(grunt) {
         cmd: 'ideviceinstaller --install ' + pkg,
         msg: 'Installing "' + pkg + '" to device...'
       }
-    ]);
+    ], false).then(null, function(err) {
+      //`ideviceinstaller --install` writes to stderr when archive is missing
+      //some common files. App still installs and functions properly, however.
+      if (err.search(/ERROR: could not locate/) !== -1) {
+        return true; //continue
+      }
+      throw err;
+    });
   };
 
 
   grunt.registerTask('install', 'Installs package to first connected device', function() {
     var done = this.async();
 
-    var timer;
     new Deferred().resolve()
       .then(function checkExecs() {
         return forEachSeries([
-          {
-            exec: 'ideviceinfo',
-            msg: '`ideviceinfo` from the "libimobiledevice" package was not found in your PATH. It is required to query iOS devices. Mac OS X users may use https://github.com/benvium/libimobiledevice-macosx'
-          },
           {
             exec: 'ideviceinstaller',
             msg: '`ideviceinstaller` from the "libimobiledevice" package was not found in your PATH. It is required to install and uninstall packages to/from iOS devices. Mac OS X users may use https://github.com/benvium/libimobiledevice-macosx'
@@ -249,7 +194,7 @@ module.exports = function(grunt) {
             msg: '`adb` from the Android SDK was not found in your PATH. It is required to install and uninstall packages to/from Android devices.'
           }
         ], function(task) {
-          return _cmd('type ' + task.exec + ' >/dev/null').then(
+          return util.cmd('type ' + task.exec + ' >/dev/null').then(
             null,
             function() {
               grunt.log.error('WARNING: ' + task.msg);
@@ -260,76 +205,40 @@ module.exports = function(grunt) {
       })
       .then(function() {
         grunt.log.write('Looking for an attached device...');
-        timer = setInterval(function() {
-          grunt.log.notverbose.write('.');
-        }, 1000);
       })
-      .then(function checkAttached() {
-        return series([
-          _partial(_cmd, 'adb get-state').then(
-            function(stdout) {
-              return stdout.toString().trim() === 'device';
-            },
-            function() {
-              return false;
-            }
-          ),
-          _partial(_cmd, 'ideviceinfo').then(
-            function(stdout) {
-              return stdout.search(/no device found/gi) === -1;
-            },
-            function() {
-              return false;
-            }
-          )
-        ]);
-      })
-      .then(function(results) {
-        var isAndroid = results[0];
-        var isIos = results[1];
+      .then(util.getConnectedDevice)
+      .then(function(device) {
+        var files, buildDir, pkgFile;
+        switch(device) {
+          case 'android':
+            grunt.log.writeln('Android device found.');
 
-        if (isAndroid) {
-          grunt.log.writeln('Android device found.');
+            files = grunt.task.normalizeMultiTaskFiles(grunt.config.get('pkg.android'));
+            buildDir = files[0].src[0];
+            pkgFile = files[0].dest;
 
-          var files = grunt.task.normalizeMultiTaskFiles(grunt.config.get('pkg.android'));
-          var buildDir = files[0].src[0];
-          var pkgFile = files[0].dest;
-          var manifest = path.resolve(buildDir, 'AndroidManifest.xml');
+            return util.getAppPkgNameAndroid(buildDir)
+              .then(function(pkgName) {
+                return _installAndroid(pkgFile, pkgName);
+              });
+          case 'ios':
+            grunt.log.writeln('iOS device found.');
 
-          return parseString(grunt.file.read(manifest))
-            .then(function(data) {
-              var packageName = data.manifest.$['package'];
-              //console.log(packageName);
-              return _installAndroid(pkgFile, packageName);
-            });
-        }
-        else if (isIos) {
-          grunt.log.writeln('iOS device found.');
-
-          var files = grunt.task.normalizeMultiTaskFiles(grunt.config.get('pkg.ios'));
-          var buildDir = files[0].src[0];
-          var pkgFile = files[0].dest;
-          var plist = grunt.file.expand(buildDir + '/**/*Info.plist')[0];
-          var data = grunt.file.read(plist);
-          var bundleIdentifier;
-          data.split('\n').forEach(function(line, i, list) {
-            if (line.search(/<key>.*?CFBundleIdentifier.*?<\/key>/i) !== -1) {
-              var next = list[i+1];
-              bundleIdentifier = next.match(/<string>(.*)<\/string>/i)[1];
-            }
-          });
-          if (!bundleIdentifier) {
-            grunt.log.error('Could not parse bundle identifier from ' + plist);
+            files = grunt.task.normalizeMultiTaskFiles(grunt.config.get('pkg.ios'));
+            buildDir = files[0].src[0];
+            pkgFile = files[0].dest;
+            var bundleIdentifier = util.getAppPkgNameIos(buildDir);
+            return _installIos(pkgFile, bundleIdentifier);
+          default:
+            grunt.log.writeln('No device found.');
             throw 'break';
-          }
-          return _installIos(pkgFile, bundleIdentifier);
-        }
-        else {
-          grunt.log.writeln('No device found.');
-          throw 'break';
         }
       })
-      .then(done, done);
+      .then(done, function(err) {
+        grunt.fail.warn(err);
+        done();
+      });
+
 
   });
 

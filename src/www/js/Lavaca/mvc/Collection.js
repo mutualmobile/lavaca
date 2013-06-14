@@ -200,9 +200,7 @@ define(function(require) {
       for (i = 0, j = items.length; i < j; i++) {
         model = items[i];
         if (typeof model === 'object') {
-          if (!(model instanceof this.TModel)) {
-            model = this.prepare(model);
-          }
+          model = this.prepare(model);
 
           // If it's a duplicate, remove the old item
           id = model.get(idAttribute);
