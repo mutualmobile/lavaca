@@ -432,7 +432,7 @@ define(function(require) {
       if (!relPath) {
         return badURL;
       }
-      apiURL = apiRoot || '' + relPath;
+      apiURL = (apiRoot || '') + relPath;
       return apiURL;
     },
     /**
