@@ -152,14 +152,18 @@ define(function(require) {
       expect(testCollection.toObject().items).toEqual(colors);
     });
     it('triggers addItem event when a model is added', function() {
+      var eventModel;
       var noop = {
-            addItem: function() {}
+            addItem: function(e) {
+              eventModel = e.model;
+            }
           };
-      spyOn(noop, 'addItem');
+      spyOn(noop, 'addItem').andCallThrough();
       testCollection = new Collection(colors);
       testCollection.on('addItem', noop.addItem);
       testCollection.add({color: 'purple', primary: false});
-      expect(noop.addItem.callCount).toEqual(1);
+      expect(noop.addItem).toHaveBeenCalled();
+      expect(eventModel.get('color')).toEqual(testCollection.itemAt(testCollection.count() - 1).get('color'));
     });
     it('triggers changeItem event when a model is changed', function() {
       var noop = {
