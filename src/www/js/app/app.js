@@ -39,7 +39,7 @@ define(function(require) {
     stateModel.set('lang', localStore.get('lang') || 'en_US');
     //initialize translations
     Translation.init(stateModel.get('lang'));
-    //render header view
+    //render header
     headerView.render();
   });
 

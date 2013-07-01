@@ -329,7 +329,9 @@ module.exports = function( grunt ) {
         options: {
           paths: '<%= paths.src.www %>/js',
           outdir: '<%= paths.doc %>',
-          exclude: '<%= paths.src.www %>/js/libs'
+          exclude: '<%= paths.src.www %>/js/libs',
+          linkNatives: true,
+          themedir: 'libs/yuidoc/themes/default'
         }
       }
     },
