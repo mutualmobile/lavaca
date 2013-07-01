@@ -9,7 +9,7 @@
 /src/android/gen/*
 
 /node_modules
-/docs
+/doc
 /pkg
 /tmp
 /build
