@@ -344,6 +344,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-amd-check');
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
