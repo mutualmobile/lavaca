@@ -27,7 +27,7 @@ define(function(require) {
      * The view manager used by this router
      */
     this.viewManager = viewManager;
-    
+
   }, {
     /**
      * @field {Boolean} locked
@@ -41,7 +41,7 @@ define(function(require) {
      * Whether or not this router has been used to navigate
      */
     hasNavigated: false,
-    
+
     startHistory: function() {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
@@ -56,7 +56,7 @@ define(function(require) {
     /**
      * @method setEl
      * Sets the viewManager property on the instance which is the view manager used by this router
-     * 
+     *
      * @param {Lavaca.mvc.ViewManager} viewManager
      * @return {Lavaca.mvc.Router}  This Router instance
      */
