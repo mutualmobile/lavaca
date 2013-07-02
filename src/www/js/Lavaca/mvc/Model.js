@@ -85,7 +85,7 @@ define(function(require) {
    * A list of validation messages the change caused
    */
 
-  /** 
+  /**
    * @class Lavaca.mvc.Model
    * @super Lavaca.events.EventDispatcher
    * Basic model type
@@ -122,20 +122,26 @@ define(function(require) {
     }
   }, {
     /**
-     * @field {Boolean} suppressValidation
-     * @default false
      * When true, attributes are not validated
+     * @property suppressValidation
+     * @default false
+     *
+     * @type Boolean
      */
+
     suppressValidation: false,
     /**
-     * @field {Boolean} suppressTracking
-     * @default false
      * When true, changes to attributes are not tracked
+     * @property suppressTracking
+     * @default false
+     *
+     * @type Boolean
      */
+
     suppressTracking: false,
     /**
-     * @method get
      * Gets the value of a attribute
+     * @method get
      *
      * @param {String} attribute  The name of the attribute
      * @return {Object}  The value of the attribute, or null if there is no value
@@ -150,8 +156,8 @@ define(function(require) {
       return attr;
     },
     /**
-     * @method canSet
      * Determines whether or not an attribute can be assigned
+     * @method canSet
      *
      * @param {String} attribute  The name of the attribute
      * @return {Boolean}  True if you can assign to the attribute
@@ -160,8 +166,8 @@ define(function(require) {
       return true;
     },
     /**
-     * @method set
      * Sets the value of the attribute, if it passes validation
+     * @method set
      *
      * @event invalid
      * @event change
@@ -205,8 +211,8 @@ define(function(require) {
       });
     },
     /**
-     * @method has
      * Determines whether or not this model has a named attribute
+     * @method has
      *
      * @param {String} attribute  The name of the attribute
      * @return {Boolean}  True if the attribute exists and has a value
@@ -221,8 +227,8 @@ define(function(require) {
      */
     idAttribute: 'id',
     /**
-     * @method id
      * Gets the ID of the model
+     * @method id
      *
      * @return {String}  The ID of the model
      */
@@ -230,8 +236,8 @@ define(function(require) {
       return this.get(this.idAttribute);
     },
     /**
-     * @method isNew
      * Determines whether or not this model has been saved before
+     * @method isNew
      *
      * @return {Boolean}  True when the model has no ID associated with it
      */
@@ -239,8 +245,8 @@ define(function(require) {
       return null === this.id();
     },
     /**
-     * @method parse
      * Ensures that a map is suitable to be applied to this model
+     * @method parse
      *
      * @param {Object} map  The string or key-value hash to parse
      * @return {Object}  The parsed version of the map
@@ -252,11 +258,8 @@ define(function(require) {
       return map;
     },
     /**
-     * @method apply
      * Sets each attribute of this model according to the map
-     *
-     * @sig
-     * @param {Object} map  The string or key-value map to parse and apply
+     * @method apply
      *
      * @sig
      * @param {Object} map  The string or key-value map to parse and apply
@@ -271,10 +274,8 @@ define(function(require) {
       });
     },
     /**
+     * Removes all data from the model or removes selected flag from model.
      * @method clear
-     *
-     * @sig
-     * Removes all data from the model
      *
      * @sig
      * Removes all flagged data from the model
@@ -303,8 +304,8 @@ define(function(require) {
       }
     },
     /**
-     * @method clone
      * Makes a copy of this model
+     * @method clone
      *
      * @return {Lavaca.mvc.Model}  The copy
      */
@@ -312,8 +313,8 @@ define(function(require) {
       return new this.constructor(this.attributes.toObject());
     },
     /**
-     * @method addRule
      * Adds a validation rule to this model
+     * @method addRule
      *
      * @param {String} attribute  The name of the attribute to which the rule applies
      * @param {Function} callback  The callback to use to validate the attribute, in the
@@ -323,7 +324,7 @@ define(function(require) {
     addRule: function(attribute, callback, message) {
       this.rules.get(attribute, []).push({rule: callback, message: message});
     },
-    /** 
+    /**
      * @method validate
      *
      * @sig Validates all attributes on the model
@@ -364,8 +365,8 @@ define(function(require) {
       }
     },
     /**
-     * @method onFetchSuccess
      * Processes the data received from a fetch request
+     * @method onFetchSuccess
      *
      * @param {Object} response  The response data
      */
@@ -378,8 +379,8 @@ define(function(require) {
       this.trigger('fetchSuccess', {response: response});
     },
     /**
-     * @method onFetchError
      * Triggered when the model is unable to fetch data
+     * @method onFetchError
      *
      * @param {Object} value  The error value
      */
@@ -387,21 +388,30 @@ define(function(require) {
       this.trigger('fetchError', {response: response});
     },
     /**
-     * @method fetch
      * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
+     * @method fetch
      *
      * @event fetchSuccess
      * @event fetchError
+     */
+    /**
+     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
+     * @method fetch
      *
-     * @sig
      * @param {String} url  The URL from which to load the data
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
+     * @method fetch
      *
-     * @sig
      * @param {Object} options  jQuery AJAX settings. If url property is missing, fetch() will try to use the url property on this model
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
+     * @method fetch
      *
-     * @sig
      * @param {String} url  The URL from which to load the data
      * @param {Object} options  jQuery AJAX settings
      * @return {Lavaca.util.Promise}  A promise
@@ -419,8 +429,8 @@ define(function(require) {
         .error(this.onFetchError);
     },
     /**
-     * @method getApiURL
      * Converts a relative path to an absolute api url based on environment config 'apiRoot'
+     * @method getApiURL
      *
      * @param {String} relPath  A relative path
      * @return {String}  A formated api url or an apparently bad url '/please_set_model_url' if relPath argument is faslsy
@@ -436,19 +446,21 @@ define(function(require) {
       return apiURL;
     },
     /**
-     * @method save
      * Saves the model
+     * @method save
      *
      * @event saveSuccess
      * @event saveError
      *
-     * @sig
      * @param {Function} callback  A function callback(model, changedAttributes, attributes)
      *   that returns either a promise or a truthy value
      *   indicating whether the operation failed or succeeded
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Saves the model
+     * @method save
      *
-     * @sig
      * @param {Function} callback  A function callback(model, changedAttributes, attributes)
      *   that returns either a promise or a truthy value
      *   indicating whether the operation failed or succeeded
@@ -488,8 +500,8 @@ define(function(require) {
       return promise;
     },
     /**
-     * @method saveToServer
      * Saves the model to the server via POST
+     * @method saveToServer
      *
      * @param {String} url  The URL to which to post the data
      * @return {Lavaca.util.Promise}  A promise
@@ -514,8 +526,8 @@ define(function(require) {
       });
     },
     /**
-     * @method toObject
      * Converts this model to a key-value hash
+     * @method toObject
      *
      * @return {Object}  The key-value hash
      */
@@ -533,8 +545,8 @@ define(function(require) {
       return obj;
     },
     /**
-     * @method toJSON
      * Converts this model to JSON
+     * @method toJSON
      *
      * @return {String}  The JSON string representing the model
      */
@@ -542,28 +554,34 @@ define(function(require) {
       return JSON.stringify(this.toObject());
     },
     /**
+     * Bind an event handler to this object
      * @method on
      *
-     * Bind an event handler to this object
      *
-     * @sig
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
+     */
+    /**
+     * Bind an event handler to this object
+     * @method on
      *
-     * @sig
      * @param {String} type  The name of the event
      * @param {String} attr  An attribute to which to limit the scope of events
      * @param {Function} callback  The function to execute when the event occurs
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
-     * @sig
+     */
+    /**
+     * Bind an event handler to this object
+     * @method on
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @param {Object} thisp  The context of the handler
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
-     * @sig
+     */
+    /**
+     * Bind an event handler to this object
+     * @method on
      * @param {String} type  The name of the event
      * @param {String} attr  An attribute to which to limit the scope of events
      * @param {Function} callback  The function to execute when the event occurs
@@ -586,8 +604,8 @@ define(function(require) {
       return EventDispatcher.prototype.on.call(this, type, handler, thisp);
     },
     /**
-    * @method responseFilter
     * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
+    * @method responseFilter
     *
     * @param {Object} response  The raw response passed in onFetchSuccess()
     * @return {Object}  An object to be applied to this model instance
