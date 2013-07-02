@@ -110,8 +110,8 @@ define(function(require) {
      */
     allowDuplicatedIds: false,
     /**
-     * @method clear
      * Removes and disposes of all models in the collection
+     * @method clear
      *
      * @event removeItem
      */
@@ -120,8 +120,8 @@ define(function(require) {
       this.clearModels();
     },
     /**
-     * @method clearModels
      * clears only the models in the collection
+     * @method clearModels
      *
      */
     clearModels: function() {
@@ -138,8 +138,8 @@ define(function(require) {
         = 0;
     },
     /**
-     * @method prepare
      * Readies data to be an item in the collection
+     * @method prepare
      *
      * @param {Object} data  The model or object to be added
      * @return {Lavaca.mvc.Model}  The model derived from the data
@@ -161,8 +161,8 @@ define(function(require) {
       return model;
     },
     /**
-     * @method canSet
      * Determines whether or not an attribute can be assigned
+     * @method canSet
      *
      * @param {String} attribute  The name of the attribute
      * @return {Boolean}  True if you can assign to the attribute
@@ -171,21 +171,22 @@ define(function(require) {
       return attribute !== this.itemsProperty;
     },
     /**
-     * @method insert
      * Inserts one or more items into the collection at the specified index
+     * @method insert
      *
-     * @event addItem
-     *
-     * @sig
      * @param {Number} insertIndex  index at which items will be inserted
      * @param {Array} newItems  Array of objects or Models to insert
      * @return {Boolean}  false if no items were able to be added, true otherwise.
-     *
-     * @sig
+     */
+    /**
+     * Inserts one or more items into the collection at the specified index
+     * @method insert
      * @param {Number} insertIndex  index at which items will be inserted
      * @params {Object} items  One or more objects or Models to insert
      * @return {Boolean}  false if no items were able to be added, true otherwise.
      */
+//@event addItem
+    
     insert: function(insertIndex, item /*, item1, item2, item3...*/) {
       var result = false,
           idAttribute = this.TModel.prototype.idAttribute,
@@ -229,19 +230,20 @@ define(function(require) {
       return result;
     },
     /**
-     * @method add
      * Adds one or more items to the collection. Items with IDs matching an item already in this collection will replace instead of add.
+     * @method add
      *
-     * @event addItem
-     *
-     * @sig
      * @params {Object} item  One or more items to add to the collection
      * @return {Boolean}  True if an item was added, false otherwise
+     */
+    /**
+     * Adds one or more items to the collection. Items with IDs matching an item already in this collection will replace instead of add.
+     * @method add
      *
-     * @sig
      * @params {Array} items  An array of items to add to the collection
      * @return {Boolean}  True if an item was added, false otherwise
      */
+// * @event addItem
     add: function(/* item1, item2, itemN */) {
       if (arguments.length && arguments[0] instanceof Array) {
         return this.add.apply(this, arguments[0]);
@@ -249,19 +251,21 @@ define(function(require) {
       return this.insert.call(this, this.count(), Array.prototype.slice.call(arguments, 0));
     },
     /**
-     * @method moveTo
      * Moves an item
+     * @method moveTo
      *
-     * @event moveItem
-     *
-     * @sig
      * @param {Lavaca.mvc.Model} model  The model to move
      * @param {Number} newIndex  The new index at which the model should be placed
      *
-     * @sig
+     */
+    /**
+     * Moves an item
+     * @method moveTo
+     *
      * @param {Number} oldIndex  The current index of the model
      * @param {Number} newIndex  The new index at which the model should be placed
      */
+// * @event moveItem
     moveTo: function(oldIndex, newIndex) {
       if (oldIndex instanceof this.TModel) {
         oldIndex = ArrayUtils.indexOf(this.models, oldIndex);
@@ -278,36 +282,48 @@ define(function(require) {
       }
     },
     /**
-     * @method remove
      * Removes an item from the collection
-     *
-     * @event removeItem
-     *
-     * @sig
+     * @method remove
      * @params {Number} index  The index of the model to remove
      * @return {Boolean}  True if an item was removed, false otherwise
      *
-     * @sig
+     */
+    /**
+     * Removes an item from the collection
+     * @method remove
      * @params {Lavaca.mvc.Model} item  The models to remove from the collection
      * @return {Boolean}  True if an item was removed, false otherwise
      *
-     * @sig
+     */
+    /**
+     * Removes an item from the collection
+     * @method remove
      * @param {Object} item  One object containing attributes matching any models to remove
      * @return {Boolean}  True if at least one item was removed, false otherwise
      *
-     * @sig
+     */
+    /**
+     * Removes an item from the collection
+     * @method remove
      * @param {Object} item  N number of object arguments containing attributes matching any models to remove
      * @return {Array}  An array of booleans indicating if at least one item was removed by matching each argument
      *
-     * @sig
+     */
+    /**
+     * Removes an item from the collection
+     * @method remove
      * @param {Array} items  An array of objects containing attributes matching any models to remove
      * @return {Array}  An array of booleans indicating if at least one item was removed by matching each element in the array
-     *
-     * @sig
+     */
+    /**
+     * Removes an item from the collection
+     * @method remove
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be removed
      * @return {Boolean}  True if at least one item was removed, false otherwise
      */
+//* @event removeItem
+
     remove: function(item /*, item1, item2, item3...*/) {
       var n, it, items, index, i, removed;
 
@@ -363,28 +379,34 @@ define(function(require) {
       }
     },
     /**
+     * Compiles a list of items matching an attribute hash
      * @method filter
      *
-     * @sig
-     * Compiles a list of items matching an attribute hash
      * @param {Object} The attributes to test against each model
      * @return {Array}  A list of this collection's models that matched the attributes
-     *
-     * @sig
+     */
+    /**
      * Compiles a list of items matching an attribute hash
+     * @method filter
+     *
      * @param {Object} attributes  The attributes to test against each model
      * @param {Number} maxResults  The maximum number of results to return
      * @return {Array}  A list of this collection's models that matched the attributes
+     */
+    /**
+     * Compiles a list of items matching an attribute hash
+     * @method filter
      *
-     * @sig
-     * Compiles a list of items passing a test
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be included
      *     in the result
      * @return {Array}  A list of this collection's models that passed the test
+     */
+
+    /**
+     * Compiles a list of items matching an attribute hash
+     * @method filter
      *
-     * @sig
-     * Compiles a list of items passing a test
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be included
      *     in the result
@@ -419,15 +441,16 @@ define(function(require) {
       return result;
     },
     /**
+     * Finds the first item matching an attribute hash
      * @method first
      *
-     * @sig
-     * Finds the first item matching an attribute hash
      * @param {Object} attributes  The attributes to test against each model
      * @return {Lavaca.mvc.Model}  The first model that matched the attributes (or null)
-     *
-     * @sig
+     */
+     /**
      * Finds the first item that passed a functional test
+     * @method first
+     *
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be included
      *     as the result
@@ -437,15 +460,17 @@ define(function(require) {
       return this.filter(test, 1)[0] || null;
     },
     /**
+     * Finds the index of the first item matching an attribute hash
      * @method indexOf
      *
      * @sig
      * Finds the index of the first item matching an attribute hash
      * @param {Object} attributes  The attributes to test against each model
      * @return {Number}  Index of the matching model, or -1 if no match is found
-     *
-     * @sig
+     */
+    /**
      * Finds the index of the first item that passed a functional test
+     * @method indexOf
      * @param {Function} test  A function to check each model in the collection in the form
      *     test(index, model). If the test function returns true, the model will be included
      *     as the result
@@ -456,8 +481,8 @@ define(function(require) {
       return match ? ArrayUtils.indexOf(this.models, match) : -1;
     },
     /**
-     * @method itemAt
      * Gets the item at a specific index
+     * @method itemAt
      *
      * @param {Number} index  The index of the item
      * @return {Lavaca.mvc.Model}  The model at that index
@@ -466,8 +491,8 @@ define(function(require) {
       return this.models[index];
     },
     /**
-     * @method count
      * Gets the number of items in the collection
+     * @method count
      *
      * @return {Number}  The number of items in the collection
      */
@@ -475,14 +500,16 @@ define(function(require) {
       return this.models.length;
     },
     /**
-     * @method each
      * Executes a callback for each model in the collection. To stop iteration immediately,
      * return false from the callback.
+     * @method each
      *
-     * @sig
      * @param {Function} callback  A function to execute for each item, callback(index, model)
-     *
-     * @sig
+     */
+    /**
+     * Executes a callback for each model in the collection. To stop iteration immediately,
+     * return false from the callback.
+     * @method each
      * @param {Function} callback  A function to execute for each item, callback(index, model)
      * @param {Object} thisp  The context of the callback
      */
@@ -498,23 +525,25 @@ define(function(require) {
       }
     },
     /**
+     * Sorts the models in the collection using the specified attribute, in ascending order.
      * @method sort
      *
-     * @event moveItem
-     *
-     * @sig
-     * Sorts the models in the collection using the specified attribute, in ascending order.
      * @param {String} attribute  Attribute to sort by
      * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
-     *
-     * @sig
+     */
+    /**
      * Sorts the models in the collection using the specified attribute, in either ascending or descending order.
+     * @method sort
+     *
      * @param {String} attribute  Attribute to sort by
      * @param {Boolean}  descending  Use descending sort. Defaults to false
      * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
      *
-     * @sig
+     */
+    /**
      * Sorts the models in the collection according to the specified compare function.
+     * @method sort
+     *
      * @param {Function} compareFunction  A function that compares two models. It should work
      *     in the same manner as the default Array.sort method in javascript.  i.e. the function
      *     should have a signature of function(modelA, modelB) and should return a negative integer
@@ -522,6 +551,8 @@ define(function(require) {
      *     and integer 0 if modelA and modelB are equivalent.
      * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
      */
+//* @event moveItem
+
     sort: function(attribute, descending) {
       var comparator = typeof attribute === "function" ? attribute : _getComparator(attribute, descending),
           oldModels = clone(this.models),
@@ -541,13 +572,12 @@ define(function(require) {
       return this;
     },
     /**
-     * @method reverse
      * Reverses the order of the models in the collection
-     *
-     * @event moveItem
+     * @method reverse
      *
      * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
      */
+//* @event moveItem
     reverse: function() {
       var oldModels = clone(this.models),
           oldIndex;
@@ -566,8 +596,8 @@ define(function(require) {
       return this;
     },
     /**
-     * @method onItemEvent
      * Handler invoked when an item in the collection has an event. Triggers an [[Lavaca.mvc.ItemEvent]].
+     * @method onItemEvent
      *
      * @param {Lavaca.mvc.ModelEvent} e  The item event
      */
@@ -587,8 +617,8 @@ define(function(require) {
       }));
     },
     /**
-     * @method onFetchSuccess
      * Processes the data received from a fetch request
+     * @method onFetchSuccess
      *
      * @param {Object} response  The response data
      */
@@ -609,8 +639,8 @@ define(function(require) {
       this.trigger('fetchSuccess', {response: response});
     },
     /**
-     * @method saveToServer
      * Saves the model to the server via POST
+     * @method saveToServer
      *
      * @param {String} url  The URL to which to post the data
      * @return {Lavaca.util.Promise}  A promise
@@ -635,8 +665,8 @@ define(function(require) {
       });
     },
     /**
-     * @method toObject
      * Converts this model to a key-value hash
+     * @method toObject
      *
      * @param {Boolean} idOnly  When true, only include item IDs for pre-existing items
      * @return {Object}  The key-value hash
@@ -653,8 +683,8 @@ define(function(require) {
       return obj;
     },
     /**
-    * @method responseFilter
     * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
+    * @method responseFilter
     *
     * @param {Object} response  The raw response passed in onFetchSuccess()
     * @return {Object}  An object or array to be applied to this collection instance
