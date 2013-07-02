@@ -61,7 +61,7 @@ dd p:first-child, td p:first-child { margin-top: 0; }
 
 /* -- Headings -------------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
-    color: #D98527;/*was #f80*/
+    color: rgba(113, 118, 139, 1.0);/*was #f80*/
     font-family: 'Trebuchet MS', sans-serif;
     font-weight: bold;
     line-height: 1.1;
@@ -70,20 +70,18 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 184.6%;
-    color: #30418C;
+    color: rgba(80, 83, 95, 1.0);
     margin: 0.75em 0 0.5em;
 }
 
 h2 {
     font-size: 153.846%;
-    color: #E48A2B;
 }
 
 h3 { font-size: 138.462%; }
 
 h4 {
     border-bottom: 1px solid #DBDFEA;
-    color: #E48A2B;
     font-size: 115.385%;
     font-weight: normal;
     padding-bottom: 2px;
@@ -354,7 +352,7 @@ ul li p {
 #hd img {
     margin-right: 10px;
     vertical-align: middle;
-    width: 30%;
+    width: 25%;
 }
 
 
@@ -387,7 +385,7 @@ specific tabview, see the other sections below.
 /* Headings */
 h2, h3, h4, h5, h6 {
     border: none;
-    color: #30418C;
+    color: rgba(68, 71, 83, 1.0);
     font-weight: bold;
     text-decoration: none;
 }
@@ -444,8 +442,8 @@ h2, h3, h4, h5, h6 {
 
 /* Module/Class intro description. */
 .apidocs .intro {
-    background: #f0f1f8;
-    border-color: #d4d8eb;
+    background: rgba(228, 228, 228, .8);
+    border-color: rgb(170, 170, 170);
 }
 
 /* Loading spinners. */
@@ -777,5 +775,11 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 
 .api-list-item .yui3-highlight {
     font-weight: bold;
+}
+
+.yui3-skin-sam #api-tabview .yui3-tabview-list {
+    border: solid rgb(180, 180, 180);
+    border-width: 0 0 5px;
+    zoom: 1;
 }
 

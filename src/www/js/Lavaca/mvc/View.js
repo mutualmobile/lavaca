@@ -13,7 +13,7 @@ define(function(require) {
 
 
   /**
-   * View Class
+   * Base View Class
    * @class lavaca.mvc.View
    * @extends lavaca.events.EventDispatcher
    * @constructor
@@ -28,7 +28,7 @@ define(function(require) {
 
     /**
      * The model used by the view
-     * @attribute model
+     * @property model
      * @default null
      * @optional
      * @type lavaca.mvc.Model
@@ -37,8 +37,8 @@ define(function(require) {
     this.model = model || null;
 
     /**
-     * An id is applied to a data attribute on the views container
-     * @attribute id
+     * An id is applied to a data property on the views container
+     * @property id
      * @default generated from className and unique identifier
      * @type String
      *
@@ -47,7 +47,7 @@ define(function(require) {
 
     /**
      * If the view is created in the context of a childView, the parent view is assigned to this view
-     * @attribute parentView
+     * @property parentView
      * @default null
      * @type Object
      *
@@ -57,7 +57,7 @@ define(function(require) {
     /**
      * The element that is either assigned to the view if in the context of a childView, or is created for the View
      * if it is a PageView
-     * @attribute el
+     * @property el
      * @default null
      * @type Object | String
      *
@@ -66,8 +66,8 @@ define(function(require) {
 
     /**
      * A dictionary of selectors and event types in the form
-     * {eventType: {delegate: 'xyz', callback: func}}@attribute el
-     * @attribute eventMap
+     * {eventType: {delegate: 'xyz', callback: func}}@property el
+     * @property eventMap
      * @default {}
      * @type Object
      */
@@ -75,7 +75,7 @@ define(function(require) {
     /**
      * A dictionary of selectors, View types and models in the form
      *   {selector: {TView: TView, model: model}}}
-     * @attribute {Object} childViewMap
+     * @property {Object} childViewMap
      * @default {}
      * @type Object
      *
@@ -83,7 +83,7 @@ define(function(require) {
     this.childViewMap = {};
     /**
      * Interactive elements used by the view
-     * @attribute childViews
+     * @property childViews
      * @default lavaca.util.cache
      * @type lavaca.util.Cache
      */
@@ -91,14 +91,14 @@ define(function(require) {
     /**
      * A dictionary of selectors and widget types in the form
      *   {selector: widgetType}
-     * @attribute {Object} widgetMap
+     * @property {Object} widgetMap
      * @default {}
      * @type Object
      */
     this.widgetMap = {};
     /**
      * Interactive elements used by the view
-     * @attribute widgets
+     * @property widgets
      * @default lavaca.util.Cache
      * @type lavaca.util.Cache
      */
@@ -106,7 +106,7 @@ define(function(require) {
     /**
      *  A map of all the events to be applied to child Views in the form of
      *  {type: {TView: TView, callback : callback}}
-     * @attribute childViewEventMap
+     * @property childViewEventMap
      * @default Object
      * @type Object
      */
@@ -122,28 +122,28 @@ define(function(require) {
   }, {
     /**
      * The element associated with the view
-     * @attribute {jQuery} el
+     * @property {jQuery} el
      * @default null
      *
      */
     el: null,
     /**
      * The name of the template associated with the view
-     * @attribute {String} template
+     * @property {String} template
      * @default null
      *
      */
     template: null,
     /**
      * A class name added to the view container
-     * @attribute String className
+     * @property String className
      * @default null
      *
      */
     className: null,
     /**
      * Will render any childViews automatically when set to true
-     * @attribute autoRender
+     * @property autoRender
      * @default false
      *
      * @type Boolean
@@ -405,7 +405,7 @@ define(function(require) {
       var el = this.el,
         callbacks,
         callback,
-        attribute,
+        property,
         delegate,
         type,
         dotIndex,
@@ -427,10 +427,10 @@ define(function(require) {
             if (this.model && this.model instanceof Model) {
               dotIndex = type.indexOf('.');
               if (dotIndex !== -1) {
-                attribute = type.substr(dotIndex+1);
+                property = type.substr(dotIndex+1);
                 type = type.substr(0, dotIndex);
               }
-              this.model.on(type, attribute, callback, this);
+              this.model.on(type, property, callback, this);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
@@ -453,8 +453,8 @@ define(function(require) {
      *     [[Lavaca.fx.Animation]] and [[Lavaca.fx.Transition]] are also supported.
      *     To map an event to the view's el, use 'self' as the delegate. To map
      *     events to the view's model, use 'model' as the delegate. To limit events
-     *     to only a particular attribute on the model, use a period-seperated
-     *     syntax such as <code>{model: {'change.myAttribute': myCallback}}</code>
+     *     to only a particular property on the model, use a period-seperated
+     *     syntax such as <code>{model: {'change.myproperty': myCallback}}</code>
      * @return {lavaca.mvc.View}  This view (for chaining)
      */
     /**
