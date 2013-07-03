@@ -8,31 +8,23 @@ define(function(require) {
       delay = require('lavaca/util/delay');
 
   /**
-   * @class Lavaca.mvc.View
-   * @super Lavaca.events.EventDispatcher
-   * Base view type
-   *
-   * @event rendersuccess
-   * @event rendererror
-   * @event enter
-   * @event exit
+   * Page View type, represents an entire screen
+   * @class lavaca.mvc.PageView
+   * @extends lavaca.mvc.View
    *
    * @constructor
    * @param {Object} el  The element that the PageView is bound to
    * @param {Object} model  The model used by the view
-   * @param {Number} layer  The index of the layer on which the view sits
+   * @param {Number} [layer]  The index of the layer on which the view sits
    *
-   * @constructor
-   * @param {Object} model  The model used by the view
-   * @param {Number} layer  The index of the layer on which the view sits
    */
   var PageView = View.extend(function(el, model, layer) {
 
     View.call(this, el, model);
     /**
-     * @field {Number} layer
-     * @default 0
      * The index of the layer on which the view sits
+     * @property {Number} layer
+     * @default 0
      */
     this.layer = layer || 0;
 
@@ -40,26 +32,23 @@ define(function(require) {
   }, {
 
     /**
-     * @field {jQuery} shell
-     * @default null
      * The element containing the view
+     * @property {jQuery} shell
+     * @default null
      */
     shell: null,
 
-
     /**
-     * @method wrapper
      * Creates the view's wrapper element
-     *
+     * @method wrapper
      * @return {jQuery}  The wrapper element
      */
     wrapper: function() {
       return $('<div class="view"></div>');
     },
     /**
-     * @method interior
      * Creates the view's interior content wrapper element
-     *
+     * @method interior
      * @return {jQuery} The interior content wrapper element
      */
     interior: function() {
@@ -68,9 +57,8 @@ define(function(require) {
 
 
     /**
-     * @method insertInto
      * Adds this view to a container
-     *
+     * @method insertInto
      * @param {jQuery} container  The containing element
      */
     insertInto: function(container) {
@@ -89,11 +77,8 @@ define(function(require) {
       }
     },
     /**
-     * @method render
      * Renders the view using its template and model, overrides the View class render method
-     *
-     * @event rendersuccess
-     * @event rendererror
+     * @method render
      *
      * @return {Lavaca.util.Promise}  A promise
      */
@@ -118,10 +103,18 @@ define(function(require) {
       }
       promise
         .success(function(html) {
+          /**
+           * Fires when html from template has rendered
+           * @event rendersuccess
+           */
           this.trigger('rendersuccess', {html: html});
           renderPromise.resolve();
         })
         .error(function(err) {
+          /**
+           * Fired when there was an error during rendering process
+           * @event rendererror
+           */
           this.trigger('rendererror', {err: err});
           renderPromise.reject();
         });
@@ -133,12 +126,11 @@ define(function(require) {
       return renderPromise;
     },
     /**
-     * @method enter
      * Executes when the user navigates to this view
-     *
+     * @method enter
      * @param {jQuery} container  The parent element of all views
      * @param {Array} exitingViews  The views that are exiting as this one enters
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {lavaca.util.Promise}  A promise
      */
     enter: function(container) {
       var promise = new Promise(this),
@@ -156,23 +148,31 @@ define(function(require) {
         delay(promise.resolver());
       }
       promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
         this.trigger('enter');
       });
       return promise;
     },
     /**
-     * @method exit
      * Executes when the user navigates away from this view
+     * @method exit
      *
      * @param {jQuery} container  The parent element of all views
      * @param {Array} enteringViews  The views that are entering as this one exits
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {lavaca.util.Promise}  A promise
      */
     exit: function() {
       var promise = new Promise(this);
       this.shell.detach();
       delay(promise.resolver());
       promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
         this.trigger('exit');
       });
       return promise;
