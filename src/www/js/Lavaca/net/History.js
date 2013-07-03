@@ -170,8 +170,7 @@ define(function(require) {
         if (this.position < 0) {
           this.position = 0;
         }
-        var currentRecord = this.current() || {id: _currentId || uuid('history')};
-        _insertState(this, this.position, currentRecord.id, state, title, url);
+        _insertState(this, this.position, typeof _currentId !== 'undefined' ? _currentId : uuid('history'), state, title, url);
       }
     },
     /**

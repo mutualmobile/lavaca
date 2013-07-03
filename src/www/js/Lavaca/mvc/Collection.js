@@ -218,7 +218,7 @@ define(function(require) {
             ArrayUtils.remove(this.changedItems, model);
             ArrayUtils.pushIfNotExists(this.addedItems, model);
           }
-          _triggerItemEvent(this, 'addItem', null, insertIndex, this.models[i]);
+          _triggerItemEvent(this, 'addItem', null, insertIndex, this.models[insertIndex]);
           insertIndex++;
           result = true;
         } else {
@@ -601,7 +601,9 @@ define(function(require) {
       list = response;
       if (!(list instanceof Array)) {
         this.apply(response);
-        list = response[this.itemsProperty];
+        if (response && response.hasOwnProperty(this.itemsProperty)) {
+          list = response[this.itemsProperty];
+        }
       }
       this.add.apply(this, list);
       this.trigger('fetchSuccess', {response: response});
