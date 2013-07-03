@@ -86,10 +86,11 @@ define(function(require) {
    */
 
   /**
-   * @class Lavaca.mvc.Model
-   * @super Lavaca.events.EventDispatcher
    * Basic model type
+   * @class lavaca.mvc.Model
+   * @extends lavaca.events.EventDispatcher
    *
+   * Place the events where they are triggered in the code, see the yuidoc syntax reference and view.js for rendersuccess trigger
    * @event change
    * @event invalid
    * @event fetchSuccess
@@ -98,9 +99,7 @@ define(function(require) {
    * @event saveError
    *
    * @constructor
-   *
-   * @constructor
-   * @param {Object} map  A parameter hash to apply to the model
+   * @param {Object} [map]  A parameter hash to apply to the model
    */
   var Model = EventDispatcher.extend(function(map) {
     EventDispatcher.call(this);
