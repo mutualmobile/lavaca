@@ -70,13 +70,8 @@ define(function(require) {
    * @event saveErrorItem
    *
    * @constructor
-   *
-   * @constructor
    * @param {Array} models  A list of models to add to the collection
-   *
-   * @constructor
-   * @param {Array} models  A list of models to add to the collection
-   * @param {Object} map  A parameter hash to apply to the collection
+   * @param {Object} [map]  A parameter hash to apply to the collection
    */
   var Collection = Model.extend(function(models, map) {
     Model.call(this, map);
@@ -92,29 +87,36 @@ define(function(require) {
     }
   }, {
     /**
-     * @field {Function} TModel
-     * @default [[Lavaca.mvc.Model]]
      * The type of model object to use for items in this collection
+     * @property TModel
+     * @default [[Lavaca.mvc.Model]]
+     *
+     * @type Function
      */
+
     TModel: Model,
     /**
-     * @field {String} itemsProperty
-     * @default 'items'
      * The name of the property containing the collection's items when using toObject()
+     * @property itemsProperty
+     * @default 'items'
+     *
+     * @type String
      */
-    itemsProperty: 'items',
+   itemsProperty: 'items',
     /**
-     * @field {Boolean} allowDuplicatedIds
-     * @default false
      * Whether to allow duplicated IDs in collection items. If false, a later added item will overwrite the one with same ID.
+     * @property allowDuplicatedIds
+     * @default false
+     *
+     * @type Boolean
      */
     allowDuplicatedIds: false,
     /**
      * Removes and disposes of all models in the collection
      * @method clear
      *
-     * @event removeItem
      */
+//  @event removeItem
     clear: function() {
       Model.prototype.clear.apply(this, arguments);
       this.clearModels();

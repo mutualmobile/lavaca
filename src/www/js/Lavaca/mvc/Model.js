@@ -169,21 +169,25 @@ define(function(require) {
      * Sets the value of the attribute, if it passes validation
      * @method set
      *
-     * @event invalid
-     * @event change
-     *
-     * @sig
      * @param {String} attribute  The name of the attribute
      * @param {Object} value  The new value
      * @return {Boolean}  True if attribute was set, false otherwise
      *
-     * @sig
+     */
+    /**
+     * Sets the value of the attribute, if it passes validation
+     * @method set
+     *
      * @param {String} attribute  The name of the attribute
      * @param {Object} value  The new value
      * @param {String} flag  A metadata flag describing the attribute
      * @param {Boolean} suppress  When true, validation, events and tracking are suppressed
      * @return {Boolean}  True if attribute was set, false otherwise
      */
+//* @event invalid
+//* @event change
+
+
     set: function(attribute, value, flag, suppress) {
       return _suppressChecked(this, suppress, function() {
         if (!this.canSet(attribute)) {
@@ -221,10 +225,13 @@ define(function(require) {
       return this.get(attribute) !== null;
     },
     /**
-     * @field {String} idAttribute
-     * @default 'id'
      * The name of the ID attribute
+     * @property id
+     * @default 'id'
+     *
+     * @type String
      */
+
     idAttribute: 'id',
     /**
      * Gets the ID of the model
@@ -261,7 +268,12 @@ define(function(require) {
      * Sets each attribute of this model according to the map
      * @method apply
      *
-     * @sig
+     * @param {Object} map  The string or key-value map to parse and apply
+     */
+    /**
+     * Sets each attribute of this model according to the map
+     * @method apply
+     *
      * @param {Object} map  The string or key-value map to parse and apply
      * @param {Boolean} suppress  When true, validation, events and tracking are suppressed
      */
@@ -325,16 +337,21 @@ define(function(require) {
       this.rules.get(attribute, []).push({rule: callback, message: message});
     },
     /**
+     * Validates all attributes on the model
      * @method validate
      *
-     * @sig Validates all attributes on the model
      * @return {Object}  A map of attribute names to validation error messages
+     */
+    /**
+     * Runs validation tests for a specific attribute
+     * @method validate
      *
-     * @sig Runs validation tests for a specific attribute
      * @param {String}  The name of the attribute to test
      * @return {Array}  A list of validation error messages
-     *
-     * @sig Runs validation against a potential value for a attribute
+     */
+    /**
+     * Runs validation against a potential value for a attribute
+     * @method validate
      * @param {String} attribute  The name of the attribute
      * @param {Object} value  The potential value for the attribute
      * @return {Array}  A list of validation error messages
@@ -449,8 +466,6 @@ define(function(require) {
      * Saves the model
      * @method save
      *
-     * @event saveSuccess
-     * @event saveError
      *
      * @param {Function} callback  A function callback(model, changedAttributes, attributes)
      *   that returns either a promise or a truthy value
@@ -467,6 +482,10 @@ define(function(require) {
      * @param {Object} thisp  The context for the callback
      * @return {Lavaca.util.Promise}  A promise
      */
+
+//* @event saveSuccess
+//* @event saveError
+
     save: function(callback, thisp) {
       var promise = new Promise(this),
           attributes = this.toObject(),
