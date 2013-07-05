@@ -33,13 +33,10 @@ define(function(require) {
    * @super Lavaca.events.EventDispatcher
    * Base application type
    *
+   *
    * @constructor
    * Creates an application
-   *
-   * @sig
-   *
-   * @sig
-   * @param {Function} callback  A callback to execute when the application is initialized but not yet ready
+   * @param {Function} [callback]  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
     if (callback) {
@@ -51,32 +48,44 @@ define(function(require) {
     }.bind(this));
   }, {
     /**
-     * @field {String} initRoute
-     * @default "/"
      * The default URL that the app will navigate to
+     * @property initRoute
+     * @default '/'
+     *
+     * @type String
      */
+
     initRoute: '/',
     /**
-     * @field {Object} initState
-     * @default null
      * The default state object to supply the initial route
+     * @property initState
+     * @default null
+     *
+     * @type {Object}
      */
     initState: null,
     /**
-     * @field {Object} initParams
-     * @default null
      * The default params object to supply the initial route
+     * @property initParams
+     * @default null
+     *
+     * @type {Object}
      */
+
     initParams: null,
     /**
-     * @field {String} viewRootSelector
-     * @default "#view-root"
      * The selector used to identify the DOM element that will contain views
+     * @property viewRootSelector
+     * @default #view-root
+     *
+     * @type {String}
      */
+
     viewRootSelector: '#view-root',
     /**
-     * @method onInvalidRoute
      * Handler for when the user attempts to navigate to an invalid route
+     * @method onInvalidRoute
+     *
      * @param {Object} err  The routing error
      */
     onInvalidRoute: function(err) {
@@ -87,8 +96,9 @@ define(function(require) {
       }
     },
     /**
-     * @method onTapLink
      * Handler for when the user taps on a <A> element
+     * @method onTapLink
+     *
      * @param {Event} e  The event object
      */
     onTapLink: function(e) {
@@ -115,9 +125,9 @@ define(function(require) {
       }
     },
     /**
-     * @method ajax
      * Makes an AJAX request if the user is online. If the user is offline, the returned
      * promise will be rejected with the string argument "offline". (Alias for [[Lavaca.net.Connectivity]].ajax)
+     * @method ajax
      *
      * @param {Object} opts  jQuery-style AJAX options
      * @return {Lavaca.util.Promise}  A promise
@@ -126,29 +136,34 @@ define(function(require) {
       return Connectivity.ajax.apply(Connectivity, arguments);
     },
     /**
-     * @method init
-     * @param {Object} args  Data of any type from a resolved promise returned by Application.beforeInit(). Defaults to null.
-     * @event init
-     * @event ready
      * Initializes the application
+     * @method init
+     *
+     * @param {Object} args  Data of any type from a resolved promise returned by Application.beforeInit(). Defaults to null.
      *
      * @return {Lavaca.util.Promise}  A promise that resolves when the application is ready for use
      */
+// * @event init
+// * @event ready
     init: function(args) {
       var promise = new Promise(this),
           _cbPromise,
           lastly;
       Template.init();
       /**
-       * @field {Lavaca.mvc.ViewManager} viewManager
-       * @default null
        * View manager used to transition between UI states
+       * @property viewManager
+       * @default null
+       *
+       * @type {Lavaca.mvc.ViewManager}
        */
       this.viewManager = viewManager.setEl(this.viewRootSelector);
       /**
-       * @field {Lavaca.mvc.Router} router
-       * @default null
        * Router used to manage application traffic and URLs
+       * @property router
+       * @default null
+       *
+       * @type {Lavaca.mvc.Router}
        */
       this.router = router.setViewManager(this.viewManager);
 
@@ -181,16 +196,22 @@ define(function(require) {
         this.trigger('ready');
       });
     },
+
     /**
-     * @field {String} initialStandardRoute
      * Gets initial route based on query string returned by server 302 redirect
+     * @property initialStandardRoute
+     * @default null
+     *
+     * @type {String}
      */
+
     initialHashRoute: (function(hash) {
       return _matchHashRoute(hash);
     })(window.location.hash),
     /**
-     * @method {String} beforeInit
      * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
+     * @method {String} beforeInit
+     *
      * @param {Lavaca.util.Config} Config cache that's been initialized
      *
      * @return {Lavaca.util.Promise}  A promise
