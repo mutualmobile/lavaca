@@ -5,8 +5,8 @@ define(function(require) {
 
   /**
    * Basic event dispatcher type
-   * @class lavaca.events.EventDispatcher
-   * @extends lavaca.util.Disposable
+   * @class Lavaca.events.EventDispatcher
+   * @extends Lavaca.util.Disposable
    * @constructor
    *
    */
@@ -22,12 +22,15 @@ define(function(require) {
     /**
      * Bind an event handler to this object
      * @method on
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
+     */
+    /**
      * Bind an event handler to this object
      * @method on
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @param {Object} thisp  The context of the handler
@@ -42,21 +45,28 @@ define(function(require) {
     /**
      * Unbinds all event handler from this object
      * @method off
-     * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
      *
+     * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
+     */
+    /**
      * Unbinds all event handlers for an event
      * @method off
+     *
      * @param {String} type  The name of the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
+     */
+    /**
      * Unbinds a specific event handler
      * @method off
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function handling the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
+     */
+    /**
      * Unbinds a specific event handler
      * @method off
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function handling the event
      * @param {Object} thisp  The context of the handler
@@ -97,11 +107,14 @@ define(function(require) {
     /**
      * Dispatches an event
      * @method trigger
+     *
      * @param {String} type  The type of event to dispatch
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
+     */
+    /**
      * Dispactches an event with additional parameters
      * @method trigger
+     *
      * @param {String} type  The type of event to dispatch
      * @param {Object} params  Additional data points to add to the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
@@ -123,11 +136,14 @@ define(function(require) {
     /**
      * Creates an event object
      * @method createEvent
+     *
      * @param {String} type  The type of event to create
      * @return {Object}  The event object
-     *
+     */
+     /**
      * Creates an event object with additional params
      * @method createEvent
+     *
      * @param {String} type  The type of event to create
      * @param {Object} params  Additional data points to add to the event
      * @return {Object}  The event object

@@ -8,14 +8,14 @@ define(function(require) {
       stateModel = require('app/models/StateModel');
 
   /**
-   * @class app.net.ExampleController
-   * @super app.net.BaseController
    * Example controller
+   * @class app.net.ExampleController
+   * @extends app.net.BaseController
    */
   var ExampleController = BaseController.extend({
     /**
-     * @method home
      * Home action, creates a history state and shows a view
+     * @method home
      *
      * @param {Object} params  Action arguments
      * @param {Object} model  History state model
@@ -30,8 +30,8 @@ define(function(require) {
         .then(this.updateState(model, 'Home Page', params.url));
     },
     /**
-     * @method lang
      * Switches the user to a specific language
+     * @method lang
      *
      * @param {Object} params  Action arguments
      * @param {Object} model  History state model
