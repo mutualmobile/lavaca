@@ -32,9 +32,10 @@ define(function(require) {
 
   // Virtual type
   /**
-   * @class Lavaca.mvc.ItemEvent
-   * @super Event
    * Event type used when a model in a collection has an event
+   * @class Lavaca.mvc.ItemEvent
+   * @extends lavaca.events.EventDispatcher
+
    *
    * @field {Lavaca.mvc.Collection} target
    * @default null
