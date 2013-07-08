@@ -6,7 +6,7 @@ define(function(require) {
 
   /**
    * A sub-browser management utility (also accessible via window.plugins.childBrowser)
-   * @class Lavaca.env.ChildBrowser
+   * @class lavaca.env.ChildBrowser
    * @extends Lavaca.events.EventDispatcher
    *
    * @event open

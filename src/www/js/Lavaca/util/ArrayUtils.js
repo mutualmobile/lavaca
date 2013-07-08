@@ -2,7 +2,7 @@ define(function() {
 
   /**
    * Utility class for working with arrays
-   * @class Lavaca.util.ArrayUtils
+   * @class lavaca.util.ArrayUtils
    */
   var ArrayUtils = {};
 

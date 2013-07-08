@@ -9,8 +9,8 @@ define(function(require) {
 
   /**
    * Base type for controllers
-   * @class Lavaca.mvc.Controller
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.mvc.Controller
+   * @extends lavaca.util.Disposable
    * @constructor
    * @param {Lavaca.mvc.Controller} other  Another controller from which to take context information
    * @param {Lavaca.mvc.Router} [router]  The application's router

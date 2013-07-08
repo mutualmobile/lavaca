@@ -14,8 +14,8 @@ define(function(require) {
 
   /**
    * Configuration management type
-   * @class Lavaca.util.Config
-   * @extends Lavaca.util.Map
+   * @class lavaca.util.Config
+   * @extends lavaca.util.Map
    */
   var Config = Map.extend({
     // Empty (no overrides)

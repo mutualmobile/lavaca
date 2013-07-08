@@ -4,7 +4,7 @@ define(function(require) {
 
   /**
    * Utility class for working with dates
-   * @class Lavaca.util.DateUtils
+   * @class lavaca.util.DateUtils
    */
   var DateUtils = {};
 

@@ -14,7 +14,7 @@ define(function(require) {
 
   /**
    * Static utility type for working with strings
-   * @class Lavaca.util.StringUtils
+   * @class lavaca.util.StringUtils
    */
   var StringUtils = {};
 

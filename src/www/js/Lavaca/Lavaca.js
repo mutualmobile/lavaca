@@ -1,6 +1,6 @@
 /**
  * Core Lavaca library object
- * @class Lavaca
+ * @class lavaca
  */
 (function(ns, $) {
 

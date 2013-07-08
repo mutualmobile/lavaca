@@ -8,8 +8,8 @@ define(function(require) {
 
   /**
    * An object for manage local storage
-   * @class Lavaca.storage.Store
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.storage.Store
+   * @extends lavaca.util.Disposable
    */
   var Store = Disposable.extend(function(id) {
     /**

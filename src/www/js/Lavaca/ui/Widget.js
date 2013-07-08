@@ -6,8 +6,8 @@ define(function(require) {
 
   /**
    * Base type for all UI elements
-   * @class Lavaca.ui.Widget
-   * @extends Lavaca.events.EventDispatcher
+   * @class lavaca.ui.Widget
+   * @extends lavaca.events.EventDispatcher
    *
    * @constructor
    *

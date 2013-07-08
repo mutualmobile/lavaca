@@ -2,7 +2,7 @@ define(function() {
   /**
    * Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,
    * 'no.obj.exists' resolves to null)
-   * @class Lavaca.util.resolve
+   * @class lavaca.util.resolve
    */
    /**
    * Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,

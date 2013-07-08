@@ -48,8 +48,8 @@ define(function(require) {
 
   /**
    * Basic form type
-   * @class Lavaca.ui.Form
-   * @extends Lavaca.ui.Widget
+   * @class lavaca.ui.Form
+   * @extends lavaca.ui.Widget
    *
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget

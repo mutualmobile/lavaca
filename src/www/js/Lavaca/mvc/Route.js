@@ -61,8 +61,8 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.mvc.Route
-   * @super Lavaca.util.Disposable
+   * @class lavaca.mvc.Route
+   * @extends lavaca.util.Disposable
    * A relationship between a URL pattern and a controller action
    *
    * @constructor

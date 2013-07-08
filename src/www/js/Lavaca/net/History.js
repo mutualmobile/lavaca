@@ -26,8 +26,8 @@ define(function(require) {
 
   /**
    * HTML5 history abstraction layer
-   * @class Lavaca.net.History
-   * @extends Lavaca.events.EventDispatcher
+   * @class lavaca.net.History
+   * @extends lavaca.events.EventDispatcher
    *
    * @event popstate
    *

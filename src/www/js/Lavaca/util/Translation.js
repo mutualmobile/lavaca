@@ -18,8 +18,8 @@ define(function(require) {
 
   /**
    * Translation dictionary
-   * @class Lavaca.util.Translation
-   * @extends Lavaca.util.Map
+   * @class lavaca.util.Translation
+   * @extends lavaca.util.Map
    *
    * @constructor
    * @param {String} name  The name of the map

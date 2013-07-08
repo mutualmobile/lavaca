@@ -27,8 +27,8 @@ define(function(require) {
 
   /**
    * Overflow Scroll Container for mobile using overflow scrolling: touch or iScroll
-   * @class Lavaca.ui.Scrollable
-   * @extends Lavaca.ui.Widget
+   * @class lavaca.ui.Scrollable
+   * @extends lavaca.ui.Widget
    * 
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget

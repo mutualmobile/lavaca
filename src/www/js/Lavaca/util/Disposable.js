@@ -28,7 +28,7 @@ define(function(require) {
 
   /**
    * Abstract type for types that need to ready themselves for GC
-   * @class Lavaca.util.Disposable
+   * @class lavaca.util.Disposable
    * @constructor
    *
    */

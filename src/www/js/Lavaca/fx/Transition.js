@@ -30,7 +30,7 @@ define(function(require) {
 
   /**
    * Static utility type for working with CSS transitions
-   * @class Lavaca.fx.Transition
+   * @class lavaca.fx.Transition
    */
 
   /**

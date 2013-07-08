@@ -6,7 +6,7 @@ define(function(require) {
 
   /**
    * A utility type for working under different network connectivity situatioConnectivity.
-   * @class Lavaca.net.Connectivity
+   * @class lavaca.net.Connectivity
    */
 
   var _navigatorOnlineSupported = typeof navigator.onLine === 'boolean',

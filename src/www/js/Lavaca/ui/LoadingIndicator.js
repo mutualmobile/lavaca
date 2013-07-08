@@ -5,8 +5,8 @@ define(function(require) {
 
   /**
    * Type that shows/hides a loading indicator
-   * @class Lavaca.ui.LoadingIndicator
-   * @extends Lavaca.ui.Widget
+   * @class lavaca.ui.LoadingIndicator
+   * @extends lavaca.ui.Widget
    *
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget

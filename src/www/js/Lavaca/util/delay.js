@@ -1,7 +1,7 @@
 define(function() {
   /**
    * Wraps setTimeout and delays the execution of a function
-   * @class Lavaca.util.delay
+   * @class lavaca.util.delay
    */
    /**
    * Delays the execution of a function

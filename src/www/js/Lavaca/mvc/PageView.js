@@ -9,8 +9,8 @@ define(function(require) {
 
   /**
    * Page View type, represents an entire screen
-   * @class Lavaca.mvc.PageView
-   * @extends Lavaca.mvc.View
+   * @class lavaca.mvc.PageView
+   * @extends lavaca.mvc.View
    *
    * @constructor
    * @param {Object} el  The element that the PageView is bound to

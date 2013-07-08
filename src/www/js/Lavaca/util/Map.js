@@ -21,8 +21,8 @@ define(function(require) {
 
   /**
    * Abstract type for lookup tables
-   * @class Lavaca.util.Map
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.util.Map
+   * @extends lavaca.util.Disposable
    *
    * @constructor
    * @param {String} name  The name of the map

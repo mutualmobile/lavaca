@@ -12,8 +12,8 @@ define(function(require) {
 
   /**
    * Manager responsible for drawing views
-   * @class Lavaca.mvc.ViewManager
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.mvc.ViewManager
+   * @extends lavaca.util.Disposable
    *
    * @constructor
    * @param {jQuery} el  The element that contains all layers

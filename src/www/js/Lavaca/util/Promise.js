@@ -4,7 +4,7 @@ define(function(require) {
 
   /**
    * Utility type for asynchronous programming
-   * @class Lavaca.util.Promise
+   * @class lavaca.util.Promise
    *
    * @constructor
    *

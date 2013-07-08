@@ -86,7 +86,7 @@ define(function(require) {
 
   /**
    * Static utility type for working with CSS transforms
-   * @class Lavaca.fx.Transform
+   * @class lavaca.fx.Transform
    */
 
   /**

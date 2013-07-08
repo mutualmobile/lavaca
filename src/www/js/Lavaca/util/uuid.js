@@ -3,7 +3,7 @@ define(function() {
   var _uuidMap = {};
   /**
    * Produces a app specific unique identifier
-   * @class Lavaca.util.uuid
+   * @class lavaca.util.uuid
    */
    /**
    * Produces a unique identifier

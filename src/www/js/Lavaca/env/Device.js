@@ -6,7 +6,7 @@ define(function(require) {
 
   /**
    * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
-   * @class Lavaca.env.Device
+   * @class lavaca.env.Device
    */
 
   var _initHasRun = false,

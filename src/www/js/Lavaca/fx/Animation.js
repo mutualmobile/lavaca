@@ -35,7 +35,7 @@ define(function(require) {
 
   /**
    * Static utility type for working with CSS keyframe animations
-   * @class Lavaca.fx.Animation
+   * @class lavaca.fx.Animation
    */
 
   /**

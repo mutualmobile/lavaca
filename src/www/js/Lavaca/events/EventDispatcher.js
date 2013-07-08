@@ -5,8 +5,8 @@ define(function(require) {
 
   /**
    * Basic event dispatcher type
-   * @class Lavaca.events.EventDispatcher
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.events.EventDispatcher
+   * @extends lavaca.util.Disposable
    * @constructor
    *
    */

@@ -1,7 +1,7 @@
 define(function() {
   /**
    * Logs to the console (or alerts if no console exists)
-   * @class Lavaca.util.log
+   * @class lavaca.util.log
    */
    /**
    * Logs to the console (or alerts if no console exists)

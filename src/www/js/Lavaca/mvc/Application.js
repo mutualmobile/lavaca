@@ -30,8 +30,8 @@ define(function(require) {
 
   /**
    * Base application type
-   * @class Lavaca.mvc.Application
-   * @extends Lavaca.events.EventDispatcher
+   * @class lavaca.mvc.Application
+   * @extends lavaca.events.EventDispatcher
    *
    */
    /**

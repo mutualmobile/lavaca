@@ -8,8 +8,8 @@ define(function(require) {
 
   /**
    * Abstract type for templates
-   * @class Lavaca.ui.Template
-   * @extends Lavaca.util.Map
+   * @class lavaca.ui.Template
+   * @extends lavaca.util.Map
    */
   var Template = Map.extend({
     /**

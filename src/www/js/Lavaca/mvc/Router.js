@@ -6,8 +6,8 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   /**
-   * @class Lavaca.mvc.Router
-   * @super Lavaca.util.Disposable
+   * @class lavaca.mvc.Router
+   * @extends lavaca.util.Disposable
    * URL manager
    *
    * @constructor

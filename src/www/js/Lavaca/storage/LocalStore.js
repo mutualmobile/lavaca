@@ -26,8 +26,8 @@ define(function(require) {
 
   /**
    * An object for manage local storage
-   * @class Lavaca.storage.LocalStore
-   * @extends Lavaca.storage.Store
+   * @class lavaca.storage.LocalStore
+   * @extends lavaca.storage.Store
 
    */
   var LocalStore = Store.extend(function(id) {

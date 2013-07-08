@@ -10,8 +10,8 @@ define(function(require) {
 
   /**
    * Base type for templates that use the dust engine
-   * @class Lavaca.ui.DustTemplate
-   * @extends Lavaca.ui.Template
+   * @class lavaca.ui.DustTemplate
+   * @extends lavaca.ui.Template
    *
    * @constructor
    * @param {String} name  The unique name of the template

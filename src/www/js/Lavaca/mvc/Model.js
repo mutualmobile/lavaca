@@ -65,7 +65,7 @@ define(function(require) {
   // Virtual type
   /**
    * Event type used when an attribute is modified
-   * @class Lavaca.mvc.AttributeEvent
+   * @class lavaca.mvc.AttributeEvent
    * @extends Event
    */
    /**
@@ -91,8 +91,8 @@ define(function(require) {
 
   /**
    * Basic model type
-   * @class Lavaca.mvc.Model
-   * @extends Lavaca.events.EventDispatcher
+   * @class lavaca.mvc.Model
+   * @extends lavaca.events.EventDispatcher
    *
    * Place the events where they are triggered in the code, see the yuidoc syntax reference and view.js for rendersuccess trigger
    * @event change

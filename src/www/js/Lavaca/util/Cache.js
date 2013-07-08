@@ -5,8 +5,8 @@ define(function(require) {
 
   /**
    * Object for storing data
-   * @class Lavaca.util.Cache
-   * @extends Lavaca.util.Disposable
+   * @class lavaca.util.Cache
+   * @extends lavaca.util.Disposable
    */
   var Cache = Disposable.extend({
     /**
