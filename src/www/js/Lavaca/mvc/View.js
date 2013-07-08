@@ -390,6 +390,11 @@ define(function(require) {
           } else {
             opts = undefined;
           }
+          if (typeof callback === 'string') {
+            if (callback in this) {
+              callback = this[callback].bind(this);
+            }
+          }
           if (delegate === 'model') {
             if (this.model && this.model instanceof Model) {
               dotIndex = type.indexOf('.');
