@@ -87,8 +87,8 @@ define(function(require) {
 
   /**
    * Basic model type
-   * @class lavaca.mvc.Model
-   * @extends lavaca.events.EventDispatcher
+   * @class Lavaca.mvc.Model
+   * @extends Lavaca.events.EventDispatcher
    *
    * Place the events where they are triggered in the code, see the yuidoc syntax reference and view.js for rendersuccess trigger
    * @event change

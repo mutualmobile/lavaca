@@ -4,43 +4,43 @@ define(function(require) {
       Widget = require('./Widget');
 
   /**
-   * @class Lavaca.ui.LoadingIndicator
-   * @super Lavaca.ui.Widget
    * Type that shows/hides a loading indicator
+   * @class Lavaca.ui.LoadingIndicator
+   * @extends Lavaca.ui.Widget
    *
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget
    */
   var LoadingIndicator = Widget.extend({
     /**
-     * @field {String} className
-     * @default 'loading'
      * Class name applied to the root
+     * @property {String} className
+     * @default 'loading'
      */
     className: 'loading',
     /**
-     * @method show
      * Activates the loading indicator
+     * @method show
      */
     show: function() {
       this.el.addClass(this.className);
     },
     /**
-     * @method hide
      * Deactivates the loading indicator
+     * @method hide
      */
     hide: function() {
       this.el.removeClass(this.className);
     }
   });
-  /** 
+  /**
+   * Creates a loading indicator and binds it to the document's AJAX events
    * @method init
    * @static
-   * Creates a loading indicator and binds it to the document's AJAX events
-   *
-   * @sig
-   *
-   * @sig
+   */
+   /** Creates a loading indicator and binds it to the document's AJAX events
+   * @method init
+   * @static
    * @param {Function} TLoadingIndicator  The type of loading indicator to create (should derive from [[Lavaca.ui.LoadingIndicator]])
    */
   LoadingIndicator.init = function(TLoadingIndicator) {

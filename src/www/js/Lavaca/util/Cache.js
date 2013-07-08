@@ -4,20 +4,21 @@ define(function(require) {
       uuid = require('lavaca/util/uuid');
 
   /**
-   * @class Lavaca.util.Cache
-   * @super Lavaca.util.Disposable
    * Object for storing data
+   * @class Lavaca.util.Cache
+   * @extends Lavaca.util.Disposable
    */
   var Cache = Disposable.extend({
     /**
-     * @method get
-     * Retrieves an item from the cache
      *
-     * @sig
+     * Retrieves an item from the cache
+     * @method get
      * @param {String} id  The key under which the item is stored
      * @return {Object}  The stored item (or null if no item is stored)
-     *
-     * @sig
+     */
+     /**
+     * Retrieves an item from the cache
+     * @method get
      * @param {String} id  The key under which the item is stored
      * @param {Object} def  A default value that will be added, if there is no item stored
      * @return {Object}  The stored item (or null if no item is stored and no default)
@@ -30,8 +31,8 @@ define(function(require) {
       return result === undefined ? null : result;
     },
     /**
-     * @method set
      * Assigns an item to a key in the cache
+     * @method set
      *
      * @param {String} id  The key under which the item will be stored
      * @param {Object} value  The object to store in the cache
@@ -40,8 +41,8 @@ define(function(require) {
       this['@' + id] = value;
     },
     /**
-     * @method add
      * Adds an item to the cache
+     * @method add
      *
      * @param {Object} value  The object to store in the cache
      * @return {String}  The auto-generated ID under which the value was stored
@@ -52,8 +53,8 @@ define(function(require) {
       return id;
     },
     /**
-     * @method remove
      * Removes an item from the cache (if it exists)
+     * @method remove
      *
      * @param {String} id  The key under which the item is stored
      */
@@ -61,14 +62,15 @@ define(function(require) {
       delete this['@' + id];
     },
     /**
-     * @method each
      * Executes a callback for each cached item. To stop iteration immediately,
      * return false from the callback.
-     *
-     * @sig
+     * @method each
      * @param {Function} callback  A function to execute for each item, callback(key, item)
-     *
-     * @sig
+     */
+     /**
+     * Executes a callback for each cached item. To stop iteration immediately,
+     * return false from the callback.
+     * @method each
      * @param {Function} callback  A function to execute for each item, callback(key, item)
      * @param {Object} thisp  The context of the callback
      */
@@ -84,8 +86,8 @@ define(function(require) {
       }
     },
     /**
-     * @method toObject
      * Serializes the cache to a hash
+     * @method toObject
      *
      * @return {Object}  The resulting key-value hash
      */
@@ -97,8 +99,8 @@ define(function(require) {
       return result;
     },
     /**
-     * @method toJSON
      * Serializes the cache to JSON
+     * @method toJSON
      *
      * @return {String}  The JSON string
      */
@@ -106,8 +108,8 @@ define(function(require) {
       return JSON.stringify(this.toObject());
     },
      /**
-     * @method toArray
      * Serializes the cache to an array
+     * @method toArray
      *
      * @return {Object}  The resulting array with elements being index based and keys stored in an array on the 'ids' property
      */
@@ -122,8 +124,8 @@ define(function(require) {
     },
 
     /**
-     * @method clear
      * removes all items from the cache
+     * @method clear
      */
     clear: function() {
        this.each(function(key, item) {
@@ -132,8 +134,8 @@ define(function(require) {
     },
 
     /**
-     * @method length
      * returns number of items in cache
+     * @method length
      */
     length: function() {
       var length = 0;
@@ -143,8 +145,8 @@ define(function(require) {
     },
 
     /**
-     * @method dispose
      * Clears all items from the cache on dispose
+     * @method dispose
      */
     dispose: function() {
       this.clear();
