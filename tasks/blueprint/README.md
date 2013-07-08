@@ -59,8 +59,13 @@ grunt blueprint:lavaca:Service:*/ServiceName
 
 and the new file would be generated in js/app/data/ServiceName.js
 
+## Changing the generated paths
 
-to see the variables that are being set for the template to use, generate a file with
+the map values for each type contain the mapping between the path and the type. Everything before the template type(PageView, Model, etc) is the path where the file will be generated. Update the path and it will be generated in the new location the next time you run the command.
+
+## Misc
+
+To see the values that are available in the template that are coming from the task, run the command with the --verbose option.
 
 ```shell
 grunt --verbose blueprint:lavaca:Controller:*/ControllerName
