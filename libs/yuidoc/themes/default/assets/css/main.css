@@ -33,7 +33,7 @@ body {
 
 /* -- Links ----------------------------------------------------------------- */
 a {
-    color: #356de4;
+    color: #347EB6;
     text-decoration: none;
 }
 
@@ -251,17 +251,14 @@ th {
 }
 
 .button:hover {
-    border-color: #466899;
+    border: 0;
     color: #fff;
     text-decoration: none;
     -moz-text-shadow: 1px 1px 0 #222;
     -webkit-text-shadow: 1px 1px 0 #222;
     text-shadow: 1px 1px 0 #222;
 
-    background: #6396D8; /* old browsers */
-    background: -moz-linear-gradient(top, #6396D8 0%, #5A83BC 50%, #547AB7 51%, #466899 100%); /* firefox */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6396D8), color-stop(50%,#5A83BC), color-stop(51%,#547AB7), color-stop(100%,#466899)); /* webkit */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6396D8', endColorstr='#466899',GradientType=0 ); /* ie */
+    background: #4AA3E7;
 }
 
 .newwindow { text-align: center; }
@@ -422,7 +419,7 @@ h2, h3, h4, h5, h6 {
 /* Class/module metadata such as "Uses", "Extends", "Defined in", etc. */
 .apidocs .meta {
     background: #f9f9f9;
-    border-color: #efefef;
+    border-color: #aaa;
     color: #555;
     font-size: 11px;
     padding: 3px 6px;
@@ -687,7 +684,8 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 
 #api-tabview-filter,
 #api-tabview-panel {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #AAA;
+    background-color:#F9F9F9;
 }
 
 #api-tabview-filter {
@@ -751,8 +749,6 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 .apis a:hover,
 .apis a:focus {
     background: #E8EDFC;
-    background: -moz-linear-gradient(top, #e8edfc 0%, #becef7 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E8EDFC), color-stop(100%,#BECEF7));
     border-color: #AAC0FA;
     border-radius: 3px;
     color: #333;
@@ -776,10 +772,40 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 .api-list-item .yui3-highlight {
     font-weight: bold;
 }
-
-.yui3-skin-sam #api-tabview .yui3-tabview-list {
-    border: solid rgb(180, 180, 180);
+.yui3-skin-sam .api-class-tabs.yui3-tabview-list{
+    border: solid #4AA3E7;
     border-width: 0 0 5px;
     zoom: 1;
+}
+.yui3-skin-sam #api-tabview .yui3-tabview-list {
+    border: solid #4AA3E7;
+    border-width: 0 0 5px;
+    zoom: 1;
+}
+.api-class-tab.yui3-tab .yui3-tab-label,
+.yui3-skin-sam .yui3-tab-label.yui3-tab-content{
+    border:0;
+    background:#DBDBDB;
+}
+.box.intro{
+    background:#e9e9e9;
+}
+.apidocs .box.meta{
+    margin-top: 2rem;
+}
+.api-class-tab.yui3-tab-selected.yui3-tab .yui3-tab-label,
+.api-class-tab.yui3-tab .yui3-tab-label:hover,
+.api-class-tab.yui3-tab-selected.yui3-tab .yui3-tab-label:hover,
+.api-class-tab.yui3-tab-selected.yui3-tab .yui3-tab-label:focus,
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label.yui3-tab-content:focus,
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label.yui3-tab-content,
+.yui3-skin-sam .yui3-tab-label.yui3-tab-content:hover,
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label.yui3-tab-content:hover{
+    background: #4AA3E7;
+    color:#fff;
+}
+
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label.yui3-tab-content{
+    border:0;
 }
 
