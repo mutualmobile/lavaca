@@ -314,6 +314,25 @@ module.exports = function( grunt ) {
       }
     },
 
+    blueprint: {
+      options: {
+        dest: '<%= paths.src.www %>/js/app',
+        appName: 'app'
+      },
+      lavaca:{
+        options:{
+          map:{
+            View: 'ui/views/View',
+            PageView: 'ui/views/pageviews/PageView',
+            Model: 'models/Model',
+            Collection: 'collections/Collection',
+            Controller: 'net/Controller',
+            Control: 'ui/views/controls/Control'
+          }
+        }
+      }
+    },
+
     requirejs: {
       baseUrl: '<%= paths.src.www %>/js',
       mainConfigFile: '<%= paths.src.www %>/js/app/boot.js',
@@ -333,6 +352,7 @@ module.exports = function( grunt ) {
   grunt.loadTasks('tasks/pkg');
   grunt.loadTasks('tasks/docs');
   grunt.loadTasks('tasks/preprocess');
+  grunt.loadTasks('tasks/blueprint');
   grunt.loadNpmTasks('grunt-dustjs');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
