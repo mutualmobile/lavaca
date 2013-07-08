@@ -1,19 +1,19 @@
 define(function(require) {
 
   var $ = require('$'),
-      History = require('lavaca/net/History'),
-      Device = require('lavaca/env/Device'),
-      EventDispatcher = require('lavaca/events/EventDispatcher'),
-      router = require('lavaca/mvc/Router'),
-      viewManager = require('lavaca/mvc/ViewManager'),
-      Connectivity = require('lavaca/net/Connectivity'),
-      Template = require('lavaca/ui/Template'),
-      Config = require('lavaca/util/Config'),
-      Promise = require('lavaca/util/Promise'),
-      ChildBrowser = require('lavaca/env/ChildBrowser'),
-      Translation = require('lavaca/util/Translation');
-  require('jquery-mobile/events/touch');
-  require('jquery-mobile/events/orientationchange');
+    History = require('lavaca/net/History'),
+    Device = require('lavaca/env/Device'),
+    EventDispatcher = require('lavaca/events/EventDispatcher'),
+    router = require('lavaca/mvc/Router'),
+    viewManager = require('lavaca/mvc/ViewManager'),
+    Connectivity = require('lavaca/net/Connectivity'),
+    Template = require('lavaca/ui/Template'),
+    Config = require('lavaca/util/Config'),
+    Promise = require('lavaca/util/Promise'),
+    ChildBrowser = require('lavaca/env/ChildBrowser'),
+    Translation = require('lavaca/util/Translation');
+    require('jquery-mobile/events/touch');
+    require('jquery-mobile/events/orientationchange');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -29,13 +29,14 @@ define(function(require) {
   }
 
   /**
+   * Base application type
    * @class Lavaca.mvc.Application
    * @extends Lavaca.events.EventDispatcher
-   * Base application type
    *
-   *
-   * @constructor
+   */
+   /**
    * Creates an application
+   * @constructor
    * @param {Function} [callback]  A callback to execute when the application is initialized but not yet ready
    */
   var Application = EventDispatcher.extend(function(callback) {
