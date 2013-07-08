@@ -144,8 +144,6 @@ define(function(require) {
      *
      * @return {Lavaca.util.Promise}  A promise that resolves when the application is ready for use
      */
-// * @event init
-// * @event ready
     init: function(args) {
       var promise = new Promise(this),
           _cbPromise,
