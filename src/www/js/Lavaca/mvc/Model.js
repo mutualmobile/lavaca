@@ -67,22 +67,26 @@ define(function(require) {
    * Event type used when an attribute is modified
    * @class Lavaca.mvc.AttributeEvent
    * @extends Event
-   *
+   */
+   /**
+   * The name of the event-causing attribute
    * @property {String} attribute
    * @default null
-   * The name of the event-causing attribute
-   *
+   */
+   /**
+   * The value of the attribute before the event
    * @property {Object} previous
    * @default null
-   * The value of the attribute before the event
-   *
+   */
+   /**
+   * The value of the attribute after the event
    * @property {Object} value
    * @default null
-   * The value of the attribute after the event
-   *
+   */
+   /**
+   * A list of validation messages the change caused
    * @property {Array} messages
    * @default []
-   * A list of validation messages the change caused
    */
 
   /**
