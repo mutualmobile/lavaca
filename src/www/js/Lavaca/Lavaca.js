@@ -7,7 +7,7 @@
 var _uuid = 0;
 
 /**
- * @field {Function} $
+ * @property {Function} $
  * @static
  * Abstraction library conforming to jQuery interface
  */

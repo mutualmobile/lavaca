@@ -64,23 +64,23 @@ define(function(require) {
 
   // Virtual type
   /**
-   * @class Lavaca.mvc.AttributeEvent
-   * @super Event
    * Event type used when an attribute is modified
+   * @class Lavaca.mvc.AttributeEvent
+   * @extends Event
    *
-   * @field {String} attribute
+   * @property {String} attribute
    * @default null
    * The name of the event-causing attribute
    *
-   * @field {Object} previous
+   * @property {Object} previous
    * @default null
    * The value of the attribute before the event
    *
-   * @field {Object} value
+   * @property {Object} value
    * @default null
    * The value of the attribute after the event
    *
-   * @field {Array} messages
+   * @property {Array} messages
    * @default []
    * A list of validation messages the change caused
    */

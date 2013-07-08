@@ -20,9 +20,9 @@ define(function(require) {
   History.overrideStandardsMode();
 
   /**
-   * @class app
-   * @super Lavaca.mvc.Application
    * Global application-specific object
+   * @class app
+   * @extends Lavaca.mvc.Application
    */
   var app = new Application(function() {
      // Demonstration of extending Detection module

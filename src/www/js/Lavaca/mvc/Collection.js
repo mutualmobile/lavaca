@@ -37,19 +37,19 @@ define(function(require) {
    * @extends lavaca.events.EventDispatcher
 
    *
-   * @field {Lavaca.mvc.Collection} target
+   * @property {Lavaca.mvc.Collection} target
    * @default null
    * The collection that contains (or contained) the model that caused the event
    *
-   * @field {Lavaca.mvc.Model} model
+   * @property {Lavaca.mvc.Model} model
    * @default null
    * The model that caused the event
    *
-   * @field {Number} index
+   * @property {Number} index
    * @default null
    * The index of the event-causing model in the collection
    *
-   * @field {Number} previousIndex
+   * @property {Number} previousIndex
    * @default null
    * The index of the event-causing model before the event
    */
