@@ -4,13 +4,20 @@ Designed to be generic and configurable, blueprint will help you generate the mo
 
 ## Sample Calls
 
-To generate a new Controller, simple go to the command line, change to your projects directory where the GruntFile is located, and run this:
+To generate a new Controller, simply go to the command line, change to your projects directory where the GruntFile is located, and run this:
 
 ```shell
 grunt blueprint:lavaca:Controller:*/ControllerName
 ```
 
-## override templates
+or maybe a new View
+
+```shell
+grunt blueprint:lavaca:View:*/ViewName
+```
+
+
+## Override templates
 You can easily override the templates that come with this task. simply specify a src property on the task in the Gruntfile as so:
 
 ```js
@@ -25,7 +32,7 @@ blueprint: {
 Make sure the src location is relative to the location of the grunt file.
 
 
-## adding new  types
+## Adding new  types
 Feel free to configure new types for new templates and paths. Simply add more options to the map object, for example, lets say you wanted to have a template for all service classes to use:
 
 ```js
