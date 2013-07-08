@@ -11,11 +11,9 @@ define(function(require) {
       History = require('lavaca/net/History');
 
   /**
-   * @class Lavaca.mvc.ViewManager
-   * @super Lavaca.util.Disposable
    * Manager responsible for drawing views
-   *
-   * @constructor
+   * @class Lavaca.mvc.ViewManager
+   * @extends Lavaca.util.Disposable
    *
    * @constructor
    * @param {jQuery} el  The element that contains all layers
@@ -23,51 +21,53 @@ define(function(require) {
   var ViewManager = Disposable.extend(function(el) {
     Disposable.call(this);
     /**
-     * @field {jQuery} el
+    * The element that contains all view layers
+     * @property {jQuery} el
      * @default null
-     * The element that contains all view layers
      */
     this.el = $(el || document.body);
     /**
-     * @field {Lavaca.util.Cache} views
-     * @default new Lavaca.util.Cache()
      * A cache containing all views
+     * @property {Lavaca.util.Cache} views
+     * @default new Lavaca.util.Cache()
      */
     this.pageViews = new Cache();
     /**
-     * @field {Array} layers
-     * @default []
      * A list containing all layers
+     * @property {Array} layers
+     * @default []
      */
     this.layers = [];
     /**
-     * @field {Array} exitingPageViews
-     * @default []
      * A list containing all views that are currently exiting
+     * @property {Array} exitingPageViews
+     * @default []
      */
     this.exitingPageViews = [];
     /**
-     * @field {Array} enteringPageViews
-     * @default []
      * A list containing all views that are currently entering
+     * @property {Array} enteringPageViews
+     * @default []
      */
     this.enteringPageViews = [];
   }, {
     /**
-     * @field {Boolean} locked
-     * @default false
      * When true, the view manager is prevented from loading views.
+     * @property {Boolean} locked
+     * @default false
      */
     locked: false,
     /**
-     * @method setEl
      * Sets the el property on the instance
-     * 
-     * @sig
+     * @method setEl
+     *
      * @param {jQuery} el  A jQuery object of the element that contains all layers
      * @return {Lavaca.mvc.ViewManager}  This View Manager instance
+     */
+    /**
+     * Sets the el property on the instance
+     * @method setEl
      *
-     * @sig
      * @param {String} el  A CSS selector matching the element that contains all layers
      * @return {Lavaca.mvc.ViewManager}  This View Manager instance
      */
@@ -76,17 +76,19 @@ define(function(require) {
       return this;
     },
     /**
-     * @method load
      * Loads a view
+     * @method load
      *
-     * @sig
      * @param {String} cacheKey  The cache key associated with the view
      * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
      * @param {Number} layer  The index of the layer on which the view will sit
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Loads a view
+     * @method load
      *
-     * @sig
      * @param {String} cacheKey  The cache key associated with the view
      * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
@@ -155,16 +157,21 @@ define(function(require) {
       return promise;
     },
     /**
-     * @method dismiss
      * Removes all views on a layer
+     * @method dismiss
      *
-     * @sig
      * @param {Number} index  The index of the layer to remove
+     */
+    /**
+     * Removes all views on a layer
+     * @method dismiss
      *
-     * @sig
      * @param {jQuery} el  An element on the layer to remove (or the layer itself)
+     */
+    /**
+     * Removes all views on a layer
+     * @method dismiss
      *
-     * @sig
      * @param {Lavaca.mvc.View} view  The view on the layer to remove
      */
     dismiss: function(layer) {
@@ -185,15 +192,16 @@ define(function(require) {
       }
     },
     /**
+     * Removes all layers above a given index
      * @method dismissLayersAbove
      *
-     * Removes all layers above a given index
-     *
-     * @sig
      * @param {Number}  index The index above which to clear
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Removes all layers above a given index
+     * @method dismissLayersAbove
      *
-     * @sig
      * @param {Number} index  The index above which to clear
      * @param {Lavaca.mvc.View}  exceptForView A view that should not be dismissed
      * @return {Lavaca.util.Promise}  A promise
@@ -228,8 +236,8 @@ define(function(require) {
       return promise;
     },
     /**
-     * @method flush
      * Empties the view cache
+     * @method flush
      */
     flush: function(cacheKey) {
       // Don't dispose of any views that are currently displayed
@@ -249,8 +257,8 @@ define(function(require) {
       }
     },
     /**
-     * @method dispose
      * Readies the view manager for garbage collection
+     * @method dispose
      */
     dispose: function() {
       Disposable.prototype.dispose.call(this);

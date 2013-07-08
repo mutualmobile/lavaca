@@ -55,7 +55,7 @@ define(function(require) {
 
   /**
    * @class Lavaca.mvc.Collection
-   * @super Lavaca.mvc.Model
+   * @super Model
    * Basic model collection type
    *
    * @event change
