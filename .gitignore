@@ -10,6 +10,7 @@
 
 /node_modules
 /docs
+/doc
 /pkg
 /tmp
 /build
