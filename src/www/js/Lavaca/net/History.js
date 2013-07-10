@@ -88,7 +88,7 @@ define(function(require) {
             while (!!(item = self.sequence[++i])) {
               if (item.id === parseInt(code, 10)) {
                 record = item;
-                this.position = i;
+                self.position = i;
                 break;
               }
             }
