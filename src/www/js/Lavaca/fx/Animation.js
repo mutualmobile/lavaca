@@ -34,14 +34,14 @@ define(function(require) {
   })();
 
   /**
-   * @class Lavaca.fx.Animation
    * Static utility type for working with CSS keyframe animations
+   * @class lavaca.fx.Animation
    */
 
   /**
+   * Whether or not animations are supported by the browser
    * @method isSupported
    * @static
-   * Whether or not animations are supported by the browser
    *
    * @return {Boolean}  True if CSS keyframe animations are supported
    */
@@ -50,9 +50,9 @@ define(function(require) {
   };
 
   /**
+   * Converts a list of keyframes to a CSS animation
    * @method keyframesToCSS
    * @static
-   * Converts a list of keyframes to a CSS animation
    *
    * @param {String} name  The name of the keyframe animation
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
@@ -86,15 +86,17 @@ define(function(require) {
   };
 
   /**
+   * Generates a keyframe animation
    * @method generateKeyframes
    * @static
-   * Generates a keyframe animation
    *
-   * @sig
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
    * @return {String}  The name fo the animation
-   *
-   * @sig
+   */
+  /**
+   * Generates a keyframe animation
+   * @method generateKeyframes
+   * @static
    * @param {String} name  The name of the animation
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
    * @return {String}  The name fo the animation
@@ -110,9 +112,9 @@ define(function(require) {
   };
 
   /**
+   * Gets the name of the animation CSS property
    * @method cssProperty
    * @static
-   * Gets the name of the animation CSS property
    *
    * @return {String}  The name of the CSS property
    */
@@ -121,10 +123,9 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.keyframe
    * Applies a keyframe animation to an element
+   * @method $.fn.keyframe
    *
-   * @sig
    * @param {String} name  The name of the animation
    * @param {Object} options  Options for the animation
    * @opt {Number} duration  The number of milliseconds that the animation lasts
@@ -139,8 +140,11 @@ define(function(require) {
    * @opt {Function} complete  A function to execute when the animation has completed
    * @default null
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Applies a keyframe animation to an element
+   * @method $.fn.keyframe
    *
-   * @sig
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
    * @param {Object} options  Options for the animation
    * @opt {Number} duration  The number of milliseconds that the animation lasts
@@ -156,7 +160,11 @@ define(function(require) {
    * @default null
    * @return {jQuery}  The jQuery object, for chaining
    *
-   * @sig
+   */
+  /**
+   * Applies a keyframe animation to an element
+   * @method $.fn.keyframe
+   *
    * @param {String} name  The name of the animation
    * @param {Number} duration  The number of milliseconds that the animation lasts
    * @param {String} easing  The name of a CSS easing function
@@ -166,7 +174,11 @@ define(function(require) {
    * @param {Function} callback  A function to execute when the animation has completed
    * @return {jQuery}  The jQuery object, for chaining
    *
-   * @sig
+  */
+  /**
+   * Applies a keyframe animation to an element
+   * @method $.fn.keyframe
+   *
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
    * @param {Number} duration  The number of milliseconds that the animation lasts
    * @param {String} easing  The name of a CSS easing function
@@ -209,14 +221,16 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.animationEnd
    * Binds an animation end handler to an element.
+   * @method $.fn.animationEnd
    *
-   * @sig
    * @param {Function} callback  Callback for when the animation ends
    * @return {jQuery}  This jQuery object, for chaining
    *
-   * @sig
+  /**
+   * Binds an animation end handler to an element.
+   * @method $.fn.animationEnd
+   *
    * @param {String} delegate  Selector for the descendant elements to which the handler will be bound
    * @param {Function} callback  Callback for when the animation ends
    * @return {jQuery}  This jQuery object, for chaining
@@ -230,14 +244,16 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.nextAnimationEnd
    * Binds an animation end handler to an element's next animation end event
+   * @method $.fn.nextAnimationEnd
    *
-   * @sig
    * @param {Function} callback  Callback for when the animation ends
    * @return {jQuery}  This jQuery object, for chaining
+   */
+  /**
+   * Binds an animation end handler to an element's next animation end event
+   * @method $.fn.nextAnimationEnd
    *
-   * @sig
    * @param {String} delegate  Selector for the descendant elements to which the handler will be bound
    * @param {Function} callback  Callback for when the animation ends
    * @return {jQuery}  This jQuery object, for chaining

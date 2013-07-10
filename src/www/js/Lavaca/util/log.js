@@ -1,12 +1,12 @@
 define(function() {
   /**
-   * @class Lavaca.util.log
    * Logs to the console (or alerts if no console exists)
-   *
-   *
+   * @class lavaca.util.log
+   */
+   /**
+   * Logs to the console (or alerts if no console exists)
    * @method log
    * @static
-   * Logs to the console (or alerts if no console exists)
    *
    * @params {Object} arg  The content to be logged
    */

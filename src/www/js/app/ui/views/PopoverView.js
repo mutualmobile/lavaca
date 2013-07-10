@@ -5,26 +5,27 @@ define(function(require) {
       BaseView = require('./BaseView');
 
   /**
-   * @class app.ui.views.PopoverView
-   * @super app.ui.views.BaseView
    * Base popover view type
+   * @class app.ui.views.PopoverView
+   * @extends app.ui.views.BaseView
+
    */
   var PopoverView = BaseView.extend({
     /**
-     * @field {String} animation
-     * @default 'pop'
      * The name of the animation used by the view
+     * @property {String} animation
+     * @default 'pop'
      */
     animation: 'pop',
     /**
-     * @field {String} overlayAnimation
+    * The name of the animation used by the overlay
+     * @property {String} overlayAnimation
      * @default 'fade'
-     * The name of the animation used by the overlay
      */
     overlayAnimation: 'fade',
     /**
-     * @method overlayWrapper
      * Creates the view's overlay element
+     * @method overlayWrapper
      *
      * @return {jQuery} The overlay element
      */
@@ -32,8 +33,8 @@ define(function(require) {
       return $('<div class="ui-blocker"></div>');
     },
     /**
-     * @method onrendersuccess
      * Executes when the template renders successfully
+     * @method onrendersuccess
      *
      * @param {Event} e  The render event. This object should have a string property named "html"
      *   that contains the template's rendered HTML output.
@@ -45,8 +46,8 @@ define(function(require) {
       }
     },
     /**
-     * @method render
      * Renders the view using its template and model
+     * @method render
      *
      * @event rendersuccess
      * @event rendererror
@@ -65,8 +66,8 @@ define(function(require) {
       return BaseView.prototype.render.apply(this, arguments);
     },
     /**
-     * @method insertInto
      * Adds this view to a container
+     * @method insertInto
      *
      * @param {jQuery} container  The containing element
      */
@@ -78,8 +79,8 @@ define(function(require) {
       }
     },
     /**
-     * @method enter
      * Executes when the user navigates to this view
+     * @method enter
      *
      * @param {jQuery} container  The parent element of all views
      * @param {Array} exitingViews  The views that are exiting as this one enters
@@ -94,8 +95,8 @@ define(function(require) {
       return BaseView.prototype.enter.apply(this, arguments);
     },
     /**
-     * @method exit
      * Executes when the user navigates away from this view
+     * @method exit
      *
      * @param {jQuery} container  The parent element of all views
      * @param {Array} enteringViews  The views that are entering as this one exits

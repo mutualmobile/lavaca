@@ -40,7 +40,7 @@ module.exports = function( grunt ) {
         android: '<%= paths.package.root %>/<%= package.name %>.apk',
         ios: '<%= paths.package.root %>/<%= package.name %>.ipa'
       },
-      docs: 'docs'
+      doc: 'doc'
     },
 
     'package': grunt.file.readJSON('package.json'),
@@ -144,20 +144,7 @@ module.exports = function( grunt ) {
       }
     },
 
-    docs: {
-      all: {
-        options: {
-          atnotate: '<%= paths.lib.atnotate %>'
-        },
-        files: [
-          {
-            src: '<%= paths.src.www %>',
-            dest: 'docs',
-            exclude: ['es5-shim.js', 'jquery-2.0.0.js', 'require-dust.js', 'require.js']
-          }
-        ]
-      }
-    },
+
 
     'amd-test': {
       mode: 'jasmine',
@@ -201,6 +188,13 @@ module.exports = function( grunt ) {
           vhost: 'localhost',
           base: 'build/www',
           apiPrefix: '/api*'
+        }
+      },
+      doc: {
+        options: {
+          port: 8080,
+          vhost: 'localhost',
+          base: 'doc'
         }
       }
     },
@@ -337,6 +331,29 @@ module.exports = function( grunt ) {
       removeCombined: false,
       preserveLicenseComments: false,
       logLevel: 0
+    },
+
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        options: {
+          paths: '<%= paths.src.www %>/js',
+          outdir: '<%= paths.doc %>',
+          exclude: '<%= paths.src.www %>/js/libs',
+          linkNatives: true,
+          themedir: 'libs/yuidoc/themes/default'
+        }
+      }
+    },
+
+    watch: {
+      scripts: {
+        files: ['src/www/**/*.js'],
+        tasks: ['yuidoc']
+      }
     }
   });
 
@@ -355,6 +372,8 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-amd-check');
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
@@ -364,4 +383,6 @@ module.exports = function( grunt ) {
   grunt.registerTask('default', ['amd-test', 'jasmine', 'server']);
 
   grunt.registerTask('test', ['amd-test', 'jasmine']);
+
+  grunt.registerTask('doc', 'compiles documentation and starts a server', ['yuidoc', 'server:doc']);
 };

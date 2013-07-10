@@ -9,9 +9,9 @@ define(function(require) {
   require('dust-helpers');
 
   /**
-   * @class Lavaca.ui.DustTemplate
-   * @super Lavaca.ui.Template
    * Base type for templates that use the dust engine
+   * @class lavaca.ui.DustTemplate
+   * @extends lavaca.ui.Template
    *
    * @constructor
    * @param {String} name  The unique name of the template
@@ -30,8 +30,8 @@ define(function(require) {
     }
   }, {
     /**
-     * @method prepareHelpers
      * Gets the basis for the template helper object
+     * @method prepareHelpers
      *
      * @return {Object}  A map of helper function names to functions
      */
@@ -43,9 +43,9 @@ define(function(require) {
       };
     },
     /**
-     * @method helperMsg
      * Helper function, exposed in dust templates, that uses
-     *   [[Lavaca.util.Translation]] to get localized strings. Accessed as:
+     *   [Lavaca.util.Translation] to get localized strings.
+     * Accessed as:
      *
      * <dl>
      *
@@ -68,6 +68,8 @@ define(function(require) {
      *       (See [[Lavaca.util.StringUtils]].format())</dd>
      *
      * </dl>
+     *
+     * @method helperMsg
      *
      * @param {Object} chunk  Dust chunk
      * @param {Object} context  Dust context
@@ -92,8 +94,7 @@ define(function(require) {
       }
       return chunk.write(StringUtils.format.apply(this, args));
     },
-    /**
-     * @method helperInclude
+    /**     
      * Helper function, exposed in dust templates, that uses
      *   [[Lavaca.ui.Template]] to include other templates. Accessed as:
      *
@@ -107,6 +108,7 @@ define(function(require) {
      * <strong>Note:</strong> You should always use the include helper instead of
      * the dust.js partial syntax. The dust.js partial syntax may not work as expected.
      *
+     * @method helperInclude
      * @param {Object} chunk  Dust chunk
      * @param {Object} context  Dust context
      * @param {Object} bodies  Dust bodies
@@ -129,7 +131,6 @@ define(function(require) {
       return chunk.write(result);
     },
     /**
-     * @method helperConfig
      * Helper function, exposed in dust templates, that allows templates
      *   to use data from [[Lavaca.util.Config]]. Accessed as:
      *
@@ -162,6 +163,7 @@ define(function(require) {
      *   <dd>not&mdash;Only render the body content if the current config environment's name does NOT match this key</dd>
      *
      * </dl>
+     * @method helperConfig
      *
      * @param {Object} chunk  Dust chunk
      * @param {Object} context  Dust context
@@ -195,16 +197,16 @@ define(function(require) {
       return chunk.write(StringUtils.format.apply(this, args));
     },
     /**
-     * @method compile
      * Compiles the template
+     * @method compile
      */
     compile: function() {
       Template.prototype.compile.call(this);
       dust.loadSource(dust.compile(this.code, this.name));
     },
     /**
+     * Renders the template to a string.
      * @method render
-     * Renders the template to a string
      *
      * @param {Object} model  The data model to provide to the template
      * @return {Lavaca.util.Promise}  A promise
@@ -228,8 +230,8 @@ define(function(require) {
       return promise;
     },
     /**
+     * Makes this template ready for disposals
      * @method dispose
-     * Makes this template ready for disposal
      */
     dispose: function() {
       delete dust.cache[this.name];

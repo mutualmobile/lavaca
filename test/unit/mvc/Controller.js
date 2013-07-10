@@ -90,15 +90,6 @@ define(function(require) {
       expect(current.state).toEqual(model);
       expect(current.title).toEqual('Home Page');
     });
-    it('can access translated messages', function() {
-      var controller = new testController(router, viewManager),
-          response;
-      $('body').append('<script type="text/x-translation" data-name="en" data-default>{"hello": "Hello {0}!"}</script>');
-      Translation.init('en_US');
-      response = controller.translate('hello', ['Tester']);
-      expect(response).toEqual('Hello Tester!');
-      $('script[type="text/x-translation"]').remove();
-    });
     it('can format urls', function() {
       var controller = new testController(router, viewManager),
           url = '/foo/{0}',

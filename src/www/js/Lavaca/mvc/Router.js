@@ -6,8 +6,8 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   /**
-   * @class Lavaca.mvc.Router
-   * @super Lavaca.util.Disposable
+   * @class lavaca.mvc.Router
+   * @extends lavaca.util.Disposable
    * URL manager
    *
    * @constructor
@@ -27,7 +27,7 @@ define(function(require) {
      * The view manager used by this router
      */
     this.viewManager = viewManager;
-    
+
   }, {
     /**
      * @field {Boolean} locked
@@ -41,7 +41,7 @@ define(function(require) {
      * Whether or not this router has been used to navigate
      */
     hasNavigated: false,
-    
+
     startHistory: function() {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
@@ -54,9 +54,9 @@ define(function(require) {
       History.on('popstate', this.onpopstate, this);
     },
     /**
-     * @method setEl
      * Sets the viewManager property on the instance which is the view manager used by this router
-     * 
+     * @method setEl
+     *
      * @param {Lavaca.mvc.ViewManager} viewManager
      * @return {Lavaca.mvc.Router}  This Router instance
      */
@@ -65,20 +65,26 @@ define(function(require) {
       return this;
     },
     /**
+     * Adds multiple routes
      * @method add
      *
-     * @sig Adds multiple routes
      * @param {Object} map  A hash in the form {pattern: [TController, action, params]}
      *   or {pattern: {controller: TController, action: action, params: params}
      * @return {Lavaca.mvc.Router}  The router (for chaining)
+     */
+    /**
+     * Adds a route
+     * @method add
      *
-     * @sig Adds a route
      * @param {String} pattern  The route URL pattern
      * @param {Function} TController  The type of controller to perform the action (should derive from [[Lavaca.mvc.Controller]])
      * @param {String} action  The name of the controller method to call
      * @return {Lavaca.mvc.Router}  The router (for chaining)
+     */
+    /**
+     * Adds a route
+     * @method add
      *
-     * @sig Adds a route
      * @param {String} pattern  The route URL pattern
      * @param {Function} TController  The type of controller to perform the action (should derive from [[Lavaca.mvc.Controller]])
      * @param {String} action  The name of the controller method to call
@@ -106,19 +112,24 @@ define(function(require) {
       return this;
     },
     /**
-     * @method exec
      * Executes the action for a given URL
+     * @method exec
      *
-     * @sig
      * @param {String} url  The URL
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes the action for a given URL
+     * @method exec
      *
-     * @sig
      * @param {String} url  The URL
      * @param {Object} state  A history record object
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes the action for a given URL
+     * @method exec
      *
-     * @sig
      * @param {String} url  The URL
      * @param {Object} state  A history record object
      * @param {Object} params  Additional parameters to pass to the route
@@ -155,8 +166,8 @@ define(function(require) {
       return promise.reject(url, state);
     },
     /**
-     * @method unlock
      * Unlocks the router so that it can be used again
+     * @method unlock
      *
      * @return {Lavaca.mvc.Router}  This router (for chaining)
      */
@@ -165,8 +176,8 @@ define(function(require) {
       return this;
     },
     /**
-     * @method dispose
      * Readies the router for garbage collection
+     * @method dispose
      */
     dispose: function() {
       if (this.onpopstate) {

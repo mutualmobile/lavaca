@@ -1,29 +1,32 @@
 /**
- * @class Lavaca
- *  Core Lavaca library object
+ * Core Lavaca library object
+ * @class lavaca
  */
 (function(ns, $) {
 
 var _uuid = 0;
 
 /**
- * @field {Function} $
- * @static
  * Abstraction library conforming to jQuery interface
+ * @property {Function} $
+ * @static
  */
 ns.$ = $.noConflict ? $.noConflict() : $;
 
 /**
- * @method resolve
- * @static
+ *
  * Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,
  * 'no.obj.exists' resolves to null)
- *
- * @sig
+ * @method resolve
+ * @static
  * @param {String} name  The fully-qualified name of the object to look up
  * @return {Object}  The resolved object
- *
- * @sig
+ */
+ /**
+ * Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,
+ * 'no.obj.exists' resolves to null)
+ * @method resolve
+ * @static
  * @param {String} name  The fully-qualified name of the object to look up
  * @param {Boolean} createIfNotExists  When true, any part of the name that doesn't already exist will be created
  * as an empty object
@@ -52,18 +55,21 @@ ns.resolve = function(name, createIfNotExists) {
   return o;
 };
 
+ 
 /**
- * @method extend
- * @static
  * Establishes inheritance between types. After a type is extended, it receives its own static
  * convenience method, extend(TSub, overrides).
- *
- * @sig
+ * @method extend
+ * @static
  * @param {Function} TSub  The child type which will inherit from superType
  * @param {Object} overrides  A hash of key-value pairs that will be added to the subType
  * @return {Function}  The subtype
- *
- * @sig
+ */
+/**
+ * Establishes inheritance between types. After a type is extended, it receives its own static
+ * convenience method, extend(TSub, overrides).
+ * @method extend
+ * @static
  * @param {Function} TSuper  The base type to extend
  * @param {Function} TSub  The child type which will inherit from superType
  * @param {Object} overrides  A hash of key-value pairs that will be added to the subType
@@ -106,9 +112,9 @@ ns.extend = function(TSuper, TSub, overrides) {
 };
 
 /**
+ * Logs to the console (or alerts if no console exists)
  * @method log
  * @static
- * Logs to the console (or alerts if no console exists)
  *
  * @params {Object} arg  The content to be logged
  */
@@ -121,9 +127,9 @@ ns.log = function() {
 };
 
 /**
+ * Produces a unique identifier
  * @method uuid
  * @static
- * Produces a unique identifier
  *
  * @return {Number}  A number that is unique to this page
  */
@@ -132,18 +138,23 @@ ns.uuid = function() {
 };
 
 /**
+ * Delays the execution of a function
  * @method delay
  * @static
- * Delays the execution of a function
- *
  * @param {Function} callback  A callback to execute on delay
- *
- * @sig
+ */
+/**
+ * Delays the execution of a function
+ * @method delay
+ * @static
  * @param {Function} callback  A callback to execute on delay
  * @param {Object} thisp  The object to use as the "this" keyword
  * @return {Number}  The timeout ID
- *
- * @sig
+ */
+/**
+ * Delays the execution of a function
+ * @method delay
+ * @static
  * @param {Function} callback  A callback to execute on delay
  * @param {Object} thisp  The object to use as the "this" keyword
  * @param {Number} ms  The number of milliseconds to delay execution
@@ -156,15 +167,16 @@ ns.delay = function(callback, thisp, ms) {
 };
 
 /**
+ * Makes a copy of an object
  * @method clone
  * @static
- * Makes a copy of an object
- *
- * @sig
  * @param {Object} obj  The object to copy
  * @return {Object}  The copy
- *
- * @sig
+ */
+/**
+ * Makes a copy of an object
+ * @method clone
+ * @static
  * @param {Object} obj  The object to copy
  * @param {Boolean} deepCopy  When true, also clone each member of the object
  * @return {Object}  The copy
@@ -184,17 +196,19 @@ ns.clone = function(obj, deepCopy) {
 };
 
 /**
- * @method merge
- * @static
  * Applies the properties of one or more objects to another. To create a new object
  * with the properties of all others, call <code>Lavaca.merge(true, {}, obj1, obj2, objN)</code>.
- *
- * @sig
+ * @method merge
+ * @static
  * @param {Object} target  The object to which apply the properties
  * @params {Object} obj  The objects whose properties will be written to target
  * @return Object}  The target
- *
- * @sig
+ */
+/**
+ * Applies the properties of one or more objects to another. To create a new object
+ * with the properties of all others, call <code>Lavaca.merge(true, {}, obj1, obj2, objN)</code>.
+ * @method merge
+ * @static
  * @param {Boolean} deepCopy  When true, copy the overload values
  * @param {Object} target  The object to which apply the properties
  * @params {Object} obj  The objects whose properties will be written to target
@@ -221,9 +235,9 @@ ns.merge = function(deepCopy, target/*, obj1, obj2, objN*/) {
 };
 
 /**
+ * Collects the values of all data attributes into an object
  * @method $.fn.dataAttrs
  * @static
- * Collects the values of all data attributes into an object
  *
  * @return {Object}  An object containing all data attribute values, with the "data-" prefix dropped
  */
@@ -241,9 +255,9 @@ $.fn.dataAttrs = function() {
 };
 
 /**
+ * A jQuery like proxy method for passing in a context
  * @method $.proxy
  * @static
- * A jQuery like proxy method for passing in a context
  *
  * @param {Function} fn  The function to proxy
  * @param {Object} context  The execution context for the function

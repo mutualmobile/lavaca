@@ -5,21 +5,21 @@ define(function(require) {
   var Config = require('lavaca/util/Config');
 
   /**
-   * @class app.ui.views.ExampleView
-   * @super app.ui.views.BaseView
    * Example view type
+   * @class app.ui.views.ExampleView
+   * @extends app.ui.views.BaseView
    */
   var ExampleView = BaseView.extend({
     /**
-     * @field {String} template
-     * @default 'example'
      * The name of the template used by the view
+     * @property {String} template
+     * @default 'example'
      */
     template: 'templates/example',
     /**
-     * @field {String} className
-     * @default 'example'
      * A class name added to the view container
+     * @property {String} className
+     * @default 'example'
      */
     className: 'example'
 

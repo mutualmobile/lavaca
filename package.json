@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "A Lavaca app",
   "main": "Gruntfile.js",
+  "url": "http://getlavaca.com",
   "scripts": {},
   "dependencies": {
     "mout": "0.3.x",
@@ -27,7 +28,9 @@
     "grunt-amd-test": "0.4.x",
     "grunt-amd-check": "0.5.x",
     "xml2js": "0.2.x",
-    "promisemonkey": "0.1.x"
+    "promisemonkey": "0.1.x",
+    "grunt-contrib-yuidoc": "0.4.0",
+    "grunt-contrib-watch": "0.4.4"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [

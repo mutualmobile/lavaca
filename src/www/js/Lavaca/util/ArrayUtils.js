@@ -1,15 +1,15 @@
 define(function() {
 
   /**
-   * @class Lavaca.util.ArrayUtils
    * Utility class for working with arrays
+   * @class lavaca.util.ArrayUtils
    */
   var ArrayUtils = {};
 
   /**
+   * Gets the first index of an item in an array
    * @method indexOf
    * @static
-   * Gets the first index of an item in an array
    *
    * @param {Array} a  The array
    * @param {Object} o  The object to look for
@@ -31,9 +31,9 @@ define(function() {
   };
 
   /**
+   * Determines whether an array contains an object
    * @method contains
    * @static
-   * Determines whether an array contains an object
    *
    * @param {Array} a  The array
    * @param {Object} o  The object to look for
@@ -44,9 +44,9 @@ define(function() {
   };
 
   /**
+   * Removes the first instance of an item from an array, if it exists
    * @method remove
    * @static
-   * Removes the first instance of an item from an array, if it exists
    *
    * @param {Array} a  The array
    * @param {Object} o  The object to remove
@@ -62,9 +62,9 @@ define(function() {
   };
 
   /**
+   * Adds an item to the end of an array, if it was not already in the array
    * @method pushIfNotExists
    * @static
-   * @sig  Adds an item to the end of an array, if it was not already in the array
    *
    * @param {Array} a  The array
    * @param {Object} o  The object to add to the array
@@ -78,6 +78,7 @@ define(function() {
     return index;
   };
   /**
+   * Determines if object is an array
    * @method isArray
    * @static
    *

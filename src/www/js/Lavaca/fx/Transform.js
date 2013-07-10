@@ -85,14 +85,14 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.fx.Transform
    * Static utility type for working with CSS transforms
+   * @class lavaca.fx.Transform
    */
 
   /**
+   * Whether or not transforms are supported by the browser
    * @method isSupported
    * @static
-   * Whether or not transforms are supported by the browser
    *
    * @return {Boolean}  True when transforms are supported
    */
@@ -101,9 +101,9 @@ define(function(require) {
   };
 
   /**
+   * Whether or not 3D transforms are supported by the browser
    * @method is3dSupported
    * @static
-   * Whether or not 3D transforms are supported by the browser
    *
    * @return {Boolean}  True when 3D transforms are supported
    */
@@ -112,9 +112,9 @@ define(function(require) {
   };
 
   /**
+   * Converts a transform hash into a CSS string
    * @method toCSS
    * @static
-   * Converts a transform hash into a CSS string
    *
    * @param {Object} opts  A hash of CSS transform values, with properties in
    *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
@@ -155,9 +155,9 @@ define(function(require) {
   };
 
   /**
+   * Gets the name of the transform CSS property
    * @method cssProperty
    * @static
-   * Gets the name of the transform CSS property
    *
    * @return {String}  The name of the CSS property
    */
@@ -166,14 +166,16 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.transform
    * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {String} value  The CSS transform string
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {Object} opt  A hash of CSS transform values, with properties in
    *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
    * @opt {Object} translate  An object or string containing the translation values
@@ -198,13 +200,19 @@ define(function(require) {
    * @opt {String} matrix3d  A string containing the 3D matrix transform values
    * @opt {String} perspective  A string containing the perspective transform values
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {String} value  The CSS transform string
    * @param {String} origin  The CSS transform origin
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {Object} opt  A hash of CSS transform values, with properties in
    *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
    * @opt {Object} translate  An object or string containing the translation values
@@ -230,14 +238,20 @@ define(function(require) {
    * @opt {String} perspective  A string containing the perspective transform values
    * @param {String} origin  The CSS transform origin
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {String} value  The CSS transform string
    * @param {Object} origin  The CSS transform origin, in the form {x: N, y: N},
    *      where N is a decimal percentage between -1 and 1 or N is a pixel value > 1 or < -1.
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
    *
-   * @sig
    * @param {Object} opt  A hash of CSS transform values, with properties in
    *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
    * @opt {Object} translate  An object or string containing the translation values

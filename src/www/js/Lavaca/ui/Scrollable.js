@@ -26,10 +26,10 @@ define(function(require) {
   })();
 
   /**
-   * @class Lavaca.ui.Scrollable
-   * @super Lavaca.ui.Widget
    * Overflow Scroll Container for mobile using overflow scrolling: touch or iScroll
-   *
+   * @class lavaca.ui.Scrollable
+   * @extends lavaca.ui.Widget
+   * 
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget
    */
@@ -46,26 +46,26 @@ define(function(require) {
     }
   }, {
     /**
-     * @field {Boolean} supportsOverflow
-     * @default false
      * True when overflowScrolling is supported in the Browser
+     * @property {Boolean} supportsOverflow
+     * @default false
      */
     supportsOverflow: _isSupported,
     /**
-     * @field {String} className
-     * @default 'overflow-scroll'
      * Activates the loading indicator
+     * @property {String} className
+     * @default 'overflow-scroll'
      */
     className: 'overflow-scroll',
     /**
-     * @field {Object} iScrollOptions
-     * @default null
      * iScroll options hash
+     * @property {Object} iScrollOptions
+     * @default null
      */
     iScrollOptions: null,
     /**
-     * @method wrapper
      * Creates a wrapper for iScroll's scrolling content
+     * @method wrapper
      *
      * @return {jQuery}  The wrapper element
      */
@@ -73,8 +73,8 @@ define(function(require) {
       return $('<div class="scroll-wrapper"></div>');
     },
     /**
-     * @method createOverflowScroll
      * Initializes native overflow scrolling
+     * @method createOverflowScroll
      */
     initOverflowScroll: function() {
       delay(function() {
@@ -83,8 +83,8 @@ define(function(require) {
       this.preventParentScroll();
     },
     /**
-     * @method createOverflowScroll
      * Instantiates iScroll
+     * @method createOverflowScroll
      */
     initIScroll: function() {
       var wrapper = this.wrapper(),
@@ -116,9 +116,9 @@ define(function(require) {
       this.refresh();
     },
     /**
-     * @method refresh
      * Delegates to public iScroll method with delay.
      * Must be called every time content changes inside of scrolling container.
+     * @method refresh
      */
      refresh: function() {
        if (!this.supportsOverflow) {
@@ -133,15 +133,15 @@ define(function(require) {
        }
      },
      /**
-      * @method preventParentScroll
       * Prevents a page from scrolling when overflow container reaches boundries
+      * 
+      * Based on ScrollFix v0.1
+      * http://www.joelambert.co.uk
       *
-     * Based on ScrollFix v0.1
-     * http://www.joelambert.co.uk
-     *
-     * Copyright 2011, Joe Lambert.
-     * Free to use under the MIT license.
-     * http://www.opensource.org/licenses/mit-license.php
+      * Copyright 2011, Joe Lambert.
+      * Free to use under the MIT license.
+      * http://www.opensource.org/licenses/mit-license.php
+      * @method preventParentScroll
      */
     preventParentScroll: function() {
       var el = this.el[0];
@@ -169,8 +169,8 @@ define(function(require) {
       }
     },
      /**
-      * @method dispose
       * Cleans up the widget
+      * @method dispose
       */
     dispose: function() {
       if (this.isScroll) {

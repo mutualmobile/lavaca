@@ -1,20 +1,31 @@
 define(function() {
   /**
-   * @class Lavaca.util.extend
    * Establishes inheritance between types. After a type is extended, it receives its own static
    * convenience method, extend(TSub, overrides).
-   *
+   * @class lavaca.util.extend
+   */
+   /**
+   * Establishes inheritance between types. After a type is extended, it receives its own static
+   * convenience method, extend(TSub, overrides).
    * @method extend
    * @static
+   *
+   */
+   /**
    * Establishes inheritance between types. After a type is extended, it receives its own static
    * convenience method, extend(TSub, overrides).
-   *
-   * @sig
+   * @method extend
+   * @static
    * @param {Function} TSub  The child type which will inherit from superType
    * @param {Object} overrides  A hash of key-value pairs that will be added to the subType
    * @return {Function}  The subtype
    *
-   * @sig
+   */
+   /**
+   * Establishes inheritance between types. After a type is extended, it receives its own static
+   * convenience method, extend(TSub, overrides).
+   * @method extend
+   * @static
    * @param {Function} TSuper  The base type to extend
    * @param {Function} TSub  The child type which will inherit from superType
    * @param {Object} overrides  A hash of key-value pairs that will be added to the subType

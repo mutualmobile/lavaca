@@ -17,9 +17,9 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.util.Translation
-   * @super Lavaca.util.Map
    * Translation dictionary
+   * @class lavaca.util.Translation
+   * @extends lavaca.util.Map
    *
    * @constructor
    * @param {String} name  The name of the map
@@ -30,35 +30,35 @@ define(function(require) {
     Map.apply(this, arguments);
     var locale = name.toLowerCase().split('_');
     /**
-     * @field {String} language
-     * @default null
      * The ISO 639-2 code for the translation's language
+     * @property {String} language
+     * @default null
      */
     this.language = locale[0];
     /**
-     * @field {String} country
-     * @default ''
      * The ISO 3166-1 code for the translation's country
+     * @property {String} country
+     * @default ''
      */
     this.country = locale[1] || '';
     /**
-     * @field {String} locale
-     * @default null
      * The locale of this translation (either lang or lang_COUNTRY)
+     * @property {String} locale
+     * @default null
      */
     this.locale = this.country
       ? this.language + '_' + this.country
       : this.language;
   }, {
     /**
-     * @method is
      * Determines whether or not this translation works for a locale
-     *
-     * @sig
+     * @method is
      * @param {String} language  The locale's language
      * @return {Boolean}  True if this translation applies
-     *
-     * @sig
+     */
+    /**
+     * Determines whether or not this translation works for a locale
+     * @method is
      * @param {String} language  The locale's language
      * @param {String} country   (Optional) The locale's country
      * @return {Boolean}  True if this translation applies
@@ -69,9 +69,9 @@ define(function(require) {
     }
   });
   /**
+   * Sets the application's default locale
    * @method setDefault
    * @static
-   * Sets the application's default locale
    *
    * @param {String} locale  A locale string (ie, "en", "en_US", or "es_MX")
    */
@@ -80,9 +80,9 @@ define(function(require) {
     Map.setDefault(_cache, Translation.forLocale(locale));
   };
   /**
+   * Finds the most appropriate translation for a given locale
    * @method forLocale
    * @static
-   * Finds the most appropriate translation for a given locale
    *
    * @param {String} locale  The locale
    * @return {Lavaca.util.Translation}  The translation
@@ -94,15 +94,16 @@ define(function(require) {
       || _cache.get('default');
   };
   /**
+   * Finds the most appropriate translation of a message for the default locale
    * @method get
    * @static
-   * Finds the most appropriate translation of a message for the default locale
-   *
-   * @sig
    * @param {String} code  The code under which the message is stored
    * @return {Lavaca.util.Translation}  The translation
-   *
-   * @sig
+   */
+  /**
+   * Finds the most appropriate translation of a message for the default locale
+   * @method get
+   * @static
    * @param {String} locale  The locale
    * @param {String} code  The code under which the message is stored
    * @return {Lavaca.util.Translation}  The translation
@@ -132,14 +133,15 @@ define(function(require) {
     return result;
   };
   /**
+   * Scans the document for all translations and prepares them
    * @method init
    * @static
-   * Scans the document for all translations and prepares them
-   *
-   * @sig
    * @param {String} locale  The default locale
-   *
-   * @sig
+   */
+  /**
+   * Scans the document for all translations and prepares them
+   * @method init
+   * @static
    * @param {String} locale  The default locale
    * @param {jQuery} scope  The element to which to limit the scan
    */
@@ -148,9 +150,9 @@ define(function(require) {
     Translation.setDefault(locale);
   };
   /**
+   * Disposes of all translations
    * @method dispose
    * @static
-   * Disposes of all translations
    */
   Translation.dispose = function() {
     Map.dispose(_cache);

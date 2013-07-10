@@ -3,8 +3,8 @@ define(function(require) {
   var extend = require('./extend');
 
   /**
-   * @class Lavaca.util.Promise
    * Utility type for asynchronous programming
+   * @class lavaca.util.Promise
    *
    * @constructor
    *
@@ -12,39 +12,39 @@ define(function(require) {
    */
   var Promise = extend(function(thisp) {
     /**
-     * @field {Object} thisp
-     * @default null
      * What the "this" keyword resolves to in callbacks
+     * @property {Object} thisp
+     * @default null
      */
     this.thisp = thisp;
     /**
-     * @field {Array} resolvedQueue
-     * @default []
      * Pending handlers for the success event
+     * @property {Array} resolvedQueue
+     * @default []
      */
     this.resolvedQueue = [];
     /**
-     * @field {Array} rejectedQueue
-     * @default []
      * Pending handlers for the error event
+     * @property {Array} rejectedQueue
+     * @default []
      */
     this.rejectedQueue = [];
   }, {
     /**
-     * @field {Boolean} succeeded
-     * @default false
      * Flag indicating that the promise completed successfully
+     * @property {Boolean} succeeded
+     * @default false
      */
     succeeded: false,
     /**
-     * @field {Boolean} failed
-     * @default false
      * Flag indicating that the promise failed to complete
+     * @property {Boolean} failed
+     * @default false
      */
     failed: false,
     /**
-     * @method success
      * Queues a callback to be executed when the promise succeeds
+     * @method success
      *
      * @param {Function} callback  The callback to execute
      * @return {Lavaca.util.Promise}  This promise (for chaining)
@@ -60,8 +60,8 @@ define(function(require) {
       return this;
     },
     /**
-     * @method error
      * Queues a callback to be executed when the promise fails
+     * @method error
      *
      * @param {Function} callback  The callback to execute
      * @return {Lavaca.util.Promise}  This promise (for chaining)
@@ -77,9 +77,9 @@ define(function(require) {
       return this;
     },
     /**
-     * @method always
      * Queues a callback to be executed when the promise is either rejected or resolved
-     *
+     * @method always
+     * 
      * @param {Function} callback  The callback to execute
      * @return {Lavaca.util.Promise}  This promise (for chaining)
      */
@@ -87,8 +87,8 @@ define(function(require) {
       return this.then(callback, callback);
     },
     /**
-     * @method then
      * Queues up callbacks after the promise is completed
+     * @method then
      *
      * @param {Function} resolved  A callback to execute when the operation succeeds
      * @param {Function} rejected  A callback to execute when the operation fails
@@ -100,8 +100,8 @@ define(function(require) {
         .error(rejected);
     },
     /**
-     * @method resolve
      * Resolves the promise successfully
+     * @method resolve
      *
      * @params {Object} value  Values to pass to the queued success callbacks
      * @return {Lavaca.util.Promise}  This promise (for chaining)
@@ -119,8 +119,8 @@ define(function(require) {
       return this;
     },
     /**
-     * @method reject
      * Resolves the promise as a failure
+     * @method reject
      *
      * @params {String} err  Failure messages
      * @return {Lavaca.util.Promise}  This promise (for chaining)
@@ -138,10 +138,10 @@ define(function(require) {
       return this;
     },
     /**
-     * @method when
      * Queues this promise to be resolved only after several other promises
      *   have been successfully resolved, or immediately rejected when one
      *   of those promises is rejected
+     * @method when
      *
      * @params {Lavaca.util.Promise}  promise  One or more other promises
      * @return {Lavaca.util.Promise}  This promise (for chaining)
@@ -170,9 +170,8 @@ define(function(require) {
       return this;
     },
     /**
-     * @method resolver
      * Produces a callback that resolves the promise with any number of arguments
-     *
+     * @method resolver
      * @return {Function}  The callback
      */
     resolver: function() {
@@ -182,8 +181,8 @@ define(function(require) {
       };
     },
     /**
-     * @method rejector
      * Produces a callback that rejects the promise with any number of arguments
+     * @method rejector
      *
      * @return {Function}  The callback
      */
@@ -195,17 +194,21 @@ define(function(require) {
     }
   });
   /**
-   * @method when
-   * @static
+   *
    * Creates a promise to be resolved only after several other promises
    *   have been successfully resolved, or immediately rejected when one
    *   of those promises is rejected
-   *
-   * @sig
+   * @method when
+   * @static
    * @params {Lavaca.util.Promise}  promise  One or more other promises
    * @return {Lavaca.util.Promise}  The new promise
-   *
-   * @sig
+   */
+   /**
+   * Creates a promise to be resolved only after several other promises
+   *   have been successfully resolved, or immediately rejected when one
+   *   of those promises is rejected
+   * @method when
+   * @static
    * @param {Object} thisp  The execution context of the promise
    * @params {Lavaca.util.Promise}  promise  One or more other promises
    * @return {Lavaca.util.Promise}  The new promise
