@@ -74,16 +74,6 @@ define(function(require) {
       return promise;
     },
     /**
-     * Makes an AJAX request
-     * @method ajax
-     *
-     * @param {Object} opts  jQuery AJAX options
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    ajax: function(opts) {
-      return Promise.when(this, Connectivity.ajax(opts));
-    },
-    /**
      * Loads a view
      * @method view
      *
@@ -112,27 +102,6 @@ define(function(require) {
           History[useReplace ? 'replace' : 'push'](state, title, url);
         }
       };
-    },
-    /**
-     * Convenience method for accessing translated messages
-     * @method translate
-     *
-     * @param {String} code  The key of the translated message
-     * @return {String} The translated message
-     */
-    /**
-     * Convenience method for accessing translated messages
-     * @method translate
-     * @param {String} code  The key of the translated message
-     * @param {Array} args  Values to substitute into the message using [[Lavaca.util.StringUtils]].format()
-     * @return {String}  The translated message
-     */
-    translate: function(code, args) {
-      var result = Translation.get(code);
-      if (result && args) {
-        result = StringUtils.format.apply(null, [result].concat(args));
-      }
-      return result;
     },
     /**
      * Convenience method for formatting URLs
