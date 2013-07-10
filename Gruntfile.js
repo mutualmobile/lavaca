@@ -144,17 +144,6 @@ module.exports = function( grunt ) {
       }
     },
 
-    dustjs: {
-      all: {
-        files: [
-          {
-            src: '<%= paths.src.www %>/templates/**/*.html',
-            dest: '<%= paths.src.www %>/js/app/ui/templates.js'
-          }
-        ]
-      }
-    },
-
     docs: {
       all: {
         options: {
@@ -356,7 +345,6 @@ module.exports = function( grunt ) {
   grunt.loadTasks('tasks/docs');
   grunt.loadTasks('tasks/preprocess');
   grunt.loadTasks('tasks/blueprint');
-  grunt.loadNpmTasks('grunt-dustjs');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
