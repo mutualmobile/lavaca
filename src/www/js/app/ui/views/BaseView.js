@@ -8,11 +8,12 @@ define(function(require) {
   require('lavaca/fx/Animation'); //jquery plugins
 
   /**
-   * @class app.ui.views.BaseView
-   * @super Lavaca.mvc.View
-   *
    * A View from which all other application Views can extend.
    * Adds support for animating between views.
+   *
+   * @class app.ui.views.BaseView
+   * @extends Lavaca.mvc.View
+   *
    */
   var BaseView = PageView.extend(function() {
     PageView.apply(this, arguments);
@@ -20,15 +21,16 @@ define(function(require) {
   }, {
 
     /**
-     * @field {String} template
-     * @default 'default'
      * The name of the template used by the view
+     * @property {String} template
+     * @default 'default'
      */
     template: 'default',
     /**
-     * @field {Object} pageTransition
-     * @default 'default'
      * The name of the template used by the view
+     * @property {Object} pageTransition
+     * @default 'default'
+     
      */
     pageTransition: {
       'in': '',
@@ -37,10 +39,10 @@ define(function(require) {
       'outReverse': ''
     },
     /**
-     * @method onRenderSuccess
      * Executes when the template renders successfully. This implementation
      * adds support for animations between views, based off of the animation
      * property on the prototype.
+     * @method onRenderSuccess
      *
      * @param {Event} e  The render event. This object should have a string property named "html"
      *   that contains the template's rendered HTML output.
@@ -49,8 +51,8 @@ define(function(require) {
       PageView.prototype.onRenderSuccess.apply(this, arguments);
     },
     /**
-     * @method onTapCancel
      * Handler for when a cancel control is tapped
+     * @method onTapCancel
      *
      * @param {Event} e  The tap event.
      */
@@ -59,10 +61,10 @@ define(function(require) {
       viewManager.dismiss(e.currentTarget);
     },
     /**
-     * @method enter
      * Executes when the user navigates to this view. This implementation
      * adds support for animations between views, based off of the animation
      * property on the prototype.
+     * @method enter
      *
      * @param {jQuery} container  The parent element of all views
      * @param {Array} exitingViews  The views that are exiting as this one enters
@@ -125,10 +127,10 @@ define(function(require) {
         });
     },
     /**
-     * @method exit
      * Executes when the user navigates away from this view. This implementation
      * adds support for animations between views, based off of the animation
      * property on the prototype.
+     * @method exit
      *
      * @param {jQuery} container  The parent element of all views
      * @param {Array} enteringViews  The views that are entering as this one exits

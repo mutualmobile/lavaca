@@ -25,21 +25,23 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.storage.LocalStore
-   * @super Lavaca.storage.Store
    * An object for manage local storage
+   * @class lavaca.storage.LocalStore
+   * @extends lavaca.storage.Store
+
    */
   var LocalStore = Store.extend(function(id) {
     Store.call(this, id);
-     /** 
-     * @field {Array} manifest
+     /**
      * A list of keys found in the store
+     * @field {Array} manifest
      */
     this.manifest = JSON.parse(_storage.getItem(this.id + '@manifest') || '[]');
   }, {
     /**
-     * @method key
      * Generates a storage key
+     * @method key
+     *
      * @param {String} id  The ID of the item for which to generate a key
      * @return {String}  The key
      */
@@ -47,8 +49,9 @@ define(function(require) {
       return this.id + ':' + id;
     },
     /**
-     * @method get
      * Retrieves an object from storage, given its ID
+     * @method get
+     *
      * @param {String} id  The ID of the stored object
      * @return {Object}  The stored object
      */
@@ -66,8 +69,9 @@ define(function(require) {
       return null;
     },
     /**
-     * @method set
      * Stores an object locally
+     * @method set
+     *
      * @param {String} id  The ID of the object to store
      * @param {Object} value  The value to store
      */
@@ -77,8 +81,9 @@ define(function(require) {
       _saveManifest(this);
     },
     /**
-     * @method remove
      * Removes an object from storage
+     * @method remove
+     *
      * @param {String} id  The ID of the object to remove from storage
      */
     remove: function(id) {
@@ -87,8 +92,9 @@ define(function(require) {
       _saveManifest(this);
     },
     /**
-     * @method all
      * Retrieves all items in this store
+     * @method all
+     *
      * @return {Array}  A list of stored objects
      */
     all: function() {

@@ -29,14 +29,14 @@ define(function(require) {
   })();
 
   /**
-   * @class Lavaca.fx.Transition
    * Static utility type for working with CSS transitions
+   * @class lavaca.fx.Transition
    */
 
   /**
+   * Whether or not transitions are supported by the browser
    * @method isSupported
    * @static
-   * Whether or not transitions are supported by the browser
    *
    * @return {Boolean}  True when CSS transitions are supported
    */
@@ -45,27 +45,38 @@ define(function(require) {
   };
 
   /**
+   * Generates a CSS transition property string from several values
    * @method toCSS
    * @static
-   * Generates a CSS transition property string from several values
    *
-   * @sig
    * @param {Object} props  A hash in which the keys are the names of the CSS properties
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @return {String}  The generated CSS string
+   */
+ /**
+   * Generates a CSS transition property string from several values
+   * @method toCSS
+   * @static
    *
-   * @sig
    * @param {Array} props  An array of CSS property names
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @return {String}  The generated CSS string
+   */
+  /**
+   * Generates a CSS transition property string from several values
+   * @method toCSS
+   * @static
    *
-   * @sig
    * @param {Object} props  A hash in which the keys are the names of the CSS properties
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @param {String} easing  The interpolation for the transition
    * @return {String}  The generated CSS string
+   */
+  /**
+   * Generates a CSS transition property string from several values
+   * @method toCSS
+   * @static
    *
-   * @sig
    * @param {Array} props  An array of CSS property names
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @param {String} easing  The interpolation for the transition
@@ -86,9 +97,9 @@ define(function(require) {
   };
 
   /**
+   * Gets the name of the transition CSS property
    * @method cssProperty
    * @static
-   * Gets the name of the transition CSS property
    *
    * @return {String}  The name of the CSS property
    */
@@ -97,27 +108,35 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.transition
    * Causes an element to undergo a transition
+   * @method $.fn.transition
    *
-   * @sig
    * @param {Object} props  The CSS property values at the end of the transition
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @return {jQuery}  The jQuery object, for chaining
+   */
+   /**
+   * Causes an element to undergo a transition
+   * @method $.fn.transition
    *
-   * @sig
    * @param {Object} props  The CSS property values at the end of the transition
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @param {String} easing  The interpolation for the transition
    * @return {jQuery}  The jQuery object, for chaining
+   */
+/**
+   * Causes an element to undergo a transition
+   * @method $.fn.transition
    *
-   * @sig
    * @param {Object} props  The CSS property values at the end of the transition
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @param {Function} callback  A function to execute when the transition completes
    * @return {jQuery}  The jQuery object, for chaining
+   */
+   /**
+   * Causes an element to undergo a transition
+   * @method $.fn.transition
    *
-   * @sig
    * @param {Object} props  The CSS property values at the end of the transition
    * @param {Number} duration  The amount of time in milliseconds that the transition lasts
    * @param {String} easing  The interpolation for the transition
@@ -148,14 +167,16 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.transitionEnd
    * Binds a transition end handler to an element.
+   * @method $.fn.transitionEnd
    *
-   * @sig
    * @param {Function} callback  Callback for when the transition ends
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Binds a transition end handler to an element.
+   * @method $.fn.transitionEnd
    *
-   * @sig
    * @param {String} delegate  Selector for the descendant elements to which the handlers will be bound
    * @param {Function} callback  Callback for when the transition ends
    * @return {jQuery}  The jQuery object, for chaining
@@ -169,14 +190,16 @@ define(function(require) {
   };
 
   /**
-   * @method $.fn.nextTransitionEnd
    * Binds a transition end handler to an element's next transition end event.
+   * @method $.fn.nextTransitionEnd
    *
-   * @sig
    * @param {Function} callback  Callback for when the transition ends
    * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Binds a transition end handler to an element's next transition end event.
+   * @method $.fn.nextTransitionEnd
    *
-   * @sig
    * @param {String} delegate  Selector for the descendant elements to which the handlers will be bound
    * @param {Function} callback  Callback for when the transition ends
    * @return {jQuery}  The jQuery object, for chaining

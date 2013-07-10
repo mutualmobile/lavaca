@@ -8,16 +8,13 @@ define(function(require) {
       Translation = require('lavaca/util/Translation');
 
   /**
-   * @class Lavaca.mvc.Controller
-   * @super Lavaca.util.Disposable
    * Base type for controllers
-   *
+   * @class lavaca.mvc.Controller
+   * @extends lavaca.util.Disposable
    * @constructor
    * @param {Lavaca.mvc.Controller} other  Another controller from which to take context information
-   *
-   * @constructor
-   * @param {Lavaca.mvc.Router} router  The application's router
-   * @param {Lavaca.mvc.ViewManager} viewManager  The application's view manager
+   * @param {Lavaca.mvc.Router} [router]  The application's router
+   * @param {Lavaca.mvc.ViewManager} [viewManager]  The application's view manager
    */
   var Controller = Disposable.extend(function(router, viewManager) {
     if (router instanceof Controller) {
@@ -29,27 +26,28 @@ define(function(require) {
     }
   }, {
     /**
-     * @field {Lavaca.mvc.Router} router
-     * @default null
      * The application's router
+     * @property {Lavaca.mvc.Router} router
+     * @default null
      */
     router: null,
     /**
-     * @field {Lavaca.mvc.ViewManager} viewManager
-     * @default null
      * The application's view manager
+     * @property {Lavaca.mvc.ViewManager} viewManager
+     * @default null
      */
     viewManager: null,
     /**
-     * @method exec
      * Executes an action on this controller
+     * @method exec
      *
-     * @sig
      * @param {String} action  The name of the controller method to call
      * @param {Object} params  Key-value arguments to pass to the action
      * @return {Lavaca.util.Promise}  A promise
-     *
-     * @sig
+     */
+     /**
+     * Executes an action on this controller
+     * @method exec
      * @param {String} action  The name of the controller method to call
      * @param {Object} params  Key-value arguments to pass to the action
      * @param {Object} state  A history record object
@@ -76,18 +74,8 @@ define(function(require) {
       return promise;
     },
     /**
-     * @method ajax
-     * Makes an AJAX request
-     *
-     * @param {Object} opts  jQuery AJAX options
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    ajax: function(opts) {
-      return Promise.when(this, Connectivity.ajax(opts));
-    },
-    /**
-     * @method view
      * Loads a view
+     * @method view
      *
      * @param {String} cacheKey  The key under which to cache the view
      * @param {Function} TView  The type of view to load (should derive from [[Lavaca.mvc.View]])
@@ -99,8 +87,8 @@ define(function(require) {
       return Promise.when(this, this.viewManager.load(cacheKey, TView, model, layer));
     },
     /**
-     * @method history
      * Adds a state to the browser history
+     * @method history
      *
      * @param {Object} state  A data object associated with the page state
      * @param {String} title  The title of the page state
@@ -116,28 +104,8 @@ define(function(require) {
       };
     },
     /**
-     * @method translate
-     * Convenience method for accessing translated messages
-     *
-     * @sig
-     * @param {String} code  The key of the translated message
-     * @return {String} The translated message
-     *
-     * @sig
-     * @param {String} code  The key of the translated message
-     * @param {Array} args  Values to substitute into the message using [[Lavaca.util.StringUtils]].format()
-     * @return {String}  The translated message
-     */
-    translate: function(code, args) {
-      var result = Translation.get(code);
-      if (result && args) {
-        result = StringUtils.format.apply(null, [result].concat(args));
-      }
-      return result;
-    },
-    /**
-     * @method url
      * Convenience method for formatting URLs
+     * @method url
      *
      * @param {String} str  The URL string
      * @param {Array} args  Format arguments to insert into the URL
@@ -147,14 +115,16 @@ define(function(require) {
       return StringUtils.format(str, args, encodeURIComponent);
     },
     /**
-     * @method redirect
      * Directs the user to another route
+     * @method redirect
      *
-     * @sig
      * @param {String} str  The URL string
      * @return {Lavaca.util.Promise}  A promise
      *
-     * @sig
+     */
+    /**
+     * Directs the user to another route
+     * @method redirect
      * @param {String} str  The URL string
      * @param {Array} args  Format arguments to insert into the URL
      * @return {Lavaca.util.Promise}  A promise
@@ -163,8 +133,8 @@ define(function(require) {
       return this.router.unlock().exec(this.url(str, args || []));
     },
     /**
-     * @method dispose
      * Readies the controller for garbage collection
+     * @method dispose
      */
     dispose: function() {
       // Do not dispose of view manager or router

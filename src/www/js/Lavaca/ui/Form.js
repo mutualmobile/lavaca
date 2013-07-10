@@ -47,9 +47,9 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.ui.Form
-   * @super Lavaca.ui.Widget
    * Basic form type
+   * @class lavaca.ui.Form
+   * @extends lavaca.ui.Widget
    *
    * @constructor
    * @param {jQuery} el  The DOM element that is the root of the widget
@@ -68,8 +68,8 @@ define(function(require) {
     this.addRule(this.defaultRules());
   }, {
     /**
-     * @method onSubmit
      * Event handler for when the form is submitted
+     * @method onSubmit
      *
      * @param {Event} e  The submit event
      */
@@ -80,8 +80,8 @@ define(function(require) {
         .error(this.onSubmitError);
     },
     /**
-     * @method onSubmitSuccess
      * Event handler for when the user attempts to submit a valid form
+     * @method onSubmitSuccess
      *
      * @param {Object} values  Key-value map of the form's input names and values
      */
@@ -89,8 +89,8 @@ define(function(require) {
       // Placeholder
     },
     /**
-     * @method onSubmitError
      * Event handler for when the user attempts to submit an invalid form
+     * @method onSubmitError
      *
      * @param {Object} invalidInputs  A key-value map of all invalid inputs
      */
@@ -98,8 +98,8 @@ define(function(require) {
       // Placeholder
     },
     /**
-     * @method onChangeInput
      * Event handler for when an input on the form changes
+     * @method onChangeInput
      *
      * @param {Event} e  The change event
      */
@@ -114,8 +114,8 @@ define(function(require) {
       }
     },
     /**
-     * @method onChangeModel
      * Event handler for when an attribute on the bound model changes
+     * @method onChangeModel
      *
      * @param {Event} e  The change event
      */
@@ -125,10 +125,10 @@ define(function(require) {
       }
     },
     /**
+     * Binds this form to a model, forcing the two to stay in sync
      * @method bind
-     * Binds this form to a model, forcing the two to stay in sync.
      *
-     * @param {Lavaca.mvc.Model} model  The model
+     * @param {Lavaca.mvc.Model} model  The model being bound
      */
     bind: function(model) {
       this.unbind();
@@ -137,8 +137,8 @@ define(function(require) {
       this.el.on('change', this._onChangeInput);
     },
     /**
-     * @method unbind
      * Unbinds this form from its model
+     * @method unbind
      */
     unbind: function() {
       if (this.model) {
@@ -148,8 +148,8 @@ define(function(require) {
       }
     },
     /**
-     * @method input
      * Retrieve an input from the form with a given name
+     * @method input
      *
      * @param {String} name  The name of the input
      * @return {jQuery}  The input
@@ -158,8 +158,8 @@ define(function(require) {
       return this.el.find('input, select, textarea').filter('[name="' + name + '"]');
     },
     /**
-     * @method get
      * Gets the value of an input on the form
+     * @method get
      *
      * @param {String} name  The name of the input
      * @return {String}  The value of the input
@@ -168,8 +168,8 @@ define(function(require) {
       return this.input(name).val();
     },
     /**
-     * @method set
      * Sets an input on the form's value
+     * @method set
      *
      * @param {String} name  The name of the input
      * @param {Object} value  The new value of the input
@@ -178,8 +178,8 @@ define(function(require) {
       this.input(name).val(value || null);
     },
     /**
-     * @method defaultRules
      * The default validation rules for the form
+     * @method defaultRules
      *
      * @return {Object}  The form's default rules1
      */
@@ -194,12 +194,14 @@ define(function(require) {
       };
     },
     /**
+     * Adds multiple validation rules to this form
      * @method addRule
      *
-     * @sig Adds multiple validation rules to this form
      * @param {Object} map  A hash of selectors and callbacks to add as rules
-     *
-     * @sig Adds a validation rule to this form
+     */
+    /**
+     * Adds multiple validation rules to this form
+     * @method addRule
      * @param {String} selector  A jQuery selector associated with the rule
      * @param {Function} callback  A function that tests the value of inputs matching the
      *   selector in the form callback(value, input, form) and
@@ -218,8 +220,8 @@ define(function(require) {
       }
     },
     /**
-     * @method values
      * Collects all input values on the form
+     * @method values
      *
      * @return {Object}  A hash of input names and their values
      */
@@ -252,21 +254,26 @@ define(function(require) {
       return result;
     },
     /**
+     * Checks the entire form to see if it's in a valid state
      * @method validate
-     *
-     * @sig Checks the entire form to see if it's in a valid state
      * @return {Lavaca.util.Promise}  A promise
-     *
-     * @sig Checks the entire form to see if it's in a valid state
+     */
+    /**
+     * Checks the entire form to see if it's in a valid state
+     * @method validate
      * @param {Function} succcess  A callback to execute when the form is valid
      * @param {Function} error  A callback to execute when the form is invalid
      * @return {Lavaca.util.Promise}  A promise
-     *
-     * @sig Checks a specifc input to see if it's in a valid state
+     */
+    /**
+     * Checks the entire form to see if it's in a valid state
+     * @method validate
      * @param {jQuery} input  An input to check
      * @return {Lavaca.util.Promise}  A promise
-     *
-     * @sig Checks a specifc input to see if it's in a valid state
+     */
+    /**
+     * Checks the entire form to see if it's in a valid state
+     * @method validate
      * @param {Function} succcess  A callback to execute when the input is valid
      * @param {Function} error  A callback to execute when the input is invalid
      * @param {jQuery} input  An input to check
@@ -343,8 +350,8 @@ define(function(require) {
         .error(error);
     },
     /**
-     * @method dispose
      * Ready the form for garbage collection
+     * @method dispose
      */
     dispose: function() {
       this.unbind();
@@ -352,13 +359,13 @@ define(function(require) {
     }
   });
   /**
+   * Extends the form with new submit handlers
    * @method withSubmit
    * @static
-   * Extends the form with new submit handlers
    *
    * @param {Function} success  The success handler
    * @param {Function} error  The error handler
-   * @return {Function}  A new [[Lavaca.ui.Form]]-derived type
+   * @return {Function}  A new [@Lavaca.ui.Form]-derived type
    */
   Form.withSubmit = function(success, error) {
     return Form.extend({

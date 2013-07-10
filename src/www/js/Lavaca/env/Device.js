@@ -5,8 +5,8 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   /**
-   * @class Lavaca.env.Device
    * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
+   * @class lavaca.env.Device
    */
 
   var _initHasRun = false,
@@ -15,9 +15,9 @@ define(function(require) {
   var Device = {};
 
   /**
+   * Indicates whether or not the app is being run through Cordova
    * @method isCordova
    * @static
-   * Indicates whether or not the app is being run through Cordova
    *
    * @return {Boolean}  True if app is being run through Cordova
    */
@@ -25,9 +25,9 @@ define(function(require) {
     return !!Cordova;
   };
   /**
+   * Registers a plugin to be initialized when the device is ready
    * @method register
    * @static
-   * Registers a plugin to be initialized when the device is ready
    *
    * @param {String} name
    * @param {Function} TPlugin  The plugin to register. The plugin should be a constructor function
@@ -47,9 +47,9 @@ define(function(require) {
   };
 
   /**
+   * Executes a Cordova command, if Cordova is available
    * @method exec
    * @static
-   * Executes a Cordova command, if Cordova is available
    *
    * @param {String} className  The name of the native class
    * @param {String} methodName  The name of the class method to call
@@ -67,9 +67,9 @@ define(function(require) {
   };
 
   /**
+   * Executes a callback when the device is ready to be used
    * @method init
    * @static
-   * Executes a callback when the device is ready to be used
    *
    * @param {Function} callback  The handler to execute when the device is ready
    */

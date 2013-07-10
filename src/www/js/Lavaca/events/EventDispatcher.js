@@ -4,30 +4,33 @@ define(function(require) {
       deepMixIn = require('mout/object/deepMixIn');
 
   /**
-   * @class Lavaca.events.EventDispatcher
-   * @super Lavaca.util.Disposable
    * Basic event dispatcher type
-   *
+   * @class lavaca.events.EventDispatcher
+   * @extends lavaca.util.Disposable
    * @constructor
+   *
    */
   var EventDispatcher = Disposable.extend({
     /**
-     * @field {Boolean} suppressEvents
-     * @default false
      * When true, do not fire events
+     * @property suppressEvents
+     * @type Boolean
+     * @default false
+     *
      */
     suppressEvents: false,
     /**
+     * Bind an event handler to this object
      * @method on
      *
-     * Bind an event handler to this object
-     *
-     * @sig
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
+     */
+    /**
+     * Bind an event handler to this object
+     * @method on
      *
-     * @sig
      * @param {String} type  The name of the event
      * @param {Function} callback  The function to execute when the event occurs
      * @param {Object} thisp  The context of the handler
@@ -40,25 +43,30 @@ define(function(require) {
       return this;
     },
     /**
+     * Unbinds all event handler from this object
      * @method off
      *
-     * @sig
-     * Unbinds all event handler from this object
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
-     * @sig
+     */
+    /**
      * Unbinds all event handlers for an event
+     * @method off
+     *
      * @param {String} type  The name of the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
-     * @sig
+     */
+    /**
      * Unbinds a specific event handler
+     * @method off
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function handling the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-     *
-     * @sig
+     */
+    /**
      * Unbinds a specific event handler
+     * @method off
+     *
      * @param {String} type  The name of the event
      * @param {Function} callback  The function handling the event
      * @param {Object} thisp  The context of the handler
@@ -97,14 +105,16 @@ define(function(require) {
       return this;
     },
     /**
-     * @method trigger
      * Dispatches an event
+     * @method trigger
      *
-     * @sig
      * @param {String} type  The type of event to dispatch
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
+     */
+    /**
+     * Dispactches an event with additional parameters
+     * @method trigger
      *
-     * @sig
      * @param {String} type  The type of event to dispatch
      * @param {Object} params  Additional data points to add to the event
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
@@ -124,14 +134,16 @@ define(function(require) {
       return this;
     },
     /**
-     * @method createEvent
      * Creates an event object
+     * @method createEvent
      *
-     * @sig
      * @param {String} type  The type of event to create
      * @return {Object}  The event object
+     */
+     /**
+     * Creates an event object with additional params
+     * @method createEvent
      *
-     * @sig
      * @param {String} type  The type of event to create
      * @param {Object} params  Additional data points to add to the event
      * @return {Object}  The event object

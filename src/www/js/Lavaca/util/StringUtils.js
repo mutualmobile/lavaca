@@ -13,29 +13,33 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.util.StringUtils
    * Static utility type for working with strings
+   * @class lavaca.util.StringUtils
    */
   var StringUtils = {};
 
   /**
+   * Substitutes arguments into a string
    * @method format
    * @static
-   * Substitutes arguments into a string
-   *
-   * @sig
    * @param {String} s  The format string. Substitutions should be in the form {0} to sub in
    *   the first arg, {1} for the second, and so on
    * @params {Object} arg  Arguments to be substituted in to the string
    * @return {String}  The format string with the arguments substituted into it
-   *
-   * @sig
+   */
+  /**
+   * Substitutes arguments into a string
+   * @method format
+   * @static
    * @param {String} s  The format string. Substitutions should be in the form {0} to sub in
    *   the first arg, {1} for the second, and so on
    * @param {Array} args  Arguments to be substituted in to the string
    * @return {String}  The format string with the arguments substituted into it
-   *
-   * @sig
+   */
+  /**
+   * Substitutes arguments into a string
+   * @method format
+   * @static
    * @param {String} s  The format string. Substitutions should be in the form {0} to sub in
    *   the first arg, {1} for the second, and so on
    * @param {Array} args  Arguments to be substituted in to the string
@@ -60,9 +64,9 @@ define(function(require) {
   };
 
   /**
+   * Escapes a string for inclusion in HTML
    * @method escapeHTML
    * @static
-   * Escapes a string for inclusion in HTML
    *
    * @param {String} s  The string
    * @return {String}  The escaped string

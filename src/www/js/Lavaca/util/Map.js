@@ -20,9 +20,9 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.util.Map
-   * @super Lavaca.util.Disposable
    * Abstract type for lookup tables
+   * @class lavaca.util.Map
+   * @extends lavaca.util.Disposable
    *
    * @constructor
    * @param {String} name  The name of the map
@@ -32,39 +32,39 @@ define(function(require) {
   var Map = Disposable.extend(function(name, src, code) {
     Disposable.call(this);
     /**
-     * @field {Boolean} hasLoaded
-     * @default false
      * Whether or not the map has loaded
+     * @property {Boolean} hasLoaded
+     * @default false
      */
     this.hasLoaded = false;
     /**
-     * @field {String} name
-     * @default null
      * The name of the map
+     * @property {String} name
+     * @default null
      */
     this.name = name;
     /**
-     * @field {String} src
-     * @default null
      * The source URL for the map
+     * @property {String} src
+     * @default null
      */
     this.src = _absolute(src);
     /**
-     * @field {String} code
-     * @default null
      * The raw string data for the map
+     * @property {String} code
+     * @default null
      */
     this.code = code;
     /**
-     * @field {Lavaca.util.Cache} cache
-     * @default new Lavaca.util.Cache()
      * The cache in which this map stores data
+     * @property {Lavaca.util.Cache} cache
+     * @default new Lavaca.util.Cache()
      */
     this.cache = new Cache();
   }, {
     /**
-     * @method is
      * Determines whether or not this is the desired lookup
+     * @method is
      *
      * @param {String} name  The name of the lookup
      * @return {Boolean}  True if this is the lookup
@@ -73,8 +73,8 @@ define(function(require) {
       return this.name === name;
     },
     /**
-     * @method get
      * Gets the value stored under a code
+     * @method get
      *
      * @param {String} code  The code
      * @return {Object}  The value (or null)
@@ -91,8 +91,8 @@ define(function(require) {
       return this.cache.get(code);
     },
     /**
-     * @method add
      * Adds parameters to this map
+     * @method add
      *
      * @param {Object} data  The parameters to add
      */
@@ -102,8 +102,8 @@ define(function(require) {
       }
     },
     /**
-     * @method process
      * Processes server data to include in this lookup
+     * @method process
      *
      * @param {String} text  The server data string
      */
@@ -111,8 +111,8 @@ define(function(require) {
       this.add(typeof text === 'string' ? JSON.parse(text) : text);
     },
     /**
-     * @method load
      * Adds JSON data to this map (synchronous)
+     * @method load
      *
      * @param {String} url  The URL of the data
      */
@@ -128,9 +128,9 @@ define(function(require) {
     }
   });
   /**
+   * Sets the application's default config
    * @method setDefault
    * @static
-   * Sets the application's default config
    *
    * @param {Lavaca.util.Cache} cache  The map cache
    * @param {String} name  The name of the config
@@ -143,9 +143,9 @@ define(function(require) {
     cache.set('default', map);
   };
   /**
+   * Finds the most appropriate value for a code
    * @method get
    * @static
-   * Finds the most appropriate value for a code
    *
    * @param {Lavaca.util.Cache} cache  The maps cache
    * @param {String} name  The name of the map
@@ -167,9 +167,9 @@ define(function(require) {
     return null;
   };
   /**
+   * Scans the document for all maps and prepares them
    * @method init
    * @static
-   * Scans the document for all maps and prepares them
    *
    * @param {Lavaca.util.Cache} cache  The map cache
    * @param {String} mimeType  The MIME type of the scripts
@@ -195,9 +195,9 @@ define(function(require) {
       });
   };
   /**
+   * Disposes of all maps
    * @method dispose
    * @static
-   * Disposes of all maps
    *
    * @param {Lavaca.util.Cache} cache  The map cache
    */

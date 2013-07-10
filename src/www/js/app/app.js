@@ -20,9 +20,9 @@ define(function(require) {
   History.overrideStandardsMode();
 
   /**
-   * @class app
-   * @super Lavaca.mvc.Application
    * Global application-specific object
+   * @class app
+   * @extends Lavaca.mvc.Application
    */
   var app = new Application(function() {
      // Demonstration of extending Detection module
@@ -39,7 +39,7 @@ define(function(require) {
     stateModel.set('lang', localStore.get('lang') || 'en_US');
     //initialize translations
     Translation.init(stateModel.get('lang'));
-    //render header view
+    //render header
     headerView.render();
   });
 

@@ -5,9 +5,9 @@ define(function(require) {
   require('rdust!templates/header');
 
   /**
+   * Header view type
    * @class app.ui.views.globalUI.HeaderView
    * @super Lavaca.mvc.View
-   * Header view type
    */
   var HeaderView = View.extend(function(){
       View.apply(this, arguments);
@@ -19,15 +19,15 @@ define(function(require) {
       });
     }, {
     /**
-     * @field {String} template
-     * @default 'templates/header'
      * The name of the template used by the view
+     * @property {String} template
+     * @default 'templates/header'
      */
     template: 'templates/header',
     /**
-     * @field {String} className
-     * @default 'header'
      * A class name added to the view container
+     * @property {String} className
+     * @default 'header'
      */
     className: 'header',
 

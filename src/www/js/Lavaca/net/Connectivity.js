@@ -5,8 +5,8 @@ define(function(require) {
       resolve = require('lavaca/util/resolve');
 
   /**
-   * @class Lavaca.net.Connectivity
    * A utility type for working under different network connectivity situatioConnectivity.
+   * @class lavaca.net.Connectivity
    */
 
   var _navigatorOnlineSupported = typeof navigator.onLine === 'boolean',
@@ -26,9 +26,9 @@ define(function(require) {
   var Connectivity = {};
 
   /**
+   * Attempts to detect whether or not the browser is connected
    * @method isOffline
    * @static
-   * Attempts to detect whether or not the browser is connected
    *
    * @return {Boolean}  True if the browser is offline; false if the browser is online
    *    or if connection status cannot be determined
@@ -43,10 +43,10 @@ define(function(require) {
   };
 
   /**
-   * @method ajax
-   * @static
    * Makes an AJAX request if the user is online. If the user is offline, the returned
    * promise will be rejected with the string argument "offline"
+   * @method ajax
+   * @static
    *
    * @param {Object} opts  jQuery-style AJAX options
    * @return {Lavaca.util.Promise}  A promise
@@ -77,10 +77,10 @@ define(function(require) {
   };
 
   /**
-   * @method registerOfflineAjaxHandler
-   * @static
    * Adds a callback to be executed whenever any Lavaca.net.Connectivity.ajax() call is
    * blocked as a result of a lack of internet connection.
+   * @method registerOfflineAjaxHandler
+   * @static
    *
    * @param {Function} callback  The callback to execute
    */

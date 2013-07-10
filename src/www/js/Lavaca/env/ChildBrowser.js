@@ -5,9 +5,9 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   /**
-   * @class Lavaca.env.ChildBrowser
-   * @super Lavaca.events.EventDispatcher
    * A sub-browser management utility (also accessible via window.plugins.childBrowser)
+   * @class lavaca.env.ChildBrowser
+   * @extends Lavaca.events.EventDispatcher
    *
    * @event open
    * @event close
@@ -17,8 +17,8 @@ define(function(require) {
    */
   var ChildBrowser = EventDispatcher.extend({
     /**
-     * @method showWebPage
      * Opens a web page in the child browser (or navigates to it)
+     * @method showWebPage
      *
      * @param {String} loc  The URL to open
      * @return {Lavaca.util.Promise}  A promise
@@ -36,8 +36,8 @@ define(function(require) {
       }
     },
     /**
-     * @method close
      * Closes the child browser, if it's open
+     * @method close
      *
      * @return {Lavaca.util.Promise}  A promise
      */

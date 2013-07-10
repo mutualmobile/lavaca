@@ -3,8 +3,8 @@ define(function(require) {
   var Translation = require('./Translation');
 
   /**
-   * @class Lavaca.util.DateUtils
    * Utility class for working with dates
+   * @class lavaca.util.DateUtils
    */
   var DateUtils = {};
 
@@ -39,21 +39,20 @@ define(function(require) {
   }
 
   /**
-   * @field {Array} timeOfDayDesignatorAbbr
-   * @static
-   * @default ["A", "P"]
    * The time of day abbreviation. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
-   */
+   * @property {Array} timeOfDayDesignatorAbbr
+   * @static
+   * @default ["A", "P"]*/
   DateUtils.timeOfDayDesignatorAbbr = [
     'A',
     'P'
   ];
 
   /**
-   * @field {Array} timeOfDayDesignator
+   * The time of day. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
+   * @property {Array} timeOfDayDesignator
    * @static
    * @default ["AM", "PM"]
-   * The time of day. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
    */
   DateUtils.timeOfDayDesignator = [
     'AM',
@@ -61,11 +60,11 @@ define(function(require) {
   ];
 
   /**
-   * @field {Array} daysOfWeekAbbr
+   * The abbreviated days of the week. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
+   * @property {Array} daysOfWeekAbbr
    * @static
    * @default ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-   * The abbreviated days of the week. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
-   */
+   * */
   DateUtils.daysOfWeekAbbr = [
     'Sun',
     'Mon',
@@ -77,10 +76,10 @@ define(function(require) {
   ];
 
   /**
-   * @field {Array} daysOfWeek
+   * The days of the week. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
+   * @property {Array} daysOfWeek
    * @static
    * @default ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-   * The days of the week. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
    */
   DateUtils.daysOfWeek = [
     'Sunday',
@@ -93,10 +92,10 @@ define(function(require) {
   ];
 
   /**
-   * @field {Array} monthsAbbr
+   * The abbreviated months. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
+   * @property {Array} monthsAbbr
    * @static
    * @default ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-   * The abbreviated months. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
    */
   DateUtils.monthsAbbr = [
     'Jan',
@@ -114,10 +113,10 @@ define(function(require) {
   ];
 
   /**
-   * @field {Array} months
+   * The months. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
+   * @property {Array} months
    * @static
    * @default ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-   * The months. You can supply [[Lavaca.util.Translation]] values using these names as keys to translate.
    */
   DateUtils.months = [
     'January',
@@ -135,8 +134,6 @@ define(function(require) {
   ];
 
   /**
-   * @field {Object} fn
-   * @static
    * Object containing the functions used by each date format code. Default format codes are:
    *
    * <dl>
@@ -170,10 +167,13 @@ define(function(require) {
    * <dt>zzz</dt> <dd>Padded hours and minute offset from UTC (-12:00, 00:00, 12:00)</dd>
    * </dl>
    *
-   * To add a custom format code, assign this field an object containing an <code>i</code> function (responsible for parsing)
+   * To add a custom format code, assign this property an object containing an <code>i</code> function (responsible for parsing)
    * and an <code>o</code> function (responsible for stringifying). The <code>i</code> function
-   * should assign to one of the following fields of its second argument: date, month, year,
+   * should assign to one of the following properties of its second argument: date, month, year,
    * hour, minute, second, ms, or offset. Example: <code>Lavaca.util.DateUtils.fn.QQQ = {i: function(input, dateObj, mappedObj) { dateObj.date = parseInt(input, 10); }, o: function(date, utc) { return (utc ? date.getUTCDate() : date.getDate()).toString(); }};</code>
+   *
+   * @property {Object} fn
+   * @static
    */
   DateUtils.fn = {
     d: {
@@ -533,16 +533,17 @@ define(function(require) {
   };
 
   /**
+   * Converts a date to a string
    * @method stringify
    * @static
-   * Converts a date to a string
-   *
-   * @sig
    * @param {Date} d  The date
    * @param {String} f  The string format of the date
    * @return {String}  The stringified date
-   *
-   * @sig
+   */
+   /**
+   * Converts a date to a string
+   * @method stringify
+   * @static
    * @param {Date} d  The date
    * @param {String} f  The string format of the date
    * @param {Boolean} utc  When true, use the UTC date to generate the string

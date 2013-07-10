@@ -7,20 +7,21 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.storage.Store
-   * @super Lavaca.util.Disposable
    * An object for manage local storage
+   * @class lavaca.storage.Store
+   * @extends lavaca.util.Disposable
    */
   var Store = Disposable.extend(function(id) {
     /**
-     * @field {String} id
      * The ID of the store
+     * @property {String} id
      */
     this.id = id;
   }, {
     /**
-     * @method get
      * Retrieves an object from storage, given its ID
+     * @method get
+     *
      * @param {String} id  The ID of the stored object
      * @return {Object}  The stored object
      */
@@ -28,8 +29,9 @@ define(function(require) {
       _notImplemented();
     },
     /**
-     * @method set
      * Stores an object locally
+     * @method set
+     *
      * @param {String} id  The ID of the object to store
      * @param {Object} value  The value to store
      */
@@ -37,16 +39,18 @@ define(function(require) {
       _notImplemented();
     },
     /**
-     * @method remove
      * Removes an object from storage
+     * @method remove
+     *
      * @param {String} id  The ID of the object to remove from storage
      */
     remove: function() {
       _notImplemented();
     },
     /**
-     * @method all
      * Retrieves all items in this store
+     * @method all
+     *
      * @return {Array}  A list of stored objects
      */
     all: function() {

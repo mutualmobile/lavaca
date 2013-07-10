@@ -5,23 +5,24 @@ define(function(require) {
   require('rdust!templates/test');
 
   /**
-   * @class app.ui.views.TestView
-   * @super app.ui.views.BaseView
    * Test view type
+   * @class app.ui.views.TestView
+   * @extends app.ui.views.BaseView
    */
   var TestView = BaseView.extend(function() {
     BaseView.apply(this, arguments);
   }, {
     /**
-     * @field {String} template
-     * @default 'example'
      * The name of the template used by the view
+     * @property {String} template
+     * @default 'example'
      */
     template: 'templates/test',
     /**
-     * @field {String} className
-     * @default 'example'
      * A class name added to the view container
+     * @property {String} className
+     * @default 'example'
+   
      */
     className: 'test'
 

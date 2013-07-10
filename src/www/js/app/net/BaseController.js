@@ -5,9 +5,9 @@ define(function(require) {
   var stateModel = require('app/models/StateModel');
 
   /**
-   * @class app.net.BaseController
-   * @super Lavaca.mvc.Controller
    * Base controller
+   * @class app.net.BaseController
+   * @extends Lavaca.mvc.Controller
    */
   var BaseController = Controller.extend(function(){
       Controller.apply(this, arguments);

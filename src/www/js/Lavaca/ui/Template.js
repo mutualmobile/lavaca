@@ -7,21 +7,21 @@ define(function(require) {
       _types = [];
 
   /**
-   * @class Lavaca.ui.Template
-   * @super Lavaca.util.Map
    * Abstract type for templates
+   * @class lavaca.ui.Template
+   * @extends lavaca.util.Map
    */
   var Template = Map.extend({
     /**
-     * @method compile
      * Compiles the template
+     * @method compile
      */
     compile: function() {
       // Do nothing
     },
     /**
-     * @method render
      * Renders the template to a string
+     * @method render
      *
      * @param {Object} model  The data model to provide to the template
      * @return {Lavaca.util.Promise}  A promise
@@ -30,8 +30,8 @@ define(function(require) {
       throw 'Abstract';
     },
     /**
-     * @method process
      * Parses server data to include in this lookup
+     * @method process
      *
      * @param {String} text  The server data string
      */
@@ -40,9 +40,9 @@ define(function(require) {
     }
   });
   /**
+   * Finds the template with a given name
    * @method get
    * @static
-   * Finds the template with a given name
    *
    * @param {String} name  The name of the template
    * @return {Lavaca.ui.Template}  The template (or null if no such template exists)
@@ -51,14 +51,17 @@ define(function(require) {
     return _cache.get(name);
   };
   /**
-   * @method init
-   * @static
    * Scans the document for all templates with registered types and
    *   prepares template objects from them
-   *
-   * @sig
-   *
-   * @sig
+   * @method init
+   * @static
+   */
+   /**
+   * 
+   * Scans the document for all templates with registered types and
+   *   prepares template objects from them
+   * @method init
+   * @static
    * @param {jQuery} scope  The element to which to limit the scan
    */
   Template.init = function(scope) {
@@ -87,17 +90,17 @@ define(function(require) {
     }
   };
   /**
+   * Disposes of all templates
    * @method dispose
    * @static
-   * Disposes of all templates
    */
   Template.dispose = function() {
     Map.dispose(_cache);
   };
   /**
+   * Finds the named template and renders it to a string
    * @method render
    * @static
-   * Finds the named template and renders it to a string
    *
    * @param {String} name  The name of the template
    * @param {Object} model  The data model to provide to the template
@@ -112,15 +115,16 @@ define(function(require) {
     }
   };
   /**
+   * Registers a type of template to look for on intilization.
    * @method register
    * @static
-   * Registers a type of template to look for on intilization.
-   *
-   * @sig
    * @param {String} mimeType  The mime-type associated with the template
    * @param {Function} TTemplate  The JavaScript type used for the template (should derive from [[Lavaca.ui.Template]])
-   *
-   * @sig
+   */
+   /**
+   * Registers a type of template to look for on intilization.
+   * @method register
+   * @static
    * @param {Function} TTemplate  The JavaScript type used for the template (should derive from [[Lavaca.ui.Template]])
    */
   Template.register = function(mimeType, TTemplate) {

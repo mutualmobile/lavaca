@@ -61,8 +61,8 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.mvc.Route
-   * @super Lavaca.util.Disposable
+   * @class lavaca.mvc.Route
+   * @extends lavaca.util.Disposable
    * A relationship between a URL pattern and a controller action
    *
    * @constructor
@@ -86,8 +86,8 @@ define(function(require) {
     this.params = params || {};
   }, {
     /**
-     * @method matches
      * Tests if this route applies to a URL
+     * @method matches
      *
      * @param {String} url  The URL to test
      * @return {Boolean}  True when this route matches the URL
@@ -96,8 +96,8 @@ define(function(require) {
       return _patternToRegExp(this.pattern).test(url);
     },
     /**
-     * @method parse
      * Converts a URL into a params object according to this route's pattern
+     * @method parse
      *
      * @param {String} url  The URL to convert
      * @return {Object}  The params object
@@ -147,23 +147,28 @@ define(function(require) {
       return result;
     },
     /**
+     * Executes this route's controller action see if work
      * @method exec
-     * Executes this route's controller action
      *
-     * @sig
      * @param {String} url  The URL that supplies parameters to this route
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes this route's controller action see if work
+     * @method exec
      *
-     * @sig
      * @param {String} url  The URL that supplies parameters to this route
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @param {Object} state  A history record object
      * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes this route's controller action see if work
+     * @method exec
      *
-     * @sig
      * @param {String} url  The URL that supplies parameters to this route
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application

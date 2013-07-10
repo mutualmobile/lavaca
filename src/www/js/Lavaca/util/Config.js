@@ -13,17 +13,17 @@ define(function(require) {
   }
 
   /**
-   * @class Lavaca.util.Config
-   * @super Lavaca.util.Map
    * Configuration management type
+   * @class lavaca.util.Config
+   * @extends lavaca.util.Map
    */
   var Config = Map.extend({
     // Empty (no overrides)
   });
   /**
+   * Sets the application's default config
    * @method setDefault
    * @static
-   * Sets the application's default config
    *
    * @param {String} name  The name of the default config
    */
@@ -31,9 +31,9 @@ define(function(require) {
     Map.setDefault(_cache, name);
   };
   /**
+   * Gets the application's current config environment name
    * @method currentEnvironment
    * @static
-   * Gets the application's current config environment name
    *
    * @return {String} The name of the current environment
    */
@@ -41,15 +41,16 @@ define(function(require) {
     return _cache.get('default').name;
   };
   /**
+   * Retrieves a value from the configuration
    * @method get
    * @static
-   * Retrieves a value from the configuration
-   *
-   * @sig
    * @param {String} code  The name of the parameter
    * @return {Object}  The value of the parameter
-   *
-   * @sig
+   */
+   /**
+   * Retrieves a value from the configuration
+   * @method get
+   * @static
    * @param {String} name  The name of the config
    * @param {String} code  The name of the parameter
    * @return {Object}  The value of the parameter
@@ -58,22 +59,23 @@ define(function(require) {
     return Map.get(_cache, name, code, 'default');
   };
   /**
+   * Scans the document for all translations and prepares them
    * @method init
    * @static
+   */
+   /**
    * Scans the document for all translations and prepares them
-   *
-   * @sig
-   *
-   * @sig
+   * @method init
+   * @static
    * @param {jQuery} scope  The element to which to limit the scan
    */
   Config.init = function(scope) {
     Map.init(_cache, 'text/x-config', _construct, scope);
   };
   /**
+   * Disposes of all translations
    * @method dispose
    * @static
-   * Disposes of all translations
    */
   Config.dispose = function() {
     Map.dispose(_cache);
