@@ -138,7 +138,7 @@ Simple Reset
 (c) 2011 Eric Meyer
 Released to public domain
 
-jQuery v1.7.1
+jQuery v2.0.0
 (c) 2011, John Resig
 Dual licensed under the MIT or GPL Version 2 licenses.
 
@@ -154,17 +154,11 @@ LinkedIn Fork of Dust.js 1.1
 (c) 2010, Aleksander Williams
 Released under the MIT license.
 
-Zepto.js 0.8.0
-(c) 2011 Thomas Fuchs
-Released under the MIT license
 
 ChildBrowser
 (c) 2012 Jesse MacFadyen, Nitobi
 Released under the MIT license
 
-lz77.js
-(c) 2009 Olle Törnström
-Released under the MIT license
 
 iScroll 4.1.9
 (c) 2011 Matteo Spinelli
