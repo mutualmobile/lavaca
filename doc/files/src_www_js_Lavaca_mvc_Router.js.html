@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/www/js/Lavaca/mvc/Router.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.ExampleController.html">app.net.ExampleController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.ExampleView.html">app.ui.views.ExampleView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.PopoverView.html">app.ui.views.PopoverView</a></li>
+            
+                <li><a href="../classes/app.ui.views.TestView.html">app.ui.views.TestView</a></li>
+            
+                <li><a href="../classes/lavaca.html">lavaca</a></li>
+            
+                <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
+            
+                <li><a href="../classes/lavaca.env.Device.html">lavaca.env.Device</a></li>
+            
+                <li><a href="../classes/lavaca.events.EventDispatcher.html">lavaca.events.EventDispatcher</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Animation.html">lavaca.fx.Animation</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transform.html">lavaca.fx.Transform</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transition.html">lavaca.fx.Transition</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Application.html">lavaca.mvc.Application</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.AttributeEvent.html">lavaca.mvc.AttributeEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Collection.html">lavaca.mvc.Collection</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Controller.html">lavaca.mvc.Controller</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Router.html">lavaca.mvc.Router</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.View.html">lavaca.mvc.View</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ViewManager.html">lavaca.mvc.ViewManager</a></li>
+            
+                <li><a href="../classes/lavaca.net.Connectivity.html">lavaca.net.Connectivity</a></li>
+            
+                <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
+            
+                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
+            
+                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
+            
+                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
+            
+                <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Scrollable.html">lavaca.ui.Scrollable</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
+            
+                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
+            
+                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
+            
+                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.delay.html">lavaca.util.delay</a></li>
+            
+                <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
+            
+                <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
+            
+                <li><a href="../classes/lavaca.util.log.html">lavaca.util.log</a></li>
+            
+                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
+            
+                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
+            
+                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
+            
+                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
+            
+                <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src/www/js/Lavaca/mvc/Router.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function(require) {
+
+  var Route = require(&#x27;./Route&#x27;),
+      History = require(&#x27;lavaca/net/History&#x27;),
+      Disposable = require(&#x27;lavaca/util/Disposable&#x27;),
+      Promise = require(&#x27;lavaca/util/Promise&#x27;);
+
+  /**
+   * @class lavaca.mvc.Router
+   * @extends lavaca.util.Disposable
+   * URL manager
+   *
+   * @constructor
+   * @param {Lavaca.mvc.ViewManager} viewManager  The view manager
+   */
+  var Router = Disposable.extend(function(viewManager) {
+    Disposable.call(this);
+    /**
+     * @field {Array} routes
+     * @default []
+     * The [[Lavaca.mvc.Route]]s used by this router
+     */
+    this.routes = [];
+    /**
+     * @field {Lavaca.mvc.ViewManager} viewManager
+     * @default null
+     * The view manager used by this router
+     */
+    this.viewManager = viewManager;
+
+  }, {
+    /**
+     * @field {Boolean} locked
+     * @default false
+     * When true, the router is prevented from executing a route
+     */
+    locked: false,
+    /**
+     * @field {Boolean} hasNavigated
+     * @default false
+     * Whether or not this router has been used to navigate
+     */
+    hasNavigated: false,
+
+    startHistory: function() {
+      this.onpopstate = function(e) {
+        if (this.hasNavigated) {
+          History.isRoutingBack = e.direction === &#x27;back&#x27;;
+          this.exec(e.url, e).always(function() {
+            History.isRoutingBack = false;
+          });
+        }
+      };
+      History.on(&#x27;popstate&#x27;, this.onpopstate, this);
+    },
+    /**
+     * Sets the viewManager property on the instance which is the view manager used by this router
+     * @method setEl
+     *
+     * @param {Lavaca.mvc.ViewManager} viewManager
+     * @return {Lavaca.mvc.Router}  This Router instance
+     */
+    setViewManager: function(viewManager) {
+      this.viewManager = viewManager;
+      return this;
+    },
+    /**
+     * Adds multiple routes
+     * @method add
+     *
+     * @param {Object} map  A hash in the form {pattern: [TController, action, params]}
+     *   or {pattern: {controller: TController, action: action, params: params}
+     * @return {Lavaca.mvc.Router}  The router (for chaining)
+     */
+    /**
+     * Adds a route
+     * @method add
+     *
+     * @param {String} pattern  The route URL pattern
+     * @param {Function} TController  The type of controller to perform the action (should derive from [[Lavaca.mvc.Controller]])
+     * @param {String} action  The name of the controller method to call
+     * @return {Lavaca.mvc.Router}  The router (for chaining)
+     */
+    /**
+     * Adds a route
+     * @method add
+     *
+     * @param {String} pattern  The route URL pattern
+     * @param {Function} TController  The type of controller to perform the action (should derive from [[Lavaca.mvc.Controller]])
+     * @param {String} action  The name of the controller method to call
+     * @param {Object} params  Key-value pairs that will be passed to the action
+     * @return {Lavaca.mvc.Router}  The router (for chaining)
+     */
+    add: function(pattern, TController, action, params) {
+      if (typeof pattern === &#x27;object&#x27;) {
+        for (var p in pattern) {
+          var args = pattern[p];
+          if (args instanceof Array) {
+            TController = args[0];
+            action = args[1];
+            params = args[2];
+          } else {
+            TController = args.controller;
+            action = args.action;
+            params = args.params;
+          }
+          this.add(p, TController, action, params);
+        }
+      } else {
+        this.routes.push(new Route(pattern, TController, action, params));
+      }
+      return this;
+    },
+    /**
+     * Executes the action for a given URL
+     * @method exec
+     *
+     * @param {String} url  The URL
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes the action for a given URL
+     * @method exec
+     *
+     * @param {String} url  The URL
+     * @param {Object} state  A history record object
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Executes the action for a given URL
+     * @method exec
+     *
+     * @param {String} url  The URL
+     * @param {Object} state  A history record object
+     * @param {Object} params  Additional parameters to pass to the route
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    exec: function(url, state, params) {
+      if (this.locked) {
+        return (new Promise(this)).reject(&#x27;locked&#x27;);
+      } else {
+        this.locked = true;
+      }
+      if (!url) {
+        url = &#x27;/&#x27;;
+      }
+      if (url.indexOf(&#x27;http&#x27;) === 0) {
+        url = url.replace(/^http(s?):\/\/.+?/, &#x27;&#x27;);
+      }
+      var i = -1,
+          route,
+          promise = new Promise(this);
+      promise.always(function() {
+        this.unlock();
+      });
+      if (!this.hasNavigated) {
+        promise.success(function() {
+          this.hasNavigated = true;
+        });
+      }
+      while (!!(route = this.routes[++i])) {
+        if (route.matches(url)) {
+          return promise.when(route.exec(url, this, this.viewManager, state, params));
+        }
+      }
+      return promise.reject(url, state);
+    },
+    /**
+     * Unlocks the router so that it can be used again
+     * @method unlock
+     *
+     * @return {Lavaca.mvc.Router}  This router (for chaining)
+     */
+    unlock: function() {
+      this.locked = false;
+      return this;
+    },
+    /**
+     * Readies the router for garbage collection
+     * @method dispose
+     */
+    dispose: function() {
+      if (this.onpopstate) {
+        History.off(&#x27;popstate&#x27;, this.onpopstate);
+        this.onpopstate = null;
+      }
+      Disposable.prototype.dispose.apply(this, arguments);
+    }
+  });
+
+  return new Router();
+
+});
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

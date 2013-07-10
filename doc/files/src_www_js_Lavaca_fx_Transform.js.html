@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/www/js/Lavaca/fx/Transform.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.ExampleController.html">app.net.ExampleController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.ExampleView.html">app.ui.views.ExampleView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.PopoverView.html">app.ui.views.PopoverView</a></li>
+            
+                <li><a href="../classes/app.ui.views.TestView.html">app.ui.views.TestView</a></li>
+            
+                <li><a href="../classes/lavaca.html">lavaca</a></li>
+            
+                <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
+            
+                <li><a href="../classes/lavaca.env.Device.html">lavaca.env.Device</a></li>
+            
+                <li><a href="../classes/lavaca.events.EventDispatcher.html">lavaca.events.EventDispatcher</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Animation.html">lavaca.fx.Animation</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transform.html">lavaca.fx.Transform</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transition.html">lavaca.fx.Transition</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Application.html">lavaca.mvc.Application</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.AttributeEvent.html">lavaca.mvc.AttributeEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Collection.html">lavaca.mvc.Collection</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Controller.html">lavaca.mvc.Controller</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Router.html">lavaca.mvc.Router</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.View.html">lavaca.mvc.View</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ViewManager.html">lavaca.mvc.ViewManager</a></li>
+            
+                <li><a href="../classes/lavaca.net.Connectivity.html">lavaca.net.Connectivity</a></li>
+            
+                <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
+            
+                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
+            
+                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
+            
+                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
+            
+                <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Scrollable.html">lavaca.ui.Scrollable</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
+            
+                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
+            
+                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
+            
+                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.delay.html">lavaca.util.delay</a></li>
+            
+                <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
+            
+                <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
+            
+                <li><a href="../classes/lavaca.util.log.html">lavaca.util.log</a></li>
+            
+                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
+            
+                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
+            
+                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
+            
+                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
+            
+                <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src/www/js/Lavaca/fx/Transform.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function(require) {
+
+  var $ = require(&#x27;$&#x27;);
+
+  var _props = {
+        transform: &#x27;transform&#x27;,
+        webkitTransform: &#x27;-webkit-transform&#x27;,
+        MozTransform: &#x27;-moz-transform&#x27;,
+        OTransform: &#x27;-o-transform&#x27;,
+        MSTransform: &#x27;-ms-transform&#x27;
+      },
+      _prop,
+      _cssProp,
+      _3d = false,
+      UNDEFINED;
+
+  var Transform = {};
+
+  (function() {
+    var style = document.createElement(&#x27;div&#x27;).style,
+        s;
+    for (s in _props) {
+      if (s in style) {
+        _prop = s;
+        _cssProp = _props[s];
+        style[s] = &#x27;translate3d(0,0,0)&#x27;;
+        _3d = style[s].indexOf(&#x27;translate3d&#x27;) &gt; -1 &amp;&amp; navigator.userAgent.indexOf(&#x27;Android&#x27;) === -1;
+        break;
+      }
+    }
+  })();
+
+  function _isUndefined(value) {
+    return value === UNDEFINED;
+  }
+
+  function _toOriginUnit(v) {
+    return typeof v === &#x27;number&#x27; ? v * 100 + &#x27;%&#x27; : v;
+  }
+
+  function _scrubRotateValue(v) {
+    return typeof v === &#x27;number&#x27; ? v + &#x27;deg&#x27; : v;
+  }
+
+  function _scrubTranslateValue(v) {
+    return typeof v === &#x27;number&#x27; ? v + &#x27;px&#x27; : v;
+  }
+
+  function _scrubScaleValue(v) {
+    return typeof v === &#x27;number&#x27; ? v + &#x27;,&#x27; + v : v;
+  }
+
+  function _scrubTransformValue(prop, value) {
+    var isRotate = prop.indexOf(&#x27;rotate&#x27;) === 0,
+        isScale = prop === &#x27;scale&#x27;,
+        isTranslate = prop.indexOf(&#x27;translate&#x27;) === 0,
+        //isAxisSpecific = /(X|Y|Z)$/.test(prop),
+        p,
+        css = [];
+    if (typeof value === &#x27;object&#x27;) {
+      for (p in value) {
+        css.push(prop
+          + p.toUpperCase()
+          + &#x27;(&#x27;
+          + (isTranslate
+              ? _scrubTranslateValue(value[p])
+              : isRotate
+                ? _scrubRotateValue(value[p])
+                : isScale
+                  ? _scrubScaleValue(value[p])
+                  : value[p])
+          + &#x27;)&#x27;);
+      }
+    } else {
+      if (isScale) {
+        value = _scrubScaleValue(value);
+      } else if (isRotate) {
+        value = _scrubRotateValue(value);
+      } else if (isTranslate) {
+        value = _scrubTranslateValue(value);
+      }
+      css.push(prop + &#x27;(&#x27; + value + &#x27;)&#x27;);
+    }
+    return css.join(&#x27; &#x27;);
+  }
+
+  /**
+   * Static utility type for working with CSS transforms
+   * @class lavaca.fx.Transform
+   */
+
+  /**
+   * Whether or not transforms are supported by the browser
+   * @method isSupported
+   * @static
+   *
+   * @return {Boolean}  True when transforms are supported
+   */
+  Transform.isSupported = function() {
+    return !!_prop;
+  };
+
+  /**
+   * Whether or not 3D transforms are supported by the browser
+   * @method is3dSupported
+   * @static
+   *
+   * @return {Boolean}  True when 3D transforms are supported
+   */
+  Transform.is3dSupported = function() {
+    return _3d;
+  };
+
+  /**
+   * Converts a transform hash into a CSS string
+   * @method toCSS
+   * @static
+   *
+   * @param {Object} opts  A hash of CSS transform values, with properties in
+   *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
+   * @opt {Object} translate  An object or string containing the translation values
+   * @opt {Object} translateX  A string (in any unit) or number (in pixels) representing the X translation value
+   * @opt {Object} translateY  A string (in any unit) or number (in pixels) representing the Y translation value
+   * @opt {Object} translateZ  A string (in any unit) or number (in pixels) representing the Z translation value
+   * @opt {String} translate3d  A string containing the 3D translation values
+   * @opt {Object} rotate  An object, string, or number (in degrees) containing the rotation value(s)
+   * @opt {Object} rotateX  A string (in any unit) or number (in degrees) representing the X rotation value
+   * @opt {Object} rotateY  A string (in any unit) or number (in degrees) representing the Y rotation value
+   * @opt {Object} rotateZ  A string (in any unit) or number (in degrees) representing the Z rotation value
+   * @opt {String} rotate3d  A string containing the 3D rotation values
+   * @opt {Object} scale  An object, string or number (in percentage points) containing the scale value(s)
+   * @opt {Object} scaleX  A string (in any unit) or number (in percentage points) representing the X scale value
+   * @opt {Object} scaleY  A string (in any unit) or number (in percentage points) representing the Y scale value
+   * @opt {Object} scaleZ  A string (in any unit) or number (in percentage points) representing the Z scale value
+   * @opt {String} scale3d  Astring containing the 3D scale values
+   * @opt {Object} skew  An object or string containing the skew values
+   * @opt {Object} skewX  A string (in any unit) or number (in pixels) representing the X skew value
+   * @opt {Object} skewY  A string (in any unit) or number (in pixels) representing the Y skew value
+   * @opt {String} matrix  A string containing the matrix transform values
+   * @opt {String} matrix3d  A string containing the 3D matrix transform values
+   * @opt {String} perspective  A string containing the perspective transform values
+   * @return {String}  The generated CSS string
+   */
+  Transform.toCSS = function(opts) {
+    var css = [],
+        prop;
+    if (typeof opts === &#x27;object&#x27;) {
+      for (prop in opts) {
+        css.push(_scrubTransformValue(prop, opts[prop]));
+      }
+    } else {
+      css.push(opts);
+    }
+    return css.join(&#x27; &#x27;);
+  };
+
+  /**
+   * Gets the name of the transform CSS property
+   * @method cssProperty
+   * @static
+   *
+   * @return {String}  The name of the CSS property
+   */
+  Transform.cssProperty = function() {
+    return _cssProp;
+  };
+
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {String} value  The CSS transform string
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {Object} opt  A hash of CSS transform values, with properties in
+   *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
+   * @opt {Object} translate  An object or string containing the translation values
+   * @opt {Object} translateX  A string (in any unit) or number (in pixels) representing the X translation value
+   * @opt {Object} translateY  A string (in any unit) or number (in pixels) representing the Y translation value
+   * @opt {Object} translateZ  A string (in any unit) or number (in pixels) representing the Z translation value
+   * @opt {String} translate3d  A string containing the 3D translation values
+   * @opt {Object} rotate  An object, string, or number (in degrees) containing the rotation value(s)
+   * @opt {Object} rotateX  A string (in any unit) or number (in degrees) representing the X rotation value
+   * @opt {Object} rotateY  A string (in any unit) or number (in degrees) representing the Y rotation value
+   * @opt {Object} rotateZ  A string (in any unit) or number (in degrees) representing the Z rotation value
+   * @opt {String} rotate3d  A string containing the 3D rotation values
+   * @opt {Object} scale  An object, string or number (in percentage points) containing the scale value(s)
+   * @opt {Object} scaleX  A string (in any unit) or number (in percentage points) representing the X scale value
+   * @opt {Object} scaleY  A string (in any unit) or number (in percentage points) representing the Y scale value
+   * @opt {Object} scaleZ  A string (in any unit) or number (in percentage points) representing the Z scale value
+   * @opt {String} scale3d  Astring containing the 3D scale values
+   * @opt {Object} skew  An object or string containing the skew values
+   * @opt {Object} skewX  A string (in any unit) or number (in pixels) representing the X skew value
+   * @opt {Object} skewY  A string (in any unit) or number (in pixels) representing the Y skew value
+   * @opt {String} matrix  A string containing the matrix transform values
+   * @opt {String} matrix3d  A string containing the 3D matrix transform values
+   * @opt {String} perspective  A string containing the perspective transform values
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {String} value  The CSS transform string
+   * @param {String} origin  The CSS transform origin
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {Object} opt  A hash of CSS transform values, with properties in
+   *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
+   * @opt {Object} translate  An object or string containing the translation values
+   * @opt {Object} translateX  A string (in any unit) or number (in pixels) representing the X translation value
+   * @opt {Object} translateY  A string (in any unit) or number (in pixels) representing the Y translation value
+   * @opt {Object} translateZ  A string (in any unit) or number (in pixels) representing the Z translation value
+   * @opt {String} translate3d  A string containing the 3D translation values
+   * @opt {Object} rotate  An object, string, or number (in degrees) containing the rotation value(s)
+   * @opt {Object} rotateX  A string (in any unit) or number (in degrees) representing the X rotation value
+   * @opt {Object} rotateY  A string (in any unit) or number (in degrees) representing the Y rotation value
+   * @opt {Object} rotateZ  A string (in any unit) or number (in degrees) representing the Z rotation value
+   * @opt {String} rotate3d  A string containing the 3D rotation values
+   * @opt {Object} scale  An object, string or number (in percentage points) containing the scale value(s)
+   * @opt {Object} scaleX  A string (in any unit) or number (in percentage points) representing the X scale value
+   * @opt {Object} scaleY  A string (in any unit) or number (in percentage points) representing the Y scale value
+   * @opt {Object} scaleZ  A string (in any unit) or number (in percentage points) representing the Z scale value
+   * @opt {String} scale3d  Astring containing the 3D scale values
+   * @opt {Object} skew  An object or string containing the skew values
+   * @opt {Object} skewX  A string (in any unit) or number (in pixels) representing the X skew value
+   * @opt {Object} skewY  A string (in any unit) or number (in pixels) representing the Y skew value
+   * @opt {String} matrix  A string containing the matrix transform values
+   * @opt {String} matrix3d  A string containing the 3D matrix transform values
+   * @opt {String} perspective  A string containing the perspective transform values
+   * @param {String} origin  The CSS transform origin
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {String} value  The CSS transform string
+   * @param {Object} origin  The CSS transform origin, in the form {x: N, y: N},
+   *      where N is a decimal percentage between -1 and 1 or N is a pixel value &gt; 1 or &lt; -1.
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  /**
+   * Transforms an element
+   * @method $.fn.transform
+   *
+   * @param {Object} opt  A hash of CSS transform values, with properties in
+   *      the form {translateX: 1, translateY: 1} or {translate: {x: 1, y: 1}}
+   * @opt {Object} translate  An object or string containing the translation values
+   * @opt {Object} translateX  A string (in any unit) or number (in pixels) representing the X translation value
+   * @opt {Object} translateY  A string (in any unit) or number (in pixels) representing the Y translation value
+   * @opt {Object} translateZ  A string (in any unit) or number (in pixels) representing the Z translation value
+   * @opt {String} translate3d  A string containing the 3D translation values
+   * @opt {Object} rotate  An object, string, or number (in degrees) containing the rotation value(s)
+   * @opt {Object} rotateX  A string (in any unit) or number (in degrees) representing the X rotation value
+   * @opt {Object} rotateY  A string (in any unit) or number (in degrees) representing the Y rotation value
+   * @opt {Object} rotateZ  A string (in any unit) or number (in degrees) representing the Z rotation value
+   * @opt {String} rotate3d  A string containing the 3D rotation values
+   * @opt {Object} scale  An object, string or number (in percentage points) containing the scale value(s)
+   * @opt {Object} scaleX  A string (in any unit) or number (in percentage points) representing the X scale value
+   * @opt {Object} scaleY  A string (in any unit) or number (in percentage points) representing the Y scale value
+   * @opt {Object} scaleZ  A string (in any unit) or number (in percentage points) representing the Z scale value
+   * @opt {String} scale3d  Astring containing the 3D scale values
+   * @opt {Object} skew  An object or string containing the skew values
+   * @opt {Object} skewX  A string (in any unit) or number (in pixels) representing the X skew value
+   * @opt {Object} skewY  A string (in any unit) or number (in pixels) representing the Y skew value
+   * @opt {String} matrix  A string containing the matrix transform values
+   * @opt {String} matrix3d  A string containing the 3D matrix transform values
+   * @opt {String} perspective  A string containing the perspective transform values
+   * @param {Object} origin  The CSS transform origin, in the form {x: N, y: N},
+   *      where N is a decimal percentage between -1 and 1 or N is a pixel value &gt; 1 or &lt; -1.
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  $.fn.transform = function(value, origin) {
+    if (Transform.isSupported()) {
+      value = Transform.toCSS(value);
+      if (origin) {
+        if (typeof origin === &#x27;object&#x27;) {
+          origin = _toOriginUnit(origin.x) + (_isUndefined(origin.y) ? &#x27;&#x27; : &#x27; &#x27; + _toOriginUnit(origin.y));
+        }
+      }
+      this.each(function() {
+        this.style[_prop] = value;
+        if (origin) {
+          this.style[_prop + &#x27;Origin&#x27;] = origin;
+        }
+      });
+    }
+    return this;
+  };
+
+  return Transform;
+
+});
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
