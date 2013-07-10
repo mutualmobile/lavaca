@@ -111,12 +111,12 @@ $ grunt test
 
 ### Docs
 
-Generates JavaScript documentation using [Atnotate](https://github.com/mutualmobile/lavaca/wiki/5.4.-Documentation-Generation-with-Atnotate). The resulting documentation is outputed to the `docs` folder.
+Generates JavaScript documentation using [yuidoc](https://github.com/gruntjs/grunt-contrib-yuidoc). The resulting documentation is outputed to the `doc` folder.
 
 - __Generate JavaScript Documentation__
 
 ```bash
-$ grunt docs
+$ grunt yuidoc
 ```
 
 
