@@ -1,0 +1,5 @@
+{
+  "example": "value - local",
+  "apiPrefix" : "/api",
+  "apiBaseUrl":"https://www.googleapis.com"
+}
