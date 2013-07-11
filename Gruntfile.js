@@ -127,13 +127,6 @@ module.exports = function( grunt ) {
       }
     },
 
-    concat: {
-      css: {
-        src: '<%= paths.tmp.www %>/css/app.css',
-        dest: '<%= paths.tmp.www %>/css/app.built.css'
-      }
-    },
-
     jasmine: {
       all: ['test/runner.html'],
       options: {
@@ -285,7 +278,7 @@ module.exports = function( grunt ) {
     'amd-dist': {
       all: {
         options: {
-          standalone: false
+          standalone: true
         },
         files: [
           {
@@ -377,7 +370,7 @@ module.exports = function( grunt ) {
 
   grunt.registerTask('build', 'Builds app with specified config', function(env) {
     env = env || 'local';
-    grunt.task.run('clean:tmp', 'clean:build', 'copy:tmp', 'less', 'concat', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
+    grunt.task.run('clean:tmp', 'clean:build', 'copy:tmp', 'less', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
   });
 
   grunt.registerTask('default', ['amd-test', 'jasmine', 'server']);
