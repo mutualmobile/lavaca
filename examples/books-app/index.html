@@ -43,10 +43,9 @@
     <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" href="assets/img/splash-2048x1496.png" />
 
 
-    <!-- @exclude -->
-    <link rel="stylesheet/less" type="text/css" href="css/app/app.less" />
-    <!-- @endexclude -->
-    <!-- @echo css -->
+    
+    <link rel="stylesheet" type="text/css" href="css/app/app.min.css" />
+
 
 
   </head>
@@ -57,15 +56,12 @@
     <div id="menu"></div>
     <div id="view-root"></div>
     <div id="modal"></div>
-    <!-- @exclude -->
-    <script data-main="js/app/boot" src="js/libs/require.js"></script>
-    <script src="js/libs/less-1.3.3.min.js"></script>
-    <!-- @endexclude -->
-    <!-- @echo js -->
-    <!-- @exclude -->
+    
+    <script src="js/app.min.js"></script>
+
+    
     <script type="text/x-config" data-name="local" data-src="configs/local.json" data-default></script>
-    <!-- @endexclude -->
-    <!-- @echo config -->
+
     <script type="text/x-translation" data-name="en_US" data-src="messages/en_US.json" data-default></script>
     <script type="text/x-translation" data-name="es_MX" data-src="messages/es_MX.json"></script>
   </body>
