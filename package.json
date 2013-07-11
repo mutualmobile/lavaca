@@ -16,10 +16,9 @@
     "preprocess": "1.0.x",
     "connect": "2.4.4",
     "deferreds": "1.x",
-    "dustjs-linkedin": "1.1.1",
-    "grunt-contrib-clean": "0.4.x",
-    "grunt-contrib-copy": "0.4.x",
-    "grunt-contrib-concat": "0.1.x",
+    "grunt-contrib-clean": "0.4.1",
+    "grunt-contrib-copy": "0.4.1",
+    "grunt-contrib-concat": "0.3.0",
     "grunt-contrib-less": "0.6.3",
     "grunt-contrib-uglify": "0.2.2",
     "grunt-contrib-jshint": "0.1.x",
@@ -30,7 +29,9 @@
     "xml2js": "0.2.x",
     "promisemonkey": "0.1.x",
     "grunt-contrib-yuidoc": "0.4.0",
-    "grunt-contrib-watch": "0.4.4"
+    "grunt-contrib-watch": "0.4.4",
+    "dustjs-linkedin": "1.2.5",
+    "dustjs-helpers": "1.1.1"
   },
   "repository": "git@github.com:mutualmobile/lavaca.git",
   "keywords": [

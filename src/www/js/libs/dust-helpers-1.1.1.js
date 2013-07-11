@@ -1,16 +1,12 @@
 //
-// Dust-helpers - Additional functionality for dustjs-linkedin package v1.1.0
+// Dust-helpers - Additional functionality for dustjs-linkedin package v1.1.1
 //
 // Copyright (c) 2012, LinkedIn
 // Released under the MIT License.
 //
 
-(function(){
+(function(dust){
 
-if (typeof exports !== "undefined")
-{
-  dust = require("dustjs-linkedin");
-}
 // Note: all error conditions are logged to console and failed silently
 
 /* make a safe version of console if it is not available
@@ -160,7 +156,7 @@ var helpers = {
      }
   },
 
-  /*
+  /**
    * contextDump helper
    * @param key specifies how much to dump.
    * "current" dumps current context. "full" dumps the full context stack.
@@ -188,7 +184,7 @@ var helpers = {
       return chunk.write(dump);
     }
   },
-  /*
+  /**
    if helper for complex evaluation complex logic expressions.
    Note : #1 if helper fails gracefully when there is no body block nor else block
           #2 Undefined values and false values in the JSON need to be handled specially with .length check
@@ -202,7 +198,7 @@ var helpers = {
                 a string literal value, is enclosed in double quotes, e.g. cond="2>3"
                 a dust reference is also enclosed in double quotes, e.g. cond="'{val}'' > 3"
     cond argument should evaluate to a valid javascript expression
-   */
+   **/
 
   "if": function( chunk, context, bodies, params ){
     var body = bodies.block,
@@ -231,11 +227,12 @@ var helpers = {
     return chunk;
   },
 
-  /*
+  /**
    * math helper
    * @param key is the value to perform math against
    * @param method is the math method,  is a valid string supported by math helper like mod, add, subtract
    * @param operand is the second value needed for operations like mod, add, subtract, etc.
+   * @param round is a flag to assure that an integer is returned
    */
   "math": function ( chunk, context, bodies, params ) {
     //key and method are required for further processing
@@ -244,6 +241,7 @@ var helpers = {
           method = params.method,
           // operand can be null for "abs", ceil and floor
           operand = params.operand,
+          round = params.round,
           mathOut = null,
           operError = function(){_console.log("operand is required for this math method"); return null;};
       key  = dust.helpers.tap(key, chunk, context);
@@ -277,6 +275,9 @@ var helpers = {
         case "floor":
           mathOut = Math.floor(parseFloat(key));
           break;
+        case "round":
+          mathOut = Math.round(parseFloat(key));
+          break;
         case "abs":
           mathOut = Math.abs(parseFloat(key));
           break;
@@ -285,6 +286,9 @@ var helpers = {
      }
 
       if (mathOut !== null){
+        if (round) {
+          mathOut = Math.round(mathOut);
+        }
         if (bodies && bodies.block) {
           // with bodies act like the select helper with mathOut as the key
           // like the select helper bodies['else'] is meaningless and is ignored
@@ -303,14 +307,14 @@ var helpers = {
     }
     return chunk;
   },
-   /*
+   /**
    select helperworks with one of the eq/gt/gte/lt/lte/default providing the functionality
    of branching conditions
    @param key,  ( required ) either a string literal value or a dust reference
                 a string literal value, is enclosed in double quotes, e.g. key="foo"
                 a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   */
+   **/
   "select": function(chunk, context, bodies, params) {
     var body = bodies.block;
     // key is required for processing, hence check for defined
@@ -333,7 +337,7 @@ var helpers = {
     return chunk;
   },
 
-  /*
+  /**
    eq helper compares the given key is same as the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -343,7 +347,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-   */
+   **/
   "eq": function(chunk, context, bodies, params) {
     if(params) {
       params.filterOpType = "eq";
@@ -351,7 +355,7 @@ var helpers = {
     return filter(chunk, context, bodies, params, function(expected, actual) { return actual === expected; });
   },
 
-  /*
+  /**
    ne helper compares the given key is not the same as the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -361,7 +365,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-   */
+   **/
   "ne": function(chunk, context, bodies, params) {
     if(params) {
       params.filterOpType = "ne";
@@ -370,7 +374,7 @@ var helpers = {
    return chunk;
   },
 
-  /*
+  /**
    lt helper compares the given key is less than the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -380,7 +384,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone  or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-   */
+   **/
   "lt": function(chunk, context, bodies, params) {
      if(params) {
        params.filterOpType = "lt";
@@ -388,7 +392,7 @@ var helpers = {
      }
   },
 
-  /*
+  /**
    lte helper compares the given key is less or equal to the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -398,7 +402,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-  */
+  **/
   "lte": function(chunk, context, bodies, params) {
      if(params) {
        params.filterOpType = "lte";
@@ -408,7 +412,7 @@ var helpers = {
   },
 
 
-  /*
+  /**
    gt helper compares the given key is greater than the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -418,7 +422,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone  or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-   */
+   **/
   "gt": function(chunk, context, bodies, params) {
     // if no params do no go further
     if(params) {
@@ -428,7 +432,7 @@ var helpers = {
     return chunk;
   },
 
- /*
+ /**
    gte helper, compares the given key is greater than or equal to the expected value
    It can be used standalone or in conjunction with select for multiple branching
    @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
@@ -438,7 +442,7 @@ var helpers = {
    @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
    @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
    Note : use type="number" when comparing numeric
-  */
+  **/
   "gte": function(chunk, context, bodies, params) {
      if(params) {
       params.filterOpType = "gte";
@@ -457,7 +461,7 @@ var helpers = {
      return filter(chunk, context, bodies, params, function(expected, actual) { return true; });
   },
 
-  /*
+  /**
   * size helper prints the size of the given key
   * Note : size helper is self closing and does not support bodies
   * @param key, the element whose size is returned
@@ -496,8 +500,4 @@ var helpers = {
 
 dust.helpers = helpers;
 
-if (typeof exports !== "undefined")
-{
-  module.exports = dust;
-}
-})();
+})(typeof exports !== 'undefined' ? module.exports = require('dustjs-linkedin') : dust);
