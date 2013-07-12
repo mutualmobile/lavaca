@@ -11,6 +11,8 @@ define(function(require) {
    */
   var TestView = BaseView.extend(function() {
     BaseView.apply(this, arguments);
+
+    this.on('rendersuccess', this.loguihash, this);
   }, {
     /**
      * The name of the template used by the view
@@ -24,7 +26,15 @@ define(function(require) {
      * @default 'example'
    
      */
-    className: 'test'
+    className: 'test',
+
+    ui: {
+      header3: 'h3'
+    },
+
+    loguihash: function(e) {
+      console.log(this.ui);
+    }
 
   });
 
