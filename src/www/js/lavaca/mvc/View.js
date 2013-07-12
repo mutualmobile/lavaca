@@ -407,7 +407,9 @@ define(function(require) {
       for (delegate in this.eventMap) {
         callbacks = this.eventMap[delegate];
         for (type in callbacks) {
-          this.eventMap[delegate][type] = this[this.eventMap[delegate][type]].bind(this)
+          if (typeof this.eventMap[delegate][type] === 'string'){
+            this.eventMap[delegate][type] = this[this.eventMap[delegate][type]].bind(this);
+          }
         }
       }
     },
