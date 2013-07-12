@@ -266,6 +266,9 @@ module.exports = function( grunt ) {
         ]
       },
       android: {
+        options: {
+          targetSdk: undefined
+        },
         files: [
           {
             src: '<%= paths.build.android %>',

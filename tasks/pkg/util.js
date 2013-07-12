@@ -8,6 +8,7 @@ var grunt = require('grunt/lib/grunt');
 var toArray = require('mout/lang/toArray');
 var partial = require('mout/function/partial');
 var Deferred = require('deferreds/Deferred');
+var Promise = require('deferreds/Promise');
 var forEachSeries = require('deferreds/forEachSeries');
 var series = require('deferreds/series');
 var promisify = require('promisemonkey');
@@ -23,7 +24,7 @@ var _partial = function() {
 
   ret.then = function(onFulfilled, onRejected) {
     return function() {
-      return Deferred.fromAny(partial.apply(this, args))
+      return Promise.fromAny(partial.apply(this, args))
         .then(onFulfilled, onRejected);
     };
   };
@@ -153,6 +154,15 @@ util.getAppPkgNameAndroid = function(dir) {
     .then(function(data) {
       return data.manifest.$['package'];
     });
+};
+
+
+util.getLatestAndroidSdk = function() {
+  return util.cmd('android list target --compact').then(function(data) {
+    return data.split('\n').filter(function(id) {
+      return id.trim().length;
+    }).pop();
+  });
 };
 
 
