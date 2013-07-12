@@ -40,7 +40,17 @@ module.exports = function( grunt ) {
         android: '<%= paths.package.root %>/<%= package.name %>.apk',
         ios: '<%= paths.package.root %>/<%= package.name %>.ipa'
       },
-      doc: 'doc'
+      doc: 'doc',
+      copy: {
+        www: [
+          '<%= paths.out.index %>',
+          '<%= paths.out.css %>',
+          '<%= paths.out.js %>',
+          'configs/**/*',
+          'assets/**/*',
+          'messages/**/*'
+        ]
+      }
     },
 
     'package': grunt.file.readJSON('package.json'),
@@ -203,46 +213,55 @@ module.exports = function( grunt ) {
           }
         ]
       },
-      build: {
-        files: (function() {
-          var files = [];
-
-          files.push({
+      ios: {
+        files: [
+          {
             expand: true,
             cwd: '<%= paths.tmp.ios %>',
             src: '**/*',
             dest: '<%= paths.build.ios %>'
-          });
-
-          files.push({
+          }
+        ]
+      },
+      android: {
+        files: [
+          {
             expand: true,
             cwd: '<%= paths.tmp.android %>',
             src: '**/*',
             dest: '<%= paths.build.android %>'
-          });
-
-          [
-            '<%= paths.build.www %>/',
-            '<%= paths.asset.ios %>/',
-            '<%= paths.asset.android %>/'
-          ].forEach(function(dest) {
-            files.push({
-              expand: true,
-              cwd: '<%= paths.tmp.www %>',
-              src: [
-                '<%= paths.out.index %>',
-                '<%= paths.out.css %>',
-                '<%= paths.out.js %>',
-                'configs/**/*',
-                'assets/**/*',
-                'messages/**/*'
-              ],
-              dest: dest
-            });
-          });
-
-          return files;
-        })()
+          }
+        ]
+      },
+      www: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.www %>/',
+            src: '<%= paths.copy.www %>',
+            dest: '<%= paths.build.www %>/'
+          }
+        ]
+      },
+      wwwandroid: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.www %>',
+            src: '<%= paths.copy.www %>',
+            dest: '<%= paths.asset.android %>/'
+          }
+        ]
+      },
+      wwwios: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.www %>',
+            src: '<%= paths.copy.www %>',
+            dest: '<%= paths.asset.ios %>/'
+          }
+        ]
       }
     },
 
@@ -350,6 +369,27 @@ module.exports = function( grunt ) {
         files: ['src/www/**/*.js'],
         tasks: ['yuidoc']
       }
+    },
+
+    build: {
+      local: {
+        options: {
+          tasks: ['less', 'amd-dist', 'uglify', 'preprocess'],
+          platforms: ['www', 'android', 'ios']
+        }
+      },
+      staging: {
+        options: {
+          tasks: ['less', 'amd-dist', 'uglify', 'preprocess'],
+          platforms: ['www', 'android', 'ios']
+        }
+      },
+      production: {
+        options: {
+          tasks: ['yuidoc', 'less', 'amd-dist', 'uglify', 'preprocess'],
+          platforms: ['www', 'android', 'ios']
+        }
+      }
     }
   });
 
@@ -358,6 +398,7 @@ module.exports = function( grunt ) {
   grunt.loadTasks('tasks/docs');
   grunt.loadTasks('tasks/preprocess');
   grunt.loadTasks('tasks/blueprint');
+  grunt.loadTasks('tasks/build');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -371,14 +412,9 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('build', 'Builds app with specified config', function(env) {
-    env = env || 'local';
-    grunt.task.run('clean:tmp', 'clean:build', 'copy:tmp', 'less', 'amd-dist', 'uglify', 'copy:build', 'preprocess::'+env, 'clean:tmp');
-  });
+  grunt.registerTask('default', 'runs the tests and starts local server', ['amd-test', 'jasmine', 'server']);
 
-  grunt.registerTask('default', ['amd-test', 'jasmine', 'server']);
-
-  grunt.registerTask('test', ['amd-test', 'jasmine']);
+  grunt.registerTask('test', 'generates runner and runs the tests', ['amd-test', 'jasmine']);
 
   grunt.registerTask('doc', 'compiles documentation and starts a server', ['yuidoc', 'server:doc']);
 };
