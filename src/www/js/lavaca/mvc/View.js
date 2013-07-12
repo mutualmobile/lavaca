@@ -397,6 +397,21 @@ define(function(require) {
       }
     },
     /**
+     * Checks for strings in the event map to bind events to this automatically
+     * @method bindMappedEvents
+     */
+    bindMappedEvents: function() {
+      var callbacks,
+        delegate,
+        type;
+      for (delegate in this.eventMap) {
+        callbacks = this.eventMap[delegate];
+        for (type in callbacks) {
+          this.eventMap[delegate][type] = this[this.eventMap[delegate][type]].bind(this)
+        }
+      }
+    },
+    /**
      * Binds events to the view
      * @method applyEvents
      *
@@ -654,6 +669,7 @@ define(function(require) {
      */
     onRenderSuccess: function(e) {
       this.el.html(e.html);
+      this.bindMappedEvents();
       this.applyEvents();
       this.createWidgets();
       this.createChildViews();
@@ -680,10 +696,10 @@ define(function(require) {
       if (this.model) {
         this.clearModelEvents();
       }
-      if (this.childViews.count) {
+      if (this.childViews.count()) {
         this.disposeChildViews(this.el);
       }
-      if (this.widgets.count) {
+      if (this.widgets.count()) {
         this.disposeWidgets(this.el);
       }
 

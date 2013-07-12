@@ -135,13 +135,14 @@ define(function(require) {
 
     /**
      * returns number of items in cache
-     * @method length
+     * @method count
      */
-    length: function() {
-      var length = 0;
+    count: function() {
+      var count = 0;
       this.each(function(key, item) {
-        length++;
+        count++;
       }, this);
+      return count;
     },
 
     /**

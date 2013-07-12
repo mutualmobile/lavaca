@@ -1,3 +1,17 @@
+Changed in 2.0.4
+======
+* Fix for Disposing of childviews and widgets in View.js
+* Fix for Bug in new syntax for mapEvent in Views
+
+Changed in 2.0.3
+======
+* Switched to grunt-contrib-yuidoc for code documentation generation
+* Cleaned up unused tasks in Gruntfile.js
+* Introduced new code scaffolding grunt task
+* Updated grunt server task to handle proxying both http and https based apis, added more configuration options
+* Added new syntax to mapEvent in Views, can now pass method name as a string and it will automatically bind to the view's context
+
+
 Changed in 2.0
 ======
 * Upgraded Cordova to 2.6
