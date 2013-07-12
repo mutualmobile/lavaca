@@ -1,3 +1,8 @@
+Changed in 2.0.4
+======
+* Fix for Disposing of childviews and widgets in View.js
+* Fix for Bug in new syntax for mapEvent in Views
+
 Changed in 2.0.3
 ======
 * Switched to grunt-contrib-yuidoc for code documentation generation
