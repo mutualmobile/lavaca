@@ -135,7 +135,7 @@ define(function(require) {
 
     /**
      * returns number of items in cache
-     * @method length
+     * @method count
      */
     count: function() {
       var count = 0;
