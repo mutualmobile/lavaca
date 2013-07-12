@@ -78,6 +78,12 @@ define(function(require) {
       cache.clear();
       expect(cache.get('foo')).toBeNull();
     });
+    it('can return how many items are in the cache', function() {
+      cache.set('foo', 'bar');
+      cache.set('baz', 'faz');
+      console.log(cache);
+      expect(cache.count()).toEqual(2);
+    });
   });
 
 });

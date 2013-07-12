@@ -680,10 +680,10 @@ define(function(require) {
       if (this.model) {
         this.clearModelEvents();
       }
-      if (this.childViews.count) {
+      if (this.childViews.count()) {
         this.disposeChildViews(this.el);
       }
-      if (this.widgets.count) {
+      if (this.widgets.count()) {
         this.disposeWidgets(this.el);
       }
 
