@@ -22,7 +22,7 @@ Lavaca has a ton packed into it, and is designed to work well as a cohesive whol
 ## Quick Start
 1. __Install *getlavaca* CLI tool__
 ```bash
-$ curl https://raw.github.com/mutualmobile/lavaca/amd/getlavaca > /usr/local/bin/getlavaca && chmod +x /usr/local/bin/getlavaca
+$ curl https://raw.github.com/mutualmobile/lavaca/master/getlavaca > /usr/local/bin/getlavaca && chmod +x /usr/local/bin/getlavaca
 ```
 
 2. __Go to your prefered root directory then run__
