@@ -19,11 +19,17 @@ module.exports = function( grunt ) {
         ios: '<%= paths.tmp.root %>/ios',
         android: '<%= paths.tmp.root %>/android'
       },
+      cordovaInit: {
+        root: 'init',
+        www: '<%= paths.cordovaInit.root %>/src/www',
+        cordovaConfig: '<%= paths.src.www %>/config.xml',
+        cordovaConfigDest: '<%= paths.cordovaInit.www %>/config.xml'
+      },
       build: {
         root: 'build',
         www: '<%= paths.build.root %>/www',
-        ios: '<%= paths.build.root %>/ios',
-        android: '<%= paths.build.root %>/android'
+        ios: '<%= paths.build.root %>/platforms/ios',
+        android: '<%= paths.build.root %>/platforms/android'
       },
       asset: {
         ios: '<%= paths.build.ios %>/www',
@@ -33,7 +39,7 @@ module.exports = function( grunt ) {
         index: 'index.html',
         css: 'css/app/app.min.css',
         js: 'js/app.min.js',
-        cordova: 'js/cordova.js'
+        cordova: 'cordova.js'
       },
       'package': {
         root: 'pkg',
@@ -48,7 +54,8 @@ module.exports = function( grunt ) {
           '<%= paths.out.js %>',
           'configs/**/*',
           'assets/**/*',
-          'messages/**/*'
+          'messages/**/*',
+          'config.xml'
         ]
       }
     },
@@ -58,7 +65,9 @@ module.exports = function( grunt ) {
     clean: {
       tmp: ['<%= paths.tmp.root %>'],
       build: ['<%= paths.build.root %>'],
-      'package': ['<%= paths.package.root %>']
+      'package': ['<%= paths.package.root %>'],
+      cordova: ['<%= paths.src.www %>'],
+      init: ['<%= paths.cordovaInit.root %>']
     },
 
     uglify: {
@@ -210,26 +219,60 @@ module.exports = function( grunt ) {
             cwd: '<%= paths.src.root %>',
             src: '**/*',
             dest: '<%= paths.tmp.root %>/'
+          },
+          {
+            expand: true,
+            cwd: '<%= paths.src.root %>',
+            src: '.cordova/**',
+            dest: '<%= paths.tmp.root %>/'
           }
         ]
       },
-      ios: {
+      cordovaInit: {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.tmp.ios %>',
+            cwd: '<%= paths.src.root %>',
             src: '**/*',
-            dest: '<%= paths.build.ios %>'
+            dest: '<%= paths.cordovaInit.root %>/src'
           }
         ]
       },
-      android: {
+      configLavaca: {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.tmp.android %>',
+            cwd: '<%= paths.cordovaInit.root %>/src/www',
             src: '**/*',
-            dest: '<%= paths.build.android %>'
+            dest: '<%= paths.src.root %>/www'
+          }
+        ]
+      },
+      cordova: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.root %>',
+            src: ['.cordova/**'],
+            dest: '<%= paths.build.root %>/'
+          },
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.root %>',
+            src: ['merges/**'],
+            dest: '<%= paths.build.root %>/'
+          },
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.root %>',
+            src: ['platforms/**'],
+            dest: '<%= paths.build.root %>/'
+          },
+          {
+            expand: true,
+            cwd: '<%= paths.tmp.root %>',
+            src: ['plugins/**'],
+            dest: '<%= paths.build.root %>/'
           }
         ]
       },
@@ -240,26 +283,6 @@ module.exports = function( grunt ) {
             cwd: '<%= paths.tmp.www %>/',
             src: '<%= paths.copy.www %>',
             dest: '<%= paths.build.www %>/'
-          }
-        ]
-      },
-      wwwandroid: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= paths.tmp.www %>',
-            src: '<%= paths.copy.www %>',
-            dest: '<%= paths.asset.android %>/'
-          }
-        ]
-      },
-      wwwios: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= paths.tmp.www %>',
-            src: '<%= paths.copy.www %>',
-            dest: '<%= paths.asset.ios %>/'
           }
         ]
       }
@@ -374,31 +397,61 @@ module.exports = function( grunt ) {
     build: {
       local: {
         options: {
-          tasks: ['less', 'amd-dist', 'uglify', 'preprocess'],
-          platforms: ['www', 'android', 'ios']
+          tasks: ['less', 'amd-dist', 'uglify', 'preprocess']
         }
       },
       staging: {
         options: {
-          tasks: ['less', 'amd-dist', 'uglify', 'preprocess'],
-          platforms: ['www', 'android', 'ios']
+          tasks: ['less', 'amd-dist', 'uglify', 'preprocess']
         }
       },
       production: {
         options: {
-          tasks: ['yuidoc', 'less', 'amd-dist', 'uglify', 'preprocess'],
-          platforms: ['www', 'android', 'ios']
+          tasks: ['yuidoc', 'less', 'amd-dist', 'uglify', 'preprocess']
         }
       }
+    },
+
+    initCordova: {
+      init: {
+        options: {
+          appName: 'App',
+          id: 'com.mm.App'
+        }
+      }
+    },
+
+    initPlatforms: {
+      init: {
+        options: {
+          platforms: ['ios', 'android']
+        }
+      }
+    },
+
+    chmod: {
+      build: {
+        options: {
+          mode: '775'
+        },
+        src: ['build/**/*']
+      }
     }
+
+
   });
 
   grunt.loadTasks('tasks/server');
   grunt.loadTasks('tasks/pkg');
-  grunt.loadTasks('tasks/docs');
   grunt.loadTasks('tasks/preprocess');
   grunt.loadTasks('tasks/blueprint');
   grunt.loadTasks('tasks/build');
+  grunt.loadTasks('tasks/initCordova');
+  grunt.loadTasks('tasks/initPlatforms');
+  grunt.loadTasks('tasks/configLavaca');
+  grunt.loadTasks('tasks/cordovaBuild');
+  grunt.loadTasks('tasks/projectInit');
+  grunt.loadTasks('tasks/initLavaca');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -411,10 +464,12 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-amd-check');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-chmod');
 
   grunt.registerTask('default', 'runs the tests and starts local server', ['amd-test', 'jasmine', 'server']);
 
   grunt.registerTask('test', 'generates runner and runs the tests', ['amd-test', 'jasmine']);
 
   grunt.registerTask('doc', 'compiles documentation and starts a server', ['yuidoc', 'server:doc']);
+
 };

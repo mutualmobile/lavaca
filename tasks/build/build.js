@@ -8,26 +8,32 @@ module.exports = function(grunt) {
     var tasks = options.tasks;
     tasks.unshift('clean:tmp', 'clean:build', 'copy:tmp');
     var target = this.target;
-    var platforms = options.platforms;
+    var platforms = grunt.config.get('initPlatforms').init.options.platforms;
     var preProcessIndex = grunt.util._.indexOf(options.tasks, 'preprocess');
+    var isCordova = grunt.file.exists(paths.src.root + '/.cordova');
     var platformTasks = [];
-    platforms.forEach(function(value, index, array){
-      platformTasks.push('copy:' + value);
-      if (value === 'ios' || value === 'android') {
-        platformTasks.push('copy:www' + value);
-      }
-    });
+
+    platformTasks.push('copy:www');
+    platformTasks.push('copy:cordova');
+    platformTasks.push('chmod:build');
+    platformTasks.push('cordovaBuild');
+
     if (preProcessIndex > 0){
-      platforms.forEach(function(value, index, array){
-        platformTasks.push('preprocess' + ':' + value + ':' + target);
-      });
+      if (isCordova) {
+        platforms.forEach(function(value, index, array){
+          platformTasks.push('preprocess' + ':' + value + ':' + target);
+        });
+      }
+      platformTasks.push('preprocess:www:' + target);
       tasks.splice.apply(tasks, [preProcessIndex, 1].concat(platformTasks));
     } else {
       tasks = tasks.concat(platformTasks);
     }
 
+
     tasks.push('clean:tmp');
     grunt.verbose.writeln('Options:', options);
+    grunt.verbose.writeln('Tasks:', tasks);
     grunt.task.run(tasks);
   });
 
