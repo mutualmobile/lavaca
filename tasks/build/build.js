@@ -3,9 +3,13 @@
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('build', 'Configurable build process', function(env) {
+  grunt.registerTask('build', 'Configurable build process', function(env, platform) {
     var target = env || 'local';
-    grunt.task.run('buildProject:' + target);
+    var params = target;
+    if (platform) {
+      params = params + ':' + platform;
+    }
+    grunt.task.run('buildProject:' + params);
   });
 
 };

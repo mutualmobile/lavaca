@@ -2,7 +2,7 @@
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('cordovaBuild', 'builds Cordova Projects', function() {
+  grunt.registerTask('cordovaBuild', 'builds Cordova Projects', function(platform) {
 
     var paths = grunt.config.get('paths');
 
@@ -18,9 +18,16 @@ module.exports = function(grunt) {
       return done();
     };
 
+    var args = [];
+    args.push('build');
+    if (platform) {
+      args.push(platform);
+    }
+
+
     var options = {
       cmd: 'cordova',
-      args: ['build'],
+      args: args,
       opts: {
         cwd: build
       }

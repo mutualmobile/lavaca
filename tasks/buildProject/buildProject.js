@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = function(grunt) {
-  grunt.registerMultiTask('buildProject', 'Configurable build process', function() {
+  grunt.registerMultiTask('buildProject', 'Configurable build process', function(platform) {
     var paths = grunt.config.get('paths');
     var options = this.options({});
     var tasks = options.tasks;
@@ -18,14 +18,22 @@ module.exports = function(grunt) {
     platformTasks.push('chmod:build');
 
     if (isCordova) {
-      platformTasks.push('cordovaBuild');
+      if (platform) {
+        platformTasks.push('cordovaBuild:' + platform);
+      } else {
+        platformTasks.push('cordovaBuild');
+      }
     }
 
     if (preProcessIndex > 0){
       if (isCordova) {
-        platforms.forEach(function(value, index, array){
-          platformTasks.push('preprocess' + ':' + value + ':' + target);
-        });
+        if (platform) {
+          platformTasks.push('preprocess' + ':' + platform + ':' + target)
+        } else {
+          platforms.forEach(function(value, index, array){
+            platformTasks.push('preprocess' + ':' + value + ':' + target);
+          });
+        }
       }
       platformTasks.push('preprocess:www:' + target);
       tasks.splice.apply(tasks, [preProcessIndex, 1].concat(platformTasks));
