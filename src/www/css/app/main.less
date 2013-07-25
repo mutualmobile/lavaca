@@ -1,0 +1,140 @@
+/*
+Lavaca 1.0.5
+Copyright (c) 2012 Mutual Mobile
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+a,
+a:link,
+a:visited,
+a:active,
+a:hover {
+  color: #00a3de;
+}
+html {
+  font-size: 10px;
+}
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background: #e8ebed;
+  position: relative;
+}
+
+#view-root {
+  overflow: hidden;
+  position: absolute;
+  top: 68px;
+  top: 6.8rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  .backface-visibility(hidden);
+  .perspective(1200px);
+  background: #888888;
+}
+#nav-header {
+  position: absolute;
+  z-index: 100;
+  height: 68px;
+  border-bottom: solid 4px #ccd4db;
+  padding: 5px 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+#nav-header {
+  .logo {
+    background: url(../../assets/img/logo.png);
+    width: 102px;
+    height: 48px;
+    overflow: hidden;
+    text-indent: -999px;
+    float: left;
+  }
+  .title {
+    float: left;
+    font-size: 20px;
+    line-height: 48px;
+    margin: 5px 0 0 20px;
+  }
+}
+.ui-blocker {
+  background: rgba(107, 23, 59, 0.25);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.view {
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  visibility: hidden;
+  font-size: 1.2rem;
+}
+.view.show,
+.view.current {
+  visibility: visible;
+  z-index: 1;
+}
+.view.page-ontop,
+.view.pt-page-ontop {
+  z-index: 999;
+}
+.view.popover,
+.dialog {
+  background: #e8ebed;
+  background: -webkit-gradient(linear, left top, left bottom, from(#e8ebed), to(#dfe4e8));
+  background: -webkit-linear-gradient(#e8ebed, #dfe4e8);
+  background: -moz-linear-gradient(#e8ebed, #dfe4e8);
+  background: -ms-linear-gradient(#e8ebed, #dfe4e8);
+  background: -o-linear-gradient(#e8ebed, #dfe4e8);
+  background: linear-gradient(#e8ebed, #dfe4e8);
+  .backface-visibility(hidden);
+}
+.view-interior {
+  min-width: 100%;
+  min-height: 100%;
+  background: rgba(255, 255, 255, .1);
+}
+/* Android scrolling fix - ensures that you can scroll to bottom of last element */
+.view-interior > *:last-child:after {
+  content: ' ';
+  display: block;
+  height: 10px;
+}
+.view h1 {
+  font-size: 2em;
+  padding: 10px 20px .5em;
+  color: #5d798f;
+  font-weight: bold;
+  font-family: 'Helvetica Bold', Helvetica, 'Arial Bold', Arial, sans-serif;
+}
+.view p {
+  margin: 1em 20px;
+  line-height: 1.4em;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+    screen and (min--moz-device-pixel-ratio: 2),
+    screen and (-ms-min-device-pixel-ratio: 2),
+    screen and (-o-min-device-pixel-ratio: 2/1),
+    screen and (-ms-min-device-pixel-ratio: 2),
+    screen and (min-device-pixel-ratio: 2) {
+  #nav-header .logo { 
+    background-image: url(../../assets/img/logo-2x.png);
+    background-size: 100% 100%;
+  }
+}
+@media screen and (min--moz-device-pixel-ratio: 1) {
+  #nav-header {
+    max-height: 63px;
+  }
+}
