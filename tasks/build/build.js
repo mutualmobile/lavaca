@@ -2,39 +2,10 @@
 'use strict';
 
 module.exports = function(grunt) {
-  grunt.registerMultiTask('build', 'Configurable build process', function() {
-    var paths = grunt.config.get('paths');
-    var options = this.options({});
-    var tasks = options.tasks;
-    tasks.unshift('clean:tmp', 'clean:build', 'copy:tmp');
-    var target = this.target;
-    var platforms = grunt.config.get('initPlatforms').init.options.platforms;
-    var preProcessIndex = grunt.util._.indexOf(options.tasks, 'preprocess');
-    var isCordova = grunt.file.exists(paths.src.root + '/.cordova');
-    var platformTasks = [];
 
-    platformTasks.push('copy:www');
-    platformTasks.push('copy:cordova');
-    platformTasks.push('chmod:build');
-    platformTasks.push('cordovaBuild');
-
-    if (preProcessIndex > 0){
-      if (isCordova) {
-        platforms.forEach(function(value, index, array){
-          platformTasks.push('preprocess' + ':' + value + ':' + target);
-        });
-      }
-      platformTasks.push('preprocess:www:' + target);
-      tasks.splice.apply(tasks, [preProcessIndex, 1].concat(platformTasks));
-    } else {
-      tasks = tasks.concat(platformTasks);
-    }
-
-
-    tasks.push('clean:tmp');
-    grunt.verbose.writeln('Options:', options);
-    grunt.verbose.writeln('Tasks:', tasks);
-    grunt.task.run(tasks);
+  grunt.registerTask('build', 'Configurable build process', function(env) {
+    var target = env || 'local';
+    grunt.task.run('buildProject:' + target);
   });
 
 };

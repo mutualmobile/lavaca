@@ -394,7 +394,7 @@ module.exports = function( grunt ) {
       }
     },
 
-    build: {
+    buildProject: {
       local: {
         options: {
           tasks: ['less', 'amd-dist', 'uglify', 'preprocess']
@@ -446,11 +446,12 @@ module.exports = function( grunt ) {
   grunt.loadTasks('tasks/preprocess');
   grunt.loadTasks('tasks/blueprint');
   grunt.loadTasks('tasks/build');
+  grunt.loadTasks('tasks/buildProject');
   grunt.loadTasks('tasks/initCordova');
   grunt.loadTasks('tasks/initPlatforms');
   grunt.loadTasks('tasks/configLavaca');
   grunt.loadTasks('tasks/cordovaBuild');
-  grunt.loadTasks('tasks/projectInit');
+  grunt.loadTasks('tasks/cordovaInit');
   grunt.loadTasks('tasks/initLavaca');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
