@@ -14,7 +14,7 @@ define(function(require) {
 
       this.mapEvent({
         model: {
-          change: 'onModelChange'
+          change: this.onModelChange.bind(this)
         }
       });
     }, {

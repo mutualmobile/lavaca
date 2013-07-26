@@ -8,8 +8,8 @@ require.config({
     'cordova': 'libs/cordova',
     'mout': 'libs/mout/src',
     'docCookies': 'libs/docCookies',
-    'dust': 'libs/dust-full-1.2.4',
-    'dust-helpers': 'libs/dust-helpers-1.1.1',
+    'dust': 'libs/dust-full-1.1.1',
+    'dust-helpers': 'libs/dust-helpers-1.1.0',
     'rdust': 'libs/require-dust',
     'iScroll': 'libs/iscroll-lite-4.1.6',
     'lavaca': 'lavaca'

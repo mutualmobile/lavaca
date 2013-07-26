@@ -7,8 +7,10 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Promise = require('lavaca/util/Promise'),
     log = require('lavaca/util/log'),
-    uuid = require('lavaca/util/uuid'),
-    clone = require('mout/lang/deepClone');
+    uuid = require('lavaca/util/uuid');
+
+
+
 
   /**
    * Base View Class
@@ -61,12 +63,7 @@ define(function(require) {
      *
      */
     this.el = typeof el === 'string' ? $(el) : (el || null);
-    /**
-     * A dictionary of keys and selectors to promote cacheing of jquery selectors for use in the view
-     * @type {Object}
-     * @default {}
-     */
-    this.ui = clone(Object.getPrototypeOf(this).ui);
+
     /**
      * A dictionary of selectors and event types in the form
      * {eventType: {delegate: 'xyz', callback: func}}@property el
@@ -137,13 +134,6 @@ define(function(require) {
      *
      */
     template: null,
-    /**
-     * ui hash of jquery selectors
-     * @property ui
-     * @default {}
-     * @type {Object}
-     */
-    ui: {},
     /**
      * A class name added to the view container
      * @property String className
@@ -689,18 +679,6 @@ define(function(require) {
       this.el.data('view', this);
       this.el.attr('data-view-id', this.id);
       this.hasRendered = true;
-      this.createSelectorHash();
-    },
-
-    /**
-     * Create ui hash of jquery selectors to cache the selectors for use in the view
-     * @method createSelectorHash
-     */
-    createSelectorHash: function() {
-      var uiMap = this.ui;
-      for (key in uiMap) {
-        uiMap[key] = this.el.find(uiMap[key]);
-      }
     },
     /**
      * Executes when the template fails to render
