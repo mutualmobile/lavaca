@@ -6,7 +6,7 @@
 // Released under the MIT License.
 //
 
-var dust = {};
+window.dust = {};
 
 function getGlobal(){
   return (function(){
