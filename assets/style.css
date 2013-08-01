@@ -1,0 +1,54 @@
+@font-face {
+	font-family: 'lavaca';
+	src:url('fonts/lavaca.eot');
+	src:url('fonts/lavaca.eot?#iefix') format('embedded-opentype'),
+		url('fonts/lavaca.woff') format('woff'),
+		url('fonts/lavaca.ttf') format('truetype'),
+		url('fonts/lavaca.svg#lavaca') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'lavaca';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="lavaca-icon-"] {
+*/
+.lavaca-icon-lavaca-horns-pixel, .lavaca-icon-lavaca-horns-left, .lavaca-icon-lavaca-horns-right, .lavaca-icon-lavaca-head-horns-pixel, .lavaca-icon-mm-logo {
+	font-family: 'lavaca';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.lavaca-icon-lavaca-horns-pixel:before {
+	content: "\e000";
+}
+.lavaca-icon-lavaca-horns-left:before {
+	content: "\e001";
+}
+.lavaca-icon-lavaca-horns-right:before {
+	content: "\e002";
+}
+.lavaca-icon-lavaca-head-horns-pixel:before {
+	content: "\e003";
+}
+.lavaca-icon-mm-logo:before {
+	content: "\e004";
+}

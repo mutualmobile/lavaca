@@ -1,0 +1,13 @@
+{
+  "name": "todomvc-lavaca-requirejs",
+  "version": "0.0.0",
+  "dependencies": {
+    "todomvc-common": "~0.1.4",
+    "jquery-mobile": "~1.3.x",
+    "mout": "~0.6.x",
+    "jquery": "~2.0.x",
+    "dustjs-linkedin": "~2.0.x",
+    "dustjs-linkedin-helpers": "~1.1.1",
+    "requirejs": "~2.1.4"
+  }
+}
