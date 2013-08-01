@@ -59,10 +59,17 @@ module.exports = function(grunt) {
               );
             });
           })
+          .then(function() {
+            if (!options.targetSdk) {
+              return util.getLatestAndroidSdk().then(function(target) {
+                options.targetSdk = target;
+              });
+            }
+          })
           .then(function run() {
             return _runCommands([
               {
-                cmd: 'android update project -p ' + buildDir + ' --target 1',
+                cmd: 'android update project -p ' + buildDir + ' --target "' + options.targetSdk + '"',
                 msg: 'Updating Android project...'
               },
               {
@@ -130,6 +137,9 @@ module.exports = function(grunt) {
             var src = path.resolve(buildDir, 'build', appName + '.ipa');
             grunt.file.copy(src, dest);
             grunt.log.writeln('Package saved to ' + dest);
+          })
+          .then(null, function(err) {
+            console.error(err.stack);
           })
           .then(done, done);
         break;

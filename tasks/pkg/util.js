@@ -8,6 +8,7 @@ var grunt = require('grunt/lib/grunt');
 var toArray = require('mout/lang/toArray');
 var partial = require('mout/function/partial');
 var Deferred = require('deferreds/Deferred');
+var Promise = require('deferreds/Promise');
 var forEachSeries = require('deferreds/forEachSeries');
 var series = require('deferreds/series');
 var promisify = require('promisemonkey');
@@ -23,7 +24,7 @@ var _partial = function() {
 
   ret.then = function(onFulfilled, onRejected) {
     return function() {
-      return Deferred.fromAny(partial.apply(this, args))
+      return Promise.fromAny(partial.apply(this, args))
         .then(onFulfilled, onRejected);
     };
   };
@@ -156,6 +157,15 @@ util.getAppPkgNameAndroid = function(dir) {
 };
 
 
+util.getLatestAndroidSdk = function() {
+  return util.cmd('android list target --compact').then(function(data) {
+    return data.split('\n').filter(function(id) {
+      return id.trim().length;
+    }).pop();
+  });
+};
+
+
 var _searchTarget = 'Debug';
 util.getAppNameIos = function(dir) {
   var projDir = grunt.file.expand(dir + '/*.xcodeproj')[0];
@@ -166,6 +176,7 @@ util.getAppNameIos = function(dir) {
   data.split('\n').every(function(line) {
     if (line.search(/PRODUCT_NAME =/) !== -1) {
       cand = line.match(/PRODUCT_NAME = (.*?);/)[1];
+      cand = cand.replace(/"/g, '');
       return true; //continue
     }
     if (cand && line.search(/name =/) !== -1) {
