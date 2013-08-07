@@ -118,18 +118,14 @@ define(function(require) {
         layer = params.layer;
       }
       if (!pageView) {
-        if (History.isRoutingBack && self.layers[layer] instanceof TPageView) {
-          pageView = self.layers[layer];
-        } else {
-          pageView = new TPageView(null, model, layer);
-          if (typeof params === 'object') {
-            merge(pageView, params);
-          }
-          renderPromise = pageView.render();
-          if (cacheKey !== null) {
-            this.pageViews.set(cacheKey, pageView);
-            pageView.cacheKey = cacheKey;
-          }
+        pageView = new TPageView(null, model, layer);
+        if (typeof params === 'object') {
+          merge(pageView, params);
+        }
+        renderPromise = pageView.render();
+        if (cacheKey !== null) {
+          this.pageViews.set(cacheKey, pageView);
+          pageView.cacheKey = cacheKey;
         }
       }
       function lastly() {
