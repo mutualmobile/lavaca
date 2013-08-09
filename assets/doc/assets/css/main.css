@@ -19,7 +19,6 @@ Here's a quick lookup table:
 */
 
 html {
-    background: #fff;
     color: #333;
     overflow-y: scroll;
 }
@@ -55,7 +54,8 @@ a:hover { text-decoration: underline; }
 .jump:focus { left: 40%; }
 
 /* -- Paragraphs ------------------------------------------------------------ */
-p { margin: 1.3em 0; }
+p { margin: 1.3em 0; 
+font-size:15px;}
 dd p, td p { margin-bottom: 0; }
 dd p:first-child, td p:first-child { margin-top: 0; }
 
@@ -75,10 +75,10 @@ h1 {
 }
 
 h2 {
-    font-size: 153.846%;
+    font-size: 20px;
 }
 
-h3 { font-size: 138.462%; }
+h3 { font-size: 16px; }
 
 h4 {
     border-bottom: 1px solid #DBDFEA;
@@ -270,9 +270,8 @@ th {
 
 
 #classdocs .item {
-    border-bottom: 1px solid #466899;
-    margin: 1em 0;
-    padding: 1.5em;
+    margin: 4em 0;
+    padding: 1.5em 0;
 }
 
 #classdocs .item .params p,
@@ -375,7 +374,6 @@ specific tabview, see the other sections below.
 }
 
 .apidocs .tabview.yui3-tabview-content { visibility: visible; }
-.apidocs .tabview .yui3-tabview-panel { background: #fff; }
 
 /* -- Generic Content Styles ------------------------------------------------ */
 
@@ -446,7 +444,7 @@ h2, h3, h4, h5, h6 {
 /* Loading spinners. */
 #bd.loading .apidocs,
 #api-list.loading .yui3-tabview-panel {
-    background: #fff url(../img/spinner.gif) no-repeat center 70px;
+    background: url(../img/spinner.gif) no-repeat center 70px;
     min-height: 150px;
 }
 
@@ -503,7 +501,7 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 .apidocs .index h3 {
     border-bottom: 1px solid #efefef;
     color: #333;
-    font-size: 13px;
+    font-size: 15px;
     margin: 2em 0 0.6em;
     padding-bottom: 2px;
 }
@@ -512,7 +510,7 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 
 .apidocs .index-list {
     border-color: #efefef;
-    font-size: 12px;
+    font-size: 14px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -565,7 +563,6 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 .apidocs .flag.required { background: #e60923; }
 
 .apidocs .item {
-    border-bottom: 1px solid #efefef;
     margin: 1.5em 0 2em;
     padding-bottom: 2em;
 }
@@ -591,7 +588,7 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 
 .apidocs .item .name {
     display: inline;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .apidocs .item .type,
@@ -654,7 +651,7 @@ kbd .cmd { font-family: Monaco, Helvetica; }
 #doc .apidocs .file pre.prettyprint {
     background: inherit;
     border: none;
-    overflow: visible;
+    white-space: normal;
     padding: 0;
 }
 
@@ -815,12 +812,12 @@ kbd .cmd { font-family: Monaco, Helvetica; }
     font-style: normal;
 }
 @font-face {
-    font-family: 'Tungsten-Thin';
-    src: url('fonts/Tungsten-Thin.eot');
-    src: url('fonts/Tungsten-Thin.eot') format('embedded-opentype'),
-         url('fonts/Tungsten-Thin.ttf') format('truetype'),
-         url('fonts/Tungsten-Thin.svg') format('svg'),
-         url('fonts/Tungsten-Thin.otf') format('opentype');
+    font-family: 'Tungsten-Light';
+    src: url('fonts/Tungsten-Light.eot');
+    src: url('fonts/Tungsten-Light.eot') format('embedded-opentype'),
+         url('fonts/Tungsten-Light.ttf') format('truetype'),
+         url('fonts/Tungsten-Light.svg') format('svg'),
+         url('fonts/Tungsten-Light.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -967,16 +964,17 @@ kbd .cmd { font-family: Monaco, Helvetica; }
   font-size: 40px;
   letter-spacing: 2px;
   line-height: 32px;
-margin-top: 20px;
+  margin-top: 20px;
 }
 
 
 
 .yui3-skin-sam #classdocs .api-class-tabs {
-  font-family: 'Tungsten-Thin', Helvetica, sans-serif;
+  font-family: 'Tungsten-Light', Helvetica, sans-serif;
   text-transform: uppercase;
   margin-top: 40px;
 }
+
 .yui3-skin-sam #classdocs .api-class-tabs .yui3-tab-selected {
   font-family: 'Tungsten-Semibold', Helvetica, sans-serif;
   text-transform: uppercase;
@@ -989,6 +987,11 @@ margin-top: 20px;
   letter-spacing: 2px;
   line-height: 30px;
   padding: 0 10px 0 0;
+  transition: color 0.2s linear;
+  -moz-transition: color 0.2s linear;
+  -webkit-transition: color 0.2s linear;
+  -ms-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
 }
 .yui3-skin-sam #classdocs .api-class-tabs .yui3-tab-selected .yui3-tab-label {
   color: #4AA3E7;
@@ -997,8 +1000,13 @@ margin-top: 20px;
 .yui3-skin-sam #classdocs .index-list a {
   font-family: 'OpenSans-SemiBold', Helvetica, sans-serif;
   line-height: 24px;
+  font-size: 15px;
 }
 
+.yui3-skin-sam #classdocs .api-class-tabs .yui3-tab-label:hover,
+.yui3-skin-sam #classdocs .api-class-tabs .yui3-tab-selected .yui3-tab-label:hover {
+  color: #4AA3E7;
+}
 
 .api-class-tab.yui3-tab-selected.yui3-tab .yui3-tab-label,
 .api-class-tab.yui3-tab .yui3-tab-label:hover,
@@ -1030,8 +1038,6 @@ margin-top: 20px;
 
 .yui3-skin-sam #doc #bd .yui3-u-1-4 {
   width: 30%;
-  border-right: 1px solid #eee;
-  background: #fff;
 }
 .yui3-skin-sam #doc #bd .yui3-u-3-4 {
   width: 69%;
@@ -1045,26 +1051,31 @@ margin-top: 20px;
   border: none;
 }
 .yui3-skin-sam .apis a {
-  line-height: 44px;
   border: 0;
   margin: 0;
-  padding: 0 20px;
-  color: #646e75;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
+  color: #585c6a;
+  display: block;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 1.8em;
+  font-size: 12px;
+  font-family: 'OpenSans-Semibold', Helvetica, sans-serif;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .yui3-skin-sam .apis a:hover,
 .yui3-skin-sam .apis a:focus {
-  border-radius: 0;
   border: none;
-  background: none;
-  color: #CCCED0;
-  border-bottom: 1px solid #eee;
+  border-radius:0;
+  color:#424347;
+  background-color:#D1D1D1;
 }
 .yui3-skin-sam .api-list-item a:hover,
 .yui3-skin-sam .api-list-item a:focus {
-    font-weight: normal;
-    text-shadow: none;
+  font-weight: normal;
+  text-shadow: none;
 }
 
 .yui3-skin-sam .apidocs .box {
@@ -1072,6 +1083,9 @@ margin-top: 20px;
 }
 .yui3-skin-sam #doc {
   min-width: 0;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .yui3-skin-sam .apidocs .meta {
@@ -1079,9 +1093,9 @@ margin-top: 20px;
   background: none;
   border: none;
   border-bottom: 1px solid #eee;
-  font-size: 12px;
-  padding: 3px 6px 20px 0;
-  line-height: 22px;
+  font-size: 14px;
+  padding: 5px 6px 11px 0;
+  line-height: 28px;
 }
 .yui3-skin-sam .apidocs .intro {
   border: none;
@@ -1090,14 +1104,10 @@ margin-top: 20px;
   margin: 40px 0 0 0;
 }
 
-.yui3-skin-sam #classdocs .item {
-  border-bottom: 1px solid #efefef;
-}
-
 .yui3-skin-sam #doc #bd #api-list h2.off-left {
-  font-size: 184.6%;
+  font-size: 1.5rem;
   color: rgba(80, 83, 95, 1.0);
-  margin: 0.75em 0 0.5em 20px;
+  margin: 1.75em 0 0.5em 20px;
   font-family: 'OpenSans-Regular', Helvetica, sans-serif;
   text-transform: none;
 }
@@ -1136,7 +1146,8 @@ margin-top: 20px;
   padding: 15px 0 15px 25px;
   position: absolute;
   right: 25px;
-  top: 56px;
+  top: 70px;
+  z-index:1;
   font-family: 'OpenSans-Bold', Helvetica, sans-serif;
   text-transform: uppercase;
   background: #fff;
@@ -1183,18 +1194,22 @@ margin-top: 20px;
   padding: 0 25px 0 25px;
 }
 .yui3-skin-sam #docs-main .content > h1 {
-  margin: 0 -25px 0 -25px;
+  margin: 0 20px 0 -25px;
   padding: 0.75em 25px 0.5em 25px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
   position: relative;
+  font-weight: normal;
+  border-bottom: 1px solid #edeeee;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 48px;
 }
 .yui3-skin-sam #docs-main .content > h1:after {
   content: '\2026';
   display: block;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1rem;
+  right: -1.7rem;
   font-family: 'ss-standard';
   font-size: 25px;
   width: 57px;
@@ -1206,9 +1221,171 @@ html.yui3-js-enabled {
   background: transparent!important;
 }
 
-
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 1024px) {
+  .yui3-skin-sam .apis a:hover,
+  .yui3-skin-sam .apis a:focus {
+    color: #585c6a;
+    background-color:#fff;
+  }
   .yui3-skin-sam #doc #bd .yui3-u-1-4 {
+    background-color:#ffffff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 70%;
+    left: 0;
+    overflow: hidden;
+  }
+  .yui3-skin-sam #doc{
+    max-width: 100%;
+  }
+  .yui3-skin-sam #doc #bd,
+  .yui3-skin-sam #doc,
+  .yui3-skin-sam #docs-sidebar.apidocs.sidebar,
+  .yui3-skin-sam #docs-sidebar #api-list,
+  .yui3-skin-sam #docs-sidebar #api-list .yui3-tabview{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+
+  .yui3-skin-sam #docs-sidebar #api-list .yui3-tabview{
+    border-right: 1px solid #eee;
+  }
+
+  .yui3-skin-sam #doc #bd .yui3-u-3-4{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 30%;
+    width: auto;
+    right: 0;
+    overflow: scroll;
+    padding-bottom: 8rem;
+
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+  .yui3-skin-sam #docs-sidebar #api-list .yui3-tabview #api-tabview{
+    position: absolute;
+    top: 3rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .yui3-skin-sam #docs-sidebar #api-tabview-panel{
+    overflow: scroll;
+    position: absolute;
+    top: 2rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+  .yui3-skin-sam #doc #bd #api-list h2.off-left {
+    margin: 0.75em 0 0.5em 20px;
+  }
+  .yui3-skin-sam #docs-sidebar #api-classes{
+    margin-bottom: 4rem;
+  }
+
+}
+
+@media only screen and (min-width: 620px) and (max-width: 770px) {
+  .yui3-skin-sam #doc #bd{
+    overflow: hidden;
+  }
+  .yui3-skin-sam #doc #bd .yui3-u-1-4 {
+    z-index: 2;
+    width: 290px;
+    top: 6.2rem;
+    -moz-transform: translate3d(-290px,0,0);
+    -webkit-transform: translate3d(-290px,0,0);
+    -o-transform: translate3d(-290px,0,0);
+    transform: translate3d(-290px,0,0);
+
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    -moz-transition: -moz-transform 0.3s ease-out;
+    -o-transition: -o-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+  }
+  .yui3-skin-sam #doc #bd .yui3-u-3-4{
+    -moz-transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    -moz-transition: -moz-transform 0.3s ease-out;
+    -o-transition: -o-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+  }
+
+  .yui3-skin-sam #api-options{
+
+    visibility: hidden;
+  }
+  .yui3-skin-sam #docs-main .content > h1 {
+    padding: 1.5rem 25px 1.5rem 25px;
+    position: absolute;
+    top: 6.4rem;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .yui3-skin-sam #docs-main .content .file{
+    position: absolute;
+    top: 11.4rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+  .yui3-skin-sam #docs-main .content > h1:after{
+    content:'';
+  }
+  .yui3-skin-sam #docs-main .content > h1:before{
+    font-family: 'ss-standard';
+    content:'';
+    color: #16a3dd;
+    display:inline-block;
+    cursor:pointer;
+    text-align:center;
+    border-right: 1px solid #edeeee;
+    width: 5rem;
+    height: 3rem;
+    font-size: 20px;
+    line-height: 3rem;
+    position: relative;
+    left: -1rem;
+    margin-bottom: 0rem;
+    top: 0rem;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+  }
+  .yui3-skin-sam #doc #bd .yui3-u-3-4 {
+    padding-top: 12.4rem;
     width: 100%;
     position: absolute;
     top: 0;
@@ -1216,12 +1393,15 @@ html.yui3-js-enabled {
     bottom: 0;
     left: 0;
   }
+}
+@media only screen and (max-width: 619px){
+  .yui3-skin-sam #doc #bd .yui3-u-1-4 {
+    display:none;
+  }
+
   .yui3-skin-sam #doc #bd .yui3-u-3-4 {
     width: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    top: 2rem;
   }
 }

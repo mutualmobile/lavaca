@@ -52,3 +52,4 @@ you can use the generic selector below, but it's slower:
 .lavaca-icon-mm-logo:before {
 	content: "\e004";
 }
+
