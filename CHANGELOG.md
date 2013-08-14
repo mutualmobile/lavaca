@@ -1,3 +1,7 @@
+changed in 2.1.1
+======
+* Separated lavaca core files in NPM module
+
 Changed in 2.0.4
 ======
 * Fix for Disposing of childviews and widgets in View.js
