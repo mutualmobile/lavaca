@@ -44,7 +44,7 @@ module.exports = function(grunt) {
           paths: 'src/js/lavaca',
           outdir: 'docs',
           linkNatives: true,
-          themedir: 'yuidoc/themes/default'
+          themedir: 'libs/yuidoc/themes/default'
         }
       }
     },
@@ -72,7 +72,6 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  //grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-amd-check');
