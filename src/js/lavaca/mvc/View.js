@@ -1,16 +1,16 @@
 define(function(require) {
 
   var $ = require('$'),
-    EventDispatcher = require('lavaca/events/EventDispatcher'),
-    Model = require('lavaca/mvc/Model'),
-    Template = require('lavaca/ui/Template'),
-    Cache = require('lavaca/util/Cache'),
-    Promise = require('lavaca/util/Promise'),
-    log = require('lavaca/util/log'),
-    uuid = require('lavaca/util/uuid');
+      EventDispatcher = require('lavaca/events/EventDispatcher'),
+      Model = require('lavaca/mvc/Model'),
+      Template = require('lavaca/ui/Template'),
+      Cache = require('lavaca/util/Cache'),
+      Promise = require('lavaca/util/Promise'),
+      ArrayUtils = require('lavaca/util/ArrayUtils'),
+      log = require('lavaca/util/log'),
+      uuid = require('lavaca/util/uuid');
 
-
-
+  var _UNDEFINED;
 
   /**
    * Base View Class
@@ -434,6 +434,7 @@ define(function(require) {
         }
         for (type in callbacks) {
           callback = callbacks[type];
+          property = _UNDEFINED;
           if (typeof callback === 'object') {
             opts = callback;
             callback = callback.on;
@@ -452,7 +453,7 @@ define(function(require) {
                 property = type.substr(dotIndex+1);
                 type = type.substr(0, dotIndex);
               }
-              this.model.on(type, property, callback, this);
+              this.model.on(type, property, callback);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
