@@ -4,6 +4,7 @@ define(function(require) {
   var View = require('lavaca/mvc/View');
   var Model = require('lavaca/mvc/Model');
   var Template = require('lavaca/ui/Template');
+  var Widget = require('lavaca/ui/Widget');
 
   describe('A View', function() {
     var testView,
@@ -148,6 +149,57 @@ define(function(require) {
             expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
           });
       });
+      $('script[data-name="model-tmpl"]').remove();
+    });
+    it('can map a widget', function() {
+      $('body').append('<script type="text/dust-template" data-name="widget-tmpl"><div class="widget" id="widget"></div></script>');
+      Template.init();
+
+      var MyWidget = Widget.extend(function MyWidget() {
+        Widget.apply(this, arguments);
+        this.testProp = 'abc';
+      });
+
+      testView = new View(el, new Model());
+      testView.template = 'widget-tmpl';
+      testView.mapWidget('.widget', MyWidget);
+      testView.render().success(function() {
+        expect(testView.widgets.get('widget').testProp).toEqual('abc');
+      });
+      $('script[data-name="model-tmpl"]').remove();
+    });
+    it('can map a widget with custom arguments', function() {
+      $('body').append('<script type="text/dust-template" data-name="widget-tmpl"><div class="widget" id="widget"></div><div class="other-widget" id="other-widget"></div></script>');
+      Template.init();
+
+      var MyWidget = Widget.extend(function MyWidget(el, testProp) {
+        Widget.apply(this, arguments);
+        this.testProp = testProp;
+      });
+      var MyOtherWidget = Widget.extend(function MyOtherWidget(el, testStr, testInt) {
+        Widget.apply(this, arguments);
+        this.testStr = testStr;
+        this.testInt = testInt;
+      });
+
+      testView = new View(el, new Model());
+      testView.template = 'widget-tmpl';
+      testView.mapWidget({
+        '.widget': {
+          TWidget: MyWidget,
+          args: 'xyz'
+        },
+        '.other-widget': {
+          TWidget: MyOtherWidget,
+          args: ['qwert', 12345]
+        }
+      });
+      testView.render().success(function() {
+        expect(testView.widgets.get('widget').testProp).toEqual('xyz');
+        expect(testView.widgets.get('other-widget').testStr).toEqual('qwert');
+        expect(testView.widgets.get('other-widget').testInt).toEqual(12345);
+      });
+
       $('script[data-name="model-tmpl"]').remove();
     });
   });

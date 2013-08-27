@@ -518,16 +518,38 @@ define(function(require) {
     createWidgets: function() {
       var cache = this.widgets,
         n,
-        o;
+        o,
+        TWidget,
+        makeWidget,
+        args;
       for (n in this.widgetMap) {
         o = this.widgetMap[n];
+        if (typeof o === 'object') {
+          TWidget = o.TWidget;
+          args = o.args
+                  ? ArrayUtils.isArray(o.args) ? o.args : [o.args]
+                  : null;
+        } else {
+          TWidget = o;
+          args = null;
+        }
+        if (args) {
+          makeWidget = function(el) {
+            var factoryFunction = TWidget.bind.apply(TWidget, [null, el].concat(args));
+            return new factoryFunction();
+          };
+        } else {
+          makeWidget = function(el) {
+            return new TWidget(el);
+          };
+        }
         (n === 'self' ? this.el : this.el.find(n))
           .each(function(index, item) {
             var $el = $(item),
               widgetMap = $el.data('widgets') || {},
               widget;
             if (!widgetMap[n]) {
-              widget = new o($(item));
+              widget = makeWidget($(item));
               widgetMap[n] = widget;
               cache.set(widget.id, widget);
               $el.data('widgets', widgetMap);
@@ -539,8 +561,10 @@ define(function(require) {
     /**
      * Assigns multiple widget types to elements on the view
      * @method mapWidget
-     * @param {Object} map  A hash of selectors to widget types to be bound when the view is rendered.
-     *     The map should be in the form {selector: TWidget}. For example, {'form': Lavaca.ui.Form}
+     * @param {Object} map  A hash of selectors to bind widgets to when the view is rendered.
+     *     The map should be in the form {selector: [[Lavaca.ui.Widget]]} or
+     *     {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.
+     *     For example, {'form': Lavaca.ui.Form} or {'form': {TWidget: Lavaca.ui.Form, args: [...]}}
      * @return {Lavaca.mvc.View}  This view (for chaining)
      *
      */
@@ -549,6 +573,15 @@ define(function(require) {
      * @method mapWidget
      * @param {String} selector  The selector for the root element of the widget
      * @param {Function} TWidget  The [[Lavaca.ui.Widget]]-derived type of widget to create
+     * @return {Lavaca.mvc.View}  This view (for chaining)
+     */
+    /**
+     * Assigns a widget type to be created for elements matching a selector when the view is rendered, and
+     * accepts optional arguments to pass to the widget constructor
+     * @method mapWidget
+     * @param {String} selector  The selector for the root element of the widget
+     * @param {Object} widgetOptions  An object with a 'TWidget' key and an optional 'args' key which can be
+     *     an array of arguments to pass to the widget's constructor
      * @return {Lavaca.mvc.View}  This view (for chaining)
      */
     mapWidget: function(selector, TWidget) {
