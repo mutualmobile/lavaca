@@ -108,6 +108,17 @@ define(function(require) {
   };
 
   /**
+   * Gets the name of the transition end event
+   * @method transitionEndEvent
+   * @static
+   *
+   * @return {String}  The name of the event
+   */
+  Transition.transitionEndEvent = function() {
+    return _event;
+  };
+
+  /**
    * Causes an element to undergo a transition
    * @method $.fn.transition
    *
@@ -124,7 +135,7 @@ define(function(require) {
    * @param {String} easing  The interpolation for the transition
    * @return {jQuery}  The jQuery object, for chaining
    */
-/**
+  /**
    * Causes an element to undergo a transition
    * @method $.fn.transition
    *
