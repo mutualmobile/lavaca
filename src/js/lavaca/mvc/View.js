@@ -43,7 +43,7 @@ define(function(require) {
      * @type String
      *
      */
-    this.id = this.className + '-' + uuid();
+    this.id = (this.className + '-' + uuid()).replace(' ', '-');
 
     /**
      * If the view is created in the context of a childView, the parent view is assigned to this view
@@ -267,6 +267,9 @@ define(function(require) {
         redrawPromise = new Promise(this),
         template = Template.get(this.template),
         replaceAll;
+      if (!template) {
+        return redrawPromise.reject();
+      }
       if (typeof selector === 'object' || selector instanceof Model) {
         model = selector;
         replaceAll = true;
@@ -289,6 +292,7 @@ define(function(require) {
         self.createWidgets();
         self.createChildViews();
         self.applyChildViewEvents();
+        self.trigger('redrawsuccess');
       }
       templateRenderPromise
         .success(function(html) {
