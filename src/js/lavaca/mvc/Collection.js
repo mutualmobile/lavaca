@@ -128,9 +128,8 @@ define(function(require) {
      *
      */
     clearModels: function() {
-      var i = -1,
-          model;
-      while (!!(model = this.models[++i])) {
+      var model;
+      while (!!(model = this.models[0])) {
         this.remove(model);
       }
       this.changedOrder = false;
