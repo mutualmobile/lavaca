@@ -21,14 +21,7 @@ define(function(require) {
   var PageView = View.extend(function(el, model, layer) {
 
     View.call(this, el, model);
-    /**
-     * The index of the layer on which the view sits
-     * @property {Number} layer
-     * @default 0
-     */
-    this.layer = layer || 0;
-
-
+    this.layer = layer || this.layer;
   }, {
 
     /**
@@ -37,6 +30,13 @@ define(function(require) {
      * @default null
      */
     shell: null,
+
+    /**
+     * The index of the layer on which the view sits
+     * @property {Number} layer
+     * @default 0
+     */
+    layer: 0,
 
     /**
      * Creates the view's wrapper element
