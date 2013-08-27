@@ -21,7 +21,7 @@ define(function(require) {
   }
 
   function _matchHashRoute(hash) {
-    var matches = hash.match(/^(?:#)(\/.*)#?@?/);
+    var matches = decodeURIComponent(hash).match(/^(?:#)(\/.*)#?@?/);
     if (matches instanceof Array && matches[1]) {
       return matches[1].replace(/#.*/, '');
     }
