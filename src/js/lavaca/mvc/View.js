@@ -464,7 +464,11 @@ define(function(require) {
           } else if (type === 'transitionEnd' && el.transitionEnd) {
             el.transitionEnd(delegate, callback);
           } else {
-            el.on(type, delegate, callback);
+            if (el.hammer) {
+              el.hammer().on(type, delegate, callback);
+            } else {
+              el.on(type, delegate, callback);
+            }
           }
         }
       }

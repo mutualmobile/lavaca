@@ -12,8 +12,6 @@ define(function(require) {
     Promise = require('lavaca/util/Promise'),
     ChildBrowser = require('lavaca/env/ChildBrowser'),
     Translation = require('lavaca/util/Translation');
-    require('jquery-mobile/events/touch');
-    require('jquery-mobile/events/orientationchange');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -181,9 +179,7 @@ define(function(require) {
         }
       }.bind(this);
 
-      $(document.body)
-        .on('tap', 'a', this.onTapLink.bind(this))
-        .on('tap', '.ui-blocker', _stopEvent);
+      this.bindLinkHandler();
 
       if (this._callback) {
         _cbPromise = this._callback(args);
@@ -195,7 +191,19 @@ define(function(require) {
         this.trigger('ready');
       });
     },
-
+    /**
+     * Binds a global link handler
+     * @method bindLinkHandler
+     */
+    bindLinkHandler: function() {
+      var $body = $(document.body);
+      if ($body.hammer) {
+        $body = $body.hammer();
+      }
+      $body
+        .on('tap click', '.ui-blocker', _stopEvent)
+        .on('tap click', 'a', this.onTapLink.bind(this));
+    },
     /**
      * Gets initial route based on query string returned by server 302 redirect
      * @property initialStandardRoute
@@ -203,7 +211,6 @@ define(function(require) {
      *
      * @type {String}
      */
-
     initialHashRoute: (function(hash) {
       return _matchHashRoute(hash);
     })(window.location.hash),
