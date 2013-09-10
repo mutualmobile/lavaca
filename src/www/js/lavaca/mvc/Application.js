@@ -116,9 +116,18 @@ define(function(require) {
       }
       if (rel === 'back') {
         History.back();
+      // Animate backwards when these links are tapped
+      } else if (rel === 'force-back' && url) {
+        History.isRoutingBack = true;
+        this.router.exec(url, null, null).always(function() {
+          History.isRoutingBack = false;
+        });
       } else if (isExternal || rel === 'nofollow' || target === '_blank') {
         e.stopPropagation();
         new ChildBrowser().showWebPage(url);
+      // Open using the system browser, can be Google Maps/Safari etc...
+      } else if (target === '_system') {
+        window.open(url, target);
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
