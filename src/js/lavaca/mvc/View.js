@@ -8,7 +8,8 @@ define(function(require) {
       Promise = require('lavaca/util/Promise'),
       ArrayUtils = require('lavaca/util/ArrayUtils'),
       log = require('lavaca/util/log'),
-      uuid = require('lavaca/util/uuid');
+      uuid = require('lavaca/util/uuid'),
+      delay = require('lavaca/util/delay');
 
   var _UNDEFINED;
 
@@ -16,10 +17,16 @@ define(function(require) {
    * Base View Class
    * @class lavaca.mvc.View
    * @extends lavaca.events.EventDispatcher
+   *
    * @constructor
    * @param {Object | String} el the selector or Object for the element to attach to the view
    * @param {Object} [model] the model for the view
    * @param {Object} [parentView] the parent view for the view
+   *
+   * @constructor
+   * @param {Object | String} el the selector or Object for the element to attach to the view
+   * @param {Object} [model] the model for the view
+   * @param {Object} [layer] The layer on which the view sits (only applicable to views used as a PageView)
    *
    *
    */
@@ -45,14 +52,18 @@ define(function(require) {
      */
     this.id = (this.className + '-' + uuid()).replace(' ', '-');
 
-    /**
-     * If the view is created in the context of a childView, the parent view is assigned to this view
-     * @property parentView
-     * @default null
-     * @type Object
-     *
-     */
-    this.parentView = parentView || null;
+    if (typeof parentView !== 'number') {
+      /**
+       * If the view is created in the context of a childView, the parent view is assigned to this view
+       * @property parentView
+       * @default null
+       * @type Object
+       *
+       */
+      this.parentView = parentView || null;
+    } else {
+      this.layer = parentView;
+    }
 
     /**
      * The element that is either assigned to the view if in the context of a childView, or is created for the View
@@ -754,6 +765,161 @@ define(function(require) {
         = null;
 
       EventDispatcher.prototype.dispose.apply(this, arguments);
+    },
+
+    // -------------- PageView methods --------------------
+    /**
+     * The element containing the view
+     * @property {jQuery} shell
+     * @default null
+     */
+    shell: null,
+
+    /**
+     * The index of the layer on which the view sits
+     * @property {Number} layer
+     * @default 0
+     */
+    layer: 0,
+
+    /**
+     * Creates the view's wrapper element
+     * @method wrapper
+     * @return {jQuery}  The wrapper element
+     */
+    wrapper: function() {
+      return $('<div class="view"></div>');
+    },
+    /**
+     * Creates the view's interior content wrapper element
+     * @method interior
+     * @return {jQuery} The interior content wrapper element
+     */
+    interior: function() {
+      return $('<div class="view-interior"></div>');
+    },
+
+
+    /**
+     * Adds this view to a container
+     * @method insertInto
+     * @param {jQuery} container  The containing element
+     */
+    insertInto: function(container) {
+      if (this.shell.parent()[0] !== container[0]) {
+        var layers = container.children('[data-layer-index]'),
+            i = -1,
+            layer;
+        while (!!(layer = layers[++i])) {
+          layer = $(layer);
+          if (layer.attr('data-layer-index') > this.index) {
+            this.shell.insertBefore(layer);
+            return;
+          }
+        }
+        container.append(this.shell);
+      }
+    },
+    /**
+     * Renders the view using its template and model
+     * @method renderAsPageView
+     *
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    renderAsPageView: function() {
+      var promise = new Promise(this),
+          renderPromise = new Promise(this),
+          template = Template.get(this.template),
+          model = this.model;
+      if (model instanceof Model) {
+        model = model.toObject();
+      }
+      if (this.el) {
+        this.el.remove();
+      }
+
+      this.shell = this.wrapper();
+      this.el = this.interior();
+      this.shell.append(this.el);
+      this.shell.attr('data-layer-index', this.layer);
+      if (this.className) {
+        this.shell.addClass(this.className);
+      }
+      promise
+        .success(function(html) {
+          /**
+           * Fires when html from template has rendered
+           * @event rendersuccess
+           */
+          this.trigger('rendersuccess', {html: html});
+          renderPromise.resolve();
+        })
+        .error(function(err) {
+          /**
+           * Fired when there was an error during rendering process
+           * @event rendererror
+           */
+          this.trigger('rendererror', {err: err});
+          renderPromise.reject();
+        });
+      template
+        .render(model)
+        .success(promise.resolver())
+        .error(promise.rejector());
+
+      return renderPromise;
+    },
+    /**
+     * Executes when the user navigates to this view
+     * @method enter
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} exitingViews  The views that are exiting as this one enters
+     * @return {lavaca.util.Promise}  A promise
+     */
+    enter: function(container) {
+      var promise = new Promise(this),
+          renderPromise;
+      container = $(container);
+      if (!this.hasRendered) {
+        renderPromise = this
+          .render()
+          .error(promise.rejector());
+      }
+      this.insertInto(container);
+      if (renderPromise) {
+        promise.when(renderPromise);
+      } else {
+        delay(promise.resolver());
+      }
+      promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
+        this.trigger('enter');
+      });
+      return promise;
+    },
+    /**
+     * Executes when the user navigates away from this view
+     * @method exit
+     *
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} enteringViews  The views that are entering as this one exits
+     * @return {lavaca.util.Promise}  A promise
+     */
+    exit: function() {
+      var promise = new Promise(this);
+      this.shell.detach();
+      delay(promise.resolver());
+      promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
+        this.trigger('exit');
+      });
+      return promise;
     }
   });
 

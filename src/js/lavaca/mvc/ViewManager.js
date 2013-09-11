@@ -1,14 +1,13 @@
 define(function(require) {
 
   var $ = require('$'),
-      PageView = require('lavaca/mvc/PageView'),
+      View = require('lavaca/mvc/View'),
       ArrayUtils = require('lavaca/util/ArrayUtils'),
       Cache = require('lavaca/util/Cache'),
       Disposable = require('lavaca/util/Disposable'),
       Promise = require('lavaca/util/Promise'),
       delay = require('lavaca/util/delay'),
-      merge = require('mout/object/merge'),
-      History = require('lavaca/net/History');
+      merge = require('mout/object/merge');
 
   /**
    * Manager responsible for drawing views
@@ -122,7 +121,7 @@ define(function(require) {
         if (typeof params === 'object') {
           merge(pageView, params);
         }
-        renderPromise = pageView.render();
+        renderPromise = pageView.renderAsPageView();
         if (cacheKey !== null) {
           this.pageViews.set(cacheKey, pageView);
           pageView.cacheKey = cacheKey;
@@ -173,7 +172,7 @@ define(function(require) {
     dismiss: function(layer) {
       if (typeof layer === 'number') {
         this.dismissLayersAbove(layer - 1);
-      } else if (layer instanceof PageView) {
+      } else if (layer instanceof View) {
         this.dismiss(layer.layer);
       } else {
         layer = $(layer);

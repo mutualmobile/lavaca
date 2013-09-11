@@ -6,7 +6,7 @@ define(function(require) {
   var History = require('lavaca/net/History');
   var router = require('lavaca/mvc/Router');
   var viewManager = require('lavaca/mvc/ViewManager');
-  var PageView = require('lavaca/mvc/PageView');
+  var View = require('lavaca/mvc/View');
   var Translation = require('lavaca/util/Translation');
   var Template = require('lavaca/ui/Template');
 
@@ -60,7 +60,7 @@ define(function(require) {
       });
       it('with a view helper method', function() {
         var controller = new testController(router, viewManager),
-            myPageView = PageView.extend({
+            myPageView = View.extend({
               template: 'hello-world'
             }),
             promise,
