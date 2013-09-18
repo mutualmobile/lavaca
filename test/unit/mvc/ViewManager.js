@@ -42,7 +42,7 @@ define(function(require) {
     describe('can remove', function() {
       it('a view on a layer and all views above', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
-            template: 'hello-world'
+            template: 'hello-world',
             }),
             promise,
             secondP,
@@ -74,7 +74,7 @@ define(function(require) {
       });
       it('a view on layer without removing views below', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
-            template: 'hello-world'
+            template: 'hello-world',
             }),
             promise,
             secondP,
@@ -107,7 +107,7 @@ define(function(require) {
       it('a layer by an el', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
-              className: 'test-view'
+              className: 'test-view',
             }),
             promise,
             response;
@@ -128,7 +128,7 @@ define(function(require) {
       it('a layer relative to view object in the cache', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
-              className: 'test-view'
+              className: 'test-view',
             }),
             promise,
             response;
@@ -149,7 +149,7 @@ define(function(require) {
     });
     it('can empty the view cache', function() {
       var myPageView = View.extend(function(){View.apply(this, arguments);},{
-              template: 'hello-world'
+              template: 'hello-world',
           }),
           promise,
           secondP,

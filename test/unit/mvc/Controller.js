@@ -61,7 +61,7 @@ define(function(require) {
       it('with a view helper method', function() {
         var controller = new testController(router, viewManager),
             myPageView = View.extend({
-              template: 'hello-world'
+              template: 'hello-world',
             }),
             promise,
             response;
