@@ -179,7 +179,7 @@ define(function(require) {
      */
     viewType: null,
 
-    createRenderPromise: function(renderPromise) {
+    bindRenderEvents: function(renderPromise) {
       var promise = new Promise(this);
       /*
        * Fires when html from template has rendered
@@ -202,12 +202,11 @@ define(function(require) {
       return promise;
     },
 
-    templatePromise: function(template, promise, model, callback) {
-      template
+    renderTemplate: function(template, promise, model) {
+      return template
         .render(model)
         .success(promise.resolver())
-        .error(promise.rejector())
-        .then(callback);
+        .error(promise.rejector());
     },
 
     getRenderModel: function() {
@@ -223,15 +222,16 @@ define(function(require) {
     render: function() {
       var self = this,
           renderPromise = new Promise(this),
-          promise = this.createRenderPromise(renderPromise),
+          promise = this.bindRenderEvents(renderPromise),
           template = Template.get(this.template),
           model = this.getRenderModel();
 
-      this.templatePromise(template, promise, model, function() {
-        if (self.className){
-          self.el.addClass(self.className);
-        }
-      });
+      this.renderTemplate(template, promise, model)
+        .then(function() {
+          if (self.className){
+            self.el.addClass(self.className);
+          }
+        });
 
       return renderPromise;
 
@@ -244,7 +244,7 @@ define(function(require) {
      */
     renderPageView: function() {
       var renderPromise = new Promise(this),
-          promise = this.createRenderPromise(renderPromise),
+          promise = this.bindRenderEvents(renderPromise),
           template = Template.get(this.template),
           model = this.getRenderModel();
 
@@ -260,8 +260,7 @@ define(function(require) {
         this.shell.addClass(this.className);
       }
 
-      this.templatePromise(template, promise, model, function() {
-      });
+      this.renderTemplate(template, promise, model);
 
       return renderPromise;
 
