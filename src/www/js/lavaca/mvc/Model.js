@@ -408,7 +408,7 @@ define(function(require) {
       this.trigger('fetchError', {response: response});
     },
     /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
+     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first) (Note: The url is prefixed with your configured apiRoot)
      * @method fetch
      *
      * @event fetchSuccess
