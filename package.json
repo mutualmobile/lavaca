@@ -62,6 +62,6 @@
     "animation"
   ],
   "scripts": {
-    "postinstall": "ls -la"
+    "postinstall": "node ./postinstall.js"
   }
 }
