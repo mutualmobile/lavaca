@@ -1,7 +1,7 @@
 define(function(require) {
 
   var $ = require('$');
-  var PageView = require('lavaca/mvc/PageView');
+  var View = require('lavaca/mvc/View');
   var Cache = require('lavaca/util/Cache');
   var Template = require('lavaca/ui/Template');
   var viewManager = require('lavaca/mvc/ViewManager');
@@ -21,7 +21,7 @@ define(function(require) {
       expect(viewManager instanceof viewManager.constructor).toBe(true);
     });
     it('can load a view', function() {
-      var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
+      var myPageView = View.extend(function(){View.apply(this, arguments);},{
             template: 'hello-world'
           }),
           promise,
@@ -41,8 +41,8 @@ define(function(require) {
     });
     describe('can remove', function() {
       it('a view on a layer and all views above', function() {
-        var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
-            template: 'hello-world'
+        var myPageView = View.extend(function(){View.apply(this, arguments);},{
+            template: 'hello-world',
             }),
             promise,
             secondP,
@@ -73,8 +73,8 @@ define(function(require) {
         });
       });
       it('a view on layer without removing views below', function() {
-        var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
-            template: 'hello-world'
+        var myPageView = View.extend(function(){View.apply(this, arguments);},{
+            template: 'hello-world',
             }),
             promise,
             secondP,
@@ -105,9 +105,9 @@ define(function(require) {
         });
       });
       it('a layer by an el', function() {
-        var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
+        var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
-              className: 'test-view'
+              className: 'test-view',
             }),
             promise,
             response;
@@ -126,9 +126,9 @@ define(function(require) {
         });
       });
       it('a layer relative to view object in the cache', function() {
-        var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
+        var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
-              className: 'test-view'
+              className: 'test-view',
             }),
             promise,
             response;
@@ -148,8 +148,8 @@ define(function(require) {
       });
     });
     it('can empty the view cache', function() {
-      var myPageView = PageView.extend(function(){PageView.apply(this, arguments);},{
-              template: 'hello-world'
+      var myPageView = View.extend(function(){View.apply(this, arguments);},{
+              template: 'hello-world',
           }),
           promise,
           secondP,

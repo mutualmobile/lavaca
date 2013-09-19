@@ -28,12 +28,34 @@ define(function(require) {
       testView = new View(el, model, parentView);
       expect(testView.el).toEqual(el);
       expect(testView.model).toEqual(model);
+      expect(testView.parentView).toBe(parentView);
+    });
+    it('can be initialized with different values for layer', function() {
+      var view1 = new View(el, model);
+      var view2 = new View(el, model, 2);
+      expect(view1.layer).toEqual(0);
+      expect(view2.layer).toEqual(2);
     });
     it('can contain a childView', function() {
       testView.mapChildView('.childView', View, model);
       testView.createChildViews();
       var childView = testView.childViews.toArray()[0];
       expect(childView instanceof View).toEqual(true);
+    });
+    it('can be rendered', function() {
+      var promise;
+      $('body').append('<script type="text/dust-template" data-name="model-tmpl"><h2>Hello World</h2><p>Color is {color}.</p></script>');
+      Template.init();
+
+      testView = new View(el, model);
+      testView.template = 'model-tmpl';
+      promise = testView.render();
+      promise.success(function() {
+        expect(testView.hasRendered).toEqual(true);
+        expect($(testView.el).length).toBe(1);
+        expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
+      });
+
     });
     it('can redraw whole view', function() {
       var promise;

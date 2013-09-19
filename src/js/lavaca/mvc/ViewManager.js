@@ -1,14 +1,13 @@
 define(function(require) {
 
   var $ = require('$'),
-      PageView = require('lavaca/mvc/PageView'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
-      Cache = require('lavaca/util/Cache'),
-      Disposable = require('lavaca/util/Disposable'),
-      Promise = require('lavaca/util/Promise'),
-      delay = require('lavaca/util/delay'),
-      merge = require('mout/object/merge'),
-      History = require('lavaca/net/History');
+    View = require('lavaca/mvc/View'),
+    ArrayUtils = require('lavaca/util/ArrayUtils'),
+    Cache = require('lavaca/util/Cache'),
+    Disposable = require('lavaca/util/Disposable'),
+    Promise = require('lavaca/util/Promise'),
+    delay = require('lavaca/util/delay'),
+    merge = require('mout/object/merge');
 
   /**
    * Manager responsible for drawing views
@@ -21,7 +20,7 @@ define(function(require) {
   var ViewManager = Disposable.extend(function(el) {
     Disposable.call(this);
     /**
-    * The element that contains all view layers
+     * The element that contains all view layers
      * @property {jQuery} el
      * @default null
      */
@@ -103,12 +102,12 @@ define(function(require) {
       }
       params = params || {};
       var self = this,
-          layer = layer || 0,
-          pageView = this.pageViews.get(cacheKey),
-          promise = new Promise(this),
-          enterPromise = new Promise(promise),
-          renderPromise = null,
-          exitPromise = null;
+        layer = layer || 0,
+        pageView = this.pageViews.get(cacheKey),
+        promise = new Promise(this),
+        enterPromise = new Promise(promise),
+        renderPromise = null,
+        exitPromise = null;
       promise.always(function() {
         this.locked = false;
       });
@@ -122,7 +121,7 @@ define(function(require) {
         if (typeof params === 'object') {
           merge(pageView, params);
         }
-        renderPromise = pageView.render();
+        renderPromise = pageView.renderPageView();
         if (cacheKey !== null) {
           this.pageViews.set(cacheKey, pageView);
           pageView.cacheKey = cacheKey;
@@ -173,7 +172,7 @@ define(function(require) {
     dismiss: function(layer) {
       if (typeof layer === 'number') {
         this.dismissLayersAbove(layer - 1);
-      } else if (layer instanceof PageView) {
+      } else if (layer instanceof View) {
         this.dismiss(layer.layer);
       } else {
         layer = $(layer);
@@ -204,9 +203,9 @@ define(function(require) {
      */
     dismissLayersAbove: function(index, exceptForView) {
       var promise = new Promise(this),
-          dismissedLayers = false,
-          i,
-          layer;
+        dismissedLayers = false,
+        i,
+        layer;
       for (i = this.layers.length - 1; i > index; i--) {
         if ((layer = this.layers[i]) && (!exceptForView || exceptForView !== layer)) {
           (function(layer) {
