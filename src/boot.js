@@ -7,7 +7,7 @@ require.config({
     'cordova': 'libs/cordova',
     'mout': 'libs/mout',
     'docCookies': 'libs/docCookies',
-    'dust': 'libs/dust-full-1.2.4',
+    'dust': 'libs/dust-full-2.0.3',
     'dust-helpers': 'libs/dust-helpers-1.1.1',
     'rdust': 'libs/require-dust',
     'iscroll': 'libs/iscroll-lite',

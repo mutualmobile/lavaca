@@ -25,14 +25,14 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
-    "dustjs-linkedin": "1.2.5",
+    "dustjs-linkedin": "2.0.3",
     "dustjs-helpers": "1.1.1",
     "mout": "0.x",
     "es5-shim": "2.1.0",
     "requirejs ": "2.1.8",
-    "iscroll ": "5.0.4",
+    "iscroll ": "5.0.5",
     "less ": "1.4.2",
-    "fs-extra": "~0.6.3"
+    "require-dust": "0.2.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -42,7 +42,8 @@
     "grunt-amd-test": "0.4.x",
     "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
     "grunt-contrib-yuidoc": "0.4.0",
-    "grunt-open": "~0.2.1"
+    "grunt-open": "~0.2.1",
+    "fs-extra": "~0.6.3"
   },
   "keywords": [
     "lavaca",
@@ -61,6 +62,6 @@
     "animation"
   ],
   "scripts": {
-    "postinstall": "node ./postinstall.js"
+    "postinstall": "ls -la"
   }
 }

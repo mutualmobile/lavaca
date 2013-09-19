@@ -15,15 +15,13 @@ for (mod in config.copies) {
 			var filename = getFilename(relPath);
 			var source = path.join(resolveModuleDir(mod), relPath);
 			var target = path.join(__dirname, config.libsDir, filename);
-			if (mod in config.copyMethodOverrides) {
-				config.copyMethodOverrides[mod](source, target, handleErr);
-			} else {
-				fs.copy(source, target, handleErr);
-			}
+      fs.removeSync(target);
+      fs.symlinkSync(source, target);
 		});
 	} else {
 		// copy folders
-		fs.copy(path.join(resolveModuleDir(mod), sourceRelPath), path.join(__dirname, config.libsDir, mod), handleErr);
+    fs.removeSync( path.join(__dirname, config.libsDir, mod));
+		fs.symlinkSync(path.join(resolveModuleDir(mod), sourceRelPath), path.join(__dirname, config.libsDir, mod), handleErr);
 	}
 }
 
