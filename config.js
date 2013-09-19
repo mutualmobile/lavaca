@@ -17,7 +17,7 @@ var config = {
 			fs.readFile(source, function(err, content) {
 				if (err) { return handleErr(err); }
 				content = content.toString().replace('var dust', 'window.dust');
-				fs.writeFile(target, content, handleErr);
+				fs.writeFile(source, content, handleErr);
 			});
 		}
 	}

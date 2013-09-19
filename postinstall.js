@@ -15,6 +15,9 @@ for (mod in config.copies) {
 			var filename = getFilename(relPath);
 			var source = path.join(resolveModuleDir(mod), relPath);
 			var target = path.join(__dirname, config.libsDir, filename);
+      if (mod in config.copyMethodOverrides) {
+        config.copyMethodOverrides[mod](source, target, handleErr);
+      }
       fs.removeSync(target);
       fs.symlinkSync(source, target);
 		});
