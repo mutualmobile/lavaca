@@ -23,6 +23,10 @@ define(function(require) {
     }
   }
 
+  function _isLocalUrl(url) {
+    return url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
+  }
+
   var Connectivity = {};
 
   /**
@@ -67,7 +71,7 @@ define(function(require) {
       }
       promise.reject.apply(promise, arguments);
     };
-    if (Connectivity.isOffline()) {
+    if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
       promise.reject(_offlineErrorCode);
     } else {
       $.ajax(opts);

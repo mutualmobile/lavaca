@@ -418,9 +418,10 @@ define(function(require) {
       childViewSearch.each(function(index, item) {
         var $item = $(item),
           childView = $item.data('view');
-
-        self.childViews.remove(childView.id);
-        childView.dispose();
+        if (childview) {
+          self.childViews.remove(childView.id);
+          childView.dispose();
+        }
       });
     },
     /**
