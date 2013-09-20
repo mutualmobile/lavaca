@@ -31,8 +31,7 @@
     "es5-shim": "2.1.0",
     "requirejs ": "2.1.8",
     "iscroll ": "5.0.5",
-    "less ": "1.4.2",
-    "require-dust": "0.2.0"
+    "less ": "1.4.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

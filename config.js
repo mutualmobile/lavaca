@@ -9,8 +9,7 @@ var config = {
 	  'es5-shim': ['es5-shim.js'],
 	  'requirejs': ['require.js'],
 	  'iscroll': ['build/iscroll-lite.js'],
-	  'less': ['dist/less-1.4.2.js'],
-    'require-dust': ['require-dust.js']
+	  'less': ['dist/less-1.4.2.js']
 	},
 	copyMethodOverrides: {
 		'dustjs-linkedin': function(source, target, handleErr) {
