@@ -418,7 +418,7 @@ define(function(require) {
       childViewSearch.each(function(index, item) {
         var $item = $(item),
           childView = $item.data('view');
-        if (childview) {
+        if (childView) {
           self.childViews.remove(childView.id);
           childView.dispose();
         }
