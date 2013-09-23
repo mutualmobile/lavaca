@@ -32,7 +32,7 @@ Templates all derive from `lavaca/ui/Template`. The view feeds its template the 
 By default, `lavaca/mvc` is setup to use dust.js templates. For more information about templates, see [Using Templates to Generate HTML](Using-Templates-to-Generate-HTML).
 
 ## Page Views
-Page Views extend from `lavaca/mvc/View` and are a special view type designed to interface with the View Manager to control page transitions . Generally, there will be one page view type for every different kind of screen that your user will encounter. In your application, you might have a page view for the home screen, a page view for a sign-in screen, a page view for a profile screen, and so on. It's not just pages though: even dialogs in your application can be thought of as page views.
+Page Views are views that interface with the View Manager to control page transitions. Any View can be used as a Page View. Generally, there will be one page view type for every different kind of screen that your user will encounter. In your application, you might have a page view for the home screen, a page view for a sign-in screen, a page view for a profile screen, and so on. It's not just pages though: even dialogs in your application can be thought of as page views.
 
 ## Entering and Exiting
 Every page view is responsible for managing the visual transitions involved when it enters the screen or exits the screen. When the view manager adds a page view, it will call that view's `enter()` method. When the view manager wants to remove a page view, it will call that view's `exit()` method.
@@ -44,11 +44,11 @@ For more information about promises, see [Promises Pattern](Promises-Pattern).
 # Creating a View
 
 ## Using a Base View Type
-You'll generally want to create a view type for your application from which all other page views extend. By default, the boilerplate project includes `app/ui/views/BaseView`, which extends the basic `lavaca/mvc/PageView` type to support animated transitions.
+You'll generally want to create a view type for your application from which all other page views extend. By default, the boilerplate project includes `app/ui/views/BaseView`, which extends the basic `lavaca/mvc/View` type to support animated transitions.
 
 Using a base view type allows you to share common behaviors between page views and makes them work in a consistent way. You can also use a base view type to initialize common types of widgets and universal event handlers. For instance, if you had a help button that displayed a popover when tapped, you could create a widget/view type for this and put its initialization logic into your base view.
 
-## Extending `lavaca/mvc/PageView` or `app/ui/views/BaseView`
+## Extending `lavaca/mvc/View` or `app/ui/views/BaseView`
 Beyond the base view, you should try to keep your page views as lean as possible - more like configurations than full-blown types. You'll usually have at least one page view type for every page used by your app.
 
 The directory structure is merely convention, but a common pattern is to add view types in the source folder `js/app/ui/views`. Every view type should have its own file, and the name of the type should end in `View`. It also common to further separate other view types in sub folders `app/ui/views/controls` or `app/ui/views/pageviews`

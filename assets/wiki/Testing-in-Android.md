@@ -28,7 +28,7 @@ The Android app icons are located under the `res` folder of your project. There 
 # Running an Android Project
 Follow these steps to run your project in the Android Virtual Device.
 
-1. Run the build script to push the latest copy of your code to the Android `www` folder. (See [Building Your Project](Building-Your-Project))
+1. Run the build script to push the latest copy of your code to the Android `cordova/platforms/android/assets/www` folder. (See [Building Your Project](Building-Your-Project))
 1. Open your project's Workspace in Eclipse
 1. Right-click your project folder and choose `Refresh`
 1. Right-click your project folder and choose `Run As > Android Application`.

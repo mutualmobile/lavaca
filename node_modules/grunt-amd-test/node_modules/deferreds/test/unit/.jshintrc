@@ -1,0 +1,32 @@
+{
+	"globals": {
+		"define": false,
+		"module": false,
+		"test": false,
+		"asyncTest": false,
+		"start": false,
+		"ok": false,
+		"expect": false,
+		"equal": false,
+		"strictEqual": false,
+		"notStrictEqual": false,
+		"deepEqual": false,
+		"throws": false
+	},
+
+	"browser":   true,
+	"devel":     true,
+
+	"sub":       true,
+	"expr":      true,
+	"undef":     true,
+	"unused":    true,
+	"smarttabs": true,
+	"laxbreak":  true,
+	"curly":     true,
+	"eqeqeq":    true,
+	"nonew":     true,
+	"latedef":   true,
+	"sub":       true
+
+}

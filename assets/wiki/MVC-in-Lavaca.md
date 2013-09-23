@@ -16,14 +16,14 @@ The `lavaca/mvc` framework contains several base components that can be extended
 
 For more about models and collections, see [Models and Collections](Models-and-Collections).
 
-## Views, Page Views, and the View Manager
+## Views and the View Manager
 The base view type, `lavaca/mvc/View`, is responsible for rendering a template to the DOM and managing the user interactions associated with that specific region. Views support nesting multiple views instances inside each other, called `childViews`. A `childView` can all also have its own `childViews`, and those `childViews` can have children of their own etc.
  
-Page Views extend from `lavaca/mvc/View` and are a special view type used represent each screen in your application. Each `lavaca/mvc/PageView`-derived type interfaces with the View Manager to control the entering and exiting of different pages.
+Any view type can also be used as a Page View. A Page View is used to represent each screen in your application. Each Page View interfaces with the View Manager to control the entering and exiting of different pages.
 
 The `lavaca/mvc/ViewManager` is responsible for managing what Page Views are shown at any given time, and orchestrating the traffic as different Page Views need to come and go.
 
-For more about Views, Page Views, and the View Manager, see [Views and the View Manager](Views-and-the-View-Manager).
+For more about Views and the View Manager, see [Views and the View Manager](Views-and-the-View-Manager).
 
 ## Controllers and Routes
 `lavaca/mvc/Controller`-derived types are responsible for setting off series of actions, like showing a view and saving a history state or logging the user in and out. Controllers combine the different components of the `lavaca/mvc` framework together into a cohesive application. Like with views, you'll always want to extend `lavaca/mvc/Controller` to create your own controllers.

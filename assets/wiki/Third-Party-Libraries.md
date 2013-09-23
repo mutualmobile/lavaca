@@ -7,9 +7,9 @@ Lavaca bundles linkedin's fork of the Dust templating library.
 ## jQuery
 [http://jquery.com/](http://jquery.com/)
 
-## jQuery Mobile
-For commonly used touch events, Lavaca bundles jquery mobile's events library. 
-[http://jquerymobile.com/demos/1.2.0/docs/api/events.html](http://jquerymobile.com/demos/1.2.0/docs/api/events.html)
+## Hammer.js
+For commonly used touch events, Lavaca bundles hammers's jquery plugin. 
+[http://eightmedia.github.io/hammer.js/](http://eightmedia.github.io/hammer.js/)
 
 ## RequireJS
 Lavaca utilizes RequireJS for it's module pattern and dependency management. 
