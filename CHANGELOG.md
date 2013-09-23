@@ -1,4 +1,16 @@
-changed in 2.1.1
+Changed in 2.2.0
+======
+* Combined PageView and View into a single class
+* Add ability to pass in custom arguments using the mapWidget() method
+* Add 'redrawsuccess' event
+* Fix bug with using the dot-syntax for mapping events to a view's model (ex. mapEvent({model: { 'change.attr' : myHandler }})
+* Add ability to specify a default 'layer' property on a PageView-derived class' prototype
+* Fix bug with remove() not getting called on all models when clearModels() is called.
+* Fix issue with where initial URL may be URI encoded, such as when a site is saved to the home screen on iOS
+* Add transitionEndEvent method to Transition class
+* Fixed local ajax requests when offline
+
+Changed in 2.1.1
 ======
 * Separated lavaca core files in NPM module
 
