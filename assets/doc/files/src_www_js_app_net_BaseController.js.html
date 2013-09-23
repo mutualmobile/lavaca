@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/www/js/lavaca/env/Device.js</title>
+    <title>src/www/js/app/net/BaseController.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -172,110 +172,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/www/js/lavaca/env/Device.js</h1>
+                        <h1 class="file-heading">File: src/www/js/app/net/BaseController.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function(require) {
 
-  var $ = require(&#x27;$&#x27;),
-      Cordova = require(&#x27;cordova&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;);
+  var Controller = require(&#x27;lavaca/mvc/Controller&#x27;);
+  var merge = require(&#x27;mout/object/merge&#x27;);
+  var stateModel = require(&#x27;app/models/StateModel&#x27;);
 
   /**
-   * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
-   * @class lavaca.env.Device
+   * Base controller
+   * @class app.net.BaseController
+   * @extends Lavaca.mvc.Controller
    */
+  var BaseController = Controller.extend(function(){
+      Controller.apply(this, arguments);
+    }, {
+    updateState: function(historyState, title, url, stateProps){
+      var defaultStateProps = {pageTitle: title};
+      this.history(historyState, title, url)();
 
-  var _initHasRun = false,
-      _onInit = [];
-
-  var Device = {};
-
-  /**
-   * Indicates whether or not the app is being run through Cordova
-   * @method isCordova
-   * @static
-   *
-   * @return {Boolean}  True if app is being run through Cordova
-   */
-  Device.isCordova = function() {
-    return !!Cordova;
-  };
-  /**
-   * Registers a plugin to be initialized when the device is ready
-   * @method register
-   * @static
-   *
-   * @param {String} name
-   * @param {Function} TPlugin  The plugin to register. The plugin should be a constructor function
-   */
-  Device.register = function(name, TPlugin) {
-    function install() {
-      if (!window.plugins) {
-        window.plugins = {};
-      }
-      window.plugins[name] = new TPlugin();
+      stateProps = merge(stateProps || {}, defaultStateProps);
+      stateModel.apply(stateProps, true);
+      stateModel.trigger(&#x27;change&#x27;);
     }
-    if (_initHasRun) {
-      install();
-    } else {
-      _onInit.push(install);
-    }
-  };
-
-  /**
-   * Executes a Cordova command, if Cordova is available
-   * @method exec
-   * @static
-   *
-   * @param {String} className  The name of the native class
-   * @param {String} methodName  The name of the class method to call
-   * @param {Array} args  Arguments to pass the method
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  Device.exec = function(className, methodName, args) {
-    var promise = new Promise(window);
-    if (Cordova) {
-      Cordova.exec(promise.resolver(), promise.rejector(), className, methodName, args);
-    } else {
-      promise.reject();
-    }
-    return promise;
-  };
-
-  /**
-   * Executes a callback when the device is ready to be used
-   * @method init
-   * @static
-   *
-   * @param {Function} callback  The handler to execute when the device is ready
-   */
-  Device.init = function(callback) {
-    if (!Cordova) {
-      $(document).ready(callback);
-    }
-    else if (document.addEventListener) {
-      // Android fix
-      document.addEventListener(&#x27;deviceready&#x27;, callback, false);
-    } else {
-      $(document).on(&#x27;deviceready&#x27;, callback);
-    }
-  };
-
-  $(document).ready(function() {
-    var i = -1,
-        installPlugin;
-    while (!!(installPlugin = _onInit[++i])) {
-      installPlugin();
-    }
-    _initHasRun = true;
   });
 
-  return Device;
+  return BaseController;
 
 });
-
     </pre>
 </div>
 

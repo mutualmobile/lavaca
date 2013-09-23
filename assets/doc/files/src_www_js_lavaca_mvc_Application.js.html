@@ -41,7 +41,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/lavaca.html">lavaca</a></li>
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.HomeController.html">app.net.HomeController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.HomeView.html">app.ui.views.HomeView</a></li>
             
                 <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
             
@@ -66,8 +76,6 @@
                 <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
-            
-                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
             
@@ -182,8 +190,6 @@ define(function(require) {
     Promise = require(&#x27;lavaca/util/Promise&#x27;),
     ChildBrowser = require(&#x27;lavaca/env/ChildBrowser&#x27;),
     Translation = require(&#x27;lavaca/util/Translation&#x27;);
-    require(&#x27;jquery-mobile/events/touch&#x27;);
-    require(&#x27;jquery-mobile/events/orientationchange&#x27;);
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -191,7 +197,7 @@ define(function(require) {
   }
 
   function _matchHashRoute(hash) {
-    var matches = hash.match(/^(?:#)(\/.*)#?@?/);
+    var matches = decodeURIComponent(hash).match(/^(?:#)(\/.*)#?@?/);
     if (matches instanceof Array &amp;&amp; matches[1]) {
       return matches[1].replace(/#.*/, &#x27;&#x27;);
     }
@@ -351,9 +357,7 @@ define(function(require) {
         }
       }.bind(this);
 
-      $(document.body)
-        .on(&#x27;tap&#x27;, &#x27;a&#x27;, this.onTapLink.bind(this))
-        .on(&#x27;tap&#x27;, &#x27;.ui-blocker&#x27;, _stopEvent);
+      this.bindLinkHandler();
 
       if (this._callback) {
         _cbPromise = this._callback(args);
@@ -365,7 +369,19 @@ define(function(require) {
         this.trigger(&#x27;ready&#x27;);
       });
     },
-
+    /**
+     * Binds a global link handler
+     * @method bindLinkHandler
+     */
+    bindLinkHandler: function() {
+      var $body = $(document.body);
+      if ($body.hammer) {
+        $body = $body.hammer();
+      }
+      $body
+        .on(&#x27;tap click&#x27;, &#x27;.ui-blocker&#x27;, _stopEvent)
+        .on(&#x27;tap click&#x27;, &#x27;a&#x27;, this.onTapLink.bind(this));
+    },
     /**
      * Gets initial route based on query string returned by server 302 redirect
      * @property initialStandardRoute
@@ -373,7 +389,6 @@ define(function(require) {
      *
      * @type {String}
      */
-
     initialHashRoute: (function(hash) {
       return _matchHashRoute(hash);
     })(window.location.hash),

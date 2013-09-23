@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/www/js/lavaca/mvc/PageView.js</title>
+    <title>app.net.BaseController</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -41,7 +41,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/lavaca.html">lavaca</a></li>
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.HomeController.html">app.net.HomeController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.HomeView.html">app.ui.views.HomeView</a></li>
             
                 <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
             
@@ -66,8 +76,6 @@
                 <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
-            
-                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
             
@@ -164,196 +172,67 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/www/js/lavaca/mvc/PageView.js</h1>
+                        <h1>app.net.BaseController Class</h1>
+<div class="box meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-define(function(require) {
+    
+        <div class="extends">
+            Extends Lavaca.mvc.Controller
+        </div>
+    
 
-  var $ = require(&#x27;$&#x27;),
-      Model = require(&#x27;lavaca/mvc/Model&#x27;),
-      View = require(&#x27;lavaca/mvc/View&#x27;),
-      Template = require(&#x27;lavaca/ui/Template&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;),
-      delay = require(&#x27;lavaca/util/delay&#x27;);
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src_www_js_app_net_BaseController.js.html#l7"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;net&#x2F;BaseController.js:7</code></a>
+        </div>
+    
 
-  /**
-   * Page View type, represents an entire screen
-   * @class lavaca.mvc.PageView
-   * @extends lavaca.mvc.View
-   *
-   * @constructor
-   * @param {Object} el  The element that the PageView is bound to
-   * @param {Object} model  The model used by the view
-   * @param {Number} [layer]  The index of the layer on which the view sits
-   *
-   */
-  var PageView = View.extend(function(el, model, layer) {
+    
 
-    View.call(this, el, model);
-    /**
-     * The index of the layer on which the view sits
-     * @property {Number} layer
-     * @default 0
-     */
-    this.layer = layer || 0;
+    
+</div>
 
 
-  }, {
 
-    /**
-     * The element containing the view
-     * @property {jQuery} shell
-     * @default null
-     */
-    shell: null,
+<div class="box intro">
+    <p>Base controller</p>
 
-    /**
-     * Creates the view&#x27;s wrapper element
-     * @method wrapper
-     * @return {jQuery}  The wrapper element
-     */
-    wrapper: function() {
-      return $(&#x27;&lt;div class=&quot;view&quot;&gt;&lt;/div&gt;&#x27;);
-    },
-    /**
-     * Creates the view&#x27;s interior content wrapper element
-     * @method interior
-     * @return {jQuery} The interior content wrapper element
-     */
-    interior: function() {
-      return $(&#x27;&lt;div class=&quot;view-interior&quot;&gt;&lt;/div&gt;&#x27;);
-    },
+</div>
 
 
-    /**
-     * Adds this view to a container
-     * @method insertInto
-     * @param {jQuery} container  The containing element
-     */
-    insertInto: function(container) {
-      if (this.shell.parent()[0] !== container[0]) {
-        var layers = container.children(&#x27;[data-layer-index]&#x27;),
-            i = -1,
-            layer;
-        while (!!(layer = layers[++i])) {
-          layer = $(layer);
-          if (layer.attr(&#x27;data-layer-index&#x27;) &gt; this.index) {
-            this.shell.insertBefore(layer);
-            return;
-          }
-        }
-        container.append(this.shell);
-      }
-    },
-    /**
-     * Renders the view using its template and model, overrides the View class render method
-     * @method render
-     *
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    render: function() {
-      var promise = new Promise(this),
-          renderPromise = new Promise(this),
-          template = Template.get(this.template),
-          model = this.model;
-      if (model instanceof Model) {
-        model = model.toObject();
-      }
-      if (this.el) {
-        this.el.remove();
-      }
 
-      this.shell = this.wrapper();
-      this.el = this.interior();
-      this.shell.append(this.el);
-      this.shell.attr(&#x27;data-layer-index&#x27;, this.layer);
-      if (this.className) {
-        this.shell.addClass(this.className);
-      }
-      promise
-        .success(function(html) {
-          /**
-           * Fires when html from template has rendered
-           * @event rendersuccess
-           */
-          this.trigger(&#x27;rendersuccess&#x27;, {html: html});
-          renderPromise.resolve();
-        })
-        .error(function(err) {
-          /**
-           * Fired when there was an error during rendering process
-           * @event rendererror
-           */
-          this.trigger(&#x27;rendererror&#x27;, {err: err});
-          renderPromise.reject();
-        });
-      template
-        .render(model)
-        .success(promise.resolver())
-        .error(promise.rejector());
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-      return renderPromise;
-    },
-    /**
-     * Executes when the user navigates to this view
-     * @method enter
-     * @param {jQuery} container  The parent element of all views
-     * @param {Array} exitingViews  The views that are exiting as this one enters
-     * @return {lavaca.util.Promise}  A promise
-     */
-    enter: function(container) {
-      var promise = new Promise(this),
-          renderPromise;
-      container = $(container);
-      if (!this.hasRendered) {
-        renderPromise = this
-          .render()
-          .error(promise.rejector());
-      }
-      this.insertInto(container);
-      if (renderPromise) {
-        promise.when(renderPromise);
-      } else {
-        delay(promise.resolver());
-      }
-      promise.then(function() {
-        /**
-         * Fired when there was an error during rendering process
-         * @event rendererror
-         */
-        this.trigger(&#x27;enter&#x27;);
-      });
-      return promise;
-    },
-    /**
-     * Executes when the user navigates away from this view
-     * @method exit
-     *
-     * @param {jQuery} container  The parent element of all views
-     * @param {Array} enteringViews  The views that are entering as this one exits
-     * @return {lavaca.util.Promise}  A promise
-     */
-    exit: function() {
-      var promise = new Promise(this);
-      this.shell.detach();
-      delay(promise.resolver());
-      promise.then(function() {
-        /**
-         * Fired when there was an error during rendering process
-         * @event rendererror
-         */
-        this.trigger(&#x27;exit&#x27;);
-      });
-      return promise;
-    }
-  });
+        
+        
+        
+        
+    </ul>
 
-  return PageView;
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-});
+            
 
-    </pre>
+            
+
+            
+
+            
+        </div>
+
+        
+
+        
+
+        
+
+        
+    </div>
 </div>
 
                     </div>

@@ -41,7 +41,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/lavaca.html">lavaca</a></li>
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.HomeController.html">app.net.HomeController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.HomeView.html">app.ui.views.HomeView</a></li>
             
                 <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
             
@@ -66,8 +76,6 @@
                 <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
-            
-                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
             
@@ -176,20 +184,27 @@ define(function(require) {
     Template = require(&#x27;lavaca/ui/Template&#x27;),
     Cache = require(&#x27;lavaca/util/Cache&#x27;),
     Promise = require(&#x27;lavaca/util/Promise&#x27;),
+    ArrayUtils = require(&#x27;lavaca/util/ArrayUtils&#x27;),
     log = require(&#x27;lavaca/util/log&#x27;),
-    uuid = require(&#x27;lavaca/util/uuid&#x27;);
+    uuid = require(&#x27;lavaca/util/uuid&#x27;),
+    delay = require(&#x27;lavaca/util/delay&#x27;);
 
-
-
+  var _UNDEFINED;
 
   /**
    * Base View Class
    * @class lavaca.mvc.View
    * @extends lavaca.events.EventDispatcher
+   *
    * @constructor
    * @param {Object | String} el the selector or Object for the element to attach to the view
    * @param {Object} [model] the model for the view
    * @param {Object} [parentView] the parent view for the view
+   *
+   * @constructor
+   * @param {Object | String} el the selector or Object for the element to attach to the view
+   * @param {Object} [model] the model for the view
+   * @param {Object} [layer] The layer on which the view sits (only applicable to views used as a PageView)
    *
    *
    */
@@ -207,22 +222,35 @@ define(function(require) {
     this.model = model || null;
 
     /**
+     * The element containing the view
+     * @property {jQuery} shell
+     * @default null
+     */
+    this.shell = null;
+
+
+    /**
      * An id is applied to a data property on the views container
      * @property id
      * @default generated from className and unique identifier
      * @type String
      *
      */
-    this.id = this.className + &#x27;-&#x27; + uuid();
+    this.id = (this.className + &#x27;-&#x27; + uuid()).replace(&#x27; &#x27;, &#x27;-&#x27;);
 
-    /**
-     * If the view is created in the context of a childView, the parent view is assigned to this view
-     * @property parentView
-     * @default null
-     * @type Object
-     *
-     */
-    this.parentView = parentView || null;
+    if (typeof parentView !== &#x27;number&#x27;) {
+      /**
+       * If the view is created in the context of a childView, the parent view is assigned to this view
+       * @property parentView
+       * @default null
+       * @type Object
+       *
+       */
+      this.parentView = parentView || null;
+
+    } else {
+      this.layer = parentView;
+    }
 
     /**
      * The element that is either assigned to the view if in the context of a childView, or is created for the View
@@ -233,6 +261,7 @@ define(function(require) {
      *
      */
     this.el = typeof el === &#x27;string&#x27; ? $(el) : (el || null);
+
 
     /**
      * A dictionary of selectors and event types in the form
@@ -291,12 +320,13 @@ define(function(require) {
     }
   }, {
     /**
-     * The element associated with the view
-     * @property {jQuery} el
-     * @default null
+     * Will render any childViews automatically when set to true
+     * @property autoRender
+     * @default false
      *
+     * @type Boolean
      */
-    el: null,
+    autoRender: false,
     /**
      * The name of the template associated with the view
      * @property {String} template
@@ -311,32 +341,25 @@ define(function(require) {
      *
      */
     className: null,
+
+
     /**
-     * Will render any childViews automatically when set to true
-     * @property autoRender
-     * @default false
-     *
-     * @type Boolean
+     * The index of the layer on which the view sits
+     * @property {Number} layer
+     * @default 0
      */
-    autoRender: false,
+    layer: 0,
+
     /**
-     * Renders the view using its template and model
-     * @method render
-     *
-     *
-     *
-     * @return {lavaca.util.Promise} A promise
+     * Type of view, ex PageView, View
+     * @property String viewType
+     * @default null
      */
-    render: function() {
-      var self = this,
-        promise = new Promise(this),
-        renderPromise = new Promise(this),
-        template = Template.get(this.template),
-        model = this.model;
-      if (model instanceof Model) {
-        model = model.toObject();
-      }
-      /**
+    viewType: null,
+
+    bindRenderEvents: function(renderPromise) {
+      var promise = new Promise(this);
+      /*
        * Fires when html from template has rendered
        * @event rendersuccess
        */
@@ -353,10 +376,35 @@ define(function(require) {
           this.trigger(&#x27;rendererror&#x27;, {err: err});
           renderPromise.reject();
         });
-      template
+
+      return promise;
+    },
+
+    renderTemplate: function(template, promise, model) {
+      return template
         .render(model)
         .success(promise.resolver())
-        .error(promise.rejector())
+        .error(promise.rejector());
+    },
+
+    getRenderModel: function() {
+      var model = this.model;
+      return model instanceof Model ? model.toObject() : model;
+    },
+    /**
+     * Renders the view using its template and model
+     * @method render
+     *
+     * @return {lavaca.util.Promise} A promise
+     */
+    render: function() {
+      var self = this,
+          renderPromise = new Promise(this),
+          promise = this.bindRenderEvents(renderPromise),
+          template = Template.get(this.template),
+          model = this.getRenderModel();
+
+      this.renderTemplate(template, promise, model)
         .then(function() {
           if (self.className){
             self.el.addClass(self.className);
@@ -364,6 +412,36 @@ define(function(require) {
         });
 
       return renderPromise;
+
+    },
+    /**
+     * Renders the view using its template and model
+     * @method renderPageView
+     *
+     * @return {lavaca.util.Promise} A promise
+     */
+    renderPageView: function() {
+      var renderPromise = new Promise(this),
+          promise = this.bindRenderEvents(renderPromise),
+          template = Template.get(this.template),
+          model = this.getRenderModel();
+
+      if (this.el) {
+        this.el.remove();
+      }
+
+      this.shell = this.wrapper();
+      this.el = this.interior();
+      this.shell.append(this.el);
+      this.shell.attr(&#x27;data-layer-index&#x27;, this.layer);
+      if (this.className) {
+        this.shell.addClass(this.className);
+      }
+
+      this.renderTemplate(template, promise, model);
+
+      return renderPromise;
+
     },
 
     /**
@@ -437,6 +515,9 @@ define(function(require) {
         redrawPromise = new Promise(this),
         template = Template.get(this.template),
         replaceAll;
+      if (!template) {
+        return redrawPromise.reject();
+      }
       if (typeof selector === &#x27;object&#x27; || selector instanceof Model) {
         model = selector;
         replaceAll = true;
@@ -459,6 +540,7 @@ define(function(require) {
         self.createWidgets();
         self.createChildViews();
         self.applyChildViewEvents();
+        self.trigger(&#x27;redrawsuccess&#x27;);
       }
       templateRenderPromise
         .success(function(html) {
@@ -514,9 +596,10 @@ define(function(require) {
       childViewSearch.each(function(index, item) {
         var $item = $(item),
           childView = $item.data(&#x27;view&#x27;);
-
-        self.childViews.remove(childView.id);
-        childView.dispose();
+        if (childview) {
+          self.childViews.remove(childView.id);
+          childView.dispose();
+        }
       });
     },
     /**
@@ -604,6 +687,7 @@ define(function(require) {
         }
         for (type in callbacks) {
           callback = callbacks[type];
+          property = _UNDEFINED;
           if (typeof callback === &#x27;object&#x27;) {
             opts = callback;
             callback = callback.on;
@@ -622,14 +706,18 @@ define(function(require) {
                 property = type.substr(dotIndex+1);
                 type = type.substr(0, dotIndex);
               }
-              this.model.on(type, property, callback, this);
+              this.model.on(type, property, callback);
             }
           } else if (type === &#x27;animationEnd&#x27; &amp;&amp; el.animationEnd) {
             el.animationEnd(delegate, callback);
           } else if (type === &#x27;transitionEnd&#x27; &amp;&amp; el.transitionEnd) {
             el.transitionEnd(delegate, callback);
           } else {
-            el.on(type, delegate, callback);
+            if (el.hammer) {
+              el.hammer().on(type, delegate, callback);
+            } else {
+              el.on(type, delegate, callback);
+            }
           }
         }
       }
@@ -683,16 +771,38 @@ define(function(require) {
     createWidgets: function() {
       var cache = this.widgets,
         n,
-        o;
+        o,
+        TWidget,
+        makeWidget,
+        args;
       for (n in this.widgetMap) {
         o = this.widgetMap[n];
+        if (typeof o === &#x27;object&#x27;) {
+          TWidget = o.TWidget;
+          args = o.args
+            ? ArrayUtils.isArray(o.args) ? o.args : [o.args]
+            : null;
+        } else {
+          TWidget = o;
+          args = null;
+        }
+        if (args) {
+          makeWidget = function(el) {
+            var factoryFunction = TWidget.bind.apply(TWidget, [null, el].concat(args));
+            return new factoryFunction();
+          };
+        } else {
+          makeWidget = function(el) {
+            return new TWidget(el);
+          };
+        }
         (n === &#x27;self&#x27; ? this.el : this.el.find(n))
           .each(function(index, item) {
             var $el = $(item),
               widgetMap = $el.data(&#x27;widgets&#x27;) || {},
               widget;
             if (!widgetMap[n]) {
-              widget = new o($(item));
+              widget = makeWidget($(item));
               widgetMap[n] = widget;
               cache.set(widget.id, widget);
               $el.data(&#x27;widgets&#x27;, widgetMap);
@@ -704,8 +814,10 @@ define(function(require) {
     /**
      * Assigns multiple widget types to elements on the view
      * @method mapWidget
-     * @param {Object} map  A hash of selectors to widget types to be bound when the view is rendered.
-     *     The map should be in the form {selector: TWidget}. For example, {&#x27;form&#x27;: Lavaca.ui.Form}
+     * @param {Object} map  A hash of selectors to bind widgets to when the view is rendered.
+     *     The map should be in the form {selector: [[Lavaca.ui.Widget]]} or
+     *     {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.
+     *     For example, {&#x27;form&#x27;: Lavaca.ui.Form} or {&#x27;form&#x27;: {TWidget: Lavaca.ui.Form, args: [...]}}
      * @return {Lavaca.mvc.View}  This view (for chaining)
      *
      */
@@ -714,6 +826,15 @@ define(function(require) {
      * @method mapWidget
      * @param {String} selector  The selector for the root element of the widget
      * @param {Function} TWidget  The [[Lavaca.ui.Widget]]-derived type of widget to create
+     * @return {Lavaca.mvc.View}  This view (for chaining)
+     */
+    /**
+     * Assigns a widget type to be created for elements matching a selector when the view is rendered, and
+     * accepts optional arguments to pass to the widget constructor
+     * @method mapWidget
+     * @param {String} selector  The selector for the root element of the widget
+     * @param {Object} widgetOptions  An object with a &#x27;TWidget&#x27; key and an optional &#x27;args&#x27; key which can be
+     *     an array of arguments to pass to the widget&#x27;s constructor
      * @return {Lavaca.mvc.View}  This view (for chaining)
      */
     mapWidget: function(selector, TWidget) {
@@ -882,6 +1003,100 @@ define(function(require) {
         = null;
 
       EventDispatcher.prototype.dispose.apply(this, arguments);
+    },
+
+    // -------------- PageView methods --------------------
+
+    /**
+     * Creates the view&#x27;s wrapper element
+     * @method wrapper
+     * @return {jQuery}  The wrapper element
+     */
+    wrapper: function() {
+      return $(&#x27;&lt;div class=&quot;view&quot;&gt;&lt;/div&gt;&#x27;);
+    },
+    /**
+     * Creates the view&#x27;s interior content wrapper element
+     * @method interior
+     * @return {jQuery} The interior content wrapper element
+     */
+    interior: function() {
+      return $(&#x27;&lt;div class=&quot;view-interior&quot;&gt;&lt;/div&gt;&#x27;);
+    },
+
+
+    /**
+     * Adds this view to a container
+     * @method insertInto
+     * @param {jQuery} container  The containing element
+     */
+    insertInto: function(container) {
+      if (this.shell.parent()[0] !== container[0]) {
+        var layers = container.children(&#x27;[data-layer-index]&#x27;),
+          i = -1,
+          layer;
+        while (!!(layer = layers[++i])) {
+          layer = $(layer);
+          if (layer.attr(&#x27;data-layer-index&#x27;) &gt; this.index) {
+            this.shell.insertBefore(layer);
+            return;
+          }
+        }
+        container.append(this.shell);
+      }
+    },
+
+    /**
+     * Executes when the user navigates to this view
+     * @method enter
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} exitingViews  The views that are exiting as this one enters
+     * @return {lavaca.util.Promise}  A promise
+     */
+    enter: function(container) {
+      var promise = new Promise(this),
+        renderPromise;
+      container = $(container);
+      if (!this.hasRendered) {
+        renderPromise = this
+          .render()
+          .error(promise.rejector());
+      }
+      this.insertInto(container);
+      if (renderPromise) {
+        promise.when(renderPromise);
+      } else {
+        delay(promise.resolver());
+      }
+      promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
+        this.trigger(&#x27;enter&#x27;);
+      });
+      return promise;
+    },
+    /**
+     * Executes when the user navigates away from this view
+     * @method exit
+     *
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} enteringViews  The views that are entering as this one exits
+     * @return {lavaca.util.Promise}  A promise
+     */
+    exit: function() {
+      var promise = new Promise(this);
+      this.shell.detach();
+      delay(promise.resolver());
+      promise.then(function() {
+        /**
+         * Fired when there was an error during rendering process
+         * @event rendererror
+         */
+        this.trigger(&#x27;exit&#x27;);
+      });
+      return promise;
     }
   });
 

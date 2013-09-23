@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/www/js/lavaca/env/Device.js</title>
+    <title>src/www/js/app/ui/views/BaseView.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -172,107 +172,177 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/www/js/lavaca/env/Device.js</h1>
+                        <h1 class="file-heading">File: src/www/js/app/ui/views/BaseView.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function(require) {
 
-  var $ = require(&#x27;$&#x27;),
-      Cordova = require(&#x27;cordova&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;);
+  var Detection = require(&#x27;lavaca/env/Detection&#x27;),
+      View = require(&#x27;lavaca/mvc/View&#x27;),
+      Promise = require(&#x27;lavaca/util/Promise&#x27;),
+      viewManager = require(&#x27;lavaca/mvc/ViewManager&#x27;),
+      History = require(&#x27;lavaca/net/History&#x27;);
+  require(&#x27;lavaca/fx/Animation&#x27;); //jquery plugins
 
   /**
-   * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
-   * @class lavaca.env.Device
-   */
-
-  var _initHasRun = false,
-      _onInit = [];
-
-  var Device = {};
-
-  /**
-   * Indicates whether or not the app is being run through Cordova
-   * @method isCordova
-   * @static
+   * A View from which all other application Views can extend.
+   * Adds support for animating between views.
    *
-   * @return {Boolean}  True if app is being run through Cordova
-   */
-  Device.isCordova = function() {
-    return !!Cordova;
-  };
-  /**
-   * Registers a plugin to be initialized when the device is ready
-   * @method register
-   * @static
+   * @class app.ui.views.BaseView
+   * @extends Lavaca.mvc.View
    *
-   * @param {String} name
-   * @param {Function} TPlugin  The plugin to register. The plugin should be a constructor function
    */
-  Device.register = function(name, TPlugin) {
-    function install() {
-      if (!window.plugins) {
-        window.plugins = {};
+  var BaseView = View.extend(function() {
+    View.apply(this, arguments);
+    this.mapEvent(&#x27;.cancel&#x27;, &#x27;tap&#x27;, this.onTapCancel);
+  }, {
+
+    /**
+     * The name of the template used by the view
+     * @property {String} template
+     * @default &#x27;default&#x27;
+     */
+    template: &#x27;default&#x27;,
+    /**
+     * The name of the template used by the view
+     * @property {Object} pageTransition
+     * @default &#x27;default&#x27;
+     
+     */
+    pageTransition: {
+      &#x27;in&#x27;: &#x27;&#x27;,
+      &#x27;out&#x27;: &#x27;&#x27;,
+      &#x27;inReverse&#x27;: &#x27;&#x27;,
+      &#x27;outReverse&#x27;: &#x27;&#x27;
+    },
+    /**
+     * Executes when the template renders successfully. This implementation
+     * adds support for animations between views, based off of the animation
+     * property on the prototype.
+     * @method onRenderSuccess
+     *
+     * @param {Event} e  The render event. This object should have a string property named &quot;html&quot;
+     *   that contains the template&#x27;s rendered HTML output.
+     */
+    onRenderSuccess: function() {
+      View.prototype.onRenderSuccess.apply(this, arguments);
+    },
+    /**
+     * Handler for when a cancel control is tapped
+     * @method onTapCancel
+     *
+     * @param {Event} e  The tap event.
+     */
+    onTapCancel: function(e) {
+      e.preventDefault();
+      viewManager.dismiss(e.currentTarget);
+    },
+    /**
+     * Executes when the user navigates to this view. This implementation
+     * adds support for animations between views, based off of the animation
+     * property on the prototype.
+     * @method enter
+     *
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} exitingViews  The views that are exiting as this one enters
+     * @return {Lavaca.util.Promise} A promise
+     */
+    enter: function(container, exitingViews) {
+      return View.prototype.enter.apply(this, arguments)
+        .then(function() {
+          if (History.isRoutingBack) {
+            if (History.animationBreadcrumb.length &gt; 0) {
+              this.pageTransition = History.animationBreadcrumb.pop();
+            }
+          } else {
+            History.animationBreadcrumb.push(this.pageTransition);
+          }
+          var animationIn = History.isRoutingBack ? this.pageTransition[&#x27;inReverse&#x27;]:this.pageTransition[&#x27;in&#x27;],
+              animationOut = History.isRoutingBack ? this.pageTransition[&#x27;outReverse&#x27;]:this.pageTransition[&#x27;out&#x27;],
+              i = -1,
+              exitingView;
+
+          var triggerEnterComplete = function() {
+            this.trigger(&#x27;entercomplete&#x27;);
+            this.shell.removeClass(animationIn);
+          };
+
+          if (Detection.animationEnabled &amp;&amp; animationIn !== &#x27;&#x27;) {
+
+            if (exitingViews.length) {
+              i = -1;
+              while (!!(exitingView = exitingViews[++i])) {
+                exitingView.shell.addClass(animationOut);
+                if (animationOut === &#x27;&#x27;) {
+                  exitingView.exitPromise.resolve();
+                }
+              }
+            }
+
+            if ((this.layer &gt; 0 || exitingViews.length &gt; 0)) {
+              this.shell
+                  .nextAnimationEnd(triggerEnterComplete.bind(this))
+                  .addClass(animationIn + &#x27; current&#x27;);
+            } else {
+              this.shell.addClass(&#x27;current&#x27;);
+              this.trigger(&#x27;entercomplete&#x27;);
+            }
+            
+          } else {
+            this.shell.addClass(&#x27;current&#x27;);
+            if (exitingViews.length &gt; 0) {
+              i = -1;
+              while (!!(exitingView = exitingViews[++i])) {
+                exitingView.shell.removeClass(&#x27;current&#x27;);
+                if (exitingView.exitPromise) {
+                  exitingView.exitPromise.resolve();
+                }
+              }
+            }
+            this.trigger(&#x27;entercomplete&#x27;);
+          }
+        });
+    },
+    /**
+     * Executes when the user navigates away from this view. This implementation
+     * adds support for animations between views, based off of the animation
+     * property on the prototype.
+     * @method exit
+     *
+     * @param {jQuery} container  The parent element of all views
+     * @param {Array} enteringViews  The views that are entering as this one exits
+     * @return {Lavaca.util.Promise} A promise
+     */
+    exit: function(container, enteringViews) {
+      var animation = History.isRoutingBack ? this.pageTransition[&#x27;outReverse&#x27;] : (enteringViews.length ? enteringViews[0].pageTransition[&#x27;out&#x27;] : &#x27;&#x27;);
+
+      if (History.isRoutingBack &amp;&amp; this.shell.data(&#x27;layer-index&#x27;) &gt; 0) {
+        this.pageTransition = History.animationBreadcrumb.pop();
+        animation = this.pageTransition[&#x27;outReverse&#x27;];
       }
-      window.plugins[name] = new TPlugin();
-    }
-    if (_initHasRun) {
-      install();
-    } else {
-      _onInit.push(install);
-    }
-  };
 
-  /**
-   * Executes a Cordova command, if Cordova is available
-   * @method exec
-   * @static
-   *
-   * @param {String} className  The name of the native class
-   * @param {String} methodName  The name of the class method to call
-   * @param {Array} args  Arguments to pass the method
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  Device.exec = function(className, methodName, args) {
-    var promise = new Promise(window);
-    if (Cordova) {
-      Cordova.exec(promise.resolver(), promise.rejector(), className, methodName, args);
-    } else {
-      promise.reject();
-    }
-    return promise;
-  };
+      if (Detection.animationEnabled &amp;&amp; animation) {
+        this.exitPromise = new Promise(this);
 
-  /**
-   * Executes a callback when the device is ready to be used
-   * @method init
-   * @static
-   *
-   * @param {Function} callback  The handler to execute when the device is ready
-   */
-  Device.init = function(callback) {
-    if (!Cordova) {
-      $(document).ready(callback);
-    }
-    else if (document.addEventListener) {
-      // Android fix
-      document.addEventListener(&#x27;deviceready&#x27;, callback, false);
-    } else {
-      $(document).on(&#x27;deviceready&#x27;, callback);
-    }
-  };
+        this.shell
+          .nextAnimationEnd(function() {
+            View.prototype.exit.apply(this, arguments).then(function() {
+              this.exitPromise.resolve();
+            });
+            this.shell.removeClass(animation + &#x27; current&#x27;);
+          }.bind(this))
+          .addClass(animation);
 
-  $(document).ready(function() {
-    var i = -1,
-        installPlugin;
-    while (!!(installPlugin = _onInit[++i])) {
-      installPlugin();
+        return this.exitPromise;
+      } else {
+        this.shell.removeClass(&#x27;current&#x27;);
+        return View.prototype.exit.apply(this, arguments);
+      }
     }
-    _initHasRun = true;
   });
 
-  return Device;
+  return BaseView;
 
 });
 

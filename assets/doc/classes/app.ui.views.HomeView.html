@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lavaca.env.Device</title>
+    <title>app.ui.views.HomeView</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -172,15 +172,19 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>lavaca.env.Device Class</h1>
+                        <h1>app.ui.views.HomeView Class</h1>
 <div class="box meta">
     
 
     
+        <div class="extends">
+            Extends <a href="../classes/app.ui.views.BaseView.html" class="crosslink">app.ui.views.BaseView</a>
+        </div>
+    
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_www_js_lavaca_env_Device.js.html#l7"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;env&#x2F;Device.js:7</code></a>
+            Defined in: <a href="../files/src_www_js_app_ui_views_HomeView.js.html#l6"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;HomeView.js:6</code></a>
         </div>
     
 
@@ -192,7 +196,7 @@
 
 
 <div class="box intro">
-    <p>Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality</p>
+    <p>Example view type</p>
 
 </div>
 
@@ -206,6 +210,8 @@
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
         
         
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+        
         
         
     </ul>
@@ -218,40 +224,32 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
+                    <ul class="index-list methods extends">
                         
-                            <li class="index-item method">
-                                <a href="#method_exec">exec</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_enter">enter</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
-                            <li class="index-item method">
-                                <a href="#method_init">init</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_exit">exit</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
-                            <li class="index-item method">
-                                <a href="#method_isCordova">isCordova</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_onRenderSuccess">onRenderSuccess</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
-                            <li class="index-item method">
-                                <a href="#method_register">register</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_onTapCancel">onTapCancel</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -260,6 +258,35 @@
                 </div>
             
 
+            
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                        
+                            <li class="index-item property">
+                                <a href="#property_className">className</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property inherited">
+                                <a href="#property_pageTransition">pageTransition</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property inherited">
+                                <a href="#property_template">template</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
             
 
             
@@ -272,8 +299,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_exec" class="method item">
-    <h3 class="name"><code>exec</code></h3>
+                    <div id="method_enter" class="method item inherited">
+    <h3 class="name"><code>enter</code></h3>
 
     
         <div class="args">
@@ -281,19 +308,13 @@
             
                 <li class="arg">
                     
-                        <code>className</code>
+                        <code>container</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>methodName</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>args</code>
+                        <code>exitingViews</code>
                     
                 </li>
             
@@ -314,8 +335,6 @@
     
 
     
-        <span class="flag static">static</span>
-    
 
     
 
@@ -324,15 +343,12 @@
     <div class="meta">
         
             
-                
-                <p>
-                
-                Defined in
-                
+                <p>Inherited from
+                <a href="../classes/app.ui.views.BaseView.html#method_enter">app.ui.views.BaseView</a>:
             
         
         
-        <a href="../files/src_www_js_lavaca_env_Device.js.html#l49"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;env&#x2F;Device.js:49</code></a>
+        <a href="../files/src_www_js_app_ui_views_BaseView.js.html#l63"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;BaseView.js:63</code></a>
         
         </p>
 
@@ -343,7 +359,9 @@
     </div>
 
     <div class="description">
-        <p>Executes a Cordova command, if Cordova is available</p>
+        <p>Executes when the user navigates to this view. This implementation
+adds support for animations between views, based off of the animation
+property on the prototype.</p>
 
     </div>
 
@@ -355,14 +373,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">className</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name">container</code>
+                        <span class="type">JQuery</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The name of the native class</p>
+                        <p>The parent element of all views</p>
 
                     </div>
 
@@ -371,30 +389,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">methodName</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The name of the class method to call</p>
-
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">args</code>
+                        <code class="param-name">exitingViews</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Arguments to pass the method</p>
+                        <p>The views that are exiting as this one enters</p>
 
                     </div>
 
@@ -425,8 +427,8 @@
 </div>
 
                 
-                    <div id="method_init" class="method item">
-    <h3 class="name"><code>init</code></h3>
+                    <div id="method_exit" class="method item inherited">
+    <h3 class="name"><code>exit</code></h3>
 
     
         <div class="args">
@@ -434,7 +436,13 @@
             
                 <li class="arg">
                     
-                        <code>callback</code>
+                        <code>container</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>enteringViews</code>
                     
                 </li>
             
@@ -443,89 +451,8 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_www_js_lavaca_env_Device.js.html#l69"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;env&#x2F;Device.js:69</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Executes a callback when the device is ready to be used</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The handler to execute when the device is ready</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_isCordova" class="method item">
-    <h3 class="name"><code>isCordova</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
         <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+            <span class="type">Lavaca.util.Promise</span>
         </span>
     
 
@@ -536,8 +463,6 @@
     
 
     
-        <span class="flag static">static</span>
-    
 
     
 
@@ -546,15 +471,12 @@
     <div class="meta">
         
             
-                
-                <p>
-                
-                Defined in
-                
+                <p>Inherited from
+                <a href="../classes/app.ui.views.BaseView.html#method_exit">app.ui.views.BaseView</a>:
             
         
         
-        <a href="../files/src_www_js_lavaca_env_Device.js.html#l17"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;env&#x2F;Device.js:17</code></a>
+        <a href="../files/src_www_js_app_ui_views_BaseView.js.html#l129"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;BaseView.js:129</code></a>
         
         </p>
 
@@ -565,10 +487,52 @@
     </div>
 
     <div class="description">
-        <p>Indicates whether or not the app is being run through Cordova</p>
+        <p>Executes when the user navigates away from this view. This implementation
+adds support for animations between views, based off of the animation
+property on the prototype.</p>
 
     </div>
 
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">container</code>
+                        <span class="type">JQuery</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The parent element of all views</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">enteringViews</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The views that are entering as this one exits</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -578,9 +542,9 @@
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                        <span class="type">Lavaca.util.Promise</span>:
                     
-                    <p>True if app is being run through Cordova</p>
+                    <p>A promise</p>
 
                 
             </div>
@@ -591,8 +555,8 @@
 </div>
 
                 
-                    <div id="method_register" class="method item">
-    <h3 class="name"><code>register</code></h3>
+                    <div id="method_onRenderSuccess" class="method item inherited">
+    <h3 class="name"><code>onRenderSuccess</code></h3>
 
     
         <div class="args">
@@ -600,13 +564,7 @@
             
                 <li class="arg">
                     
-                        <code>name</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>TPlugin</code>
+                        <code>e</code>
                     
                 </li>
             
@@ -623,8 +581,6 @@
     
 
     
-        <span class="flag static">static</span>
-    
 
     
 
@@ -633,15 +589,12 @@
     <div class="meta">
         
             
-                
-                <p>
-                
-                Defined in
-                
+                <p>Inherited from
+                <a href="../classes/app.ui.views.BaseView.html#method_onRenderSuccess">app.ui.views.BaseView</a>:
             
         
         
-        <a href="../files/src_www_js_lavaca_env_Device.js.html#l27"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;env&#x2F;Device.js:27</code></a>
+        <a href="../files/src_www_js_app_ui_views_BaseView.js.html#l41"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;BaseView.js:41</code></a>
         
         </p>
 
@@ -652,7 +605,9 @@
     </div>
 
     <div class="description">
-        <p>Registers a plugin to be initialized when the device is ready</p>
+        <p>Executes when the template renders successfully. This implementation
+adds support for animations between views, based off of the animation
+property on the prototype.</p>
 
     </div>
 
@@ -664,29 +619,101 @@
             
                 <li class="param">
                     
-                        <code class="param-name">name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name">e</code>
+                        <span class="type">Event</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>The render event. This object should have a string property named &quot;html&quot;
+  that contains the template&#39;s rendered HTML output.</p>
+
                     </div>
 
                     
                 </li>
             
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_onTapCancel" class="method item inherited">
+    <h3 class="name"><code>onTapCancel</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>e</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/app.ui.views.BaseView.html#method_onTapCancel">app.ui.views.BaseView</a>:
+            
+        
+        
+        <a href="../files/src_www_js_app_ui_views_BaseView.js.html#l53"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;BaseView.js:53</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Handler for when a cancel control is tapped</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
                 <li class="param">
                     
-                        <code class="param-name">TPlugin</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <code class="param-name">e</code>
+                        <span class="type">Event</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The plugin to register. The plugin should be a constructor function</p>
+                        <p>The tap event.</p>
 
                     </div>
 
@@ -706,6 +733,150 @@
             </div>
         
 
+        
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                
+                    <div id="property_className" class="property item">
+    <h3 class="name"><code>className</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_app_ui_views_HomeView.js.html#l18"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;HomeView.js:18</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>A class name added to the view container</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> &#x27;home&#x27;</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_pageTransition" class="property item inherited">
+    <h3 class="name"><code>pageTransition</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/app.ui.views.BaseView.html#property_pageTransition">app.ui.views.BaseView</a>:
+            
+        
+        
+        <a href="../files/src_www_js_app_ui_views_BaseView.js.html#l29"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;BaseView.js:29</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The name of the template used by the view</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> &#x27;default&#x27;</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_template" class="property item">
+    <h3 class="name"><code>template</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/app.ui.views.BaseView.html#property_template">
+                app.ui.views.BaseView
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/src_www_js_app_ui_views_HomeView.js.html#l12"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;ui&#x2F;views&#x2F;HomeView.js:12</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The name of the template used by the view</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> &#x27;home&#x27;</p>
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
         
 
         

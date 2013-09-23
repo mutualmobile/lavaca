@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/www/js/lavaca/env/Device.js</title>
+    <title>app.net.HomeController</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -172,111 +172,219 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/www/js/lavaca/env/Device.js</h1>
+                        <h1>app.net.HomeController Class</h1>
+<div class="box meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-define(function(require) {
+    
+        <div class="extends">
+            Extends <a href="../classes/app.net.BaseController.html" class="crosslink">app.net.BaseController</a>
+        </div>
+    
 
-  var $ = require(&#x27;$&#x27;),
-      Cordova = require(&#x27;cordova&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;);
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src_www_js_app_net_HomeController.js.html#l7"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;net&#x2F;HomeController.js:7</code></a>
+        </div>
+    
 
-  /**
-   * Static utility type for working with Cordova (aka PhoneGap) and other non-standard native functionality
-   * @class lavaca.env.Device
-   */
+    
 
-  var _initHasRun = false,
-      _onInit = [];
+    
+</div>
 
-  var Device = {};
 
-  /**
-   * Indicates whether or not the app is being run through Cordova
-   * @method isCordova
-   * @static
-   *
-   * @return {Boolean}  True if app is being run through Cordova
-   */
-  Device.isCordova = function() {
-    return !!Cordova;
-  };
-  /**
-   * Registers a plugin to be initialized when the device is ready
-   * @method register
-   * @static
-   *
-   * @param {String} name
-   * @param {Function} TPlugin  The plugin to register. The plugin should be a constructor function
-   */
-  Device.register = function(name, TPlugin) {
-    function install() {
-      if (!window.plugins) {
-        window.plugins = {};
-      }
-      window.plugins[name] = new TPlugin();
-    }
-    if (_initHasRun) {
-      install();
-    } else {
-      _onInit.push(install);
-    }
-  };
 
-  /**
-   * Executes a Cordova command, if Cordova is available
-   * @method exec
-   * @static
-   *
-   * @param {String} className  The name of the native class
-   * @param {String} methodName  The name of the class method to call
-   * @param {Array} args  Arguments to pass the method
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  Device.exec = function(className, methodName, args) {
-    var promise = new Promise(window);
-    if (Cordova) {
-      Cordova.exec(promise.resolver(), promise.rejector(), className, methodName, args);
-    } else {
-      promise.reject();
-    }
-    return promise;
-  };
+<div class="box intro">
+    <p>Home controller</p>
 
-  /**
-   * Executes a callback when the device is ready to be used
-   * @method init
-   * @static
-   *
-   * @param {Function} callback  The handler to execute when the device is ready
-   */
-  Device.init = function(callback) {
-    if (!Cordova) {
-      $(document).ready(callback);
-    }
-    else if (document.addEventListener) {
-      // Android fix
-      document.addEventListener(&#x27;deviceready&#x27;, callback, false);
-    } else {
-      $(document).on(&#x27;deviceready&#x27;, callback);
-    }
-  };
+</div>
 
-  $(document).ready(function() {
-    var i = -1,
-        installPlugin;
-    while (!!(installPlugin = _onInit[++i])) {
-      installPlugin();
-    }
-    _initHasRun = true;
-  });
 
-  return Device;
 
-});
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-    </pre>
+        
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+        
+        
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+            
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                        
+                            <li class="index-item method">
+                                <a href="#method_home">home</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+            
+
+            
+
+            
+        </div>
+
+        
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_home" class="method item">
+    <h3 class="name"><code>home</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>params</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>history</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Lavaca.util.Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_app_net_HomeController.js.html#l13"><code>src&#x2F;www&#x2F;js&#x2F;app&#x2F;net&#x2F;HomeController.js:13</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Home action, creates a history state and shows a view</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">params</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Action arguments</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">history</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>History state model</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Lavaca.util.Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+            </div>
+        
+
+        
+
+        
+
+        
+    </div>
 </div>
 
                     </div>

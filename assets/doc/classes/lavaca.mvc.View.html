@@ -41,7 +41,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/lavaca.html">lavaca</a></li>
+                <li><a href="../classes/app.html">app</a></li>
+            
+                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
+            
+                <li><a href="../classes/app.net.HomeController.html">app.net.HomeController</a></li>
+            
+                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
+            
+                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
+            
+                <li><a href="../classes/app.ui.views.HomeView.html">app.ui.views.HomeView</a></li>
             
                 <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
             
@@ -66,8 +76,6 @@
                 <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
-            
-                <li><a href="../classes/lavaca.mvc.PageView.html">lavaca.mvc.PageView</a></li>
             
                 <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
             
@@ -176,7 +184,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_www_js_lavaca_mvc_View.js.html#l15"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:15</code></a>
+            Defined in: <a href="../files/src_www_js_lavaca_mvc_View.js.html#l16"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:16</code></a>
         </div>
     
 
@@ -220,6 +228,24 @@
                     
                 </li>
             
+                <li class="arg">
+                    
+                        <code>el</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[model]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[layer]</code>
+                    
+                </li>
+            
             </ul><span class="paren">)</span>
         </div>
     
@@ -249,7 +275,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l15"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:15</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l16"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:16</code></a>
         
         </p>
 
@@ -313,6 +339,56 @@
 
                     <div class="param-description">
                         <p>the parent view for the view</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">el</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the selector or Object for the element to attach to the view</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[model]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the model for the view</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[layer]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The layer on which the view sits (only applicable to views used as a PageView)</p>
 
                     </div>
 
@@ -428,6 +504,34 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_enter">enter</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_exit">exit</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_insertInto">insertInto</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_interior">interior</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_mapChildView">mapChildView</a>
 
                                 
@@ -457,6 +561,13 @@
                         
                             <li class="index-item method">
                                 <a href="#method_mapEvent">mapEvent</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_mapWidget">mapWidget</a>
 
                                 
                                 
@@ -553,8 +664,22 @@
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_renderPageView">renderPageView</a>
+
+                                
+                                
+                            </li>
+                        
                             <li class="index-item method inherited inherited">
                                 <a href="#method_trigger">trigger</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_wrapper">wrapper</a>
 
                                 
                                 
@@ -606,13 +731,6 @@
                             </li>
                         
                             <li class="index-item property">
-                                <a href="#property_el">el</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item property">
                                 <a href="#property_eventMap">eventMap</a>
 
                                 
@@ -621,6 +739,13 @@
                         
                             <li class="index-item property">
                                 <a href="#property_id">id</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_layer">layer</a>
 
                                 
                                 
@@ -641,7 +766,21 @@
                             </li>
                         
                             <li class="index-item property">
+                                <a href="#property_shell">shell</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
                                 <a href="#property_String className">String className</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_String viewType">String viewType</a>
 
                                 
                                 
@@ -695,7 +834,14 @@
                             </li>
                         
                             <li class="index-item event">
-                                <a href="#event_rendersuccess">rendersuccess</a>
+                                <a href="#event_rendererror">rendererror</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item event">
+                                <a href="#event_rendererror">rendererror</a>
 
                                 
                                 
@@ -743,7 +889,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l639"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:639</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l752"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:752</code></a>
         
         </p>
 
@@ -798,7 +944,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l416"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:416</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l491"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:491</code></a>
         
         </p>
 
@@ -853,7 +999,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l399"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:399</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l474"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:474</code></a>
         
         </p>
 
@@ -908,7 +1054,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l373"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:373</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l448"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:448</code></a>
         
         </p>
 
@@ -963,7 +1109,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l560"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:560</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l673"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:673</code></a>
         
         </p>
 
@@ -1125,7 +1271,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l508"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:508</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l588"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:588</code></a>
         
         </p>
 
@@ -1180,7 +1326,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l693"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:693</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l806"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:806</code></a>
         
         </p>
 
@@ -1245,7 +1391,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l330"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:330</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l404"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:404</code></a>
         
         </p>
 
@@ -1334,7 +1480,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l352"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:352</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l427"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:427</code></a>
         
         </p>
 
@@ -1375,6 +1521,426 @@
         </div>
     
 
+    
+
+    
+</div>
+
+                
+                    <div id="method_enter" class="method item">
+    <h3 class="name"><code>enter</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>container</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>exitingViews</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l871"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:871</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Executes when the user navigates to this view</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">container</code>
+                        <span class="type">JQuery</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The parent element of all views</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">exitingViews</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The views that are exiting as this one enters</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_exit" class="method item">
+    <h3 class="name"><code>exit</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>container</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>enteringViews</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l902"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:902</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Executes when the user navigates away from this view</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">container</code>
+                        <span class="type">JQuery</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The parent element of all views</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">enteringViews</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The views that are entering as this one exits</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_insertInto" class="method item">
+    <h3 class="name"><code>insertInto</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>container</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l850"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:850</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds this view to a container</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">container</code>
+                        <span class="type">JQuery</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The containing element</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_interior" class="method item">
+    <h3 class="name"><code>interior</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">JQuery</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l840"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:840</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Creates the view&#39;s interior content wrapper element</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">JQuery</span>:
+                    
+                    <p>The interior content wrapper element</p>
+
+                
+            </div>
+        </div>
     
 
     
@@ -1445,7 +2011,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l583"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:583</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l696"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:696</code></a>
         
         </p>
 
@@ -1597,7 +2163,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l617"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:617</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l730"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:730</code></a>
         
         </p>
 
@@ -1699,7 +2265,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l609"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:609</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l722"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:722</code></a>
         
         </p>
 
@@ -1836,7 +2402,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l482"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:482</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l562"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:562</code></a>
         
         </p>
 
@@ -1975,7 +2541,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l467"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:467</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l547"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:547</code></a>
         
         </p>
 
@@ -2090,7 +2656,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l534"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:534</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l636"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:636</code></a>
         
         </p>
 
@@ -2120,8 +2686,10 @@
                     
 
                     <div class="param-description">
-                        <p>A hash of selectors to widget types to be bound when the view is rendered.
-    The map should be in the form {selector: TWidget}. For example, {&#39;form&#39;: Lavaca.ui.Form}</p>
+                        <p>A hash of selectors to bind widgets to when the view is rendered.
+    The map should be in the form {selector: [[Lavaca.ui.Widget]]} or
+    {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.
+    For example, {&#39;form&#39;: Lavaca.ui.Form} or {&#39;form&#39;: {TWidget: Lavaca.ui.Form, args: [...]}}</p>
 
                     </div>
 
@@ -2204,7 +2772,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l542"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:542</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l646"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:646</code></a>
         
         </p>
 
@@ -2251,6 +2819,137 @@
 
                     <div class="param-description">
                         <p>The [[Lavaca.ui.Widget]]-derived type of widget to create</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Lavaca.mvc.View</span>:
+                    
+                    <p>This view (for chaining)</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_mapWidget" class="method item">
+    <h3 class="name"><code>mapWidget</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>selector</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>widgetOptions</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Lavaca.mvc.View</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l653"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:653</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Assigns a widget type to be created for elements matching a selector when the view is rendered, and
+accepts optional arguments to pass to the widget constructor</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">selector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The selector for the root element of the widget</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">widgetOptions</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>An object with a &#39;TWidget&#39; key and an optional &#39;args&#39; key which can be
+    an array of arguments to pass to the widget&#39;s constructor</p>
 
                     </div>
 
@@ -2525,7 +3224,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l683"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:683</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l796"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:796</code></a>
         
         </p>
 
@@ -2615,7 +3314,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l665"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:665</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l778"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:778</code></a>
         
         </p>
 
@@ -2672,114 +3371,6 @@
             
                 <li class="arg">
                     
-                        <code>model</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l213"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:213</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Re-renders the view&#39;s template using the specified model
-and redraws the entire view</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">model</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The data model to be passed to the template</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_redraw" class="method item">
-    <h3 class="name"><code>redraw</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
                         <code>selector</code>
                     
                 </li>
@@ -2817,7 +3408,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l220"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:220</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l290"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:290</code></a>
         
         </p>
 
@@ -2929,7 +3520,7 @@ nothing will be redrawn.</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l243"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:243</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l313"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:313</code></a>
         
         </p>
 
@@ -2964,6 +3555,140 @@ redrawing behavior.</p>
 
                     <div class="param-description">
                         <p>Whether the view should be automatically redrawn.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_redraw" class="method item">
+    <h3 class="name"><code>redraw</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>selector</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>model</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l301"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:301</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Re-renders the view&#39;s template using the specified model and only redraws the
+elements that match the specified selector string.
+Note: The numbers of items that match the selector must
+be exactly the same in the view&#39;s current markup and in the newly rendered
+markup. If that is not the case, the returned promise will be rejected and
+nothing will be redrawn.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">selector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Selector string that defines elements that will be updated</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">model</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The data model to be passed to the template</p>
 
                     </div>
 
@@ -3046,7 +3771,7 @@ redrawing behavior.</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l253"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:253</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l323"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:323</code></a>
         
         </p>
 
@@ -3136,12 +3861,6 @@ redrawing behavior.</p>
             
                 <li class="arg">
                     
-                        <code>selector</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
                         <code>model</code>
                     
                 </li>
@@ -3179,7 +3898,7 @@ redrawing behavior.</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l231"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:231</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l283"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:283</code></a>
         
         </p>
 
@@ -3190,12 +3909,8 @@ redrawing behavior.</p>
     </div>
 
     <div class="description">
-        <p>Re-renders the view&#39;s template using the specified model and only redraws the
-elements that match the specified selector string.
-Note: The numbers of items that match the selector must
-be exactly the same in the view&#39;s current markup and in the newly rendered
-markup. If that is not the case, the returned promise will be rejected and
-nothing will be redrawn.</p>
+        <p>Re-renders the view&#39;s template using the specified model
+and redraws the entire view</p>
 
     </div>
 
@@ -3204,22 +3919,6 @@ nothing will be redrawn.</p>
             <h4>Parameters:</h4>
 
             <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">selector</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Selector string that defines elements that will be updated</p>
-
-                    </div>
-
-                    
-                </li>
             
                 <li class="param">
                     
@@ -3297,7 +3996,7 @@ nothing will be redrawn.</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l199"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:199</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l269"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:269</code></a>
         
         </p>
 
@@ -3378,7 +4077,80 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l152"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:152</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l216"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:216</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders the view using its template and model</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_renderPageView" class="method item">
+    <h3 class="name"><code>renderPageView</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l239"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:239</code></a>
         
         </p>
 
@@ -3522,6 +4294,79 @@ and redraws the entire view</p>
 </div>
 
                 
+                    <div id="method_wrapper" class="method item">
+    <h3 class="name"><code>wrapper</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">JQuery</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l832"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:832</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Creates the view&#39;s wrapper element</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">JQuery</span>:
+                    
+                    <p>The wrapper element</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
             </div>
         
 
@@ -3600,7 +4445,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l106"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:106</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l127"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:127</code></a>
         
         </p>
 
@@ -3648,7 +4493,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l75"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:75</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l96"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:96</code></a>
         
         </p>
 
@@ -3696,7 +4541,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l84"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:84</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l105"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:105</code></a>
         
         </p>
 
@@ -3743,7 +4588,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l57"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:57</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l77"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:77</code></a>
         
         </p>
 
@@ -3755,53 +4600,6 @@ and redraws the entire view</p>
     <div class="description">
         <p>The element that is either assigned to the view if in the context of a childView, or is created for the View
 if it is a PageView</p>
-
-    </div>
-
-    
-        <p><strong>Default:</strong> null</p>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="property_el" class="property item">
-    <h3 class="name"><code>el</code></h3>
-    <span class="type">JQuery</span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l123"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:123</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>The element associated with the view</p>
 
     </div>
 
@@ -3838,7 +4636,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l67"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:67</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l88"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:88</code></a>
         
         </p>
 
@@ -3886,7 +4684,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l39"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:39</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l54"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:54</code></a>
         
         </p>
 
@@ -3902,6 +4700,53 @@ if it is a PageView</p>
 
     
         <p><strong>Default:</strong> generated from className and unique identifier</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_layer" class="property item">
+    <h3 class="name"><code>layer</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l168"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:168</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The index of the layer on which the view sits</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> 0</p>
     
 
     
@@ -3933,7 +4778,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l29"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:29</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l36"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:36</code></a>
         
         </p>
 
@@ -3980,7 +4825,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l48"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:48</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l64"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:64</code></a>
         
         </p>
 
@@ -3991,6 +4836,53 @@ if it is a PageView</p>
 
     <div class="description">
         <p>If the view is created in the context of a childView, the parent view is assigned to this view</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> null</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_shell" class="property item">
+    <h3 class="name"><code>shell</code></h3>
+    <span class="type">JQuery</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l46"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:46</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The element containing the view</p>
 
     </div>
 
@@ -4027,7 +4919,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l137"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:137</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l159"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:159</code></a>
         
         </p>
 
@@ -4038,6 +4930,53 @@ if it is a PageView</p>
 
     <div class="description">
         <p>A class name added to the view container</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> null</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_String viewType" class="property item">
+    <h3 class="name"><code>String viewType</code></h3>
+    <span class="type">Unknown</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l175"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:175</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Type of view, ex PageView, View</p>
 
     </div>
 
@@ -4118,7 +5057,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l130"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:130</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l152"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:152</code></a>
         
         </p>
 
@@ -4165,7 +5104,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l91"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:91</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l112"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:112</code></a>
         
         </p>
 
@@ -4213,7 +5152,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l99"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:99</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l120"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:120</code></a>
         
         </p>
 
@@ -4270,7 +5209,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l178"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:178</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l193"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:193</code></a>
         
         </p>
 
@@ -4291,8 +5230,8 @@ if it is a PageView</p>
 </div>
 
                 
-                    <div id="event_rendersuccess" class="events item">
-    <h3 class="name"><code>rendersuccess</code></h3>
+                    <div id="event_rendererror" class="events item">
+    <h3 class="name"><code>rendererror</code></h3>
     <span class="type"></span>
 
     
@@ -4314,7 +5253,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l169"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:169</code></a>
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l894"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:894</code></a>
         
         </p>
 
@@ -4324,7 +5263,51 @@ if it is a PageView</p>
     </div>
 
     <div class="description">
-        <p>Fires when html from template has rendered</p>
+        <p>Fired when there was an error during rendering process</p>
+
+    </div>
+
+    
+
+
+    
+</div>
+
+                
+                    <div id="event_rendererror" class="events item">
+    <h3 class="name"><code>rendererror</code></h3>
+    <span class="type"></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_js_lavaca_mvc_View.js.html#l915"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;mvc&#x2F;View.js:915</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Fired when there was an error during rendering process</p>
 
     </div>
 

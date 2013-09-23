@@ -6,6 +6,67 @@
         "url": ""
     },
     "files": {
+        "src/www/js/app/net/BaseController.js": {
+            "name": "src/www/js/app/net/BaseController.js",
+            "modules": {},
+            "classes": {
+                "app.net.BaseController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/app/net/HomeController.js": {
+            "name": "src/www/js/app/net/HomeController.js",
+            "modules": {},
+            "classes": {
+                "app.net.HomeController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/app/ui/views/controls/HeaderView.js": {
+            "name": "src/www/js/app/ui/views/controls/HeaderView.js",
+            "modules": {},
+            "classes": {
+                "app.ui.views.globalUI.HeaderView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/app/ui/views/BaseView.js": {
+            "name": "src/www/js/app/ui/views/BaseView.js",
+            "modules": {},
+            "classes": {
+                "app.ui.views.BaseView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/app/ui/views/HomeView.js": {
+            "name": "src/www/js/app/ui/views/HomeView.js",
+            "modules": {},
+            "classes": {
+                "app.ui.views.HomeView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/app/app.js": {
+            "name": "src/www/js/app/app.js",
+            "modules": {},
+            "classes": {
+                "app": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/www/js/extlibs/jquery.hammer.js": {
+            "name": "src/www/js/extlibs/jquery.hammer.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/www/js/lavaca/env/ChildBrowser.js": {
             "name": "src/www/js/lavaca/env/ChildBrowser.js",
             "modules": {},
@@ -94,15 +155,6 @@
             "classes": {
                 "lavaca.mvc.AttributeEvent": 1,
                 "lavaca.mvc.Model": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/www/js/lavaca/mvc/PageView.js": {
-            "name": "src/www/js/lavaca/mvc/PageView.js",
-            "modules": {},
-            "classes": {
-                "lavaca.mvc.PageView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -358,19 +410,88 @@
             },
             "fors": {},
             "namespaces": {}
-        },
-        "src/www/js/lavaca/Lavaca.js": {
-            "name": "src/www/js/lavaca/Lavaca.js",
-            "modules": {},
-            "classes": {
-                "lavaca": 1
-            },
-            "fors": {},
-            "namespaces": {}
         }
     },
     "modules": {},
     "classes": {
+        "app.net.BaseController": {
+            "name": "app.net.BaseController",
+            "shortname": "app.net.BaseController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/net/BaseController.js",
+            "line": 7,
+            "description": "Base controller",
+            "extends": "Lavaca.mvc.Controller"
+        },
+        "app.net.HomeController": {
+            "name": "app.net.HomeController",
+            "shortname": "app.net.HomeController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/net/HomeController.js",
+            "line": 7,
+            "description": "Home controller",
+            "extends": "app.net.BaseController"
+        },
+        "app.ui.views.globalUI.HeaderView": {
+            "name": "app.ui.views.globalUI.HeaderView",
+            "shortname": "app.ui.views.globalUI.HeaderView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/ui/views/controls/HeaderView.js",
+            "line": 7,
+            "description": "Header view type",
+            "super": "Lavaca.mvc.View"
+        },
+        "app.ui.views.BaseView": {
+            "name": "app.ui.views.BaseView",
+            "shortname": "app.ui.views.BaseView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 10,
+            "description": "A View from which all other application Views can extend.\nAdds support for animating between views.",
+            "extends": "Lavaca.mvc.View"
+        },
+        "app.ui.views.HomeView": {
+            "name": "app.ui.views.HomeView",
+            "shortname": "app.ui.views.HomeView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/ui/views/HomeView.js",
+            "line": 6,
+            "description": "Example view type",
+            "extends": "app.ui.views.BaseView"
+        },
+        "app": {
+            "name": "app",
+            "shortname": "app",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/www/js/app/app.js",
+            "line": 16,
+            "description": "Global application-specific object",
+            "extends": "Lavaca.mvc.Application"
+        },
         "lavaca.env.ChildBrowser": {
             "name": "lavaca.env.ChildBrowser",
             "shortname": "lavaca.env.ChildBrowser",
@@ -457,7 +578,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 31,
+            "line": 29,
             "description": "Base application type",
             "extends": "lavaca.events.EventDispatcher"
         },
@@ -573,38 +694,6 @@
                 }
             ]
         },
-        "lavaca.mvc.PageView": {
-            "name": "lavaca.mvc.PageView",
-            "shortname": "lavaca.mvc.PageView",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 10,
-            "description": "Page View type, represents an entire screen",
-            "extends": "lavaca.mvc.View",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "el",
-                    "description": "The element that the PageView is bound to",
-                    "type": "Object"
-                },
-                {
-                    "name": "model",
-                    "description": "The model used by the view",
-                    "type": "Object"
-                },
-                {
-                    "name": "layer",
-                    "description": "The index of the layer on which the view sits",
-                    "type": "Number",
-                    "optional": true
-                }
-            ]
-        },
         "lavaca.mvc.Route": {
             "name": "lavaca.mvc.Route",
             "shortname": "lavaca.mvc.Route",
@@ -669,7 +758,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 15,
+            "line": 16,
             "description": "Base View Class",
             "extends": "lavaca.events.EventDispatcher",
             "is_constructor": 1,
@@ -690,6 +779,23 @@
                     "description": "the parent view for the view",
                     "type": "Object",
                     "optional": true
+                },
+                {
+                    "name": "el",
+                    "description": "the selector or Object for the element to attach to the view",
+                    "type": "Object | String"
+                },
+                {
+                    "name": "model",
+                    "description": "the model for the view",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "layer",
+                    "description": "The layer on which the view sits (only applicable to views used as a PageView)",
+                    "type": "Object",
+                    "optional": true
                 }
             ]
         },
@@ -702,7 +808,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 13,
+            "line": 12,
             "description": "Manager responsible for drawing views",
             "extends": "lavaca.util.Disposable",
             "is_constructor": 1,
@@ -1111,21 +1217,1011 @@
             "file": "src/www/js/lavaca/util/uuid.js",
             "line": 4,
             "description": "Produces a app specific unique identifier"
-        },
-        "lavaca": {
-            "name": "lavaca",
-            "shortname": "lavaca",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 1,
-            "description": "Core Lavaca library object"
         }
     },
     "classitems": [
+        {
+            "file": "src/www/js/app/net/HomeController.js",
+            "line": 13,
+            "description": "Home action, creates a history state and shows a view",
+            "itemtype": "method",
+            "name": "home",
+            "params": [
+                {
+                    "name": "params",
+                    "description": "Action arguments",
+                    "type": "Object"
+                },
+                {
+                    "name": "history",
+                    "description": "History state model",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A promise",
+                "type": "Lavaca.util.Promise"
+            },
+            "class": "app.net.HomeController"
+        },
+        {
+            "file": "src/www/js/app/ui/views/controls/HeaderView.js",
+            "line": 21,
+            "description": "The name of the template used by the view",
+            "itemtype": "property",
+            "name": "template",
+            "type": "String",
+            "default": "'templates/header'",
+            "class": "app.ui.views.globalUI.HeaderView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/controls/HeaderView.js",
+            "line": 27,
+            "description": "A class name added to the view container",
+            "itemtype": "property",
+            "name": "className",
+            "type": "String",
+            "default": "'header'",
+            "class": "app.ui.views.globalUI.HeaderView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 23,
+            "description": "The name of the template used by the view",
+            "itemtype": "property",
+            "name": "template",
+            "type": "String",
+            "default": "'default'",
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 29,
+            "description": "The name of the template used by the view",
+            "itemtype": "property",
+            "name": "pageTransition",
+            "type": "Object",
+            "default": "'default'",
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 41,
+            "description": "Executes when the template renders successfully. This implementation\nadds support for animations between views, based off of the animation\nproperty on the prototype.",
+            "itemtype": "method",
+            "name": "onRenderSuccess",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "The render event. This object should have a string property named \"html\"\n  that contains the template's rendered HTML output.",
+                    "type": "Event"
+                }
+            ],
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 53,
+            "description": "Handler for when a cancel control is tapped",
+            "itemtype": "method",
+            "name": "onTapCancel",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "The tap event.",
+                    "type": "Event"
+                }
+            ],
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 63,
+            "description": "Executes when the user navigates to this view. This implementation\nadds support for animations between views, based off of the animation\nproperty on the prototype.",
+            "itemtype": "method",
+            "name": "enter",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "The parent element of all views",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "exitingViews",
+                    "description": "The views that are exiting as this one enters",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "A promise",
+                "type": "Lavaca.util.Promise"
+            },
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/BaseView.js",
+            "line": 129,
+            "description": "Executes when the user navigates away from this view. This implementation\nadds support for animations between views, based off of the animation\nproperty on the prototype.",
+            "itemtype": "method",
+            "name": "exit",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "The parent element of all views",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "enteringViews",
+                    "description": "The views that are entering as this one exits",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "A promise",
+                "type": "Lavaca.util.Promise"
+            },
+            "class": "app.ui.views.BaseView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/HomeView.js",
+            "line": 12,
+            "description": "The name of the template used by the view",
+            "itemtype": "property",
+            "name": "template",
+            "type": "String",
+            "default": "'home'",
+            "class": "app.ui.views.HomeView"
+        },
+        {
+            "file": "src/www/js/app/ui/views/HomeView.js",
+            "line": 18,
+            "description": "A class name added to the view container",
+            "itemtype": "property",
+            "name": "className",
+            "type": "String",
+            "default": "'home'",
+            "class": "app.ui.views.HomeView"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 10,
+            "description": "Hammer\nuse this to create instances",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "is_constructor": 1,
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 80,
+            "description": "setup events to detect gestures on the document",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 106,
+            "description": "create new hammer instance\nall methods should return the instance itself, so it is chainable.",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "is_constructor": 1,
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 149,
+            "description": "bind events to the instance",
+            "params": [
+                {
+                    "name": "gesture",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 164,
+            "description": "unbind events to the instance",
+            "params": [
+                {
+                    "name": "gesture",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 179,
+            "description": "trigger gesture event",
+            "params": [
+                {
+                    "name": "gesture",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 203,
+            "description": "enable of disable hammer.js detection",
+            "params": [
+                {
+                    "name": "state",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Hammer.Instance"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 214,
+            "description": "this holds the last move event,\nused to fix empty touchend issue\nsee the onTouch event for an explanation",
+            "type": "{Object}",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 223,
+            "description": "when the mouse is hold down, this is true",
+            "type": "{Boolean}",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 230,
+            "description": "when touch events have been fired, this is true",
+            "type": "{Boolean}",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 238,
+            "description": "simple addEventListener",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "type",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 252,
+            "description": "touch events with mouse fallback",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "eventType",
+                    "description": "like Hammer.EVENT_MOVE",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 345,
+            "description": "we have different events for each device/browser\ndetermine what we need and set them in the Hammer.EVENT_TYPES constant",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 379,
+            "description": "create touchlist depending on the event",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "eventType",
+                    "description": "used by the fakemultitouch plugin",
+                    "type": "String"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 405,
+            "description": "collect event data for Hammer js",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "eventType",
+                    "description": "like Hammer.EVENT_MOVE",
+                    "type": "String"
+                },
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 429,
+            "description": "prevent the browser default actions\nmostly used to disable scrolling of the browser",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 443,
+            "description": "stop bubbling the event up to its parents",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 450,
+            "description": "immediately stop gesture detection\nmight be useful after a swipe was detected",
+            "return": {
+                "description": "",
+                "type": "*"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 463,
+            "description": "holds all pointers",
+            "type": "{Object}",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 469,
+            "description": "get a list of pointers",
+            "return": {
+                "description": "touchlist",
+                "type": "Array"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 484,
+            "description": "update the position of a pointer",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Hammer.EVENT_END",
+                    "type": "String"
+                },
+                {
+                    "name": "pointerEvent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 501,
+            "description": "check if ev matches pointertype",
+            "params": [
+                {
+                    "name": "pointerType",
+                    "description": "Hammer.POINTER_MOUSE",
+                    "type": "String"
+                },
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "PointerEvent"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 519,
+            "description": "get events",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 530,
+            "description": "reset the list",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 540,
+            "description": "extend method,\nalso used for cloning when dest is an empty object",
+            "params": [
+                {
+                    "name": "dest",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "src",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "merge",
+                    "description": "do a merge",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "dest",
+                "type": "Object"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 559,
+            "description": "find if a node is in the given parent\nused for event delegation tricks",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "parent",
+                    "description": "",
+                    "type": "HTMLElement"
+                }
+            ],
+            "return": {
+                "description": "has_parent",
+                "type": "Boolean"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 577,
+            "description": "get the center of all the touches",
+            "params": [
+                {
+                    "name": "touches",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "center",
+                "type": "Object"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 597,
+            "description": "calculate the velocity between two points",
+            "params": [
+                {
+                    "name": "delta_time",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "delta_x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "delta_y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "velocity",
+                "type": "Object"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 612,
+            "description": "calculate the angle between two coordinates",
+            "params": [
+                {
+                    "name": "touch1",
+                    "description": "",
+                    "type": "Touch"
+                },
+                {
+                    "name": "touch2",
+                    "description": "",
+                    "type": "Touch"
+                }
+            ],
+            "return": {
+                "description": "angle",
+                "type": "Number"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 625,
+            "description": "angle to direction define",
+            "params": [
+                {
+                    "name": "touch1",
+                    "description": "",
+                    "type": "Touch"
+                },
+                {
+                    "name": "touch2",
+                    "description": "",
+                    "type": "Touch"
+                }
+            ],
+            "return": {
+                "description": "direction constant, like Hammer.DIRECTION_LEFT",
+                "type": "String"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 644,
+            "description": "calculate the distance between two touches",
+            "params": [
+                {
+                    "name": "touch1",
+                    "description": "",
+                    "type": "Touch"
+                },
+                {
+                    "name": "touch2",
+                    "description": "",
+                    "type": "Touch"
+                }
+            ],
+            "return": {
+                "description": "distance",
+                "type": "Number"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 657,
+            "description": "calculate the scale factor between two touchLists (fingers)\nno scale is 1, and goes down to 0 when pinched together, and bigger when pinched out",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "end",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "scale",
+                "type": "Number"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 674,
+            "description": "calculate the rotation degrees between two touchLists (fingers)",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "end",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "rotation",
+                "type": "Number"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 690,
+            "description": "boolean if the direction is vertical",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "is_vertical",
+                "type": "Boolean"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 700,
+            "description": "stop browser default behavior with css props",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HtmlElement"
+                },
+                {
+                    "name": "css_props",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 754,
+            "description": "start Hammer.gesture detection",
+            "params": [
+                {
+                    "name": "inst",
+                    "description": "",
+                    "type": "Hammer.Instance"
+                },
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 778,
+            "description": "Hammer.gesture detection",
+            "params": [
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 822,
+            "description": "clear the Hammer.gesture vars\nthis is called on endDetect, but can also be used when a final Hammer.gesture has been detected\nto stop other Hammer.gestures from being fired",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 840,
+            "description": "extend eventData for Hammer.gestures",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "ev",
+                "type": "Object"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 888,
+            "description": "register new gesture",
+            "params": [
+                {
+                    "name": "gesture",
+                    "description": "object, see gestures.js for documentation",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "gestures",
+                "type": "Array"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 927,
+            "description": "Custom gestures\n==============================\n\nGesture object\n--------------------\nThe object structure of a gesture:\n\n{ name: 'mygesture',\n  index: 1337,\n  defaults: {\n    mygesture_option: true\n  }\n  handler: function(type, ev, inst) {\n    // trigger gesture event\n    inst.trigger(this.name, ev);\n  }\n}",
+            "params": [
+                {
+                    "name": "name!~YUIDOC_LINE~!this",
+                    "description": "should be the name of the gesture, lowercase\nit is also being used to disable/enable the gesture per instance config.",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "index of the gesture, where it is going to be in the stack of gestures detection\nlike when you build an gesture that depends on the drag gesture, it is a good\nidea to place it after the index of the drag gesture.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "1000"
+                },
+                {
+                    "name": "defaults",
+                    "description": "default settings of the gesture. these are added to the instance settings,\nand can be overruled per instance. you can also add the name of the gesture,\nbut this is also added by default (and set to true).",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                },
+                {
+                    "name": "handler!~YUIDOC_LINE~!this",
+                    "description": "handles the gesture detection of your custom gesture and receives the\nfollowing arguments:",
+                    "type": "Function"
+                },
+                {
+                    "name": "eventData!~YUIDOC_LINE~!",
+                    "description": "event data containing the following properties:\n         timeStamp   {Number}        time the event occurred\n         target      {HTMLElement}   target element\n         touches     {Array}         touches (fingers, pointers, mouse) on the screen\n         pointerType {String}        kind of pointer that was used. matches Hammer.POINTER_MOUSE|TOUCH\n         center      {Object}        center position of the touches. contains pageX and pageY\n         deltaTime   {Number}        the total time of the touches in the screen\n         deltaX      {Number}        the delta on x axis we haved moved\n         deltaY      {Number}        the delta on y axis we haved moved\n         velocityX   {Number}        the velocity on the x\n         velocityY   {Number}        the velocity on y\n         angle       {Number}        the angle we are moving\n         direction   {String}        the direction we are moving. matches Hammer.DIRECTION_UP|DOWN|LEFT|RIGHT\n         distance    {Number}        the distance we haved moved\n         scale       {Number}        scaling of the touches, needs 2 touches\n         rotation    {Number}        rotation of the touches, needs 2 touches *\n         eventType   {String}        matches Hammer.EVENT_START|MOVE|END\n         srcEvent    {Object}        the source event, like TouchStart or MouseDown *\n         startEvent  {Object}        contains the same properties as above,\n                                     but from the first touch. this is used to calculate\n                                     distances, deltaTime, scaling etc",
+                    "type": "Object"
+                },
+                {
+                    "name": "inst!~YUIDOC_LINE~!",
+                    "description": "the instance we are doing the detection for. you can get the options from\n     the inst.options object and trigger the gesture event by calling inst.trigger\n\n\nHandle gestures\n--------------------\ninside the handler you can get/set Hammer.detection.current. This is the current\ndetection session. It has the following properties",
+                    "type": "Hammer.Instance"
+                },
+                {
+                    "name": "name!~YUIDOC_LINE~!",
+                    "description": "contains the name of the gesture we have detected. it has not a real function,\n     only to check in other gestures if something is detected.\n     like in the drag gesture we set it to 'drag' and in the swipe gesture we can\n     check if the current gesture is 'drag' by accessing Hammer.detection.current.name",
+                    "type": "String"
+                },
+                {
+                    "name": "inst!~YUIDOC_LINE~!",
+                    "description": "the instance we do the detection for",
+                    "type": "Hammer.Instance"
+                },
+                {
+                    "name": "startEvent!~YUIDOC_LINE~!",
+                    "description": "contains the properties of the first gesture detection in this session.\n     Used for calculations about timing, distance, etc.",
+                    "type": "Object"
+                },
+                {
+                    "name": "lastEvent!~YUIDOC_LINE~!",
+                    "description": "contains all the properties of the last gesture detect in this session.\n\nafter the gesture detection session has been completed (user has released the screen)\nthe Hammer.detection.current object is copied into Hammer.detection.previous,\nthis is usefull for gestures like doubletap, where you need to know if the\nprevious gesture was a tap\n\noptions that have been set by the instance can be received by calling inst.options\n\nYou can trigger a gesture event by calling inst.trigger(\"mygesture\", event).\nThe first param is the name of your gesture, the second the event argument\n\n\nRegister gestures\n--------------------\nWhen an gesture is added to the Hammer.gestures object, it is auto registered\nat the setup of the first Hammer instance. You can also call Hammer.detection.register\nmanually and pass your gesture object as a param",
+                    "type": "Object"
+                }
+            ],
+            "readonly": "",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1034,
+            "description": "Hold\nTouch stays at the same place for x time",
+            "events": "hold",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1080,
+            "description": "Tap/DoubleTap\nQuick touch at a place or double at the same place",
+            "events": "tap, doubletap",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1126,
+            "description": "Swipe\ntriggers swipe events when the end velocity is above the threshold",
+            "events": "swipe, swipeleft, swiperight, swipeup, swipedown",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1160,
+            "description": "Drag\nMove with x fingers (default 1) around on the page. Blocking the scrolling when\nmoving left and right is a good practice. When all the drag events are blocking\nyou disable scrolling on that area.",
+            "events": "drag, drapleft, dragright, dragup, dragdown",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1265,
+            "description": "Transform\nUser want to scale or rotate with 2 fingers",
+            "events": "transform, pinch, pinchin, pinchout, rotate",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1355,
+            "description": "Touch\nCalled as first, tells the user has touched the screen",
+            "events": "touch",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1391,
+            "description": "Release\nCalled as last, tells the user has released the screen",
+            "events": "release",
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1431,
+            "description": "bind dom events\nthis overwrites addEventListener",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "eventTypes",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1472,
+            "description": "the methods are called by the instance, but with the jquery plugin\nwe use the jquery event methods instead.",
+            "this": "{Hammer.Instance}",
+            "return": {
+                "description": "",
+                "type": "JQuery"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1486,
+            "description": "trigger events\nthis is called by the gestures to trigger an event like 'tap'",
+            "this": "{Hammer.Instance}",
+            "params": [
+                {
+                    "name": "gesture",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "eventData",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JQuery"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
+        {
+            "file": "src/www/js/extlibs/jquery.hammer.js",
+            "line": 1507,
+            "description": "jQuery plugin\ncreate instance of Hammer and watch for gestures,\nand when called again you can change the options",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JQuery"
+            },
+            "class": "lavaca.env.ChildBrowser"
+        },
         {
             "file": "src/www/js/lavaca/env/ChildBrowser.js",
             "line": 19,
@@ -2124,6 +3220,19 @@
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
             "line": 110,
+            "description": "Gets the name of the transition end event",
+            "itemtype": "method",
+            "name": "transitionEndEvent",
+            "static": 1,
+            "return": {
+                "description": "The name of the event",
+                "type": "String"
+            },
+            "class": "lavaca.fx.Transition"
+        },
+        {
+            "file": "src/www/js/lavaca/fx/Transition.js",
+            "line": 121,
             "description": "Causes an element to undergo a transition",
             "itemtype": "method",
             "name": "$.fn.transition",
@@ -2147,7 +3256,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 118,
+            "line": 129,
             "description": "Causes an element to undergo a transition",
             "itemtype": "method",
             "name": "$.fn.transition",
@@ -2176,7 +3285,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 127,
+            "line": 138,
             "description": "Causes an element to undergo a transition",
             "itemtype": "method",
             "name": "$.fn.transition",
@@ -2205,7 +3314,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 136,
+            "line": 147,
             "description": "Causes an element to undergo a transition",
             "itemtype": "method",
             "name": "$.fn.transition",
@@ -2239,7 +3348,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 169,
+            "line": 180,
             "description": "Binds a transition end handler to an element.",
             "itemtype": "method",
             "name": "$.fn.transitionEnd",
@@ -2258,7 +3367,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 176,
+            "line": 187,
             "description": "Binds a transition end handler to an element.",
             "itemtype": "method",
             "name": "$.fn.transitionEnd",
@@ -2282,7 +3391,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 192,
+            "line": 203,
             "description": "Binds a transition end handler to an element's next transition end event.",
             "itemtype": "method",
             "name": "$.fn.nextTransitionEnd",
@@ -2301,7 +3410,7 @@
         },
         {
             "file": "src/www/js/lavaca/fx/Transition.js",
-            "line": 199,
+            "line": 210,
             "description": "Binds a transition end handler to an element's next transition end event.",
             "itemtype": "method",
             "name": "$.fn.nextTransitionEnd",
@@ -2325,7 +3434,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 37,
+            "line": 35,
             "description": "Creates an application",
             "is_constructor": 1,
             "params": [
@@ -2340,7 +3449,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 51,
+            "line": 49,
             "description": "The default URL that the app will navigate to",
             "itemtype": "property",
             "name": "initRoute",
@@ -2350,7 +3459,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 60,
+            "line": 58,
             "description": "The default state object to supply the initial route",
             "itemtype": "property",
             "name": "initState",
@@ -2360,7 +3469,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 68,
+            "line": 66,
             "description": "The default params object to supply the initial route",
             "itemtype": "property",
             "name": "initParams",
@@ -2370,7 +3479,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 77,
+            "line": 75,
             "description": "The selector used to identify the DOM element that will contain views",
             "itemtype": "property",
             "name": "viewRootSelector",
@@ -2380,7 +3489,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 86,
+            "line": 84,
             "description": "Handler for when the user attempts to navigate to an invalid route",
             "itemtype": "method",
             "name": "onInvalidRoute",
@@ -2395,7 +3504,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 99,
+            "line": 97,
             "description": "Handler for when the user taps on a <A> element",
             "itemtype": "method",
             "name": "onTapLink",
@@ -2410,7 +3519,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 128,
+            "line": 126,
             "description": "Makes an AJAX request if the user is online. If the user is offline, the returned\npromise will be rejected with the string argument \"offline\". (Alias for [[Lavaca.net.Connectivity]].ajax)",
             "itemtype": "method",
             "name": "ajax",
@@ -2429,7 +3538,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 139,
+            "line": 137,
             "description": "Initializes the application",
             "itemtype": "method",
             "name": "init",
@@ -2448,7 +3557,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 152,
+            "line": 150,
             "description": "View manager used to transition between UI states",
             "itemtype": "property",
             "name": "viewManager",
@@ -2458,7 +3567,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 160,
+            "line": 158,
             "description": "Router used to manage application traffic and URLs",
             "itemtype": "property",
             "name": "router",
@@ -2468,7 +3577,15 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 199,
+            "line": 194,
+            "description": "Binds a global link handler",
+            "itemtype": "method",
+            "name": "bindLinkHandler",
+            "class": "lavaca.mvc.Application"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/Application.js",
+            "line": 207,
             "description": "Gets initial route based on query string returned by server 302 redirect",
             "itemtype": "property",
             "name": "initialStandardRoute",
@@ -2478,7 +3595,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Application.js",
-            "line": 210,
+            "line": 217,
             "description": "Handles asynchronous requests that need to happen before Application.init() is called in the constructor",
             "itemtype": "method",
             "name": "beforeInit",
@@ -2544,7 +3661,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 143,
+            "line": 142,
             "description": "Readies data to be an item in the collection",
             "itemtype": "method",
             "name": "prepare",
@@ -2563,7 +3680,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 166,
+            "line": 165,
             "description": "Determines whether or not an attribute can be assigned",
             "itemtype": "method",
             "name": "canSet",
@@ -2582,7 +3699,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 176,
+            "line": 175,
             "description": "Inserts one or more items into the collection at the specified index",
             "itemtype": "method",
             "name": "insert",
@@ -2606,7 +3723,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 184,
+            "line": 183,
             "description": "Inserts one or more items into the collection at the specified index",
             "itemtype": "method",
             "name": "insert",
@@ -2630,7 +3747,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 235,
+            "line": 234,
             "description": "Adds one or more items to the collection. Items with IDs matching an item already in this collection will replace instead of add.",
             "itemtype": "method",
             "name": "add",
@@ -2649,7 +3766,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 242,
+            "line": 241,
             "description": "Adds one or more items to the collection. Items with IDs matching an item already in this collection will replace instead of add.",
             "itemtype": "method",
             "name": "add",
@@ -2668,7 +3785,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 256,
+            "line": 255,
             "description": "Moves an item",
             "itemtype": "method",
             "name": "moveTo",
@@ -2688,7 +3805,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 264,
+            "line": 263,
             "description": "Moves an item",
             "itemtype": "method",
             "name": "moveTo",
@@ -2708,7 +3825,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 287,
+            "line": 286,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2727,7 +3844,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 294,
+            "line": 293,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2746,7 +3863,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 301,
+            "line": 300,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2765,7 +3882,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 308,
+            "line": 307,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2784,7 +3901,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 315,
+            "line": 314,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2803,7 +3920,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 321,
+            "line": 320,
             "description": "Removes an item from the collection",
             "itemtype": "method",
             "name": "remove",
@@ -2822,7 +3939,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 384,
+            "line": 383,
             "description": "Compiles a list of items matching an attribute hash",
             "itemtype": "method",
             "name": "filter",
@@ -2841,7 +3958,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 391,
+            "line": 390,
             "description": "Compiles a list of items matching an attribute hash",
             "itemtype": "method",
             "name": "filter",
@@ -2865,7 +3982,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 399,
+            "line": 398,
             "description": "Compiles a list of items matching an attribute hash",
             "itemtype": "method",
             "name": "filter",
@@ -2884,7 +4001,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 409,
+            "line": 408,
             "description": "Compiles a list of items matching an attribute hash",
             "itemtype": "method",
             "name": "filter",
@@ -2908,7 +4025,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 446,
+            "line": 445,
             "description": "Finds the first item matching an attribute hash",
             "itemtype": "method",
             "name": "first",
@@ -2927,7 +4044,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 453,
+            "line": 452,
             "description": "Finds the first item that passed a functional test",
             "itemtype": "method",
             "name": "first",
@@ -2946,7 +4063,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 465,
+            "line": 464,
             "description": "Finds the index of the first item matching an attribute hash",
             "itemtype": "method",
             "name": "indexOf",
@@ -2966,7 +4083,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 474,
+            "line": 473,
             "description": "Finds the index of the first item that passed a functional test",
             "itemtype": "method",
             "name": "indexOf",
@@ -2985,7 +4102,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 486,
+            "line": 485,
             "description": "Gets the item at a specific index",
             "itemtype": "method",
             "name": "itemAt",
@@ -3004,7 +4121,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 496,
+            "line": 495,
             "description": "Gets the number of items in the collection",
             "itemtype": "method",
             "name": "count",
@@ -3016,7 +4133,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 505,
+            "line": 504,
             "description": "Executes a callback for each model in the collection. To stop iteration immediately,\nreturn false from the callback.",
             "itemtype": "method",
             "name": "each",
@@ -3031,7 +4148,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 512,
+            "line": 511,
             "description": "Executes a callback for each model in the collection. To stop iteration immediately,\nreturn false from the callback.",
             "itemtype": "method",
             "name": "each",
@@ -3051,7 +4168,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 530,
+            "line": 529,
             "description": "Sorts the models in the collection using the specified attribute, in ascending order.",
             "itemtype": "method",
             "name": "sort",
@@ -3070,7 +4187,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 537,
+            "line": 536,
             "description": "Sorts the models in the collection using the specified attribute, in either ascending or descending order.",
             "itemtype": "method",
             "name": "sort",
@@ -3094,7 +4211,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 546,
+            "line": 545,
             "description": "Sorts the models in the collection according to the specified compare function.",
             "itemtype": "method",
             "name": "sort",
@@ -3113,7 +4230,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 577,
+            "line": 576,
             "description": "Reverses the order of the models in the collection",
             "itemtype": "method",
             "name": "reverse",
@@ -3125,7 +4242,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 601,
+            "line": 600,
             "description": "Handler invoked when an item in the collection has an event. Triggers an [[Lavaca.mvc.ItemEvent]].",
             "itemtype": "method",
             "name": "onItemEvent",
@@ -3140,7 +4257,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 622,
+            "line": 621,
             "description": "Processes the data received from a fetch request",
             "itemtype": "method",
             "name": "onFetchSuccess",
@@ -3155,7 +4272,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 644,
+            "line": 643,
             "description": "Saves the model to the server via POST",
             "itemtype": "method",
             "name": "saveToServer",
@@ -3174,7 +4291,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 670,
+            "line": 669,
             "description": "Converts this model to a key-value hash",
             "itemtype": "method",
             "name": "toObject",
@@ -3193,7 +4310,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/Collection.js",
-            "line": 688,
+            "line": 687,
             "description": "Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)",
             "itemtype": "method",
             "name": "responseFilter",
@@ -4150,157 +5267,6 @@
             "class": "lavaca.mvc.Model"
         },
         {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 24,
-            "description": "The index of the layer on which the view sits",
-            "itemtype": "property",
-            "name": "layer",
-            "type": "Number",
-            "default": "0",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 34,
-            "description": "The element containing the view",
-            "itemtype": "property",
-            "name": "shell",
-            "type": "JQuery",
-            "default": "null",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 41,
-            "description": "Creates the view's wrapper element",
-            "itemtype": "method",
-            "name": "wrapper",
-            "return": {
-                "description": "The wrapper element",
-                "type": "JQuery"
-            },
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 49,
-            "description": "Creates the view's interior content wrapper element",
-            "itemtype": "method",
-            "name": "interior",
-            "return": {
-                "description": "The interior content wrapper element",
-                "type": "JQuery"
-            },
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 59,
-            "description": "Adds this view to a container",
-            "itemtype": "method",
-            "name": "insertInto",
-            "params": [
-                {
-                    "name": "container",
-                    "description": "The containing element",
-                    "type": "JQuery"
-                }
-            ],
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 79,
-            "description": "Renders the view using its template and model, overrides the View class render method",
-            "itemtype": "method",
-            "name": "render",
-            "return": {
-                "description": "A promise",
-                "type": "Lavaca.util.Promise"
-            },
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 106,
-            "description": "Fires when html from template has rendered",
-            "itemtype": "event",
-            "name": "rendersuccess",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 114,
-            "description": "Fired when there was an error during rendering process",
-            "itemtype": "event",
-            "name": "rendererror",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 128,
-            "description": "Executes when the user navigates to this view",
-            "itemtype": "method",
-            "name": "enter",
-            "params": [
-                {
-                    "name": "container",
-                    "description": "The parent element of all views",
-                    "type": "JQuery"
-                },
-                {
-                    "name": "exitingViews",
-                    "description": "The views that are exiting as this one enters",
-                    "type": "Array"
-                }
-            ],
-            "return": {
-                "description": "A promise",
-                "type": "lavaca.util.Promise"
-            },
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 151,
-            "description": "Fired when there was an error during rendering process",
-            "itemtype": "event",
-            "name": "rendererror",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 159,
-            "description": "Executes when the user navigates away from this view",
-            "itemtype": "method",
-            "name": "exit",
-            "params": [
-                {
-                    "name": "container",
-                    "description": "The parent element of all views",
-                    "type": "JQuery"
-                },
-                {
-                    "name": "enteringViews",
-                    "description": "The views that are entering as this one exits",
-                    "type": "Array"
-                }
-            ],
-            "return": {
-                "description": "A promise",
-                "type": "lavaca.util.Promise"
-            },
-            "class": "lavaca.mvc.PageView"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/PageView.js",
-            "line": 172,
-            "description": "Fired when there was an error during rendering process",
-            "itemtype": "event",
-            "name": "rendererror",
-            "class": "lavaca.mvc.PageView"
-        },
-        {
             "file": "src/www/js/lavaca/mvc/Route.js",
             "line": 88,
             "description": "Tests if this route applies to a URL",
@@ -4663,7 +5629,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 29,
+            "line": 36,
             "description": "The model used by the view",
             "itemtype": "property",
             "name": "model",
@@ -4674,7 +5640,17 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 39,
+            "line": 46,
+            "description": "The element containing the view",
+            "itemtype": "property",
+            "name": "shell",
+            "type": "JQuery",
+            "default": "null",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 54,
             "description": "An id is applied to a data property on the views container",
             "itemtype": "property",
             "name": "id",
@@ -4684,7 +5660,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 48,
+            "line": 64,
             "description": "If the view is created in the context of a childView, the parent view is assigned to this view",
             "itemtype": "property",
             "name": "parentView",
@@ -4694,7 +5670,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 57,
+            "line": 77,
             "description": "The element that is either assigned to the view if in the context of a childView, or is created for the View\nif it is a PageView",
             "itemtype": "property",
             "name": "el",
@@ -4704,7 +5680,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 67,
+            "line": 88,
             "description": "A dictionary of selectors and event types in the form\n{eventType: {delegate: 'xyz', callback: func}}@property el",
             "itemtype": "property",
             "name": "eventMap",
@@ -4714,7 +5690,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 75,
+            "line": 96,
             "description": "A dictionary of selectors, View types and models in the form\n  {selector: {TView: TView, model: model}}}",
             "itemtype": "property",
             "name": "childViewMap",
@@ -4724,7 +5700,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 84,
+            "line": 105,
             "description": "Interactive elements used by the view",
             "itemtype": "property",
             "name": "childViews",
@@ -4734,7 +5710,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 91,
+            "line": 112,
             "description": "A dictionary of selectors and widget types in the form\n  {selector: widgetType}",
             "itemtype": "property",
             "name": "widgetMap",
@@ -4744,7 +5720,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 99,
+            "line": 120,
             "description": "Interactive elements used by the view",
             "itemtype": "property",
             "name": "widgets",
@@ -4754,41 +5730,12 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 106,
+            "line": 127,
             "description": "A map of all the events to be applied to child Views in the form of\n{type: {TView: TView, callback : callback}}",
             "itemtype": "property",
             "name": "childViewEventMap",
             "default": "Object",
             "type": "Object",
-            "class": "lavaca.mvc.View"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 123,
-            "description": "The element associated with the view",
-            "itemtype": "property",
-            "name": "el",
-            "type": "JQuery",
-            "default": "null",
-            "class": "lavaca.mvc.View"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 130,
-            "description": "The name of the template associated with the view",
-            "itemtype": "property",
-            "name": "template",
-            "type": "String",
-            "default": "null",
-            "class": "lavaca.mvc.View"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 137,
-            "description": "A class name added to the view container",
-            "itemtype": "property",
-            "name": "String className",
-            "default": "null",
             "class": "lavaca.mvc.View"
         },
         {
@@ -4804,6 +5751,52 @@
         {
             "file": "src/www/js/lavaca/mvc/View.js",
             "line": 152,
+            "description": "The name of the template associated with the view",
+            "itemtype": "property",
+            "name": "template",
+            "type": "String",
+            "default": "null",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 159,
+            "description": "A class name added to the view container",
+            "itemtype": "property",
+            "name": "String className",
+            "default": "null",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 168,
+            "description": "The index of the layer on which the view sits",
+            "itemtype": "property",
+            "name": "layer",
+            "type": "Number",
+            "default": "0",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 175,
+            "description": "Type of view, ex PageView, View",
+            "itemtype": "property",
+            "name": "String viewType",
+            "default": "null",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 193,
+            "description": "Fired when there was an error during rendering process",
+            "itemtype": "event",
+            "name": "rendererror",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 216,
             "description": "Renders the view using its template and model",
             "itemtype": "method",
             "name": "render",
@@ -4815,23 +5808,19 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 169,
-            "description": "Fires when html from template has rendered",
-            "itemtype": "event",
-            "name": "rendersuccess",
+            "line": 239,
+            "description": "Renders the view using its template and model",
+            "itemtype": "method",
+            "name": "renderPageView",
+            "return": {
+                "description": "A promise",
+                "type": "lavaca.util.Promise"
+            },
             "class": "lavaca.mvc.View"
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 178,
-            "description": "Fired when there was an error during rendering process",
-            "itemtype": "event",
-            "name": "rendererror",
-            "class": "lavaca.mvc.View"
-        },
-        {
-            "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 199,
+            "line": 269,
             "description": "Re-renders the view's template and replaces the DOM nodes that match\nthe selector argument. If no selector argument is provided, the whole view\nwill be re-rendered. If the first parameter is passed as <code>false</code>\nthe resulting html will pe passed with the promise and nothing will be replaced.\nNote: the number of elements that match the provided selector must be identical\nin the current markup and in the newly rendered markup or else the returned\npromise will be rejected.\nRe-renders the view's template using the view's model\nand redraws the entire view",
             "itemtype": "method",
             "name": "redraw",
@@ -4843,7 +5832,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 213,
+            "line": 283,
             "description": "Re-renders the view's template using the specified model\nand redraws the entire view",
             "itemtype": "method",
             "name": "redraw",
@@ -4862,7 +5851,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 220,
+            "line": 290,
             "description": "Re-renders the view's template using the view's model and only redraws the\nelements that match the specified selector string.\nNote: The numbers of items that match the selector must\nbe exactly the same in the view's current markup and in the newly rendered\nmarkup. If that is not the case, the returned promise will be rejected and\nnothing will be redrawn.",
             "itemtype": "method",
             "name": "redraw",
@@ -4881,7 +5870,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 231,
+            "line": 301,
             "description": "Re-renders the view's template using the specified model and only redraws the\nelements that match the specified selector string.\nNote: The numbers of items that match the selector must\nbe exactly the same in the view's current markup and in the newly rendered\nmarkup. If that is not the case, the returned promise will be rejected and\nnothing will be redrawn.",
             "itemtype": "method",
             "name": "redraw",
@@ -4905,7 +5894,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 243,
+            "line": 313,
             "description": "Re-renders the view's template using the view's model. If shouldRedraw is true,\nthe entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,\nbut the returned promise will be resolved with the newly rendered content. This allows\nthe caller to attach a success handler to the returned promise and define their own\nredrawing behavior.",
             "itemtype": "method",
             "name": "redraw",
@@ -4924,7 +5913,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 253,
+            "line": 323,
             "description": "Re-renders the view's template using the specified model. If shouldRedraw is true,\nthe entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,\nbut the returned promise will be resolved with the newly rendered content. This allows\nthe caller to attach a success handler to the returned promise and define their own\nredrawing behavior.",
             "itemtype": "method",
             "name": "redraw",
@@ -4948,7 +5937,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 330,
+            "line": 404,
             "description": "Dispose old widgets and child views",
             "itemtype": "method",
             "name": "disposeChildViews",
@@ -4963,7 +5952,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 352,
+            "line": 427,
             "description": "Dispose old widgets and child views",
             "itemtype": "method",
             "name": "disposeWidgets",
@@ -4978,7 +5967,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 373,
+            "line": 448,
             "description": "Unbinds events from the model",
             "itemtype": "method",
             "name": "clearModelEvents",
@@ -4986,7 +5975,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 399,
+            "line": 474,
             "description": "Checks for strings in the event map to bind events to this automatically",
             "itemtype": "method",
             "name": "bindMappedEvents",
@@ -4994,7 +5983,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 416,
+            "line": 491,
             "description": "Binds events to the view",
             "itemtype": "method",
             "name": "applyEvents",
@@ -5002,7 +5991,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 467,
+            "line": 547,
             "description": "Maps multiple delegated events for the view",
             "itemtype": "method",
             "name": "mapEvent",
@@ -5021,7 +6010,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 482,
+            "line": 562,
             "description": "Maps an event for the view",
             "itemtype": "method",
             "name": "mapEvent",
@@ -5050,7 +6039,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 508,
+            "line": 588,
             "description": "Initializes widgets on the view",
             "itemtype": "method",
             "name": "createWidgets",
@@ -5058,14 +6047,14 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 534,
+            "line": 636,
             "description": "Assigns multiple widget types to elements on the view",
             "itemtype": "method",
             "name": "mapWidget",
             "params": [
                 {
                     "name": "map",
-                    "description": "A hash of selectors to widget types to be bound when the view is rendered.\n    The map should be in the form {selector: TWidget}. For example, {'form': Lavaca.ui.Form}",
+                    "description": "A hash of selectors to bind widgets to when the view is rendered.\n    The map should be in the form {selector: [[Lavaca.ui.Widget]]} or\n    {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.\n    For example, {'form': Lavaca.ui.Form} or {'form': {TWidget: Lavaca.ui.Form, args: [...]}}",
                     "type": "Object"
                 }
             ],
@@ -5077,7 +6066,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 542,
+            "line": 646,
             "description": "Assigns a widget type to be created for elements matching a selector when the view is rendered",
             "itemtype": "method",
             "name": "mapWidget",
@@ -5101,7 +6090,31 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 560,
+            "line": 653,
+            "description": "Assigns a widget type to be created for elements matching a selector when the view is rendered, and\naccepts optional arguments to pass to the widget constructor",
+            "itemtype": "method",
+            "name": "mapWidget",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "The selector for the root element of the widget",
+                    "type": "String"
+                },
+                {
+                    "name": "widgetOptions",
+                    "description": "An object with a 'TWidget' key and an optional 'args' key which can be\n    an array of arguments to pass to the widget's constructor",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "This view (for chaining)",
+                "type": "Lavaca.mvc.View"
+            },
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 673,
             "description": "Initializes child views on the view, called from onRenderSuccess",
             "itemtype": "method",
             "name": "createChildViews",
@@ -5109,7 +6122,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 583,
+            "line": 696,
             "description": "Assigns multiple Views to elements on the view",
             "itemtype": "method",
             "name": "mapChildView",
@@ -5143,7 +6156,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 609,
+            "line": 722,
             "description": "Listen for events triggered from child views.",
             "itemtype": "method",
             "name": "mapChildViewEvent",
@@ -5168,7 +6181,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 617,
+            "line": 730,
             "description": "Maps multiple child event types",
             "itemtype": "method",
             "name": "mapChildViewEvent",
@@ -5183,7 +6196,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 639,
+            "line": 752,
             "description": "Called from onRenderSuccess of the view, adds listeners to all childviews if present",
             "itemtype": "method",
             "name": "applyChildViewEvent",
@@ -5191,7 +6204,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 665,
+            "line": 778,
             "description": "Executes when the template renders successfully",
             "itemtype": "method",
             "name": "onRenderSuccess",
@@ -5206,7 +6219,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 683,
+            "line": 796,
             "description": "Executes when the template fails to render",
             "itemtype": "method",
             "name": "onRenderError",
@@ -5221,15 +6234,118 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/View.js",
-            "line": 693,
+            "line": 806,
             "description": "Readies the view for garbage collection",
             "itemtype": "method",
             "name": "dispose",
             "class": "lavaca.mvc.View"
         },
         {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 832,
+            "description": "Creates the view's wrapper element",
+            "itemtype": "method",
+            "name": "wrapper",
+            "return": {
+                "description": "The wrapper element",
+                "type": "JQuery"
+            },
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 840,
+            "description": "Creates the view's interior content wrapper element",
+            "itemtype": "method",
+            "name": "interior",
+            "return": {
+                "description": "The interior content wrapper element",
+                "type": "JQuery"
+            },
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 850,
+            "description": "Adds this view to a container",
+            "itemtype": "method",
+            "name": "insertInto",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "The containing element",
+                    "type": "JQuery"
+                }
+            ],
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 871,
+            "description": "Executes when the user navigates to this view",
+            "itemtype": "method",
+            "name": "enter",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "The parent element of all views",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "exitingViews",
+                    "description": "The views that are exiting as this one enters",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "A promise",
+                "type": "lavaca.util.Promise"
+            },
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 894,
+            "description": "Fired when there was an error during rendering process",
+            "itemtype": "event",
+            "name": "rendererror",
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 902,
+            "description": "Executes when the user navigates away from this view",
+            "itemtype": "method",
+            "name": "exit",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "The parent element of all views",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "enteringViews",
+                    "description": "The views that are entering as this one exits",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "A promise",
+                "type": "lavaca.util.Promise"
+            },
+            "class": "lavaca.mvc.View"
+        },
+        {
+            "file": "src/www/js/lavaca/mvc/View.js",
+            "line": 915,
+            "description": "Fired when there was an error during rendering process",
+            "itemtype": "event",
+            "name": "rendererror",
+            "class": "lavaca.mvc.View"
+        },
+        {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 23,
+            "line": 22,
             "description": "The element that contains all view layers",
             "itemtype": "property",
             "name": "el",
@@ -5239,7 +6355,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 29,
+            "line": 28,
             "description": "A cache containing all views",
             "itemtype": "property",
             "name": "views",
@@ -5249,7 +6365,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 35,
+            "line": 34,
             "description": "A list containing all layers",
             "itemtype": "property",
             "name": "layers",
@@ -5259,7 +6375,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 41,
+            "line": 40,
             "description": "A list containing all views that are currently exiting",
             "itemtype": "property",
             "name": "exitingPageViews",
@@ -5269,7 +6385,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 47,
+            "line": 46,
             "description": "A list containing all views that are currently entering",
             "itemtype": "property",
             "name": "enteringPageViews",
@@ -5279,7 +6395,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 54,
+            "line": 53,
             "description": "When true, the view manager is prevented from loading views.",
             "itemtype": "property",
             "name": "locked",
@@ -5289,7 +6405,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 60,
+            "line": 59,
             "description": "Sets the el property on the instance",
             "itemtype": "method",
             "name": "setEl",
@@ -5308,7 +6424,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 67,
+            "line": 66,
             "description": "Sets the el property on the instance",
             "itemtype": "method",
             "name": "setEl",
@@ -5327,7 +6443,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 78,
+            "line": 77,
             "description": "Loads a view",
             "itemtype": "method",
             "name": "load",
@@ -5361,7 +6477,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 88,
+            "line": 87,
             "description": "Loads a view",
             "itemtype": "method",
             "name": "load",
@@ -5395,7 +6511,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 155,
+            "line": 154,
             "description": "Removes all views on a layer",
             "itemtype": "method",
             "name": "dismiss",
@@ -5410,7 +6526,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 161,
+            "line": 160,
             "description": "Removes all views on a layer",
             "itemtype": "method",
             "name": "dismiss",
@@ -5425,7 +6541,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 167,
+            "line": 166,
             "description": "Removes all views on a layer",
             "itemtype": "method",
             "name": "dismiss",
@@ -5440,7 +6556,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 190,
+            "line": 189,
             "description": "Removes all layers above a given index",
             "itemtype": "method",
             "name": "dismissLayersAbove",
@@ -5459,7 +6575,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 197,
+            "line": 196,
             "description": "Removes all layers above a given index",
             "itemtype": "method",
             "name": "dismissLayersAbove",
@@ -5483,7 +6599,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 234,
+            "line": 233,
             "description": "Empties the view cache",
             "itemtype": "method",
             "name": "flush",
@@ -5491,7 +6607,7 @@
         },
         {
             "file": "src/www/js/lavaca/mvc/ViewManager.js",
-            "line": 255,
+            "line": 254,
             "description": "Readies the view manager for garbage collection",
             "itemtype": "method",
             "name": "dispose",
@@ -5499,7 +6615,7 @@
         },
         {
             "file": "src/www/js/lavaca/net/Connectivity.js",
-            "line": 28,
+            "line": 32,
             "description": "Attempts to detect whether or not the browser is connected",
             "itemtype": "method",
             "name": "isOffline",
@@ -5512,7 +6628,7 @@
         },
         {
             "file": "src/www/js/lavaca/net/Connectivity.js",
-            "line": 45,
+            "line": 49,
             "description": "Makes an AJAX request if the user is online. If the user is offline, the returned\npromise will be rejected with the string argument \"offline\"",
             "itemtype": "method",
             "name": "ajax",
@@ -5532,7 +6648,7 @@
         },
         {
             "file": "src/www/js/lavaca/net/Connectivity.js",
-            "line": 79,
+            "line": 83,
             "description": "Adds a callback to be executed whenever any Lavaca.net.Connectivity.ajax() call is\nblocked as a result of a lack of internet connection.",
             "itemtype": "method",
             "name": "registerOfflineAjaxHandler",
@@ -8392,356 +9508,129 @@
                 "type": "Number"
             },
             "class": "lavaca.util.uuid"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 9,
-            "description": "Abstraction library conforming to jQuery interface",
-            "itemtype": "property",
-            "name": "$",
-            "type": "Function",
-            "static": 1,
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 16,
-            "description": "Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,\n 'no.obj.exists' resolves to null)",
-            "itemtype": "method",
-            "name": "resolve",
-            "static": 1,
-            "params": [
-                {
-                    "name": "name",
-                    "description": "The fully-qualified name of the object to look up",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The resolved object",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 25,
-            "description": "Looks up or creates an object, given its global path (ie, 'Lavaca.resolve' resolves to this function,\n'no.obj.exists' resolves to null)",
-            "itemtype": "method",
-            "name": "resolve",
-            "static": 1,
-            "params": [
-                {
-                    "name": "name",
-                    "description": "The fully-qualified name of the object to look up",
-                    "type": "String"
-                },
-                {
-                    "name": "createIfNotExists",
-                    "description": "When true, any part of the name that doesn't already exist will be created\nas an empty object",
-                    "type": "Boolean"
-                }
-            ],
-            "return": {
-                "description": "The resolved object",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 59,
-            "description": "Establishes inheritance between types. After a type is extended, it receives its own static\nconvenience method, extend(TSub, overrides).",
-            "itemtype": "method",
-            "name": "extend",
-            "static": 1,
-            "params": [
-                {
-                    "name": "TSub",
-                    "description": "The child type which will inherit from superType",
-                    "type": "Function"
-                },
-                {
-                    "name": "overrides",
-                    "description": "A hash of key-value pairs that will be added to the subType",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The subtype",
-                "type": "Function"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 68,
-            "description": "Establishes inheritance between types. After a type is extended, it receives its own static\nconvenience method, extend(TSub, overrides).",
-            "itemtype": "method",
-            "name": "extend",
-            "static": 1,
-            "params": [
-                {
-                    "name": "TSuper",
-                    "description": "The base type to extend",
-                    "type": "Function"
-                },
-                {
-                    "name": "TSub",
-                    "description": "The child type which will inherit from superType",
-                    "type": "Function"
-                },
-                {
-                    "name": "overrides",
-                    "description": "A hash of key-value pairs that will be added to the subType",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The subtype",
-                "type": "Function"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 114,
-            "description": "Logs to the console (or alerts if no console exists)",
-            "itemtype": "method",
-            "name": "log",
-            "static": 1,
-            "params": [
-                {
-                    "name": "arg",
-                    "description": "The content to be logged",
-                    "type": "Object"
-                }
-            ],
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 129,
-            "description": "Produces a unique identifier",
-            "itemtype": "method",
-            "name": "uuid",
-            "static": 1,
-            "return": {
-                "description": "A number that is unique to this page",
-                "type": "Number"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 140,
-            "description": "Delays the execution of a function",
-            "itemtype": "method",
-            "name": "delay",
-            "static": 1,
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to execute on delay",
-                    "type": "Function"
-                }
-            ],
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 146,
-            "description": "Delays the execution of a function",
-            "itemtype": "method",
-            "name": "delay",
-            "static": 1,
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to execute on delay",
-                    "type": "Function"
-                },
-                {
-                    "name": "thisp",
-                    "description": "The object to use as the \"this\" keyword",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The timeout ID",
-                "type": "Number"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 154,
-            "description": "Delays the execution of a function",
-            "itemtype": "method",
-            "name": "delay",
-            "static": 1,
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to execute on delay",
-                    "type": "Function"
-                },
-                {
-                    "name": "thisp",
-                    "description": "The object to use as the \"this\" keyword",
-                    "type": "Object"
-                },
-                {
-                    "name": "ms",
-                    "description": "The number of milliseconds to delay execution",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The timeout ID",
-                "type": "Number"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 169,
-            "description": "Makes a copy of an object",
-            "itemtype": "method",
-            "name": "clone",
-            "static": 1,
-            "params": [
-                {
-                    "name": "obj",
-                    "description": "The object to copy",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The copy",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 176,
-            "description": "Makes a copy of an object",
-            "itemtype": "method",
-            "name": "clone",
-            "static": 1,
-            "params": [
-                {
-                    "name": "obj",
-                    "description": "The object to copy",
-                    "type": "Object"
-                },
-                {
-                    "name": "deepCopy",
-                    "description": "When true, also clone each member of the object",
-                    "type": "Boolean"
-                }
-            ],
-            "return": {
-                "description": "The copy",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 198,
-            "description": "Applies the properties of one or more objects to another. To create a new object\nwith the properties of all others, call <code>Lavaca.merge(true, {}, obj1, obj2, objN)</code>.",
-            "itemtype": "method",
-            "name": "merge",
-            "static": 1,
-            "params": [
-                {
-                    "name": "target",
-                    "description": "The object to which apply the properties",
-                    "type": "Object"
-                },
-                {
-                    "name": "obj",
-                    "description": "The objects whose properties will be written to target",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "Object}  The target"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 207,
-            "description": "Applies the properties of one or more objects to another. To create a new object\nwith the properties of all others, call <code>Lavaca.merge(true, {}, obj1, obj2, objN)</code>.",
-            "itemtype": "method",
-            "name": "merge",
-            "static": 1,
-            "params": [
-                {
-                    "name": "deepCopy",
-                    "description": "When true, copy the overload values",
-                    "type": "Boolean"
-                },
-                {
-                    "name": "target",
-                    "description": "The object to which apply the properties",
-                    "type": "Object"
-                },
-                {
-                    "name": "obj",
-                    "description": "The objects whose properties will be written to target",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The target",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 237,
-            "description": "Collects the values of all data attributes into an object",
-            "itemtype": "method",
-            "name": "$.fn.dataAttrs",
-            "static": 1,
-            "return": {
-                "description": "An object containing all data attribute values, with the \"data-\" prefix dropped",
-                "type": "Object"
-            },
-            "class": "lavaca"
-        },
-        {
-            "file": "src/www/js/lavaca/Lavaca.js",
-            "line": 257,
-            "description": "A jQuery like proxy method for passing in a context",
-            "itemtype": "method",
-            "name": "$.proxy",
-            "static": 1,
-            "params": [
-                {
-                    "name": "fn",
-                    "description": "The function to proxy",
-                    "type": "Function"
-                },
-                {
-                    "name": "context",
-                    "description": "The execution context for the function",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "Returns a new function that executes in that context",
-                "type": "Object"
-            },
-            "class": "lavaca"
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: super",
+            "line": " src/www/js/app/ui/views/controls/HeaderView.js:7"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:10"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:106"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:149"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:164"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:179"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:203"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:469"
+        },
+        {
+            "message": "replacing incorrect tag: parm with param",
+            "line": " src/www/js/extlibs/jquery.hammer.js:540"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:540"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:559"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:577"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:597"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:612"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:625"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:644"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:657"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:674"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:690"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:840"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/www/js/extlibs/jquery.hammer.js:888"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1034"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1080"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1126"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1160"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1265"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1355"
+        },
+        {
+            "message": "unknown tag: events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1391"
+        },
+        {
+            "message": "unknown tag: this",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1472"
+        },
+        {
+            "message": "unknown tag: this",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1486"
+        },
         {
             "message": "unknown tag: opt",
             "line": " src/www/js/lavaca/fx/Animation.js:125"
@@ -9132,27 +10021,27 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/mvc/Collection.js:184"
+            "line": " src/www/js/lavaca/mvc/Collection.js:183"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/mvc/Collection.js:235"
+            "line": " src/www/js/lavaca/mvc/Collection.js:234"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/mvc/Collection.js:242"
+            "line": " src/www/js/lavaca/mvc/Collection.js:241"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/mvc/Collection.js:287"
+            "line": " src/www/js/lavaca/mvc/Collection.js:286"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/mvc/Collection.js:294"
+            "line": " src/www/js/lavaca/mvc/Collection.js:293"
         },
         {
             "message": "unknown tag: sig",
-            "line": " src/www/js/lavaca/mvc/Collection.js:465"
+            "line": " src/www/js/lavaca/mvc/Collection.js:464"
         },
         {
             "message": "unknown tag: sig",
@@ -9219,20 +10108,216 @@
             "line": " src/www/js/lavaca/util/log.js:6"
         },
         {
-            "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/Lavaca.js:114"
+            "message": "Missing item type\nHammer\nuse this to create instances",
+            "line": " src/www/js/extlibs/jquery.hammer.js:10"
         },
         {
-            "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/Lavaca.js:198"
+            "message": "Missing item type\nsetup events to detect gestures on the document",
+            "line": " src/www/js/extlibs/jquery.hammer.js:80"
         },
         {
-            "message": "replacing incorrect tag: params with param",
-            "line": " src/www/js/lavaca/Lavaca.js:207"
+            "message": "Missing item type\ncreate new hammer instance\nall methods should return the instance itself, so it is chainable.",
+            "line": " src/www/js/extlibs/jquery.hammer.js:106"
+        },
+        {
+            "message": "Missing item type\nbind events to the instance",
+            "line": " src/www/js/extlibs/jquery.hammer.js:149"
+        },
+        {
+            "message": "Missing item type\nunbind events to the instance",
+            "line": " src/www/js/extlibs/jquery.hammer.js:164"
+        },
+        {
+            "message": "Missing item type\ntrigger gesture event",
+            "line": " src/www/js/extlibs/jquery.hammer.js:179"
+        },
+        {
+            "message": "Missing item type\nenable of disable hammer.js detection",
+            "line": " src/www/js/extlibs/jquery.hammer.js:203"
+        },
+        {
+            "message": "Missing item type\nthis holds the last move event,\nused to fix empty touchend issue\nsee the onTouch event for an explanation",
+            "line": " src/www/js/extlibs/jquery.hammer.js:214"
+        },
+        {
+            "message": "Missing item type\nwhen the mouse is hold down, this is true",
+            "line": " src/www/js/extlibs/jquery.hammer.js:223"
+        },
+        {
+            "message": "Missing item type\nwhen touch events have been fired, this is true",
+            "line": " src/www/js/extlibs/jquery.hammer.js:230"
+        },
+        {
+            "message": "Missing item type\nsimple addEventListener",
+            "line": " src/www/js/extlibs/jquery.hammer.js:238"
+        },
+        {
+            "message": "Missing item type\ntouch events with mouse fallback",
+            "line": " src/www/js/extlibs/jquery.hammer.js:252"
+        },
+        {
+            "message": "Missing item type\nwe have different events for each device/browser\ndetermine what we need and set them in the Hammer.EVENT_TYPES constant",
+            "line": " src/www/js/extlibs/jquery.hammer.js:345"
+        },
+        {
+            "message": "Missing item type\ncreate touchlist depending on the event",
+            "line": " src/www/js/extlibs/jquery.hammer.js:379"
+        },
+        {
+            "message": "Missing item type\ncollect event data for Hammer js",
+            "line": " src/www/js/extlibs/jquery.hammer.js:405"
+        },
+        {
+            "message": "Missing item type\nprevent the browser default actions\nmostly used to disable scrolling of the browser",
+            "line": " src/www/js/extlibs/jquery.hammer.js:429"
+        },
+        {
+            "message": "Missing item type\nstop bubbling the event up to its parents",
+            "line": " src/www/js/extlibs/jquery.hammer.js:443"
+        },
+        {
+            "message": "Missing item type\nimmediately stop gesture detection\nmight be useful after a swipe was detected",
+            "line": " src/www/js/extlibs/jquery.hammer.js:450"
+        },
+        {
+            "message": "Missing item type\nholds all pointers",
+            "line": " src/www/js/extlibs/jquery.hammer.js:463"
+        },
+        {
+            "message": "Missing item type\nget a list of pointers",
+            "line": " src/www/js/extlibs/jquery.hammer.js:469"
+        },
+        {
+            "message": "Missing item type\nupdate the position of a pointer",
+            "line": " src/www/js/extlibs/jquery.hammer.js:484"
+        },
+        {
+            "message": "Missing item type\ncheck if ev matches pointertype",
+            "line": " src/www/js/extlibs/jquery.hammer.js:501"
+        },
+        {
+            "message": "Missing item type\nget events",
+            "line": " src/www/js/extlibs/jquery.hammer.js:519"
+        },
+        {
+            "message": "Missing item type\nreset the list",
+            "line": " src/www/js/extlibs/jquery.hammer.js:530"
+        },
+        {
+            "message": "Missing item type\nextend method,\nalso used for cloning when dest is an empty object",
+            "line": " src/www/js/extlibs/jquery.hammer.js:540"
+        },
+        {
+            "message": "Missing item type\nfind if a node is in the given parent\nused for event delegation tricks",
+            "line": " src/www/js/extlibs/jquery.hammer.js:559"
+        },
+        {
+            "message": "Missing item type\nget the center of all the touches",
+            "line": " src/www/js/extlibs/jquery.hammer.js:577"
+        },
+        {
+            "message": "Missing item type\ncalculate the velocity between two points",
+            "line": " src/www/js/extlibs/jquery.hammer.js:597"
+        },
+        {
+            "message": "Missing item type\ncalculate the angle between two coordinates",
+            "line": " src/www/js/extlibs/jquery.hammer.js:612"
+        },
+        {
+            "message": "Missing item type\nangle to direction define",
+            "line": " src/www/js/extlibs/jquery.hammer.js:625"
+        },
+        {
+            "message": "Missing item type\ncalculate the distance between two touches",
+            "line": " src/www/js/extlibs/jquery.hammer.js:644"
+        },
+        {
+            "message": "Missing item type\ncalculate the scale factor between two touchLists (fingers)\nno scale is 1, and goes down to 0 when pinched together, and bigger when pinched out",
+            "line": " src/www/js/extlibs/jquery.hammer.js:657"
+        },
+        {
+            "message": "Missing item type\ncalculate the rotation degrees between two touchLists (fingers)",
+            "line": " src/www/js/extlibs/jquery.hammer.js:674"
+        },
+        {
+            "message": "Missing item type\nboolean if the direction is vertical",
+            "line": " src/www/js/extlibs/jquery.hammer.js:690"
+        },
+        {
+            "message": "Missing item type\nstop browser default behavior with css props",
+            "line": " src/www/js/extlibs/jquery.hammer.js:700"
+        },
+        {
+            "message": "Missing item type\nstart Hammer.gesture detection",
+            "line": " src/www/js/extlibs/jquery.hammer.js:754"
+        },
+        {
+            "message": "Missing item type\nHammer.gesture detection",
+            "line": " src/www/js/extlibs/jquery.hammer.js:778"
+        },
+        {
+            "message": "Missing item type\nclear the Hammer.gesture vars\nthis is called on endDetect, but can also be used when a final Hammer.gesture has been detected\nto stop other Hammer.gestures from being fired",
+            "line": " src/www/js/extlibs/jquery.hammer.js:822"
+        },
+        {
+            "message": "Missing item type\nextend eventData for Hammer.gestures",
+            "line": " src/www/js/extlibs/jquery.hammer.js:840"
+        },
+        {
+            "message": "Missing item type\nregister new gesture",
+            "line": " src/www/js/extlibs/jquery.hammer.js:888"
+        },
+        {
+            "message": "Missing item type\nCustom gestures\n==============================\n\nGesture object\n--------------------\nThe object structure of a gesture:\n\n{ name: 'mygesture',\n  index: 1337,\n  defaults: {\n    mygesture_option: true\n  }\n  handler: function(type, ev, inst) {\n    // trigger gesture event\n    inst.trigger(this.name, ev);\n  }\n}",
+            "line": " src/www/js/extlibs/jquery.hammer.js:927"
+        },
+        {
+            "message": "Missing item type\nHold\nTouch stays at the same place for x time",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1034"
+        },
+        {
+            "message": "Missing item type\nTap/DoubleTap\nQuick touch at a place or double at the same place",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1080"
+        },
+        {
+            "message": "Missing item type\nSwipe\ntriggers swipe events when the end velocity is above the threshold",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1126"
+        },
+        {
+            "message": "Missing item type\nDrag\nMove with x fingers (default 1) around on the page. Blocking the scrolling when\nmoving left and right is a good practice. When all the drag events are blocking\nyou disable scrolling on that area.",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1160"
+        },
+        {
+            "message": "Missing item type\nTransform\nUser want to scale or rotate with 2 fingers",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1265"
+        },
+        {
+            "message": "Missing item type\nTouch\nCalled as first, tells the user has touched the screen",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1355"
+        },
+        {
+            "message": "Missing item type\nRelease\nCalled as last, tells the user has released the screen",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1391"
+        },
+        {
+            "message": "Missing item type\nbind dom events\nthis overwrites addEventListener",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1431"
+        },
+        {
+            "message": "Missing item type\nthe methods are called by the instance, but with the jquery plugin\nwe use the jquery event methods instead.",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1472"
+        },
+        {
+            "message": "Missing item type\ntrigger events\nthis is called by the gestures to trigger an event like 'tap'",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1486"
+        },
+        {
+            "message": "Missing item type\njQuery plugin\ncreate instance of Hammer and watch for gestures,\nand when called again you can change the options",
+            "line": " src/www/js/extlibs/jquery.hammer.js:1507"
         },
         {
             "message": "Missing item type\nCreates an application",
-            "line": " src/www/js/lavaca/mvc/Application.js:37"
+            "line": " src/www/js/lavaca/mvc/Application.js:35"
         },
         {
             "message": "Missing item type",
