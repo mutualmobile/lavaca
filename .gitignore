@@ -19,5 +19,4 @@ src/js/libs/es5-shim.js
 src/js/libs/iscroll-lite.js
 src/js/libs/less-1.4.2.js
 src/js/libs/mout
-src/js/libs/require-dust.js
 src/js/libs/require.js
