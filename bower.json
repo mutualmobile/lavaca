@@ -4,7 +4,7 @@
   "version": "2.2.1",
   "homepage": "https://github.com/mutualmobile/lavaca",
   "authors": [
-    "George Henderson <georgehendersonmusic@gmail.com>"
+    "Mutual Mobile <george.henderson@mutualmobile.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -21,6 +21,7 @@
     "es5-shim": "~2.1.0",
     "requirejs ": "~2.1.8",
     "iscroll ": "~5.0.5",
-    "less.js": "1.4.2"
+    "less.js": "~1.4.2",
+    "hammerjs": "https://github.com/EightMedia/hammer.js.git#1.0.5"
   }
 }
