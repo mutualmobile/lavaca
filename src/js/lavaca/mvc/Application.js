@@ -10,7 +10,6 @@ define(function(require) {
     Template = require('lavaca/ui/Template'),
     Config = require('lavaca/util/Config'),
     Promise = require('lavaca/util/Promise'),
-    ChildBrowser = require('lavaca/env/ChildBrowser'),
     Translation = require('lavaca/util/Translation');
 
   function _stopEvent(e) {
@@ -116,7 +115,8 @@ define(function(require) {
         History.back();
       } else if (isExternal || rel === 'nofollow' || target === '_blank') {
         e.stopPropagation();
-        new ChildBrowser().showWebPage(url);
+        // Works with Cordova in-app-browser
+        window.open(url);
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
