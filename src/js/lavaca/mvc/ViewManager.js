@@ -102,12 +102,12 @@ define(function(require) {
       }
       params = params || {};
       var self = this,
-        layer = layer || 0,
-        pageView = this.pageViews.get(cacheKey),
-        promise = new Promise(this),
-        enterPromise = new Promise(promise),
-        renderPromise = null,
-        exitPromise = null;
+          layer = TPageView.prototype.layer || 0,
+          pageView = this.pageViews.get(cacheKey),
+          promise = new Promise(this),
+          enterPromise = new Promise(promise),
+          renderPromise = null,
+          exitPromise = null;
       promise.always(function() {
         this.locked = false;
       });
