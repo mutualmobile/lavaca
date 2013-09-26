@@ -10,7 +10,6 @@ define(function(require) {
     Template = require('lavaca/ui/Template'),
     Config = require('lavaca/util/Config'),
     Promise = require('lavaca/util/Promise'),
-    ChildBrowser = require('lavaca/env/ChildBrowser'),
     Translation = require('lavaca/util/Translation');
 
   function _stopEvent(e) {
@@ -116,7 +115,7 @@ define(function(require) {
         History.back();
       } else if (isExternal || rel === 'nofollow' || target === '_blank') {
         e.stopPropagation();
-        new ChildBrowser().showWebPage(url);
+        window.open(url, '_blank', 'location=yes');
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
@@ -201,8 +200,8 @@ define(function(require) {
         $body = $body.hammer();
       }
       $body
-        .on('tap click', '.ui-blocker', _stopEvent)
-        .on('tap click', 'a', this.onTapLink.bind(this));
+        .on('tap, click', '.ui-blocker', _stopEvent)
+        .on('tap, click', 'a', this.onTapLink.bind(this));
     },
     /**
      * Gets initial route based on query string returned by server 302 redirect
