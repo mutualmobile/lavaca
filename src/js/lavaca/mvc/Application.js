@@ -113,9 +113,14 @@ define(function(require) {
       }
       if (rel === 'back') {
         History.back();
-      } else if (isExternal || rel === 'nofollow' || target === '_blank') {
+      } else if (rel === 'force-back' && url) {
+        History.isRoutingBack = true;
+        this.router.exec(url, null, null).always(function() {
+          History.isRoutingBack = false;
+        });
+      } else if (isExternal || rel === 'nofollow' || target === '_blank' || target === '_self' || target === '_system') {
         e.stopPropagation();
-        window.open(url, '_blank', 'location=yes');
+        window.open(url, target || '_blank');
       } else if (rel === 'cancel') {
         this.viewManager.dismiss(e.currentTarget);
       } else if (url) {
