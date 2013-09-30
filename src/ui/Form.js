@@ -19,7 +19,7 @@ define(function(require) {
   }
 
   function _email(value) {
-    if (value && !/^\w+@\w+(\.\w+)*\.\w+$/.test(value)) {
+    if (value && !/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(value.toLowerCase())) { //' fix SublimeText syntax highlighting
       return 'error_email';
     }
     return null;
