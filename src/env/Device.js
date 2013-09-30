@@ -28,7 +28,7 @@ define(function(require) {
    * @param {Function} callback  The handler to execute when the device is ready
    */
   Device.init = function(callback) {
-    if (!window.cordova) {
+    if (!Device.isCordova()) {
       $(document).ready(callback);
     } else if (document.addEventListener) {
       // Android fix
