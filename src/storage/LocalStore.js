@@ -1,7 +1,7 @@
 define(function(require) {
 
   var Store = require('./Store'),
-      docCookies = require('docCookies'),
+      docCookies = require('lavaca/util/docCookies'),
       ArrayUtils = require('lavaca/util/ArrayUtils');
 
   var _isLocalStorageSupported = (function(localStorage) {

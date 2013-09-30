@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     },
 
     requirejs: {
-      baseUrl: 'src/js',
+      baseUrl: 'src',
       mainConfigFile: 'src/boot.js',
       optimize: 'none',
       keepBuildDir: true,
