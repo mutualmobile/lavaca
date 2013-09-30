@@ -5,7 +5,7 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   function _required(value) {
-    return value ? null : 'error_required';
+    return value.trim() ? null : 'error_required';
   }
 
   function _pattern(value, input) {
@@ -27,7 +27,7 @@ define(function(require) {
 
   function _tel(value) {
     if (value && !/^\d?(\d{3})?\d{7}$/.test(value.replace(/\D/g, ''))) {
-      return 'error_email';
+      return 'error_tel';
     }
     return null;
   }
@@ -175,7 +175,15 @@ define(function(require) {
      * @param {Object} value  The new value of the input
      */
     set: function(name, value) {
-      this.input(name).val(value || null);
+      var input = this.input(name),
+          type = input.attr('type');
+      if (type === 'radio') {
+        input.prop('checked', input.val() === value);
+      } else if (type === 'checkbox') {
+        input.prop('checked', !!value);
+      } else {
+        input.val(value || null);
+      }
     },
     /**
      * The default validation rules for the form
