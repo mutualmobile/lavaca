@@ -5,7 +5,7 @@ define(function(require) {
       Promise = require('lavaca/util/Promise');
 
   function _required(value) {
-    return value.trim() ? null : 'error_required';
+    return value ? null : 'error_required';
   }
 
   function _pattern(value, input) {
@@ -40,7 +40,7 @@ define(function(require) {
   }
 
   function _url(value) {
-    if (value && !/^https?:\/\/\w+(\.\w+)*\.\w(:\d+)?\/\S+$/.test(value)) {
+    if (value && !/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2})/.test(value)) {
       return 'error_url';
     }
     return null;
@@ -67,6 +67,13 @@ define(function(require) {
     this.el.on('submit', this._onSubmit);
     this.addRule(this.defaultRules());
   }, {
+    /**
+     * Whether input values should automatically be trimmed
+     * @property autoTrim
+     * @default false
+     * @type Boolean
+     */
+    autoTrim: false,
     /**
      * Event handler for when the form is submitted
      * @method onSubmit
@@ -107,7 +114,7 @@ define(function(require) {
       if (this.model) {
         var input = $(e.target),
             name = input.attr('name'),
-            value = input.val();
+            value = _trim.call(this, input.val());
         this.pendingSync[name] = true;
         this.model.set(name, value);
         this.pendingSync[name] = false;
@@ -164,25 +171,71 @@ define(function(require) {
      * @param {String} name  The name of the input
      * @return {String}  The value of the input
      */
-    get: function(name) {
-      return this.input(name).val();
+    /**
+     * Gets the value of an input on the form
+     * @method get
+     *
+     * @param {jQuery} input  The input, textarea, or select
+     * @return {String}  The value of the input
+     */
+    get: function(inputs) {
+      var result = null,
+          i = -1,
+          input,
+          value,
+          type;
+      if (typeof inputs === 'string') {
+        inputs = this.input(inputs);
+      }
+      while (!!(input = inputs[++i])) {
+        input = $(input);
+        type = (input.attr('type') || '').toLowerCase();
+        if ((type === 'radio' || type === 'checkbox') && !input[0].checked) {
+          continue;
+        }
+        value = _trim.call(this, input.val());
+        if (result instanceof Array) {
+          result.push(value);
+        } else if (result !== null) {
+          result = [result, value];
+        } else {
+          result = value;
+        }
+      }
+      return result;
     },
     /**
-     * Sets an input on the form's value
+     * Sets the value of an input on the form
      * @method set
      *
      * @param {String} name  The name of the input
-     * @param {Object} value  The new value of the input
+     * @param {String} value  The new value of the input
+     */
+    /**
+     * Sets the values of multiple inputs on the form
+     * @method set
+     *
+     * @param {Object} values  A hash of input names and values
      */
     set: function(name, value) {
-      var input = this.input(name),
-          type = input.attr('type');
-      if (type === 'radio') {
-        input.prop('checked', input.val() === value);
-      } else if (type === 'checkbox') {
-        input.prop('checked', !!value);
+      var input, type;
+      if (typeof name === 'object') {
+        for (var key in name) {
+          this.set(key, name[key]);
+        }
       } else {
-        input.val(value || null);
+        input = this.input(name);
+        type = (input.attr('type') || '').toLowerCase();
+        if (type === 'radio') {
+          input.each(function() {
+            this.checked = this.value === value;
+          });
+        } else if (type === 'checkbox') {
+          input.prop('checked', !!value);
+        } else {
+          input.val(value || null);
+        }
+        input.trigger('change', {manual: true});
       }
     },
     /**
@@ -202,29 +255,38 @@ define(function(require) {
       };
     },
     /**
-     * Adds multiple validation rules to this form
-     * @method addRule
-     *
-     * @param {Object} map  A hash of selectors and callbacks to add as rules
-     */
-    /**
-     * Adds multiple validation rules to this form
+     * Adds a validation rule to the form
      * @method addRule
      * @param {String} selector  A jQuery selector associated with the rule
      * @param {Function} callback  A function that tests the value of inputs matching the
      *   selector in the form callback(value, input, form) and
      *   return a string message if validation fails
+     * @param {Boolean} [treatAsGroup]  (Optional) If true, the callback will be fired once
+     *   with an array of values and inputs, one for each matching element. If false or ommitted,
+     *   the callback will be fired once for each element that matches the selector.
      */
-    addRule: function(selector, callback) {
+    /**
+     * Adds multiple validation rules to this form. The keys of the object
+     * should be the selectors and the object's values can either be a callback
+     * or an object with the properties 'callback' and 'treatAsGroup'.
+     * @method addRule
+     *
+     * @param {Object} map  A hash of selectors and callbacks to add as rules
+     */
+    addRule: function(selector, callback, treatAsGroup) {
       if (!this.rules) {
         this.rules = [];
       }
       if (typeof selector === 'object') {
         for (var n in selector) {
-          this.addRule(n, selector[n]);
+          if (typeof selector[n] === 'object') {
+            this.addRule(n, selector[n].callback, selector[n].treatAsGroup);
+          } else {
+            this.addRule(n, selector[n]);
+          }
         }
       } else {
-        this.rules.push({selector: selector, callback: callback});
+        this.rules.push({selector: selector, callback: callback, treatAsGroup: treatAsGroup});
       }
     },
     /**
@@ -234,31 +296,18 @@ define(function(require) {
      * @return {Object}  A hash of input names and their values
      */
     values: function() {
-      var inputs = this.el.find('input, select, textarea'),
-          result = {},
-          i = -1,
-          input,
-          name,
-          current,
-          value,
-          type;
-      while (!!(input = inputs[++i])) {
-        input = $(input);
-        type = input.attr('type');
-        if ((type === 'radio' || type === 'checkbox') && !input[0].checked) {
-          continue;
+      var result = {};
+      this.el.find('input, select, textarea').each(function(index, el) {
+        var $el = $(el),
+            name = $el.attr('name'),
+            value;
+        if (name) {
+          value = this.get($el);
+          if (value) {
+            result[name] = value;
+          }
         }
-        name = input.attr('name');
-        current = result[name];
-        value = input.val();
-        if (current instanceof Array) {
-          current.push(value);
-        } else if (current !== undefined) {
-          result[name] = [current, value];
-        } else {
-          result[name] = value;
-        }
-      }
+      }.bind(this));
       return result;
     },
     /**
@@ -302,11 +351,36 @@ define(function(require) {
           rule,
           inputs,
           ip,
-          message,
-          name,
-          label,
-          id,
           value;
+
+      function validate(value, ip, form) {
+        var message = rule.callback.call(form, value, ip, form),
+            name,
+            id,
+            label;
+        if (message) {
+          name = ip.attr('name');
+          if (!result) {
+            result = {};
+          }
+          if (!result[name]) {
+            id = ip.attr('id');
+            label = null;
+            if (id) {
+              label = form.el.find('label[for="' + id + '"]').text();
+            }
+            result[name] = {
+              id: id,
+              name: name,
+              label: label,
+              el: ip,
+              value: value,
+              messages: []
+            };
+          }
+          result[name].messages.push(message);
+        }
+      }
       while (!!(rule = this.rules[++i])) {
         if (input) {
           inputs = input.filter(rule.selector);
@@ -314,31 +388,17 @@ define(function(require) {
           inputs = this.el.find(rule.selector);
         }
         j = -1;
-        while (!!(ip = inputs[++j])) {
-          ip = $(ip);
-          value = ip.val();
-          message = rule.callback.call(this, value, ip, this);
-          if (message) {
-            name = ip.attr('name');
-            if (!result) {
-              result = {};
-            }
-            if (!result[name]) {
-              id = ip.attr('id');
-              label = null;
-              if (id) {
-                label = this.el.find('label[for="' + id + '"]').text();
-              }
-              result[name] = {
-                id: id,
-                name: name,
-                label: label,
-                el: ip,
-                value: value,
-                messages: []
-              };
-            }
-            result[name].messages.push(message);
+        if (rule.treatAsGroup) {
+          value = [];
+          inputs.each(function() {
+            value.push(_trim.call(this, this.value));
+          });
+          validate(value, inputs, this);
+        } else {
+          while (!!(ip = inputs[++j])) {
+            ip = $(ip);
+            value = _trim.call(this, ip.val());
+            validate(value, ip, this);
           }
         }
       }
@@ -385,6 +445,13 @@ define(function(require) {
       }
     });
   };
+
+  function _trim(value) {
+    if (this.autoTrim) {
+      return value ? value.trim() : value;
+    }
+    return value;
+  }
 
   return Form;
 
