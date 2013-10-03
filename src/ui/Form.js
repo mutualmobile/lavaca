@@ -65,6 +65,11 @@ define(function(require) {
       self.onSubmit(e);
     };
     this.el.on('submit', this._onSubmit);
+    this.el.on('input', function(e) {
+      this.autoAdvanceIfNecessary($(e.target));
+    }.bind(this));
+    this.formatters = [];
+    this.rules = [];
     this.addRule(this.defaultRules());
   }, {
     /**
@@ -74,6 +79,37 @@ define(function(require) {
      * @type Boolean
      */
     autoTrim: false,
+    /**
+     * Whether the focus should automatically advance to the
+     * next input when the input's value is equal to it's maxlength
+     * @property autoAdvance
+     * @default false
+     * @type Boolean
+     */
+    autoAdvance: false,
+    /**
+     * The default validation rules for the form
+     * @method defaultRules
+     *
+     * @return {Object}  The form's default rules1
+     */
+    defaultRules: function() {
+      return {
+        '[required]': _required,
+        '[pattern]': _pattern,
+        '[type=email]': _email,
+        '[type=tel]': _tel,
+        '[type=number]': _number,
+        '[type=url]': _url
+      };
+    },
+    /**
+     * Calls submit on the Form's element
+     * @method submit
+     */
+    submit: function() {
+      this.el.submit();
+    },
     /**
      * Event handler for when the form is submitted
      * @method onSubmit
@@ -239,22 +275,6 @@ define(function(require) {
       }
     },
     /**
-     * The default validation rules for the form
-     * @method defaultRules
-     *
-     * @return {Object}  The form's default rules1
-     */
-    defaultRules: function() {
-      return {
-        '[required]': _required,
-        '[pattern]': _pattern,
-        '[type=email]': _email,
-        '[type=tel]': _tel,
-        '[type=number]': _number,
-        '[type=url]': _url
-      };
-    },
-    /**
      * Adds a validation rule to the form
      * @method addRule
      * @param {String} selector  A jQuery selector associated with the rule
@@ -274,9 +294,6 @@ define(function(require) {
      * @param {Object} map  A hash of selectors and callbacks to add as rules
      */
     addRule: function(selector, callback, treatAsGroup) {
-      if (!this.rules) {
-        this.rules = [];
-      }
       if (typeof selector === 'object') {
         for (var n in selector) {
           if (typeof selector[n] === 'object') {
@@ -287,6 +304,37 @@ define(function(require) {
         }
       } else {
         this.rules.push({selector: selector, callback: callback, treatAsGroup: treatAsGroup});
+      }
+    },
+    /**
+     * Adds a formatter to the form
+     * @method addFormatter
+     * @param {String} selector  A jQuery selector associated with the formatter
+     * @param {Function} callback  A function that takes three arguments (value, input, form) and
+     *   returns a string which will be set as the value of the input.
+     * @param {Boolean} [treatAsGroup]  (Optional) If true, the callback will be fired once
+     *   with an array of values and inputs, one for each matching element. If false or ommitted,
+     *   the callback will be fired once for each element that matches the selector.
+     */
+    /**
+     * Adds multiple formatters to this form. The keys of the object
+     * should be the selectors and the object's values can either be a callback
+     * or an object with the properties 'callback' and 'treatAsGroup'.
+     * @method addFormatter
+     *
+     * @param {Object} map  A hash of selectors and callbacks to add as formatters
+     */
+    addFormatter: function(selector, callback, treatAsGroup) {
+      if (typeof selector === 'object') {
+        for (var n in selector) {
+          if (typeof selector[n] === 'object') {
+            this.addFormatter(n, selector[n].callback, selector[n].treatAsGroup);
+          } else {
+            this.addFormatter(n, selector[n]);
+          }
+        }
+      } else {
+        this.formatters.push({selector: selector, callback: callback, treatAsGroup: treatAsGroup});
       }
     },
     /**
@@ -345,63 +393,40 @@ define(function(require) {
         input = $(input);
       }
       var result = null,
-          promise = new Promise(this),
-          i = -1,
-          j,
-          rule,
-          inputs,
-          ip,
-          value;
+          promise = new Promise(this);
 
-      function validate(value, ip, form) {
+      function validate(rule, value, ip, form) {
         var message = rule.callback.call(form, value, ip, form),
             name,
             id,
             label;
         if (message) {
-          name = ip.attr('name');
-          if (!result) {
-            result = {};
-          }
-          if (!result[name]) {
-            id = ip.attr('id');
-            label = null;
-            if (id) {
-              label = form.el.find('label[for="' + id + '"]').text();
+          ip.each(function(index, el) {
+            var $el = $(el);
+            name = $el.attr('name');
+            if (!result) {
+              result = {};
             }
-            result[name] = {
-              id: id,
-              name: name,
-              label: label,
-              el: ip,
-              value: value,
-              messages: []
-            };
-          }
-          result[name].messages.push(message);
-        }
-      }
-      while (!!(rule = this.rules[++i])) {
-        if (input) {
-          inputs = input.filter(rule.selector);
-        } else {
-          inputs = this.el.find(rule.selector);
-        }
-        j = -1;
-        if (rule.treatAsGroup) {
-          value = [];
-          inputs.each(function() {
-            value.push(_trim.call(this, this.value));
+            if (!result[name]) {
+              id = $el.attr('id');
+              label = null;
+              if (id) {
+                label = form.el.find('label[for="' + id + '"]').text();
+              }
+              result[name] = {
+                id: id,
+                name: name,
+                label: label,
+                el: $el,
+                value: value,
+                messages: []
+              };
+            }
+            result[name].messages.push(message);
           });
-          validate(value, inputs, this);
-        } else {
-          while (!!(ip = inputs[++j])) {
-            ip = $(ip);
-            value = _trim.call(this, ip.val());
-            validate(value, ip, this);
-          }
         }
       }
+      _matchAllInputs.call(this, this.rules, validate, input);
       if (result) {
         promise.reject(result);
       } else {
@@ -416,6 +441,54 @@ define(function(require) {
         })
         .success(success)
         .error(error);
+    },
+    /**
+     * Formats all inputs
+     * @method format
+     */
+    /**
+     * Formats the specified inputs
+     * @method format
+     *
+     * @param {jQuery} input  The inputs to format
+     */
+    format: function(input) {
+      function cb(handler, value, ip, form) {
+        var formattedValue = handler.callback.call(form, value, ip, form);
+        ip.val(formattedValue);
+      }
+      _matchAllInputs.call(this, this.formatters, cb, input);
+    },
+    /**
+     * Automatically advances the focus to the
+     * next input if autoAdvance is true and the
+     * currently focussed input's value is greater
+     * than or equal to its maxlength
+     * @method autoAdvanceIfNecessary
+     *
+     * @param {jQuery} [input]  (Optional) The current input. This
+     *   parameter is just for speed optimization if the current input
+     *   is already known. If not passed, it will be determined automatically.
+     */
+    autoAdvanceIfNecessary: function(input) {
+      var $current, maxlength, value, $allInputs, $next;
+      if (this.autoAdvance) {
+        $current = input || this.el.find(':focus');
+        maxlength = $current.attr('maxlength');
+        value = $current.val();
+        if (maxlength) {
+          maxlength = parseInt(maxlength, 10);
+          if (value.length >= maxlength) {
+            $allInputs = this.el.find('input, text');
+            $next = $allInputs.eq($allInputs.index($current) + 1);
+            if ($next.length) {
+              $next.focus();
+            } else {
+              $current.blur();
+            }
+          }
+        }
+      }
     },
     /**
      * Ready the form for garbage collection
@@ -451,6 +524,41 @@ define(function(require) {
       return value ? value.trim() : value;
     }
     return value;
+  }
+
+  // Common code used by formatters and rules
+  function _matchAllInputs(handlers, callback, filterToInputs) {
+    var i = -1,
+        inputs,
+        handler,
+        value,
+        j;
+    while (!!(handler = handlers[++i])) {
+      if (filterToInputs) {
+        inputs = filterToInputs.filter(handler.selector);
+        if (inputs.length && handler.treatAsGroup) {
+          inputs = inputs.add(this.el.find(handler.selector));
+        }
+      } else {
+        inputs = this.el.find(handler.selector);
+      }
+      if (handler.treatAsGroup) {
+        value = [];
+        inputs.each(function(index, el) {
+          value.push(this.get($(el)));
+        }.bind(this));
+        if (value.length) {
+          callback.call(this, handler, value, inputs, this);
+        }
+      } else {
+        j = -1;
+        while (!!(ip = inputs[++j])) {
+          ip = $(ip);
+          value = this.get(ip);
+          callback.call(this, handler, value, ip, this);
+        }
+      }
+    }
   }
 
   return Form;
