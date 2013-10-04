@@ -50,6 +50,17 @@ define(function(require) {
   };
 
   /**
+   * Gets the name of the animation end event
+   * @method animationEndEvent
+   * @static
+   *
+   * @return {String}  The name of the event
+   */
+  Animation.animationEndEvent = function() {
+    return _event;
+  };
+
+  /**
    * Converts a list of keyframes to a CSS animation
    * @method keyframesToCSS
    * @static
