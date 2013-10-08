@@ -456,6 +456,7 @@ define(function(require) {
       function cb(handler, value, ip, form) {
         var formattedValue = handler.callback.call(form, value, ip, form);
         ip.val(formattedValue);
+        ip.trigger('format', {value: formattedValue});
       }
       _matchAllInputs.call(this, this.formatters, cb, input);
     },
