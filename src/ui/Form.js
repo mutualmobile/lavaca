@@ -454,9 +454,13 @@ define(function(require) {
      */
     format: function(input) {
       function cb(handler, value, ip, form) {
-        var formattedValue = handler.callback.call(form, value, ip, form);
+        var formattedValue = handler.callback.call(form, value, ip, form),
+            event = jQuery.Event('format'),
+            unformattedValue = ip.val();
         ip.val(formattedValue);
-        ip.trigger('format', {value: formattedValue});
+        event.unformattedValue = unformattedValue;
+        event.formattedValue = formattedValue;
+        ip.trigger(event);
       }
       _matchAllInputs.call(this, this.formatters, cb, input);
     },
