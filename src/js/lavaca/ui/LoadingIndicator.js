@@ -33,12 +33,8 @@ define(function(require) {
       this.el.removeClass(this.className);
     }
   });
-  /**
+  /** 
    * Creates a loading indicator and binds it to the document's AJAX events
-   * @method init
-   * @static
-   */
-   /** Creates a loading indicator and binds it to the document's AJAX events
    * @method init
    * @static
    * @param {Function} TLoadingIndicator  The type of loading indicator to create (should derive from [[Lavaca.ui.LoadingIndicator]])
