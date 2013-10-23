@@ -5,7 +5,7 @@ define(function(require) {
       resolve = require('lavaca/util/resolve');
 
   /**
-   * A utility type for working under different network connectivity situatioConnectivity.
+   * A utility type for working under different network connectivity situations.
    * @class lavaca.net.Connectivity
    */
 
