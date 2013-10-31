@@ -136,10 +136,6 @@ define(function(require) {
     this
       .on('rendersuccess', this.onRenderSuccess)
       .on('rendererror', this.onRenderError);
-
-    if (this.autoRender) {
-      this.render();
-    }
   }, {
     /**
      * Will render any childViews automatically when set to true
@@ -689,6 +685,9 @@ define(function(require) {
             if (!$el.data('view')) {
               childView = new o.TView($el, o.model || self.model, self);
               cache.set(childView.id, childView);
+              if (childView.autoRender) {
+                childView.render();
+              }
             }
           });
       }
