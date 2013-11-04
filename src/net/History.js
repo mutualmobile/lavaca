@@ -45,7 +45,6 @@ define(function(require) {
      * @property {Number} position
      */
     this.position = -1;
-    this.replace({}, document.title, location.pathname);
     var self = this;
     if (_standardsMode) {
       /**
@@ -85,6 +84,9 @@ define(function(require) {
           if (hash) {
             _pushCount--;
             code = hash.split('#@')[1];
+            if (!code) {
+              History.back();
+            }
             while (!!(item = self.sequence[++i])) {
               if (item.id === parseInt(code, 10)) {
                 record = item;
@@ -103,6 +105,8 @@ define(function(require) {
                 direction: record.id > parseInt(previousCode, 10) ? 'forward' : 'back'
               });
             }
+          } else {
+            History.back();
           }
         }
       };
