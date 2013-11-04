@@ -25,6 +25,21 @@ define(function(require) {
     return null;
   }
 
+  function _isExternal(url) {
+    var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
+    if (typeof match[1] === 'string' 
+        && match[1].length > 0 
+        && match[1].toLowerCase() !== location.protocol) {
+      return true;
+    }
+    if (typeof match[2] === 'string'
+        && match[2].length > 0
+        && match[2].replace(new RegExp(':('+{'http:':80,'https:':443}[location.protocol]+')?$'), '') !== location.host) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Base application type
    * @class lavaca.mvc.Application
@@ -100,33 +115,37 @@ define(function(require) {
      * @param {Event} e  The event object
      */
     onTapLink: function(e) {
-      var link = $(e.currentTarget),
-          url = link.attr('href'),
-          rel = link.attr('rel'),
-          target = link.attr('target'),
-          isExternal = link.is('[data-external]');
-      if (/^((mailto)|(tel)|(sms))\:/.test(url)) {
-        location.href = url;
-        return true;
-      } else {
-        e.preventDefault();
-      }
-      if (rel === 'back') {
-        History.back();
-      } else if (rel === 'force-back' && url) {
-        History.isRoutingBack = true;
-        this.router.exec(url, null, null).always(function() {
-          History.isRoutingBack = false;
-        });
-      } else if (isExternal || rel === 'nofollow' || target === '_blank' || target === '_self' || target === '_system') {
-        e.stopPropagation();
-        window.open(url, target || '_blank');
-      } else if (rel === 'cancel') {
-        this.viewManager.dismiss(e.currentTarget);
-      } else if (url) {
-        this.router.exec(url, null, null).error(this.onInvalidRoute);
-      }
-    },
+      var link = $(e.currentTarget),
+          defaultPrevented = e.isDefaultPrevented(),
+          url = link.attr('href') || link.attr('data-href'),
+          rel = link.attr('rel'),
+          target = link.attr('target'),
+          isExternal = link.is('[data-external]') || _isExternal(url);
+
+      if (!defaultPrevented) {
+        if (Device.isCordova() && target) {
+          e.preventDefault();
+          window.open(url, target || '_blank');
+        } else if (isExternal || target || (e.ctrlKey || e.metaKey)) {
+          return true;
+        } else {
+          e.preventDefault();
+          if (rel === 'back') {
+            History.back();
+          } else if (rel === 'force-back' && url) {
+            History.isRoutingBack = true;
+            this.router.exec(url, null, null).always(function() {
+              History.isRoutingBack = false;
+            });
+          } else if (rel === 'cancel') {
+            this.viewManager.dismiss(e.currentTarget);
+          } else if (url) {
+            url = url.replace(/^\/?#/, '');
+            this.router.exec(url).error(this.onInvalidRoute);
+          }
+        }
+      }
+    },
     /**
      * Makes an AJAX request if the user is online. If the user is offline, the returned
      * promise will be rejected with the string argument "offline". (Alias for [[Lavaca.net.Connectivity]].ajax)
