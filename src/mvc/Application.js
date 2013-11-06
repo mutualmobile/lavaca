@@ -219,13 +219,15 @@ define(function(require) {
      * @method bindLinkHandler
      */
     bindLinkHandler: function() {
-      var $body = $(document.body);
+      var $body = $(document.body),
+          type = 'click';
       if ($body.hammer) {
         $body = $body.hammer();
+        type = 'tap';
       }
       $body
-        .on('tap, click', '.ui-blocker', _stopEvent)
-        .on('tap, click', 'a', this.onTapLink.bind(this));
+        .on(type, '.ui-blocker', _stopEvent)
+        .on(type, 'a', this.onTapLink.bind(this));
     },
     /**
      * Gets initial route based on query string returned by server 302 redirect
