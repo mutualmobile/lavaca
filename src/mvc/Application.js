@@ -120,16 +120,23 @@ define(function(require) {
           url = link.attr('href') || link.attr('data-href'),
           rel = link.attr('rel'),
           target = link.attr('target'),
-          isExternal = link.is('[data-external]') || _isExternal(url);
+          isExternal = link.is('[data-external]') || _isExternal(url),
+          preventClick = function() {
+            if ($(document.body).hammer) {
+              link.one('click', _stopEvent);
+            }
+          };
 
       if (!defaultPrevented) {
         if (Device.isCordova() && target) {
           e.preventDefault();
+          preventClick();
           window.open(url, target || '_blank');
         } else if (isExternal || target || (e.ctrlKey || e.metaKey)) {
           return true;
         } else {
           e.preventDefault();
+          preventClick();
           if (rel === 'back') {
             History.back();
           } else if (rel === 'force-back' && url) {
@@ -144,7 +151,9 @@ define(function(require) {
             this.router.exec(url).error(this.onInvalidRoute);
           }
         }
-      }
+      } else {
+        preventClick();
+      }
     },
     /**
      * Makes an AJAX request if the user is online. If the user is offline, the returned
