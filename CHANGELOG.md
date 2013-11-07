@@ -1,3 +1,26 @@
+Changed in 2.3.0
+======
+* Moved all client-side dependencies to use bower and restructured project to make sense of this change
+* Removed unused corodova plugin architecture from lavaca/env/Device since it is handled by corodva cli
+* Significant updates to the Form widget, and added tests for Form widget
+  - Added 'autoTrim' option
+  - Made URL regex more forgiving
+  - More robust & less redundant get/set value logic
+  - set() can accept a hash of names and values
+  - Added 'treatAsGroup' option for rules
+  - Added hook for input formatters
+* Added animationEndEvent function to the Animation class
+* Change autoRender behavior for childViews so that render() is called after the child view is created instead of in the View constructor fixing the intended behavior.
+* Updated History to fix navigating back out of a lavaca site.
+* Fixed cmd/ctr click on links
+* Refactored onTapLink
+  - Now auto checks for external links and ignores them
+  - Added support for cordova in app browser
+  - Added `force-back` rel to force `History.isRoutingBack = true`
+* Add new signature to mapChildView which will allow for dynamically selecting/creating the childView's model
+* Fixed bindLinkHandler to appropriately bind click or tap events based on the inclusion of Hammer
+  
+
 Changed in 2.2.0
 ======
 * Combined PageView and View into a single class

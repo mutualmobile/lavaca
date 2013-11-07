@@ -8,9 +8,10 @@ define(function(require) {
 
   describe('A View', function() {
     var testView,
-        el = $('<div><div class="childView"></div></div>'),
+        el,
         model;
     beforeEach(function() {
+      el = $('<div><div class="childView"></div></div>');
       $('body').append('<script type="text/dust-template" data-name="hello-world"><form>Hello World <input type="text"><div class="button">Button</div></form></script>');
       model = new Model({color: 'blue', primary: true});
       Template.init();
@@ -36,11 +37,71 @@ define(function(require) {
       expect(view1.layer).toEqual(0);
       expect(view2.layer).toEqual(2);
     });
-    it('can contain a childView', function() {
-      testView.mapChildView('.childView', View, model);
-      testView.createChildViews();
-      var childView = testView.childViews.toArray()[0];
-      expect(childView instanceof View).toEqual(true);
+    describe('can map childViews', function() {
+      var multiChildEl,
+          multiChildView,
+          handler;
+      beforeEach(function() {
+        multiChildEl = $(['<div>',
+                          '<div class="childView" data-id="abc"></div>',
+                          '<div class="childView" data-id="def"></div>',
+                          '<div class="altChild1"></div>',
+                          '<div class="altChild2"></div>',
+                          '</div>'].join());
+        multiChildView = new View(multiChildEl, model);
+        handler = {
+          fn: function(index, el) {
+            return new Model({index: index, id: $(el).attr('data-id')});
+          }
+        };
+        spyOn(handler, 'fn').andCallThrough();
+      });
+      it('with the same model as the parent view', function() {
+        testView.mapChildView('.childView', View);
+        testView.createChildViews();
+        var childView = testView.childViews.toArray()[0];
+        expect(childView instanceof View).toEqual(true);
+        expect(childView.model).toBe(testView.model);
+      });
+      it('with a custom model', function() {
+        var model = new Model({color: 'red'});
+        testView.mapChildView('.childView', View, model);
+        testView.createChildViews();
+        var childView = testView.childViews.toArray()[0];
+        expect(childView instanceof View).toEqual(true);
+        expect(childView.model).toBe(model);
+      });
+      it('with a function that returns a model', function() {
+        multiChildView.mapChildView('.childView', View, handler.fn);
+        multiChildView.createChildViews();
+        expect(handler.fn.callCount).toEqual(2);
+        var childViews = multiChildView.childViews.toArray();
+        expect(childViews[0].model.get('index')).toBe(0);
+        expect(childViews[0].model.get('id')).toBe('abc');
+        expect(childViews[1].model.get('index')).toBe(1);
+        expect(childViews[1].model.get('id')).toBe('def');
+      });
+      it('from a hash', function() {
+        multiChildView.mapChildView({
+          '.childView': {
+            TView: View,
+            model: handler.fn
+          },
+          '.altChild1': {
+            TView: View
+          },
+          '[data-id="abc"]': {
+            TView: View,
+            model: new Model({color: 'purple'})
+          }
+        });
+        multiChildView.createChildViews();
+        var childViews = multiChildView.childViews.toArray();
+        expect(childViews.length).toEqual(4);
+        expect(childViews[0].model.get('id')).toEqual('abc');
+        expect(childViews[2].model).toBe(multiChildView.model);
+        expect(childViews[3].model.get('color')).toEqual('purple');
+      });
     });
     it('can be rendered', function() {
       var promise;

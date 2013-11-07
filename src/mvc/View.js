@@ -136,10 +136,6 @@ define(function(require) {
     this
       .on('rendersuccess', this.onRenderSuccess)
       .on('rendererror', this.onRenderError);
-
-    if (this.autoRender) {
-      this.render();
-    }
   }, {
     /**
      * Will render any childViews automatically when set to true
@@ -685,28 +681,48 @@ define(function(require) {
         this.el.find(n)
           .each(function(index, item) {
             var $el = $(item),
-              childView;
+                childView,
+                model;
             if (!$el.data('view')) {
-              childView = new o.TView($el, o.model || self.model, self);
+              if (typeof o.model === 'function') {
+                model = o.model.call(self, index, item);
+              } else {
+                model = o.model || self.model;
+              }
+              childView = new o.TView($el, model, self);
               cache.set(childView.id, childView);
+              if (childView.autoRender) {
+                childView.render();
+              }
             }
           });
       }
     },
-    /**
-     * Assigns multiple Views to elements on the view
-     * @method mapChildView
-     * @param {Object} map  A hash of selectors to view types and models to be bound when the view is rendered.
-     *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model}}. For example, {'form': {TView : lavaca.mvc.ExampleView, model : lavaca.mvc.Model}}
-     * @return {lavaca.mvc.View}  This view (for chaining)
-     *
+    /*
      * Assigns a View type to be created for elements matching a selector when the view is rendered
      * @method mapChildView
      * @param {String} selector  The selector for the root element of the View
      * @param {Function} TView  The [[Lavaca.mvc.View]]-derived type of view to create
-     * @param {Function} model  The [[Lavaca.mvc.Model]]-derived model instance to use in the child view
+     * @param {Lavaca.mvc.Model} model  The model instance to use for the child view(s)
+     * @return {Lavaca.mvc.View}  This view (for chaining)
+    */
+    /*
+     * Assigns a View type to be created for elements matching a selector when the view is rendered
+     * @method mapChildView
+     * @param {String} selector  The selector for the root element of the View
+     * @param {Function} TView  The [[Lavaca.mvc.View]]-derived type of view to create
+     * @param {Function} model  A function which will be called once for every matching element and should return a [[Lavaca.mvc.Model]]-derived model instance
+     *     to use for the child view. The function has the signature function(index, el)
      * @return {Lavaca.mvc.View}  This view (for chaining)
      */
+    /**
+     * Assigns multiple Views to elements on the view
+     * @method mapChildView
+     * @param {Object} map  A hash of selectors to view types and models to be bound when the view is rendered.
+     *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model}}. For example, {'form': {TView : ExampleView, model : new Model()}}
+     * @return {lavaca.mvc.View}  This view (for chaining)
+     *
+    */
     mapChildView: function(selector, TView, model) {
       if (typeof selector === 'object') {
         var childViewTypes = selector;

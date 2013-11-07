@@ -1,0 +1,29 @@
+{
+  "name": "lavaca",
+  "main": "lavaca.js",
+  "version": "2.3.0",
+  "homepage": "https://github.com/mutualmobile/lavaca",
+  "authors": [
+    "Mutual Mobile <george.henderson@mutualmobile.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.js",
+    "dustjs-linkedin": "https://github.com/georgehenderson/dustjs.git#2.0.4",
+    "dustjs-linkedin-helpers": "~1.1.1",
+    "require-dust": "https://github.com/georgehenderson/require-dust.git#master",
+    "mout": "~0.7.1",
+    "es5-shim": "~2.1.0",
+    "requirejs ": "~2.1.8",
+    "iscroll ": "~5.0.5",
+    "less.js": "~1.4.2",
+    "hammerjs": "https://github.com/EightMedia/hammer.js.git#1.0.5"
+  }
+}
