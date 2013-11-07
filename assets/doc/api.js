@@ -1,13 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "app",
-        "app.net.BaseController",
-        "app.net.HomeController",
-        "app.ui.views.BaseView",
-        "app.ui.views.HomeView",
-        "app.ui.views.globalUI.HeaderView",
-        "lavaca.env.ChildBrowser",
         "lavaca.env.Device",
         "lavaca.events.EventDispatcher",
         "lavaca.fx.Animation",

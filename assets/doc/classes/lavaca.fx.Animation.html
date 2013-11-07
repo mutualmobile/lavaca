@@ -41,20 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/app.html">app</a></li>
-            
-                <li><a href="../classes/app.net.BaseController.html">app.net.BaseController</a></li>
-            
-                <li><a href="../classes/app.net.HomeController.html">app.net.HomeController</a></li>
-            
-                <li><a href="../classes/app.ui.views.BaseView.html">app.ui.views.BaseView</a></li>
-            
-                <li><a href="../classes/app.ui.views.globalUI.HeaderView.html">app.ui.views.globalUI.HeaderView</a></li>
-            
-                <li><a href="../classes/app.ui.views.HomeView.html">app.ui.views.HomeView</a></li>
-            
-                <li><a href="../classes/lavaca.env.ChildBrowser.html">lavaca.env.ChildBrowser</a></li>
-            
                 <li><a href="../classes/lavaca.env.Device.html">lavaca.env.Device</a></li>
             
                 <li><a href="../classes/lavaca.events.EventDispatcher.html">lavaca.events.EventDispatcher</a></li>
@@ -180,7 +166,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l36"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:36</code></a>
+            Defined in: <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l36"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:36</code></a>
         </div>
     
 
@@ -193,7 +179,6 @@
 
 <div class="box intro">
     <p>Static utility type for working with CSS keyframe animations</p>
-
 </div>
 
 
@@ -265,6 +250,15 @@
                             <li class="index-item method">
                                 <a href="#method_$.fn.nextAnimationEnd">$.fn.nextAnimationEnd</a>
 
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_animationEndEvent">animationEndEvent</a>
+
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -388,7 +382,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l223"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:223</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l234"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:234</code></a>
         
         </p>
 
@@ -400,7 +394,6 @@
 
     <div class="description">
         <p>Binds an animation end handler to an element.</p>
-
     </div>
 
     
@@ -419,7 +412,6 @@
 
                     <div class="param-description">
                         <p>Callback for when the animation ends</p>
-
                     </div>
 
                     
@@ -435,7 +427,6 @@
 
                     <div class="param-description">
                         <p>Selector for the descendant elements to which the handler will be bound</p>
-
                     </div>
 
                     
@@ -451,7 +442,6 @@
 
                     <div class="param-description">
                         <p>Callback for when the animation ends</p>
-
                     </div>
 
                     
@@ -470,8 +460,7 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>This jQuery object, for chaining</p>
-
+                    This jQuery object, for chaining
                 
             </div>
         </div>
@@ -490,7 +479,7 @@
             
                 <li class="arg">
                     
-                        <code>keyframes</code>
+                        <code>name</code>
                     
                 </li>
             
@@ -533,7 +522,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l144"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:144</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l136"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:136</code></a>
         
         </p>
 
@@ -545,7 +534,6 @@
 
     <div class="description">
         <p>Applies a keyframe animation to an element</p>
-
     </div>
 
     
@@ -556,15 +544,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">keyframes</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>A list of timestamped keyframes in the form {&#39;0%&#39;: {color: &#39;red&#39;}, &#39;100%&#39;: &#39;color: blue&#39;}</p>
-
+                        <p>The name of the animation</p>
                     </div>
 
                     
@@ -580,7 +567,6 @@
 
                     <div class="param-description">
                         <p>Options for the animation</p>
-
                     </div>
 
                     
@@ -599,8 +585,7 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>The jQuery object, for chaining</p>
-
+                    The jQuery object, for chaining
                 
             </div>
         </div>
@@ -692,7 +677,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l178"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:178</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l189"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:189</code></a>
         
         </p>
 
@@ -704,7 +689,6 @@
 
     <div class="description">
         <p>Applies a keyframe animation to an element</p>
-
     </div>
 
     
@@ -722,8 +706,7 @@
                     
 
                     <div class="param-description">
-                        <p>A list of timestamped keyframes in the form {&#39;0%&#39;: {color: &#39;red&#39;}, &#39;100%&#39;: &#39;color: blue&#39;}</p>
-
+                        <p>A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}</p>
                     </div>
 
                     
@@ -739,7 +722,6 @@
 
                     <div class="param-description">
                         <p>The number of milliseconds that the animation lasts</p>
-
                     </div>
 
                     
@@ -755,7 +737,6 @@
 
                     <div class="param-description">
                         <p>The name of a CSS easing function</p>
-
                     </div>
 
                     
@@ -771,7 +752,6 @@
 
                     <div class="param-description">
                         <p>The number of milliseconds before the animation should start</p>
-
                     </div>
 
                     
@@ -786,8 +766,7 @@
                     
 
                     <div class="param-description">
-                        <p>Either the number of iterations to play the animation or &#39;infinite&#39;</p>
-
+                        <p>Either the number of iterations to play the animation or 'infinite'</p>
                     </div>
 
                     
@@ -803,7 +782,6 @@
 
                     <div class="param-description">
                         <p>The name of a CSS animation direction</p>
-
                     </div>
 
                     
@@ -819,7 +797,6 @@
 
                     <div class="param-description">
                         <p>A function to execute when the animation has completed</p>
-
                     </div>
 
                     
@@ -838,137 +815,7 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>The jQuery object, for chaining</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_$.fn.keyframe" class="method item">
-    <h3 class="name"><code>$.fn.keyframe</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>name</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>options</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">JQuery</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l125"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:125</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Applies a keyframe animation to an element</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The name of the animation</p>
-
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">options</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Options for the animation</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">JQuery</span>:
-                    
-                    <p>The jQuery object, for chaining</p>
-
+                    The jQuery object, for chaining
                 
             </div>
         </div>
@@ -1060,7 +907,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l164"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:164</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l175"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:175</code></a>
         
         </p>
 
@@ -1072,7 +919,6 @@
 
     <div class="description">
         <p>Applies a keyframe animation to an element</p>
-
     </div>
 
     
@@ -1091,7 +937,6 @@
 
                     <div class="param-description">
                         <p>The name of the animation</p>
-
                     </div>
 
                     
@@ -1107,7 +952,6 @@
 
                     <div class="param-description">
                         <p>The number of milliseconds that the animation lasts</p>
-
                     </div>
 
                     
@@ -1123,7 +967,6 @@
 
                     <div class="param-description">
                         <p>The name of a CSS easing function</p>
-
                     </div>
 
                     
@@ -1139,7 +982,6 @@
 
                     <div class="param-description">
                         <p>The number of milliseconds before the animation should start</p>
-
                     </div>
 
                     
@@ -1154,8 +996,7 @@
                     
 
                     <div class="param-description">
-                        <p>Either the number of iterations to play the animation or &#39;infinite&#39;</p>
-
+                        <p>Either the number of iterations to play the animation or 'infinite'</p>
                     </div>
 
                     
@@ -1171,7 +1012,6 @@
 
                     <div class="param-description">
                         <p>The name of a CSS animation direction</p>
-
                     </div>
 
                     
@@ -1187,7 +1027,6 @@
 
                     <div class="param-description">
                         <p>A function to execute when the animation has completed</p>
-
                     </div>
 
                     
@@ -1206,8 +1045,132 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>The jQuery object, for chaining</p>
+                    The jQuery object, for chaining
+                
+            </div>
+        </div>
+    
 
+    
+</div>
+
+                
+                    <div id="method_$.fn.keyframe" class="method item">
+    <h3 class="name"><code>$.fn.keyframe</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>keyframes</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>options</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">JQuery</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l155"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:155</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Applies a keyframe animation to an element</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">keyframes</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">options</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Options for the animation</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">JQuery</span>:
+                    
+                    The jQuery object, for chaining
                 
             </div>
         </div>
@@ -1269,7 +1232,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l253"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:253</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l264"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:264</code></a>
         
         </p>
 
@@ -1280,8 +1243,7 @@
     </div>
 
     <div class="description">
-        <p>Binds an animation end handler to an element&#39;s next animation end event</p>
-
+        <p>Binds an animation end handler to an element's next animation end event</p>
     </div>
 
     
@@ -1300,7 +1262,6 @@
 
                     <div class="param-description">
                         <p>Selector for the descendant elements to which the handler will be bound</p>
-
                     </div>
 
                     
@@ -1316,7 +1277,6 @@
 
                     <div class="param-description">
                         <p>Callback for when the animation ends</p>
-
                     </div>
 
                     
@@ -1335,8 +1295,7 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>This jQuery object, for chaining</p>
-
+                    This jQuery object, for chaining
                 
             </div>
         </div>
@@ -1392,7 +1351,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l246"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:246</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l257"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:257</code></a>
         
         </p>
 
@@ -1403,8 +1362,7 @@
     </div>
 
     <div class="description">
-        <p>Binds an animation end handler to an element&#39;s next animation end event</p>
-
+        <p>Binds an animation end handler to an element's next animation end event</p>
     </div>
 
     
@@ -1423,7 +1381,6 @@
 
                     <div class="param-description">
                         <p>Callback for when the animation ends</p>
-
                     </div>
 
                     
@@ -1442,8 +1399,80 @@
                     
                         <span class="type">JQuery</span>:
                     
-                    <p>This jQuery object, for chaining</p>
+                    This jQuery object, for chaining
+                
+            </div>
+        </div>
+    
 
+    
+</div>
+
+                
+                    <div id="method_animationEndEvent" class="method item">
+    <h3 class="name"><code>animationEndEvent</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l52"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:52</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Gets the name of the animation end event</p>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    
+                    The name of the event
                 
             </div>
         </div>
@@ -1491,7 +1520,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l114"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:114</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l125"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:125</code></a>
         
         </p>
 
@@ -1503,7 +1532,6 @@
 
     <div class="description">
         <p>Gets the name of the animation CSS property</p>
-
     </div>
 
     
@@ -1517,8 +1545,7 @@
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    <p>The name of the CSS property</p>
-
+                    The name of the CSS property
                 
             </div>
         </div>
@@ -1582,7 +1609,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l96"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:96</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l107"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:107</code></a>
         
         </p>
 
@@ -1594,7 +1621,6 @@
 
     <div class="description">
         <p>Generates a keyframe animation</p>
-
     </div>
 
     
@@ -1613,7 +1639,6 @@
 
                     <div class="param-description">
                         <p>The name of the animation</p>
-
                     </div>
 
                     
@@ -1628,8 +1653,7 @@
                     
 
                     <div class="param-description">
-                        <p>A list of timestamped keyframes in the form {&#39;0%&#39;: {color: &#39;red&#39;}, &#39;100%&#39;: &#39;color: blue&#39;}</p>
-
+                        <p>A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}</p>
                     </div>
 
                     
@@ -1648,8 +1672,7 @@
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    <p>The name fo the animation</p>
-
+                    The name fo the animation
                 
             </div>
         </div>
@@ -1707,7 +1730,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l88"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:88</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l99"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:99</code></a>
         
         </p>
 
@@ -1719,7 +1742,6 @@
 
     <div class="description">
         <p>Generates a keyframe animation</p>
-
     </div>
 
     
@@ -1737,8 +1759,7 @@
                     
 
                     <div class="param-description">
-                        <p>A list of timestamped keyframes in the form {&#39;0%&#39;: {color: &#39;red&#39;}, &#39;100%&#39;: &#39;color: blue&#39;}</p>
-
+                        <p>A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}</p>
                     </div>
 
                     
@@ -1757,8 +1778,7 @@
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    <p>The name fo the animation</p>
-
+                    The name fo the animation
                 
             </div>
         </div>
@@ -1806,7 +1826,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l41"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:41</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l41"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:41</code></a>
         
         </p>
 
@@ -1818,7 +1838,6 @@
 
     <div class="description">
         <p>Whether or not animations are supported by the browser</p>
-
     </div>
 
     
@@ -1832,8 +1851,7 @@
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
                     
-                    <p>True if CSS keyframe animations are supported</p>
-
+                    True if CSS keyframe animations are supported
                 
             </div>
         </div>
@@ -1897,7 +1915,7 @@
             
         
         
-        <a href="../files/src_www_js_lavaca_fx_Animation.js.html#l52"><code>src&#x2F;www&#x2F;js&#x2F;lavaca&#x2F;fx&#x2F;Animation.js:52</code></a>
+        <a href="../files/src_www_components_lavaca_src_fx_Animation.js.html#l63"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;fx&#x2F;Animation.js:63</code></a>
         
         </p>
 
@@ -1909,7 +1927,6 @@
 
     <div class="description">
         <p>Converts a list of keyframes to a CSS animation</p>
-
     </div>
 
     
@@ -1928,7 +1945,6 @@
 
                     <div class="param-description">
                         <p>The name of the keyframe animation</p>
-
                     </div>
 
                     
@@ -1943,8 +1959,7 @@
                     
 
                     <div class="param-description">
-                        <p>A list of timestamped keyframes in the form {&#39;0%&#39;: {color: &#39;red&#39;}, &#39;100%&#39;: &#39;color: blue&#39;}</p>
-
+                        <p>A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}</p>
                     </div>
 
                     
@@ -1963,8 +1978,7 @@
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    <p>The CSS keyframe animation declaration</p>
-
+                    The CSS keyframe animation declaration
                 
             </div>
         </div>

@@ -5,40 +5,35 @@ Before you get started, you will need Xcode's command line tools and [Node.js](h
 
 # Getting Started
 
-## Quick Start
-1. __Install *getlavaca* CLI tool__
-```bash
-$ curl https://raw.github.com/mutualmobile/lavaca/master/getlavaca > /usr/local/bin/getlavaca && chmod +x /usr/local/bin/getlavaca
-```
-
-2. __Go to your prefered root directory then run__
-```bash
-$ getlavaca
-```
-then follow instructions. You're good to go.
-
-
-
-## Manual Setup
-
 1. __Get the code__
 ```bash
 $ mkdir [my_app] && cd [my_app]
-$ git clone git@github.com:mutualmobile/lavaca.git .
+$ git clone https://github.com/mutualmobile/lavaca-starter.git .
 ```
 
-2. __Install grunt-cli globally__
+2. __If you don't have it, install grunt-cli globally__
 Note: this may require sudo
 ```bash
 $ npm install -g grunt-cli
 ```
 
-3. __Install dev dependencies for our tasks to work__
+3. __If you don't have it, install bower globally__
+Note: this may require sudo
+```bash
+$ npm install -g bower
+```
+
+4. __Install node dependencies for our tasks to work__
 ```bash
 $ npm install
 ```
 
-4. __Start Development Server__
+5. __Install client side dependencies__
+```bash
+$ bower install
+```
+
+6. __Start Development Server__
 ```bash
 $ grunt server
 ```
