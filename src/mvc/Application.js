@@ -121,22 +121,19 @@ define(function(require) {
           rel = link.attr('rel'),
           target = link.attr('target'),
           isExternal = link.is('[data-external]') || _isExternal(url),
-          preventClick = function() {
-            if ($(document.body).hammer) {
-              link.one('click', _stopEvent);
-            }
-          };
-
+          metaKey = e.type === 'tap' ? (e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey) : (e.ctrlKey || e.metaKey);
+      if (metaKey) {
+        target = metaKey ? '_blank' : (target ? target : '_self');
+      }
       if (!defaultPrevented) {
         if (Device.isCordova() && target) {
           e.preventDefault();
-          preventClick();
           window.open(url, target || '_blank');
-        } else if (isExternal || target || (e.ctrlKey || e.metaKey)) {
+        } else if (isExternal || target) {
+          window.open(url, target);
           return true;
         } else {
           e.preventDefault();
-          preventClick();
           if (rel === 'back') {
             History.back();
           } else if (rel === 'force-back' && url) {
@@ -151,9 +148,7 @@ define(function(require) {
             this.router.exec(url).error(this.onInvalidRoute);
           }
         }
-      } else {
-        preventClick();
-      }
+      }
     },
     /**
      * Makes an AJAX request if the user is online. If the user is offline, the returned
@@ -233,6 +228,7 @@ define(function(require) {
       if ($body.hammer) {
         $body = $body.hammer();
         type = 'tap';
+        $body.on('click', 'a', _stopEvent);
       }
       $body
         .on(type, '.ui-blocker', _stopEvent)
