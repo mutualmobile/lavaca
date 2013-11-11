@@ -1,3 +1,7 @@
+Changed in 2.3.1 and 2.3.2
+======
+* Patches for onTapLink
+
 Changed in 2.3.0
 ======
 * Moved all client-side dependencies to use bower and restructured project to make sense of this change
