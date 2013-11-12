@@ -106,6 +106,7 @@ define(function(require) {
    * @param {Object} [map]  A parameter hash to apply to the model
    */
   var Model = EventDispatcher.extend(function(map) {
+    var suppressEvents, suppressTracking;
     EventDispatcher.call(this);
     this.attributes = new Cache();
     this.rules = new Cache();
@@ -115,13 +116,14 @@ define(function(require) {
       map = merge({}, this.defaults, map);
     }
     if (map) {
+      suppressEvents = this.suppressEvents;
+      suppressTracking = this.suppressTracking;
       this.suppressEvents
         = this.suppressTracking
         = true;
       this.apply(map);
-      this.suppressEvents
-        = this.suppressTracking
-        = false;
+      this.suppressEvents = suppressEvents;
+      this.suppressTracking = suppressTracking;
     }
   }, {
     /**
