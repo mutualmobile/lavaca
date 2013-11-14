@@ -73,7 +73,7 @@ If the router was sent to `/profile/foo/on/2012-01-01?dog=bark`, the route would
 The **router** is an object that allows the user to navigate the application. The router maintains a registry of different routes available to the application and gives other parts of the application the ability to navigate to a route.
 
 ## Creating Your Application's Router
-The Router is a singleton like the View Manager. In order to setup a router, you will need to have previously instantiated a view manager. `lavaca/mvc/Applciation` does this for you (see [Views and the View Manager](Views-and-the-View-Manager)).
+The Router is a singleton like the View Manager. In order to setup a router, you will need to have previously instantiated a view manager. `lavaca/mvc/Application` does this for you (see [Views and the View Manager](Views-and-the-View-Manager)).
 
     var router = require('lavaca/mvc/Router'),
         viewManager = require('lavaca/mvc/ViewManager');
