@@ -134,20 +134,63 @@ define(function(require) {
             self.enteringPageViews = [];
           });
         });
-        exitPromise = self.dismissLayersAbove(layer - 1, pageView);
-        if (self.layers[layer] !== pageView) {
-          enterPromise
-            .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
-            .then(promise.resolve);
-          self.layers[layer] = pageView;
-        } else {
-          promise.when(exitPromise);
-        }
+        self.beforeEnterExit(layer - 1, pageView).then(function(){
+          exitPromise = self.dismissLayersAbove(layer - 1, pageView);
+          if (self.layers[layer] !== pageView) {
+            enterPromise
+              .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
+              .then(promise.resolve);
+            self.layers[layer] = pageView;
+          } else {
+            promise.when(exitPromise);
+          }
+        });
       }
       if (renderPromise) {
         renderPromise.then(lastly, promise.rejector());
       } else {
         lastly();
+      }
+      return promise;
+    },
+    /**
+     * Execute beforeEnter or beforeExit for each layer. Both functions 
+     * beforeEnter and beforeExit must return promises.
+     * @method beforeEnterExit
+     *
+     * @param {Number}  index The index above which is to be cleared
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    /**
+     * Execute beforeEnter or beforeExit for each layer. Both functions 
+     * beforeEnter and beforeExit must return promises. 
+     * @method beforeEnterExit
+     *
+     * @param {Number} index  The index above which is to be cleared
+     * @param {Lavaca.mvc.View}  enteringView A view that will be entering
+     * @return {Lavaca.util.Promise}  A promise
+     */
+    beforeEnterExit: function(index, enteringView) {
+      var promise = new Promise(this),
+        i,
+        layer,
+        promiseArray = [];
+      if (enteringView && typeof enteringView.beforeEnter === 'function') {
+        promiseArray.push(enteringView.beforeEnter());
+      }
+      for (i = this.layers.length - 1; i > index; i--) {
+        if ((layer = this.layers[i]) && (!enteringView || enteringView !== layer)) {
+          (function(layer) {
+            if (typeof layer.beforeExit === 'function') {
+              promiseArray.push(layer.beforeExit());
+            }
+          }).call(this, layer);
+        }
+      }
+      if (promiseArray.length === 0) {
+        promise.resolve();
+      } else {
+        promise.when.apply(promise, promiseArray);
       }
       return promise;
     },
