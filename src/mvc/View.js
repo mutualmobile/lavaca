@@ -925,7 +925,7 @@ define(function(require) {
      */
     exit: function() {
       var promise = new Promise(this);
-      this.shell.detach();
+      this.shell.remove();
       delay(promise.resolver());
       promise.then(function() {
         /**
