@@ -834,6 +834,8 @@ define(function(require) {
         this.disposeWidgets(this.el);
       }
 
+      this.el.remove();
+
       // Do not dispose of template or model
       this.template
         = this.model
@@ -925,7 +927,7 @@ define(function(require) {
      */
     exit: function() {
       var promise = new Promise(this);
-      this.shell.remove();
+      this.shell.detach();
       delay(promise.resolver());
       promise.then(function() {
         /**
