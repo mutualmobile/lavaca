@@ -606,10 +606,12 @@ define(function(require) {
     onItemEvent: function(e) {
       var model = e.target,
           index = ArrayUtils.indexOf(this.models, model);
-      if (e.type === 'change') {
-        ArrayUtils.pushIfNotExists(this.changedItems, model);
-      } else if (e.type === 'saveSuccess') {
-        ArrayUtils.remove(this.changedItems, model);
+      if (!this.suppressTracking) {
+        if (e.type === 'change') {
+          ArrayUtils.pushIfNotExists(this.changedItems, model);
+        } else if (e.type === 'saveSuccess') {
+          ArrayUtils.remove(this.changedItems, model);
+        }
       }
       this.trigger(e.type + 'Item', merge({}, e, {
         target: model,
