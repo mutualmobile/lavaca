@@ -687,7 +687,7 @@ define(function(require) {
       return obj;
     },
     /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
+    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overridden)
     * @method responseFilter
     *
     * @param {Object} response  The raw response passed in onFetchSuccess()
