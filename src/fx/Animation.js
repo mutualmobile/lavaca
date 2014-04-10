@@ -8,9 +8,7 @@ define(function(require) {
   var _props = {
         animation: ['animation', 'animationend', 'keyframes'],
         webkitAnimation: ['-webkit-animation', 'webkitAnimationEnd', '-webkit-keyframes'],
-        MozAnimation: ['-moz-animation', 'animationend', '-moz-keyframes'],
-        OAnimation: ['-o-animation', 'oAnimationEnd', '-o-keyframes'],
-        MSAnimation: ['-ms-animation', 'MSAnimationEnd', '-ms-keyframes']
+        MozAnimation: ['-moz-animation', 'animationend', '-moz-keyframes']
       },
       _prop,
       _cssProp,
@@ -148,6 +146,8 @@ define(function(require) {
    * @default 1
    * @opt {String} direction  The name of a CSS animation direction
    * @default 'normal'
+   * @opt {String} fillMode  The CSS animation fill mode (none, forwards, backwards, both)
+   * @default ''
    * @opt {Function} complete  A function to execute when the animation has completed
    * @default null
    * @return {jQuery}  The jQuery object, for chaining
@@ -158,6 +158,7 @@ define(function(require) {
    *
    * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
    * @param {Object} options  Options for the animation
+   * @opt {String} name  The name of the animation
    * @opt {Number} duration  The number of milliseconds that the animation lasts
    * @opt {String} easing  The name of a CSS easing function
    * @default 'linear'
@@ -167,6 +168,8 @@ define(function(require) {
    * @default 1
    * @opt {String} direction  The name of a CSS animation direction
    * @default 'normal'
+   * @opt {String} fillMode  The CSS animation fill mode (none, forwards, backwards, both)
+   * @default ''
    * @opt {Function} complete  A function to execute when the animation has completed
    * @default null
    * @return {jQuery}  The jQuery object, for chaining
@@ -201,8 +204,13 @@ define(function(require) {
    */
   $.fn.keyframe = function(name, duration, easing, delay, iterations, direction, callback) {
     if (Animation.isSupported()) {
+      var fillMode;
       if (typeof name === 'object') {
-        name = Animation.generateKeyframes(name);
+        if (typeof duration === 'object' && typeof duration.name === 'string') {
+          name = Animation.generateKeyframes(duration.name, name);
+        } else {
+          name = Animation.generateKeyframes(name);
+        }
       }
       if (typeof duration === 'object') {
         callback = duration.complete;
@@ -210,6 +218,7 @@ define(function(require) {
         iterations = duration.iterations;
         delay = duration.delay;
         easing = duration.easing;
+        fillMode = duration.fillMode;
         duration = duration.duration;
       }
       direction = direction || 'normal';
@@ -217,6 +226,7 @@ define(function(require) {
       delay = delay || 0;
       easing = easing || 'linear';
       duration = duration || 1;
+      fillMode = fillMode || '';
       if (typeof duration === 'number') {
         duration += 'ms';
       }
@@ -226,7 +236,7 @@ define(function(require) {
       if (callback) {
         this.nextAnimationEnd(callback);
       }
-      this.css(Animation.cssProperty(), [name, duration, easing, delay, iterations, direction].join(' '));
+      this.css(Animation.cssProperty(), [name, duration, easing, delay, iterations, direction, fillMode].join(' '));
     }
     return this;
   };
