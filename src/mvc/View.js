@@ -7,7 +7,6 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Promise = require('lavaca/util/Promise'),
     ArrayUtils = require('lavaca/util/ArrayUtils'),
-    log = require('lavaca/util/log'),
     uuid = require('lavaca/util/uuid');
 
   var _UNDEFINED;
@@ -816,7 +815,7 @@ define(function(require) {
      *   that contains the error message.
      */
     onRenderError: function(e) {
-      log(e.err);
+      console.log(e.err);
     },
     /**
      * Readies the view for garbage collection
