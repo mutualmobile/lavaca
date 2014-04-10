@@ -2,8 +2,7 @@ define(function(require) {
 
   var $ = require('$'),
       Widget = require('./Widget'),
-      iScroll = require('iScroll'),
-      delay = require('lavaca/util/delay');
+      iScroll = require('iScroll');
 
   var _props = ['overflowScrolling', 'webkitOverflowScrolling', 'MozOverflowScrolling', 'OOverflowScrolling', 'MSOverflowScrolling'],
       _isSupported,
@@ -77,9 +76,9 @@ define(function(require) {
      * @method createOverflowScroll
      */
     initOverflowScroll: function() {
-      delay(function() {
+      setTimeout(function() {
         this.addOverflowClass();
-      }, this);
+      }.bind(this));
       this.preventParentScroll();
     },
     /**
@@ -122,14 +121,14 @@ define(function(require) {
      */
      refresh: function() {
        if (!this.supportsOverflow) {
-         delay(function() {
+         setTimeout(function() {
            this.iScroll && this.iScroll.refresh();
-         }, this, 10);
+         }.bind(this), 10);
        } else if (_isIOS5) {
          this.el.removeClass(this.className);
-         delay(function() {
+         setTimeout(function() {
            this.addOverflowClass();
-         }, this, 10);
+         }.bind(this), 10);
        }
      },
      /**
