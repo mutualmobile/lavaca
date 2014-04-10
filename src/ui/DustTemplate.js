@@ -201,7 +201,6 @@ define(function(require) {
      * @method compile
      */
     compile: function() {
-      Template.prototype.compile.call(this);
       dust.loadSource(dust.compile(this.code, this.name));
     },
     /**
