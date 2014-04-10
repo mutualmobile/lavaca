@@ -10,7 +10,7 @@ define(function(require) {
 
   var defaults = {
     tension: 50,
-    friction: 2,
+    friction: 0,
     velocity: 0,
     speed: 1 / 60.0,
     tolerance: 0.1
@@ -112,7 +112,7 @@ define(function(require) {
         count++;
         results.push(this.next());
       }
-      
+
       return results;
     };
 
@@ -136,92 +136,84 @@ define(function(require) {
   };
 
   Springer.generateKeyframes = function(options) {
-      options = options || {};
-      options.initial = options.initial || {};
-      options.result = options.result || {};
-      this.tension = options.tension;
-      this.friction = options.friction;
-      this.initial = {
-        scale: (options.initial.scale || options.initial.scale === 0) ? options.initial.scale : 1,
-        translateX: options.initial.translateX || 0,
-        translateY: options.initial.translateY || 0,
-        translateZ: options.initial.translateZ || 0,
-      };
-      this.result = {
-        scale: (options.result.scale || options.result.scale === 0) ? options.result.scale : 1,
-        translateX: options.result.translateX || 0,
-        translateY: options.result.translateY || 0,
-        translateZ: options.result.translateZ || 0,
-      };
-      this.staticTransform = options.staticTransform || '';
-      this.curve = SpringCurve(this.tension, this.friction);
-      return this.generate();
+    options = options || {};
+    options.initial = options.initialState || {};
+    options.result = options.resultState || {};
+    this.tension = (options.tension && options.tension >= 1) ? options.tension : undefined;
+    this.friction = (options.friction && options.friction > 0) ? options.friction : undefined;
+    this.initial = {
+      scale: (options.initial.scale || options.initial.scale === 0) ? options.initial.scale : 1,
+      translateX: options.initial.translateX || 0,
+      translateY: options.initial.translateY || 0,
+      translateZ: options.initial.translateZ || 0,
+    };
+    this.result = {
+      scale: (options.result.scale || options.result.scale === 0) ? options.result.scale : 1,
+      translateX: options.result.translateX || 0,
+      translateY: options.result.translateY || 0,
+      translateZ: options.result.translateZ || 0,
+    };
+    this.staticTransform = options.staticTransform || '';
+    this.curve = SpringCurve(this.tension, this.friction);
+    return this.generate();
+  };
+
+  Springer.generate = function() {
+    var length = this.curve.length;
+    var differences = {
+      scale: this.result.scale - this.initial.scale,
+      translateX: (this.result.translateX - this.initial.translateX),
+      translateY: (this.result.translateY - this.initial.translateY),
+      translateZ: (this.result.translateZ - this.initial.translateZ)
+    };
+    var isScale = (differences.scale !== 0);
+    var isTranslate = (differences.translateX !== 0 ||
+      differences.translateY !== 0 ||
+      differences.translateZ !== 0);
+    var originalDirection = true;
+    var keyframes = {};
+    var currentTransform;
+
+    keyframes['0%'] = {
+      'animation-timing-function': 'ease-in-out',
+      'transform': this.createTransform(isScale, isTranslate, this.initial)
+    };
+    keyframes['100%'] = {
+      'animation-timing-function': 'ease-in-out',
+      'transform': this.createTransform(isScale, isTranslate, this.result)
     };
 
-    Springer.generate = function() {
-      var length = this.curve.length;
-      var differences = {
-        scale: this.result.scale - this.initial.scale,
-        translateX: (this.result.translateX - this.initial.translateX),
-        translateY: (this.result.translateY - this.initial.translateY),
-        translateZ: (this.result.translateZ - this.initial.translateZ)
-      };
-      var isScale = (differences.scale !== 0);
-      var isTranslate = (differences.translateX !== 0 ||
-        differences.translateY !== 0 ||
-        differences.translateZ !== 0);
-      var originalDirection = true;
-      var keyframes = {};
+    for (var i = 1; i < length; ++i) {
+      if ((originalDirection && this.curve[i] <= this.curve[i - 1])
+        || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
 
-      keyframes['0%'] = {
-        'animation-timing-function': 'ease-in-out',
-        'transform': this.staticTransform + 
-              (isScale ? ' scale('+(this.initial.scale)+')' : '' )+
-              (isTranslate ? ' translate3d('+
-                this.initial.translateX + 'px'+','+
-                this.initial.translateY + 'px'+','+
-                this.initial.translateZ + 'px'+')' : '' )
-      };
-      keyframes['100%'] = {
-        'animation-timing-function': 'ease-in-out',
-        'transform': this.staticTransform + 
-              (isScale ? ' scale('+(this.result.scale)+')' : '' )+
-              (isTranslate ? ' translate3d('+
-                this.result.translateX + 'px'+','+
-                this.result.translateY + 'px'+','+
-                this.result.translateZ + 'px'+')' : '' )
-      };
-
-      for (var i = 1; i < length; ++i) {
-        if ((originalDirection && this.curve[i] <= this.curve[i - 1])
-          || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
-          keyframes[(i/length*100).toFixed(3)+'%'] = {
-            'animation-timing-function': 'ease-in-out',
-            'transform': this.staticTransform + 
-              (isScale ? ' scale('+(this.initial.scale + (this.curve[i] / (100))*differences.scale)+')' : '' )+
-              (isTranslate ? ' translate3d('+
-                Math.round(this.initial.translateX + (parseFloat(differences.translateX) * this.curve[i]) / 100) + 'px'+','+
-                Math.round(this.initial.translateY + (parseFloat(differences.translateY) * this.curve[i]) / 100) + 'px'+','+
-                Math.round(this.initial.translateZ + (parseFloat(differences.translateZ) * this.curve[i]) / 100) + 'px'+')' : '' )
-          };
-          originalDirection = !originalDirection;
-        }
+        currentTransform = {
+          scale: isScale ? (this.initial.scale + (this.curve[i] / (100))*differences.scale) : undefined,
+          translateX: isTranslate ? Math.round(this.initial.translateX + (parseFloat(differences.translateX) * this.curve[i]) / 100) : undefined,
+          translateY: isTranslate ? Math.round(this.initial.translateY + (parseFloat(differences.translateY) * this.curve[i]) / 100) : undefined,
+          translateZ: isTranslate ? Math.round(this.initial.translateZ + (parseFloat(differences.translateZ) * this.curve[i]) / 100) : undefined,
+        };
+        keyframes[(i/length*100).toFixed(3)+'%'] = {
+          'animation-timing-function': 'ease-in-out',
+          'transform': this.createTransform(isScale, isTranslate, currentTransform)
+        };
+        originalDirection = !originalDirection;
       }
-      
-      return keyframes;
-    };
+    }
 
+    return keyframes;
+  };
 
+  Springer.createTransform = function(isScale, isTranslate, options) {
+    var theTransform = this.staticTransform +
+            (isScale ? ' scale('+(options.scale)+')' : '' )+
+            (isTranslate ? ' translate3d('+
+              options.translateX + 'px'+','+
+              options.translateY + 'px'+','+
+              options.translateZ + 'px'+')' : '' );
 
-
-
-
-
-
-
-
-
-
+    return theTransform;
+  };
 
 
 
@@ -229,16 +221,16 @@ define(function(require) {
    * Applies a spring keyframe animation to an element
    * @method $.fn.spring
    *
+   * @param {String} name The name of the animation
    * @param {Object} options  Options for the spring animation
-   * @opt {String} name The name of the animation
    * @opt {Number} tension Positive integer representing the tension on the spring
    * @default 50
    * @opt {Number} friction  Positive integer representing the friction of the spring
    * @default 2
    * @opt {Object} initialState  Initial transform values
-   * @default 1
+   * @default { scale: 1, translateX: 0, translateY: 0, translateZ: 0 }
    * @opt {Object} resultState  Final transform values
-   * @default 1
+   * @default { scale: 1, translateX: 0, translateY: 0, translateZ: 0 }
    * @opt {String} staticTransform  The representation of a transform fragment that should be static and appended to all keyframes
    * @opt {Number} duration  The number of milliseconds that the animation lasts
    * @opt {String} easing  The name of a CSS easing function
@@ -253,29 +245,11 @@ define(function(require) {
    * @default null
    * @return {jQuery}  The jQuery object, for chaining
    */
-  $.fn.spring = function(name, tension, friction, initialState, resultState, staticTransform, duration, easing, delay, iterations, direction, fillMode, callback) {
+  $.fn.spring = function(name, springOptions, keyframeOptions) {
     if (Animation.isSupported()) {
-      var keyframeOptions;
-      var springOptions;
       var theKeyframes;
-      if (typeof name === 'object') {
-        keyframeOptions = {
-          name: name.name,
-          duration: name.duration,
-          easing: name.easing,
-          delay: name.delay,
-          iterations: name.iterations,
-          direction: name.direction,
-          fillMode: name.fillMode,
-          complete: name.complete
-        };
-        springOptions = {
-          tension: name.tension,
-          friction: name.friction,
-          initial: name.initialState,
-          result: name.resultState,
-          staticTransform: name.staticTransform
-        };
+      if (typeof keyframeOptions === 'object' && typeof name === 'string') {
+        keyframeOptions.name = name;
       }
       theKeyframes = Springer.generateKeyframes(springOptions);
       this.keyframe(theKeyframes, keyframeOptions);
