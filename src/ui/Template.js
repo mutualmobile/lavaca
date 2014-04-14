@@ -13,13 +13,6 @@ define(function(require) {
    */
   var Template = Map.extend({
     /**
-     * Compiles the template
-     * @method compile
-     */
-    compile: function() {
-      // Do nothing
-    },
-    /**
      * Renders the template to a string
      * @method render
      *

@@ -6,7 +6,6 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
     Promise = require('lavaca/util/Promise'),
-    delay = require('lavaca/util/delay'),
     merge = require('mout/object/merge');
 
   /**
@@ -130,67 +129,24 @@ define(function(require) {
       function lastly() {
         self.enteringPageViews = [pageView];
         promise.success(function() {
-          delay(function() {
+          setTimeout(function() {
             self.enteringPageViews = [];
-          });
+          }.bind(this));
         });
-        self.beforeEnterExit(layer - 1, pageView).then(function(){
-          exitPromise = self.dismissLayersAbove(layer - 1, pageView);
-          if (self.layers[layer] !== pageView) {
-            enterPromise
-              .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
-              .then(promise.resolve);
-            self.layers[layer] = pageView;
-          } else {
-            promise.when(exitPromise);
-          }
-        });
+        exitPromise = self.dismissLayersAbove(layer - 1, pageView);
+        if (self.layers[layer] !== pageView) {
+          enterPromise
+            .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
+            .then(promise.resolve);
+          self.layers[layer] = pageView;
+        } else {
+          promise.when(exitPromise);
+        }
       }
       if (renderPromise) {
         renderPromise.then(lastly, promise.rejector());
       } else {
         lastly();
-      }
-      return promise;
-    },
-    /**
-     * Execute beforeEnter or beforeExit for each layer. Both functions 
-     * beforeEnter and beforeExit must return promises.
-     * @method beforeEnterExit
-     *
-     * @param {Number}  index The index above which is to be cleared
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    /**
-     * Execute beforeEnter or beforeExit for each layer. Both functions 
-     * beforeEnter and beforeExit must return promises. 
-     * @method beforeEnterExit
-     *
-     * @param {Number} index  The index above which is to be cleared
-     * @param {Lavaca.mvc.View}  enteringView A view that will be entering
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    beforeEnterExit: function(index, enteringView) {
-      var promise = new Promise(this),
-        i,
-        layer,
-        promiseArray = [];
-      if (enteringView && typeof enteringView.beforeEnter === 'function') {
-        promiseArray.push(enteringView.beforeEnter());
-      }
-      for (i = this.layers.length - 1; i > index; i--) {
-        if ((layer = this.layers[i]) && (!enteringView || enteringView !== layer)) {
-          (function(layer) {
-            if (typeof layer.beforeExit === 'function') {
-              promiseArray.push(layer.beforeExit());
-            }
-          }).call(this, layer);
-        }
-      }
-      if (promiseArray.length === 0) {
-        promise.resolve();
-      } else {
-        promise.when.apply(promise, promiseArray);
       }
       return promise;
     },
@@ -256,12 +212,12 @@ define(function(require) {
             promise
               .when(layer.exit(this.el, this.enteringPageViews))
               .success(function() {
-                delay(function() {
+                setTimeout(function() {
                   ArrayUtils.remove(this.exitingPageViews, layer);
                   if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey === layer.cacheKey)) {
                     layer.dispose();
                   }
-                }, this);
+                }.bind(this));
               });
             this.layers[i] = null;
           }).call(this, layer);

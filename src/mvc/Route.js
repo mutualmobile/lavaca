@@ -1,7 +1,6 @@
 define(function(require) {
 
   var Disposable = require('lavaca/util/Disposable'),
-      delay = require('lavaca/util/delay'),
       clone = require('mout/lang/deepClone'),
       merge = require('mout/object/merge');
 
@@ -181,7 +180,7 @@ define(function(require) {
           urlParams = this.parse(url),
           promise = controller.exec(this.action, merge(urlParams, params), state);
       function dispose() {
-        delay(controller.dispose, controller);
+        setTimeout(this.dispose(),0);
       }
       promise.then(dispose, dispose);
       return promise;

@@ -7,9 +7,7 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Promise = require('lavaca/util/Promise'),
     ArrayUtils = require('lavaca/util/ArrayUtils'),
-    log = require('lavaca/util/log'),
-    uuid = require('lavaca/util/uuid'),
-    delay = require('lavaca/util/delay');
+    uuid = require('lavaca/util/uuid');
 
   var _UNDEFINED;
 
@@ -817,7 +815,7 @@ define(function(require) {
      *   that contains the error message.
      */
     onRenderError: function(e) {
-      log(e.err);
+      console.log(e.err);
     },
     /**
      * Readies the view for garbage collection
@@ -833,8 +831,6 @@ define(function(require) {
       if (this.widgets.count()) {
         this.disposeWidgets(this.el);
       }
-
-      this.el.remove();
 
       // Do not dispose of template or model
       this.template
@@ -906,7 +902,7 @@ define(function(require) {
       if (renderPromise) {
         promise.when(renderPromise);
       } else {
-        delay(promise.resolver());
+        setTimeout(promise.resolver().bind(this),0);
       }
       promise.then(function() {
         /**
@@ -928,7 +924,7 @@ define(function(require) {
     exit: function() {
       var promise = new Promise(this);
       this.shell.detach();
-      delay(promise.resolver());
+      setTimeout(promise.resolver(),0);
       promise.then(function() {
         /**
          * Fired when there was an error during rendering process
