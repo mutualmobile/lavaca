@@ -135,23 +135,64 @@ define(function(require) {
     return spring.all();
   };
 
+  function getTransformFunction(option, defaultValue, mainOnly) {
+    var result = {};
+    var originalDefault = defaultValue;
+
+    if (typeof option === 'object') {
+      for (var prop in option) {
+        result[prop] = option[prop];
+      }
+    } else if (typeof option === 'number' || typeof option === 'string') {
+      defaultValue = option;
+    }
+    if (mainOnly) {
+      result.x = result.x || originalDefault;
+      result.y = result.y || originalDefault;
+    } else {
+      result.x = result.x || defaultValue;
+      result.y = result.y || defaultValue;
+    }
+    result.z = result.z || defaultValue;
+
+    return result;
+  }
+  function getDifferences(initial, result) {
+    var diff;
+    if (typeof initial === 'object') {
+      diff = {};
+      for (var prop in initial) {
+        diff[prop] = result[prop] - initial[prop];
+        if (diff[prop] !== 0) {
+          diff.isDifferent = true;
+        }
+      }
+    } else if (typeof initial === 'number' || typeof result === 'number') {
+      diff = (result || 0) - (initial || 0);
+    }
+    return diff;
+  }
+
   Springer.generateKeyframes = function(options) {
     options = options || {};
     options.initial = options.initialState || {};
     options.result = options.resultState || {};
     this.tension = (options.tension && options.tension >= 1) ? options.tension : undefined;
     this.friction = (options.friction && options.friction > 0) ? options.friction : undefined;
+    //this.initial = this.getCurrentTransformValues();
     this.initial = {
-      scale: (options.initial.scale || options.initial.scale === 0) ? options.initial.scale : 1,
-      translateX: options.initial.translateX || 0,
-      translateY: options.initial.translateY || 0,
-      translateZ: options.initial.translateZ || 0,
+      scale: getTransformFunction(options.initial.scale, 1),
+      translate: getTransformFunction(options.initial.translate, 0),
+      rotate: getTransformFunction(options.initial.rotate, 0, true),
+      skew: getTransformFunction(options.initial.skew, 0),
+      perspective: options.initial.perspective || undefined
     };
     this.result = {
-      scale: (options.result.scale || options.result.scale === 0) ? options.result.scale : 1,
-      translateX: options.result.translateX || 0,
-      translateY: options.result.translateY || 0,
-      translateZ: options.result.translateZ || 0,
+      scale: getTransformFunction(options.result.scale, 1),
+      translate: getTransformFunction(options.result.translate, 0),
+      rotate: getTransformFunction(options.result.rotate, 0, true),
+      skew: getTransformFunction(options.result.skew, 0),
+      perspective: options.result.perspective || undefined
     };
     this.staticTransform = options.staticTransform || '';
     this.curve = SpringCurve(this.tension, this.friction);
@@ -161,26 +202,23 @@ define(function(require) {
   Springer.generate = function() {
     var length = this.curve.length;
     var differences = {
-      scale: this.result.scale - this.initial.scale,
-      translateX: (this.result.translateX - this.initial.translateX),
-      translateY: (this.result.translateY - this.initial.translateY),
-      translateZ: (this.result.translateZ - this.initial.translateZ)
+      scale: getDifferences(this.initial.scale, this.result.scale),
+      translate: getDifferences(this.initial.translate, this.result.translate),
+      rotate: getDifferences(this.initial.rotate, this.result.rotate),
+      skew: getDifferences(this.initial.skew, this.result.skew),
+      perspective: getDifferences(this.initial.perspective, this.result.perspective)
     };
-    var isScale = (differences.scale !== 0);
-    var isTranslate = (differences.translateX !== 0 ||
-      differences.translateY !== 0 ||
-      differences.translateZ !== 0);
     var originalDirection = true;
     var keyframes = {};
     var currentTransform;
 
     keyframes['0%'] = {
       'animation-timing-function': 'ease-in-out',
-      'transform': this.createTransform(isScale, isTranslate, this.initial)
+      'transform': this.createTransform(this.initial)
     };
     keyframes['100%'] = {
       'animation-timing-function': 'ease-in-out',
-      'transform': this.createTransform(isScale, isTranslate, this.result)
+      'transform': this.createTransform(this.result)
     };
 
     for (var i = 1; i < length; ++i) {
@@ -188,14 +226,15 @@ define(function(require) {
         || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
 
         currentTransform = {
-          scale: isScale ? (this.initial.scale + (this.curve[i] / (100))*differences.scale) : undefined,
-          translateX: isTranslate ? Math.round(this.initial.translateX + (parseFloat(differences.translateX) * this.curve[i]) / 100) : undefined,
-          translateY: isTranslate ? Math.round(this.initial.translateY + (parseFloat(differences.translateY) * this.curve[i]) / 100) : undefined,
-          translateZ: isTranslate ? Math.round(this.initial.translateZ + (parseFloat(differences.translateZ) * this.curve[i]) / 100) : undefined,
+          scale: this.getStepTransformValues('scale', this.curve[i], differences, 3),
+          skew: this.getStepTransformValues('skew', this.curve[i], differences, 2),
+          rotate: this.getStepTransformValues('rotate', this.curve[i], differences, 3),
+          translate: this.getStepTransformValues('translate', this.curve[i], differences, 3),
+          perspective: this.getStepTransformValues('perspective', this.curve[i], differences)
         };
         keyframes[(i/length*100).toFixed(3)+'%'] = {
           'animation-timing-function': 'ease-in-out',
-          'transform': this.createTransform(isScale, isTranslate, currentTransform)
+          'transform': this.createTransform(currentTransform, differences)
         };
         originalDirection = !originalDirection;
       }
@@ -204,45 +243,75 @@ define(function(require) {
     return keyframes;
   };
 
-  Springer.createTransform = function(isScale, isTranslate, options) {
+  Springer.getStepTransformValues = function(type, curve, diffs, depth) {
+    var step = {};
+    depth = depth || 3;
+    if (typeof diffs[type] === 'object') {
+      if (depth > 2) {
+        step.z = this.getStepTransformValue(this.initial[type].z, curve, diffs[type].z, diffs[type].isDifferent);
+      }
+      step.y = this.getStepTransformValue(this.initial[type].y, curve, diffs[type].y, diffs[type].isDifferent);
+      step.x = this.getStepTransformValue(this.initial[type].x, curve, diffs[type].x, diffs[type].isDifferent);
+    } else {
+      step = this.getStepTransformValue((this.initial[type] || 0), curve, diffs[type], diffs[type]);
+    }
+
+    return step;
+  };
+  Springer.getStepTransformValue = function(initial, curve, diff, isDiff) {
+    return isDiff ? (initial + (curve / (100)) * diff) : undefined;
+  };
+
+  Springer.createTransform = function(options) {
     var theTransform = this.staticTransform +
-            (isScale ? ' scale('+(options.scale)+')' : '' )+
-            (isTranslate ? ' translate3d('+
-              options.translateX + 'px'+','+
-              options.translateY + 'px'+','+
-              options.translateZ + 'px'+')' : '' );
+          (options.skew.x !== undefined ?
+            ' skewX('+(options.skew.x)+'deg)' +
+            ' skewY('+(options.skew.y)+'deg)' : '' )+
+          (options.rotate.x !== undefined ?
+            ' rotateX('+(options.rotate.x)+'deg)' +
+            ' rotateY('+(options.rotate.y)+'deg)' +
+            ' rotateZ('+(options.rotate.z)+'deg)' : '' )+
+          (options.scale.x !== undefined ? ' scale3d('+
+            options.scale.x+','+
+            options.scale.y+','+
+            options.scale.z+')' : '' )+
+          (options.translate.x !== undefined ? ' translate3d('+
+            options.translate.x + 'px'+','+
+            options.translate.y + 'px'+','+
+            options.translate.z + 'px'+')' : '' )+
+          (options.perspective !== undefined ? ' perspective(' + options.perspective + ')' : '');
 
     return theTransform;
   };
-
-
 
   /**
    * Applies a spring keyframe animation to an element
    * @method $.fn.spring
    *
    * @param {String} name The name of the animation
-   * @param {Object} options  Options for the spring animation
-   * @opt {Number} tension Positive integer representing the tension on the spring
-   * @default 50
-   * @opt {Number} friction  Positive integer representing the friction of the spring
-   * @default 2
-   * @opt {Object} initialState  Initial transform values
-   * @default { scale: 1, translateX: 0, translateY: 0, translateZ: 0 }
-   * @opt {Object} resultState  Final transform values
-   * @default { scale: 1, translateX: 0, translateY: 0, translateZ: 0 }
-   * @opt {String} staticTransform  The representation of a transform fragment that should be static and appended to all keyframes
-   * @opt {Number} duration  The number of milliseconds that the animation lasts
-   * @opt {String} easing  The name of a CSS easing function
-   * @default 'linear'
-   * @opt {Number} delay  The number of milliseconds before the animation should start
-   * @default 0
-   * @opt {Object} iterations  Either the number of iterations to play the animation or 'infinite'
-   * @default 1
-   * @opt {String} direction  The name of a CSS animation direction
-   * @default 'normal'
-   * @opt {Function} complete  A function to execute when the animation has completed
-   * @default null
+   * @param {Object} options  Options for the spring
+     * @opt {Number} tension Positive integer representing the tension on the spring
+     * @default 50
+     * @opt {Number} friction  Positive integer representing the friction of the spring
+     * @default 2
+     * @opt {Object} initialState  initial transform values
+     * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
+     * @opt {Object} resultState  Final transform values
+     * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
+     * @opt {String} staticTransform  The representation of a transform fragment that should be static and appended to all keyframes
+   *
+   * @param {Object} options  Options for the animation
+     * @opt {Number} duration  The number of milliseconds that the animation lasts
+     * @opt {String} easing  The name of a CSS easing function
+     * @default 'linear'
+     * @opt {Number} delay  The number of milliseconds before the animation should start
+     * @default 0
+     * @opt {Object} iterations  Either the number of iterations to play the animation or 'infinite'
+     * @default 1
+     * @opt {String} direction  The name of a CSS animation direction
+     * @default 'normal'
+     * @opt {Function} complete  A function to execute when the animation has completed
+     * @default null
    * @return {jQuery}  The jQuery object, for chaining
    */
   $.fn.spring = function(name, springOptions, keyframeOptions) {
