@@ -30,10 +30,8 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.0",
-    "grunt-amd-dist": "0.4.x",
-    "grunt-amd-check": "0.5.x",
-    "grunt-amd-test": "0.4.x",
-    "grunt-contrib-jasmine": "git://github.com/zship/grunt-contrib-jasmine.git",
+    "grunt-contrib-jasmine": "0.5.3",
+    "grunt-template-jasmine-requirejs": "0.1.10",
     "grunt-contrib-yuidoc": "0.4.0",
     "grunt-open": "~0.2.1",
     "fs-extra": "~0.6.3"
