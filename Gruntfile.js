@@ -1,21 +1,27 @@
 module.exports = function(grunt) {
-  'use strict';  
+  'use strict';
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     jasmine: {
-      all: ['test/runner.html'],
-      options: {
-        junit: {
-          path: 'log/tests',
-          consolidate: true
+      all: {
+        // PhantomJS is not fully ES5-compatible; shim it
+        src: 'src/components/es5-shim/es5-shim.js',
+        options: {
+          specs: 'test/unit/**/*.js',
+          template: require('grunt-template-jasmine-requirejs'),
+          templateOptions: {
+            requireConfigFile: 'src/boot.js',
+            requireConfig: {
+              baseUrl: 'src'
+            }
+          },
+          keepRunner: true
         }
       }
     },
-    'amd-test': {
-      mode: 'jasmine',
-      files: 'test/unit/**/*.js'
-    },
+
     jshint: {
       src: {
         options: {
@@ -34,6 +40,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     yuidoc: {
       compile: {
         name: '<%= pkg.name %>',
@@ -73,14 +80,11 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-amd-dist');
-  grunt.loadNpmTasks('grunt-amd-check');
-  grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-open');
 
   // Default task.
   grunt.registerTask('doc', ['yuidoc', 'open:doc']);
-  grunt.registerTask('test', 'generates runner and runs the tests', ['amd-test', 'jasmine']);
+  grunt.registerTask('test', 'generates runner and runs the tests', ['jasmine']);
 
 };
