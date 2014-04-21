@@ -157,29 +157,31 @@ define(function(require) {
 
     return result;
   }
-  function getDifferences(initial, result) {
-    var diff;
+  function getResultState(initial, difference) {
+    var result;
     if (typeof initial === 'object') {
-      diff = {};
+      result = {};
       for (var prop in initial) {
-        diff[prop] = result[prop] - initial[prop];
-        if (diff[prop] !== 0) {
-          diff.isDifferent = true;
-        }
+        result[prop] = initial[prop] + difference[prop];
       }
-    } else if (typeof initial === 'number' || typeof result === 'number') {
-      diff = (result || 0) - (initial || 0);
+    } else if (typeof initial === 'number' || typeof difference === 'number') {
+      result = (initial || 0) + (difference || 0);
     }
-    return diff;
+    return result;
   }
 
-  Springer.generateKeyframes = function(options) {
+  Springer.generateKeyframes = function(options, element) {
+    var initialData = element.data();
     options = options || {};
-    options.initial = options.initialState || {};
-    options.result = options.resultState || {};
+
+    if (options.initialState) {
+      $.extend(initialData, options.initialState);
+    }
+    options.initial = initialData;
+    options.differences = options.differences || {};
     this.tension = (options.tension && options.tension >= 1) ? options.tension : undefined;
     this.friction = (options.friction && options.friction > 0) ? options.friction : undefined;
-    //this.initial = this.getCurrentTransformValues();
+
     this.initial = {
       scale: getTransformFunction(options.initial.scale, 1),
       translate: getTransformFunction(options.initial.translate, 0),
@@ -187,98 +189,96 @@ define(function(require) {
       skew: getTransformFunction(options.initial.skew, 0),
       perspective: options.initial.perspective || undefined
     };
-    this.result = {
-      scale: getTransformFunction(options.result.scale, 1),
-      translate: getTransformFunction(options.result.translate, 0),
-      rotate: getTransformFunction(options.result.rotate, 0, true),
-      skew: getTransformFunction(options.result.skew, 0),
-      perspective: options.result.perspective || undefined
+    this.differences = {
+      scale: getTransformFunction(options.differences.scale, 0),
+      translate: getTransformFunction(options.differences.translate, 0),
+      rotate: getTransformFunction(options.differences.rotate, 0, true),
+      skew: getTransformFunction(options.differences.skew, 0),
+      perspective: options.differences.perspective || 0
     };
-    this.staticTransform = options.staticTransform || '';
     this.curve = SpringCurve(this.tension, this.friction);
+    this.element = element;
     return this.generate();
   };
 
   Springer.generate = function() {
     var length = this.curve.length;
-    var differences = {
-      scale: getDifferences(this.initial.scale, this.result.scale),
-      translate: getDifferences(this.initial.translate, this.result.translate),
-      rotate: getDifferences(this.initial.rotate, this.result.rotate),
-      skew: getDifferences(this.initial.skew, this.result.skew),
-      perspective: getDifferences(this.initial.perspective, this.result.perspective)
+    this.resultState = {
+      scale: getResultState(this.initial.scale, this.differences.scale),
+      translate: getResultState(this.initial.translate, this.differences.translate),
+      rotate: getResultState(this.initial.rotate, this.differences.rotate),
+      skew: getResultState(this.initial.skew, this.differences.skew),
+      perspective: getResultState(this.initial.perspective, this.differences.perspective)
     };
+    this.element.data(this.resultState);
     var originalDirection = true;
-    var keyframes = {};
     var currentTransform;
+    this.keyframes = {};
 
-    keyframes['0%'] = {
-      'animation-timing-function': 'ease-in-out',
-      'transform': this.createTransform(this.initial)
-    };
-    keyframes['100%'] = {
-      'animation-timing-function': 'ease-in-out',
-      'transform': this.createTransform(this.result)
-    };
+    this.setKeyframeStep(0, this.initial);
+    this.setKeyframeStep(100, this.resultState);
 
     for (var i = 1; i < length; ++i) {
       if ((originalDirection && this.curve[i] <= this.curve[i - 1])
         || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
 
         currentTransform = {
-          scale: this.getStepTransformValues('scale', this.curve[i], differences, 3),
-          skew: this.getStepTransformValues('skew', this.curve[i], differences, 2),
-          rotate: this.getStepTransformValues('rotate', this.curve[i], differences, 3),
-          translate: this.getStepTransformValues('translate', this.curve[i], differences, 3),
-          perspective: this.getStepTransformValues('perspective', this.curve[i], differences)
+          scale: this.getStepTransformValues('scale', this.curve[i], 3),
+          skew: this.getStepTransformValues('skew', this.curve[i], 2),
+          rotate: this.getStepTransformValues('rotate', this.curve[i], 3),
+          translate: this.getStepTransformValues('translate', this.curve[i], 3),
+          perspective: this.getStepTransformValues('perspective', this.curve[i])
         };
-        keyframes[(i/length*100).toFixed(3)+'%'] = {
-          'animation-timing-function': 'ease-in-out',
-          'transform': this.createTransform(currentTransform, differences)
-        };
+        this.setKeyframeStep((i/length*100).toFixed(3), currentTransform);
         originalDirection = !originalDirection;
       }
     }
 
-    return keyframes;
+    return this.keyframes;
   };
 
-  Springer.getStepTransformValues = function(type, curve, diffs, depth) {
+  Springer.setKeyframeStep = function(stepNumber, toTransform) {
+    this.keyframes[stepNumber+'%'] = {
+      'animation-timing-function': 'ease-in-out',
+      'transform': this.createTransform(toTransform)
+    };
+  };
+
+  Springer.getStepTransformValues = function(type, curve, depth) {
     var step = {};
     depth = depth || 3;
-    if (typeof diffs[type] === 'object') {
+    if (typeof this.differences[type] === 'object') {
       if (depth > 2) {
-        step.z = this.getStepTransformValue(this.initial[type].z, curve, diffs[type].z, diffs[type].isDifferent);
+        step.z = this.getStepTransformValue(this.initial[type].z, curve, this.differences[type].z);
       }
-      step.y = this.getStepTransformValue(this.initial[type].y, curve, diffs[type].y, diffs[type].isDifferent);
-      step.x = this.getStepTransformValue(this.initial[type].x, curve, diffs[type].x, diffs[type].isDifferent);
+      step.y = this.getStepTransformValue(this.initial[type].y, curve, this.differences[type].y);
+      step.x = this.getStepTransformValue(this.initial[type].x, curve, this.differences[type].x);
     } else {
-      step = this.getStepTransformValue((this.initial[type] || 0), curve, diffs[type], diffs[type]);
+      step = this.getStepTransformValue((this.initial[type] || 0), curve, this.differences[type]);
     }
 
     return step;
   };
-  Springer.getStepTransformValue = function(initial, curve, diff, isDiff) {
-    return isDiff ? (initial + (curve / (100)) * diff) : undefined;
+  Springer.getStepTransformValue = function(initial, curve, diff) {
+    return diff !== 0 ? (initial + (curve / (100)) * diff) : undefined;
   };
 
   Springer.createTransform = function(options) {
-    var theTransform = this.staticTransform +
+    var theTransform =
           (options.skew.x !== undefined ?
             ' skewX('+(options.skew.x)+'deg)' +
-            ' skewY('+(options.skew.y)+'deg)' : '' )+
-          (options.rotate.x !== undefined ?
-            ' rotateX('+(options.rotate.x)+'deg)' +
-            ' rotateY('+(options.rotate.y)+'deg)' +
-            ' rotateZ('+(options.rotate.z)+'deg)' : '' )+
+            ' skewY('+(options.skew.y || 0)+'deg)' : '' )+
+          (options.rotate.x !== undefined ? ' rotateX('+(options.rotate.x)+'deg)'  : '')+
+          (options.rotate.y !== undefined ? ' rotateY('+(options.rotate.y)+'deg)'  : '')+
+          (options.rotate.z !== undefined ? ' rotateZ('+(options.rotate.z)+'deg)'  : '')+
           (options.scale.x !== undefined ? ' scale3d('+
             options.scale.x+','+
-            options.scale.y+','+
-            options.scale.z+')' : '' )+
+            (options.scale.y || 1)+','+
+            (options.scale.z || 1)+')' : '' )+
           (options.translate.x !== undefined ? ' translate3d('+
             options.translate.x + 'px'+','+
-            options.translate.y + 'px'+','+
-            options.translate.z + 'px'+')' : '' )+
+            (options.translate.y || 0) + 'px'+','+
+            (options.translate.z || 0) + 'px'+')' : '' )+
           (options.perspective !== undefined ? ' perspective(' + options.perspective + ')' : '');
 
     return theTransform;
@@ -296,7 +296,7 @@ define(function(require) {
      * @default 2
      * @opt {Object} initialState  initial transform values
      * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
-     * @opt {Object} resultState  Final transform values
+     * @opt {Object} differences  Differences between initial and final transform values
      * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
      * @opt {String} staticTransform  The representation of a transform fragment that should be static and appended to all keyframes
    *
@@ -320,7 +320,7 @@ define(function(require) {
       if (typeof keyframeOptions === 'object' && typeof name === 'string') {
         keyframeOptions.name = name;
       }
-      theKeyframes = Springer.generateKeyframes(springOptions);
+      theKeyframes = Springer.generateKeyframes(springOptions, this);
       this.keyframe(theKeyframes, keyframeOptions);
     }
     return this;
