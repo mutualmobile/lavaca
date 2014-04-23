@@ -200,7 +200,7 @@ define(function(require) {
   }
 
   Springer.generateKeyframes = function(options, element) {
-    var initialData = element ? element.data() : {};
+    var initialData = element && element.data() ? element.data() : {};
     options = options || {};
 
     if (options.initialState) {
