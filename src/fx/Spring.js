@@ -291,10 +291,10 @@ define(function(require) {
         || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
 
         currentTransform = {
-          scale: this.getStepTransformValues('scale', this.curve[i], 3),
-          skew: this.getStepTransformValues('skew', this.curve[i], 2),
-          rotate: this.getStepTransformValues('rotate', this.curve[i], 3),
-          translate: this.getStepTransformValues('translate', this.curve[i], 3),
+          scale: this.getStepTransformValues('scale', this.curve[i], 3, 1),
+          skew: this.getStepTransformValues('skew', this.curve[i], 2, 0),
+          rotate: this.getStepTransformValues('rotate', this.curve[i], 3, 0),
+          translate: this.getStepTransformValues('translate', this.curve[i], 3, 0),
           perspective: this.getStepTransformValues('perspective', this.curve[i])
         };
         this.setKeyframeStep((i/length*100).toFixed(3), currentTransform);
@@ -317,23 +317,28 @@ define(function(require) {
     return frame;
   };
 
-  Springer.getStepTransformValues = function(type, curve, depth) {
+  Springer.getStepTransformValues = function(type, curve, depth, defaultValue) {
     var step = {};
     depth = depth || 3;
     if (typeof this.differences[type] === 'object') {
       if (depth > 2) {
-        step.z = this.getStepTransformValue(this.initial[type].z, curve, this.differences[type].z);
+        step.z = this.getStepTransformValue(this.initial[type].z, curve, this.differences[type].z, defaultValue);
       }
-      step.y = this.getStepTransformValue(this.initial[type].y, curve, this.differences[type].y);
-      step.x = this.getStepTransformValue(this.initial[type].x, curve, this.differences[type].x);
+      step.y = this.getStepTransformValue(this.initial[type].y, curve, this.differences[type].y, defaultValue);
+      step.x = this.getStepTransformValue(this.initial[type].x, curve, this.differences[type].x, defaultValue);
     } else {
       step = this.getStepTransformValue((this.initial[type] || 0), curve, this.differences[type]);
     }
 
     return step;
   };
-  Springer.getStepTransformValue = function(initial, curve, diff) {
-    return (typeof diff === 'number' && diff !== 0) ? (initial + (curve / (100)) * diff) : undefined;
+  Springer.getStepTransformValue = function(initial, curve, diff, defaultValue) {
+    if (typeof diff === 'number' && diff !== 0) {
+      return (initial + (curve / (100)) * diff);
+    } else if (defaultValue !== undefined && defaultValue !== initial) {
+      return initial;
+    }
+    return undefined;
   };
 
   Springer.createTransform = function(options) {
