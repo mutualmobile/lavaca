@@ -333,7 +333,7 @@ define(function(require) {
     return step;
   };
   Springer.getStepTransformValue = function(initial, curve, diff) {
-    return diff !== 0 ? (initial + (curve / (100)) * diff) : undefined;
+    return (typeof diff === 'number' && diff !== 0) ? (initial + (curve / (100)) * diff) : undefined;
   };
 
   Springer.createTransform = function(options) {
