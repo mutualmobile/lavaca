@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lavaca.ui.Form</title>
+    <title>lavaca.ui.Form - lavaca</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title="lavaca"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: </em>
+            <em>API Docs for: 2.3.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -46,6 +46,8 @@
                 <li><a href="../classes/lavaca.events.EventDispatcher.html">lavaca.events.EventDispatcher</a></li>
             
                 <li><a href="../classes/lavaca.fx.Animation.html">lavaca.fx.Animation</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Spring.html">lavaca.fx.Spring</a></li>
             
                 <li><a href="../classes/lavaca.fx.Transform.html">lavaca.fx.Transform</a></li>
             
@@ -85,8 +87,6 @@
             
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
             
-                <li><a href="../classes/lavaca.ui.Scrollable.html">lavaca.ui.Scrollable</a></li>
-            
                 <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
@@ -99,13 +99,9 @@
             
                 <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
-                <li><a href="../classes/lavaca.util.delay.html">lavaca.util.delay</a></li>
-            
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.log.html">lavaca.util.log</a></li>
             
                 <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
             
@@ -170,7 +166,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l49"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:49</code></a>
+            Defined in: <a href="../files/src_ui_Form.js.html#l49"><code>src&#x2F;ui&#x2F;Form.js:49</code></a>
         </div>
     
 
@@ -183,6 +179,7 @@
 
 <div class="box intro">
     <p>Basic form type</p>
+
 </div>
 
 
@@ -230,7 +227,7 @@
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l49"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:49</code></a>
+        <a href="../files/src_ui_Form.js.html#l49"><code>src&#x2F;ui&#x2F;Form.js:49</code></a>
         
         </p>
 
@@ -260,6 +257,7 @@
 
                     <div class="param-description">
                         <p>The DOM element that is the root of the widget</p>
+
                     </div>
 
                     
@@ -640,7 +638,7 @@
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l309"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:309</code></a>
+        <a href="../files/src_ui_Form.js.html#l309"><code>src&#x2F;ui&#x2F;Form.js:309</code></a>
         
         </p>
 
@@ -652,6 +650,7 @@
 
     <div class="description">
         <p>Adds a formatter to the form</p>
+
     </div>
 
     
@@ -670,6 +669,7 @@
 
                     <div class="param-description">
                         <p>A jQuery selector associated with the formatter</p>
+
                     </div>
 
                     
@@ -686,6 +686,7 @@
                     <div class="param-description">
                         <p>A function that takes three arguments (value, input, form) and
   returns a string which will be set as the value of the input.</p>
+
                     </div>
 
                     
@@ -704,6 +705,7 @@
                         <p>(Optional) If true, the callback will be fired once
   with an array of values and inputs, one for each matching element. If false or ommitted,
   the callback will be fired once for each element that matches the selector.</p>
+
                     </div>
 
                     
@@ -761,7 +763,7 @@
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l319"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:319</code></a>
+        <a href="../files/src_ui_Form.js.html#l319"><code>src&#x2F;ui&#x2F;Form.js:319</code></a>
         
         </p>
 
@@ -773,8 +775,9 @@
 
     <div class="description">
         <p>Adds multiple formatters to this form. The keys of the object
-should be the selectors and the object's values can either be a callback
-or an object with the properties 'callback' and 'treatAsGroup'.</p>
+should be the selectors and the object&#39;s values can either be a callback
+or an object with the properties &#39;callback&#39; and &#39;treatAsGroup&#39;.</p>
+
     </div>
 
     
@@ -793,6 +796,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
 
                     <div class="param-description">
                         <p>A hash of selectors and callbacks to add as formatters</p>
+
                     </div>
 
                     
@@ -850,7 +854,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l288"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:288</code></a>
+        <a href="../files/src_ui_Form.js.html#l288"><code>src&#x2F;ui&#x2F;Form.js:288</code></a>
         
         </p>
 
@@ -862,8 +866,9 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
 
     <div class="description">
         <p>Adds multiple validation rules to this form. The keys of the object
-should be the selectors and the object's values can either be a callback
-or an object with the properties 'callback' and 'treatAsGroup'.</p>
+should be the selectors and the object&#39;s values can either be a callback
+or an object with the properties &#39;callback&#39; and &#39;treatAsGroup&#39;.</p>
+
     </div>
 
     
@@ -882,6 +887,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
 
                     <div class="param-description">
                         <p>A hash of selectors and callbacks to add as rules</p>
+
                     </div>
 
                     
@@ -951,7 +957,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l277"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:277</code></a>
+        <a href="../files/src_ui_Form.js.html#l277"><code>src&#x2F;ui&#x2F;Form.js:277</code></a>
         
         </p>
 
@@ -963,6 +969,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
 
     <div class="description">
         <p>Adds a validation rule to the form</p>
+
     </div>
 
     
@@ -981,6 +988,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
 
                     <div class="param-description">
                         <p>A jQuery selector associated with the rule</p>
+
                     </div>
 
                     
@@ -998,6 +1006,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
                         <p>A function that tests the value of inputs matching the
   selector in the form callback(value, input, form) and
   return a string message if validation fails</p>
+
                     </div>
 
                     
@@ -1016,6 +1025,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
                         <p>(Optional) If true, the callback will be fired once
   with an array of values and inputs, one for each matching element. If false or ommitted,
   the callback will be fired once for each element that matches the selector.</p>
+
                     </div>
 
                     
@@ -1073,7 +1083,7 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l467"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:467</code></a>
+        <a href="../files/src_ui_Form.js.html#l467"><code>src&#x2F;ui&#x2F;Form.js:467</code></a>
         
         </p>
 
@@ -1086,8 +1096,9 @@ or an object with the properties 'callback' and 'treatAsGroup'.</p>
     <div class="description">
         <p>Automatically advances the focus to the
 next input if autoAdvance is true and the
-currently focussed input's value is greater
+currently focussed input&#39;s value is greater
 than or equal to its maxlength</p>
+
     </div>
 
     
@@ -1109,6 +1120,7 @@ than or equal to its maxlength</p>
                         <p>(Optional) The current input. This
   parameter is just for speed optimization if the current input
   is already known. If not passed, it will be determined automatically.</p>
+
                     </div>
 
                     
@@ -1166,7 +1178,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l170"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:170</code></a>
+        <a href="../files/src_ui_Form.js.html#l170"><code>src&#x2F;ui&#x2F;Form.js:170</code></a>
         
         </p>
 
@@ -1178,6 +1190,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Binds this form to a model, forcing the two to stay in sync</p>
+
     </div>
 
     
@@ -1196,6 +1209,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The model being bound</p>
+
                     </div>
 
                     
@@ -1257,7 +1271,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_events_EventDispatcher.js.html#l136"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;events&#x2F;EventDispatcher.js:136</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l136"><code>src&#x2F;events&#x2F;EventDispatcher.js:136</code></a>
         
         </p>
 
@@ -1269,6 +1283,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Creates an event object</p>
+
     </div>
 
     
@@ -1287,6 +1302,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The type of event to create</p>
+
                     </div>
 
                     
@@ -1305,7 +1321,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     
-                    The event object
+                    <p>The event object</p>
+
                 
             </div>
         </div>
@@ -1351,7 +1368,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l90"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:90</code></a>
+        <a href="../files/src_ui_Form.js.html#l90"><code>src&#x2F;ui&#x2F;Form.js:90</code></a>
         
         </p>
 
@@ -1363,6 +1380,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>The default validation rules for the form</p>
+
     </div>
 
     
@@ -1376,7 +1394,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     
-                    The form's default rules1
+                    <p>The form&#39;s default rules1</p>
+
                 
             </div>
         </div>
@@ -1418,7 +1437,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l498"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:498</code></a>
+        <a href="../files/src_ui_Form.js.html#l498"><code>src&#x2F;ui&#x2F;Form.js:498</code></a>
         
         </p>
 
@@ -1430,6 +1449,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Ready the form for garbage collection</p>
+
     </div>
 
     
@@ -1482,7 +1502,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l449"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:449</code></a>
+        <a href="../files/src_ui_Form.js.html#l449"><code>src&#x2F;ui&#x2F;Form.js:449</code></a>
         
         </p>
 
@@ -1494,6 +1514,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Formats the specified inputs</p>
+
     </div>
 
     
@@ -1512,6 +1533,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The inputs to format</p>
+
                     </div>
 
                     
@@ -1559,7 +1581,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l445"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:445</code></a>
+        <a href="../files/src_ui_Form.js.html#l445"><code>src&#x2F;ui&#x2F;Form.js:445</code></a>
         
         </p>
 
@@ -1571,6 +1593,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Formats all inputs</p>
+
     </div>
 
     
@@ -1627,7 +1650,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l203"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:203</code></a>
+        <a href="../files/src_ui_Form.js.html#l203"><code>src&#x2F;ui&#x2F;Form.js:203</code></a>
         
         </p>
 
@@ -1639,6 +1662,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Gets the value of an input on the form</p>
+
     </div>
 
     
@@ -1657,6 +1681,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The name of the input</p>
+
                     </div>
 
                     
@@ -1675,7 +1700,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    The value of the input
+                    <p>The value of the input</p>
+
                 
             </div>
         </div>
@@ -1731,7 +1757,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l210"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:210</code></a>
+        <a href="../files/src_ui_Form.js.html#l210"><code>src&#x2F;ui&#x2F;Form.js:210</code></a>
         
         </p>
 
@@ -1743,6 +1769,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Gets the value of an input on the form</p>
+
     </div>
 
     
@@ -1761,6 +1788,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The input, textarea, or select</p>
+
                     </div>
 
                     
@@ -1779,7 +1807,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     
-                    The value of the input
+                    <p>The value of the input</p>
+
                 
             </div>
         </div>
@@ -1835,7 +1864,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l193"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:193</code></a>
+        <a href="../files/src_ui_Form.js.html#l193"><code>src&#x2F;ui&#x2F;Form.js:193</code></a>
         
         </p>
 
@@ -1847,6 +1876,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Retrieve an input from the form with a given name</p>
+
     </div>
 
     
@@ -1865,6 +1895,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The name of the input</p>
+
                     </div>
 
                     
@@ -1883,7 +1914,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">JQuery</span>:
                     
-                    The input
+                    <p>The input</p>
+
                 
             </div>
         </div>
@@ -1929,7 +1961,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_events_EventDispatcher.js.html#l45"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;events&#x2F;EventDispatcher.js:45</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l45"><code>src&#x2F;events&#x2F;EventDispatcher.js:45</code></a>
         
         </p>
 
@@ -1941,6 +1973,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Unbinds all event handler from this object</p>
+
     </div>
 
     
@@ -1954,7 +1987,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.events.EventDispatcher</span>:
                     
-                    This event dispatcher (for chaining)
+                    <p>This event dispatcher (for chaining)</p>
+
                 
             </div>
         </div>
@@ -2016,7 +2050,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_events_EventDispatcher.js.html#l22"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;events&#x2F;EventDispatcher.js:22</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l22"><code>src&#x2F;events&#x2F;EventDispatcher.js:22</code></a>
         
         </p>
 
@@ -2028,6 +2062,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Bind an event handler to this object</p>
+
     </div>
 
     
@@ -2046,6 +2081,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The name of the event</p>
+
                     </div>
 
                     
@@ -2061,6 +2097,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The function to execute when the event occurs</p>
+
                     </div>
 
                     
@@ -2079,7 +2116,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.events.EventDispatcher</span>:
                     
-                    This event dispatcher (for chaining)
+                    <p>This event dispatcher (for chaining)</p>
+
                 
             </div>
         </div>
@@ -2131,7 +2169,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l143"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:143</code></a>
+        <a href="../files/src_ui_Form.js.html#l143"><code>src&#x2F;ui&#x2F;Form.js:143</code></a>
         
         </p>
 
@@ -2143,6 +2181,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Event handler for when an input on the form changes</p>
+
     </div>
 
     
@@ -2161,6 +2200,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The change event</p>
+
                     </div>
 
                     
@@ -2218,7 +2258,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l159"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:159</code></a>
+        <a href="../files/src_ui_Form.js.html#l159"><code>src&#x2F;ui&#x2F;Form.js:159</code></a>
         
         </p>
 
@@ -2230,6 +2270,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Event handler for when an attribute on the bound model changes</p>
+
     </div>
 
     
@@ -2248,6 +2289,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The change event</p>
+
                     </div>
 
                     
@@ -2305,7 +2347,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l113"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:113</code></a>
+        <a href="../files/src_ui_Form.js.html#l113"><code>src&#x2F;ui&#x2F;Form.js:113</code></a>
         
         </p>
 
@@ -2317,6 +2359,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Event handler for when the form is submitted</p>
+
     </div>
 
     
@@ -2335,6 +2378,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The submit event</p>
+
                     </div>
 
                     
@@ -2392,7 +2436,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l134"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:134</code></a>
+        <a href="../files/src_ui_Form.js.html#l134"><code>src&#x2F;ui&#x2F;Form.js:134</code></a>
         
         </p>
 
@@ -2404,6 +2448,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Event handler for when the user attempts to submit an invalid form</p>
+
     </div>
 
     
@@ -2422,6 +2467,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A key-value map of all invalid inputs</p>
+
                     </div>
 
                     
@@ -2479,7 +2525,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l125"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:125</code></a>
+        <a href="../files/src_ui_Form.js.html#l125"><code>src&#x2F;ui&#x2F;Form.js:125</code></a>
         
         </p>
 
@@ -2491,6 +2537,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Event handler for when the user attempts to submit a valid form</p>
+
     </div>
 
     
@@ -2508,7 +2555,8 @@ than or equal to its maxlength</p>
                     
 
                     <div class="param-description">
-                        <p>Key-value map of the form's input names and values</p>
+                        <p>Key-value map of the form&#39;s input names and values</p>
+
                     </div>
 
                     
@@ -2566,7 +2614,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l250"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:250</code></a>
+        <a href="../files/src_ui_Form.js.html#l250"><code>src&#x2F;ui&#x2F;Form.js:250</code></a>
         
         </p>
 
@@ -2578,6 +2626,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Sets the values of multiple inputs on the form</p>
+
     </div>
 
     
@@ -2596,6 +2645,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A hash of input names and values</p>
+
                     </div>
 
                     
@@ -2659,7 +2709,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l243"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:243</code></a>
+        <a href="../files/src_ui_Form.js.html#l243"><code>src&#x2F;ui&#x2F;Form.js:243</code></a>
         
         </p>
 
@@ -2671,6 +2721,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Sets the value of an input on the form</p>
+
     </div>
 
     
@@ -2689,6 +2740,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The name of the input</p>
+
                     </div>
 
                     
@@ -2704,6 +2756,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The new value of the input</p>
+
                     </div>
 
                     
@@ -2751,7 +2804,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l106"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:106</code></a>
+        <a href="../files/src_ui_Form.js.html#l106"><code>src&#x2F;ui&#x2F;Form.js:106</code></a>
         
         </p>
 
@@ -2762,7 +2815,8 @@ than or equal to its maxlength</p>
     </div>
 
     <div class="description">
-        <p>Calls submit on the Form's element</p>
+        <p>Calls submit on the Form&#39;s element</p>
+
     </div>
 
     
@@ -2819,7 +2873,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_events_EventDispatcher.js.html#l107"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;events&#x2F;EventDispatcher.js:107</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l107"><code>src&#x2F;events&#x2F;EventDispatcher.js:107</code></a>
         
         </p>
 
@@ -2831,6 +2885,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Dispatches an event</p>
+
     </div>
 
     
@@ -2849,6 +2904,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The type of event to dispatch</p>
+
                     </div>
 
                     
@@ -2867,7 +2923,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.events.EventDispatcher</span>:
                     
-                    This event dispatcher (for chaining)
+                    <p>This event dispatcher (for chaining)</p>
+
                 
             </div>
         </div>
@@ -2909,7 +2966,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l182"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:182</code></a>
+        <a href="../files/src_ui_Form.js.html#l182"><code>src&#x2F;ui&#x2F;Form.js:182</code></a>
         
         </p>
 
@@ -2921,6 +2978,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Unbinds this form from its model</p>
+
     </div>
 
     
@@ -2989,7 +3047,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l379"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:379</code></a>
+        <a href="../files/src_ui_Form.js.html#l379"><code>src&#x2F;ui&#x2F;Form.js:379</code></a>
         
         </p>
 
@@ -3000,7 +3058,8 @@ than or equal to its maxlength</p>
     </div>
 
     <div class="description">
-        <p>Checks the entire form to see if it's in a valid state</p>
+        <p>Checks the entire form to see if it&#39;s in a valid state</p>
+
     </div>
 
     
@@ -3019,6 +3078,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A callback to execute when the input is valid</p>
+
                     </div>
 
                     
@@ -3034,6 +3094,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A callback to execute when the input is invalid</p>
+
                     </div>
 
                     
@@ -3049,6 +3110,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>An input to check</p>
+
                     </div>
 
                     
@@ -3067,7 +3129,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.util.Promise</span>:
                     
-                    A promise
+                    <p>A promise</p>
+
                 
             </div>
         </div>
@@ -3113,7 +3176,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l361"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:361</code></a>
+        <a href="../files/src_ui_Form.js.html#l361"><code>src&#x2F;ui&#x2F;Form.js:361</code></a>
         
         </p>
 
@@ -3124,7 +3187,8 @@ than or equal to its maxlength</p>
     </div>
 
     <div class="description">
-        <p>Checks the entire form to see if it's in a valid state</p>
+        <p>Checks the entire form to see if it&#39;s in a valid state</p>
+
     </div>
 
     
@@ -3138,7 +3202,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.util.Promise</span>:
                     
-                    A promise
+                    <p>A promise</p>
+
                 
             </div>
         </div>
@@ -3200,7 +3265,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l366"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:366</code></a>
+        <a href="../files/src_ui_Form.js.html#l366"><code>src&#x2F;ui&#x2F;Form.js:366</code></a>
         
         </p>
 
@@ -3211,7 +3276,8 @@ than or equal to its maxlength</p>
     </div>
 
     <div class="description">
-        <p>Checks the entire form to see if it's in a valid state</p>
+        <p>Checks the entire form to see if it&#39;s in a valid state</p>
+
     </div>
 
     
@@ -3230,6 +3296,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A callback to execute when the form is valid</p>
+
                     </div>
 
                     
@@ -3245,6 +3312,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>A callback to execute when the form is invalid</p>
+
                     </div>
 
                     
@@ -3263,7 +3331,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.util.Promise</span>:
                     
-                    A promise
+                    <p>A promise</p>
+
                 
             </div>
         </div>
@@ -3319,7 +3388,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l373"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:373</code></a>
+        <a href="../files/src_ui_Form.js.html#l373"><code>src&#x2F;ui&#x2F;Form.js:373</code></a>
         
         </p>
 
@@ -3330,7 +3399,8 @@ than or equal to its maxlength</p>
     </div>
 
     <div class="description">
-        <p>Checks the entire form to see if it's in a valid state</p>
+        <p>Checks the entire form to see if it&#39;s in a valid state</p>
+
     </div>
 
     
@@ -3349,6 +3419,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>An input to check</p>
+
                     </div>
 
                     
@@ -3367,7 +3438,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type">Lavaca.util.Promise</span>:
                     
-                    A promise
+                    <p>A promise</p>
+
                 
             </div>
         </div>
@@ -3413,7 +3485,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l340"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:340</code></a>
+        <a href="../files/src_ui_Form.js.html#l340"><code>src&#x2F;ui&#x2F;Form.js:340</code></a>
         
         </p>
 
@@ -3425,6 +3497,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Collects all input values on the form</p>
+
     </div>
 
     
@@ -3438,7 +3511,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     
-                    A hash of input names and their values
+                    <p>A hash of input names and their values</p>
+
                 
             </div>
         </div>
@@ -3502,7 +3576,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l507"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:507</code></a>
+        <a href="../files/src_ui_Form.js.html#l507"><code>src&#x2F;ui&#x2F;Form.js:507</code></a>
         
         </p>
 
@@ -3514,6 +3588,7 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Extends the form with new submit handlers</p>
+
     </div>
 
     
@@ -3532,6 +3607,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The success handler</p>
+
                     </div>
 
                     
@@ -3547,6 +3623,7 @@ than or equal to its maxlength</p>
 
                     <div class="param-description">
                         <p>The error handler</p>
+
                     </div>
 
                     
@@ -3565,7 +3642,8 @@ than or equal to its maxlength</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>:
                     
-                    A new [@Lavaca.ui.Form]-derived type
+                    <p>A new [@Lavaca.ui.Form]-derived type</p>
+
                 
             </div>
         </div>
@@ -3606,7 +3684,7 @@ than or equal to its maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l82"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:82</code></a>
+        <a href="../files/src_ui_Form.js.html#l82"><code>src&#x2F;ui&#x2F;Form.js:82</code></a>
         
         </p>
 
@@ -3617,7 +3695,8 @@ than or equal to its maxlength</p>
 
     <div class="description">
         <p>Whether the focus should automatically advance to the
-next input when the input's value is equal to it's maxlength</p>
+next input when the input&#39;s value is equal to it&#39;s maxlength</p>
+
     </div>
 
     
@@ -3653,7 +3732,7 @@ next input when the input's value is equal to it's maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Form.js.html#l75"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Form.js:75</code></a>
+        <a href="../files/src_ui_Form.js.html#l75"><code>src&#x2F;ui&#x2F;Form.js:75</code></a>
         
         </p>
 
@@ -3664,6 +3743,7 @@ next input when the input's value is equal to it's maxlength</p>
 
     <div class="description">
         <p>Whether input values should automatically be trimmed</p>
+
     </div>
 
     
@@ -3696,7 +3776,7 @@ next input when the input's value is equal to it's maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Widget.js.html#l18"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Widget.js:18</code></a>
+        <a href="../files/src_ui_Widget.js.html#l18"><code>src&#x2F;ui&#x2F;Widget.js:18</code></a>
         
         </p>
 
@@ -3707,6 +3787,7 @@ next input when the input's value is equal to it's maxlength</p>
 
     <div class="description">
         <p>The DOM element that is the root of the widget</p>
+
     </div>
 
     
@@ -3739,7 +3820,7 @@ next input when the input's value is equal to it's maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_ui_Widget.js.html#l28"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;ui&#x2F;Widget.js:28</code></a>
+        <a href="../files/src_ui_Widget.js.html#l28"><code>src&#x2F;ui&#x2F;Widget.js:28</code></a>
         
         </p>
 
@@ -3749,7 +3830,8 @@ next input when the input's value is equal to it's maxlength</p>
     </div>
 
     <div class="description">
-        <p>The el's ID</p>
+        <p>The el&#39;s ID</p>
+
     </div>
 
     
@@ -3782,7 +3864,7 @@ next input when the input's value is equal to it's maxlength</p>
             
         
         
-        <a href="../files/src_www_components_lavaca_src_events_EventDispatcher.js.html#l14"><code>src&#x2F;www&#x2F;components&#x2F;lavaca&#x2F;src&#x2F;events&#x2F;EventDispatcher.js:14</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l14"><code>src&#x2F;events&#x2F;EventDispatcher.js:14</code></a>
         
         </p>
 
@@ -3793,6 +3875,7 @@ next input when the input's value is equal to it's maxlength</p>
 
     <div class="description">
         <p>When true, do not fire events</p>
+
     </div>
 
     

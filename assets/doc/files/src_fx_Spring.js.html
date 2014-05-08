@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/fx/Spring.js - lavaca</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="lavaca"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.3.2</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/lavaca.env.Device.html">lavaca.env.Device</a></li>
+            
+                <li><a href="../classes/lavaca.events.EventDispatcher.html">lavaca.events.EventDispatcher</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Animation.html">lavaca.fx.Animation</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Spring.html">lavaca.fx.Spring</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transform.html">lavaca.fx.Transform</a></li>
+            
+                <li><a href="../classes/lavaca.fx.Transition.html">lavaca.fx.Transition</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Application.html">lavaca.mvc.Application</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.AttributeEvent.html">lavaca.mvc.AttributeEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Collection.html">lavaca.mvc.Collection</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Controller.html">lavaca.mvc.Controller</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ItemEvent.html">lavaca.mvc.ItemEvent</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Model.html">lavaca.mvc.Model</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Route.html">lavaca.mvc.Route</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.Router.html">lavaca.mvc.Router</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.View.html">lavaca.mvc.View</a></li>
+            
+                <li><a href="../classes/lavaca.mvc.ViewManager.html">lavaca.mvc.ViewManager</a></li>
+            
+                <li><a href="../classes/lavaca.net.Connectivity.html">lavaca.net.Connectivity</a></li>
+            
+                <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
+            
+                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
+            
+                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
+            
+                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
+            
+                <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
+            
+                <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
+            
+                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
+            
+                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
+            
+                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
+            
+                <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
+            
+                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
+            
+                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
+            
+                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
+            
+                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
+            
+                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
+            
+                <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src/fx/Spring.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function(require) {
+
+  /**
+   * Static utility type for creating a CSS keyframe animation with a spring effect
+   * @class lavaca.fx.Spring
+   */
+
+  var $ = require(&#x27;$&#x27;),
+      Animation = require(&#x27;./Animation&#x27;);
+
+  var Springer = {};
+
+  var Spring, SpringCurve;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  var defaults = {
+    tension: 50,
+    friction: 0,
+    velocity: 0,
+    speed: 1 / 60.0,
+    tolerance: 0.1
+  };
+
+  function springAccelerationForState(state) {
+    return (-state.tension * state.x) - (state.friction * state.v);
+  }
+
+  function springEvaluateState(initial) {
+    var output = {
+      dx: initial.v,
+      dv: springAccelerationForState(initial)
+    };
+    return output;
+  }
+
+  function springEvaluateStateWithDerivative(initial, dt, derivative) {
+    var state = {
+      x: initial.x + derivative.dx * dt,
+      v: initial.v + derivative.dv * dt,
+      tension: initial.tension,
+      friction: initial.friction
+    };
+    var output = {
+      dx: state.v,
+      dv: springAccelerationForState(state)
+    };
+    return output;
+  }
+
+  function springIntegrateState(state, speed) {
+    var a, b, c, d, dvdt, dxdt;
+    a = springEvaluateState(state);
+    b = springEvaluateStateWithDerivative(state, speed * 0.5, a);
+    c = springEvaluateStateWithDerivative(state, speed * 0.5, b);
+    d = springEvaluateStateWithDerivative(state, speed, c);
+    dxdt = 1.0 / 6.0 * (a.dx + 2.0 * (b.dx + c.dx) + d.dx);
+    dvdt = 1.0 / 6.0 * (a.dv + 2.0 * (b.dv + c.dv) + d.dv);
+    state.x = state.x + dxdt * speed;
+    state.v = state.v + dvdt * speed;
+    return state;
+  }
+
+  Spring = (function() {
+    function Spring(args) {
+      this.next = __bind(this.next, this);
+      this.reset = __bind(this.reset, this);
+      args = args || {};
+      this.velocity = args.velocity || defaults.velocity;
+      this.tension = args.tension || defaults.tension;
+      this.friction = args.friction || defaults.friction;
+      this.speed = args.speed || defaults.speed;
+      this.tolerance = args.tolerance || defaults.tolerance;
+      this.reset();
+    }
+
+    Spring.prototype.reset = function() {
+      this.startValue = 0;
+      this.currentValue = this.startValue;
+      this.endValue = 100;
+      this.moving = true;
+      return this.moving;
+    };
+
+    Spring.prototype.next = function() {
+      var targetValue = this.currentValue;
+      var stateBefore = {
+        x: targetValue - this.endValue,
+        v: this.velocity,
+        tension: this.tension,
+        friction: this.friction
+      };
+      var stateAfter = springIntegrateState(stateBefore, this.speed);
+      this.currentValue = this.endValue + stateAfter.x;
+      var finalVelocity = stateAfter.v;
+      var netFloat = stateAfter.x;
+      var net1DVelocity = stateAfter.v;
+      var netValueIsLow = Math.abs(netFloat) &lt; this.tolerance;
+      var netVelocityIsLow = Math.abs(net1DVelocity) &lt; this.tolerance;
+      var stopSpring = netValueIsLow &amp;&amp; netVelocityIsLow;
+      this.moving = !stopSpring;
+      if (stopSpring) {
+        finalVelocity = 0;
+        this.currentValue = this.endValue;
+      }
+      this.velocity = finalVelocity;
+      return this.currentValue;
+    };
+
+    Spring.prototype.all = function() {
+      var count = 0,
+          results = [];
+      this.reset();
+      while (this.moving) {
+        if (count &gt; 3000) {
+          throw Error(&quot;Spring: too many values&quot;);
+        }
+        count++;
+        results.push(this.next());
+      }
+
+      return results;
+    };
+
+    Spring.prototype.time = function() {
+      return this.all().length * this.speed;
+    };
+
+    return Spring;
+
+  })();
+
+  SpringCurve = function(tension, friction, velocity, fps) {
+    var spring;
+    spring = new Spring({
+      tension: tension,
+      friction: friction,
+      velocity: velocity,
+      speed: 1 / fps
+    });
+    return spring.all();
+  };
+
+  function getTransformFunction(option, defaultValue, mainOnly) {
+    var result = {};
+    var originalDefault;
+    if (typeof defaultValue === &#x27;number&#x27;) {
+      originalDefault = defaultValue = {
+        x: defaultValue,
+        y: defaultValue,
+        z: defaultValue
+      };
+    } else if (typeof defaultValue === &#x27;object&#x27;) {
+      originalDefault = {
+        x: defaultValue.x,
+        y: defaultValue.y,
+        z: defaultValue.z
+      };
+    }
+
+    if (typeof option === &#x27;object&#x27;) {
+      for (var prop in option) {
+        result[prop] = option[prop];
+      }
+    } else if (typeof option === &#x27;number&#x27; || typeof option === &#x27;string&#x27;) {
+      defaultValue = {
+        x: option,
+        y: option,
+        z: option
+      };
+    }
+    if (mainOnly) {
+      result.x = (result.x || result.x === 0) ? result.x : originalDefault.x;
+      result.y = (result.y || result.y === 0) ? result.y : originalDefault.y;
+    } else {
+      result.x = (result.x || result.x === 0) ? result.x : defaultValue.x;
+      result.y = (result.y || result.y === 0) ? result.y : defaultValue.y;
+    }
+    result.z = (result.z || result.z === 0) ? result.z : defaultValue.z;
+
+    return result;
+  }
+  function getDifference(initial, result) {
+    var diff;
+    if (typeof initial === &#x27;object&#x27;) {
+      diff = {};
+      for (var prop in initial) {
+        diff[prop] = result[prop] - initial[prop];
+      }
+    } else if (typeof initial === &#x27;number&#x27; || typeof result === &#x27;number&#x27;) {
+      diff = (result || 0) - (initial || 0);
+    }
+    return diff;
+  }
+  function getResultState(initial, difference) {
+    var result;
+    if (typeof initial === &#x27;object&#x27;) {
+      result = {};
+      for (var prop in initial) {
+        result[prop] = initial[prop] + difference[prop];
+      }
+    } else if (typeof initial === &#x27;number&#x27; || typeof difference === &#x27;number&#x27;) {
+      result = (initial || 0) + (difference || 0);
+    }
+    return result;
+  }
+
+  Springer.generateKeyframes = function(options, element) {
+    var initialData = element &amp;&amp; element.data() ? element.data() : {};
+    options = options || {};
+
+    if (options.initialState) {
+      $.extend(initialData, options.initialState);
+    }
+    options.initial = initialData;
+    //options.differences = options.differences || {};
+    this.tension = (options.tension &amp;&amp; options.tension &gt;= 1) ? options.tension : undefined;
+    this.friction = (options.friction &amp;&amp; options.friction &gt; 0) ? options.friction : undefined;
+
+    this.setInitialState(options.initial);
+    if (options.differences) {
+      this.setDifferences(options.differences);
+      this.determineResultState();
+    } else {
+      this.setResultState(options.resultState || {});
+      this.determineDifferences();
+    }
+
+    this.curve = SpringCurve(this.tension, this.friction);
+    this.element = element;
+    return this.generate();
+  };
+
+  Springer.setInitialState = function(initial) {
+    this.initial = {
+      scale: getTransformFunction(initial.scale, 1),
+      translate: getTransformFunction(initial.translate, 0),
+      rotate: getTransformFunction(initial.rotate, 0, true),
+      skew: getTransformFunction(initial.skew, 0),
+      perspective: initial.perspective || undefined
+    };
+    return this.initial;
+  };
+
+  Springer.setDifferences = function(diff) {
+    this.differences = {
+      scale: getTransformFunction(diff.scale, 0),
+      translate: getTransformFunction(diff.translate, 0),
+      rotate: getTransformFunction(diff.rotate, 0, true),
+      skew: getTransformFunction(diff.skew, 0),
+      perspective: diff.perspective || 0
+    };
+    return this.differences;
+  };
+
+  Springer.setResultState = function(result) {
+    this.resultState = {
+      scale: getTransformFunction(result.scale || 1, this.initial.scale),
+      translate: getTransformFunction(result.translate || 0, this.initial.translate),
+      rotate: getTransformFunction(result.rotate || {x:0,y:0,z:0}, this.initial.rotate, true),
+      skew: getTransformFunction(result.skew || 0, this.initial.skew),
+      perspective: result.perspective || undefined
+    };
+    return this.resultState;
+  };
+
+  Springer.determineDifferences = function() {
+    this.differences = {};
+    for (var prop in this.resultState) {
+      this.differences[prop] = getDifference(this.initial[prop], this.resultState[prop]);
+    }
+    return this.differences;
+  };
+
+  Springer.determineResultState = function() {
+    this.resultState = {};
+    for (var prop in this.differences) {
+      this.resultState[prop] = getResultState(this.initial[prop], this.differences[prop]);
+    }
+    return this.resultState;
+  };
+
+  Springer.generate = function() {
+    var length = this.curve.length;
+    var originalDirection = true;
+    var currentTransform;
+    this.keyframes = {};
+    if (this.element) {
+      this.element.data(this.resultState);
+    }
+
+    this.setKeyframeStep(0, this.initial);
+    this.setKeyframeStep(100, this.resultState);
+
+    for (var i = 1; i &lt; length; ++i) {
+      if ((originalDirection &amp;&amp; this.curve[i] &lt;= this.curve[i - 1])
+        || (!originalDirection &amp;&amp; this.curve[i] &gt; this.curve[i - 1])) {
+
+        currentTransform = {
+          scale: this.getStepTransformValues(&#x27;scale&#x27;, this.curve[i], 3, 1),
+          skew: this.getStepTransformValues(&#x27;skew&#x27;, this.curve[i], 2, 0),
+          rotate: this.getStepTransformValues(&#x27;rotate&#x27;, this.curve[i], 3, 0),
+          translate: this.getStepTransformValues(&#x27;translate&#x27;, this.curve[i], 3, 0),
+          perspective: this.getStepTransformValues(&#x27;perspective&#x27;, this.curve[i])
+        };
+        this.setKeyframeStep((i/length*100).toFixed(3), currentTransform);
+        originalDirection = !originalDirection;
+      }
+    }
+
+    return this.keyframes;
+  };
+
+  Springer.setKeyframeStep = function(stepNumber, toTransform) {
+    var frame = {
+      &#x27;animation-timing-function&#x27;: &#x27;ease-in-out&#x27;,
+      &#x27;transform&#x27;: this.createTransform(toTransform)
+    };
+    if (this.keyframes) {
+      this.keyframes[stepNumber+&#x27;%&#x27;] = frame;
+    }
+
+    return frame;
+  };
+
+  Springer.getStepTransformValues = function(type, curve, depth, defaultValue) {
+    var step = {};
+    depth = depth || 3;
+    if (typeof this.differences[type] === &#x27;object&#x27;) {
+      if (depth &gt; 2) {
+        step.z = this.getStepTransformValue(this.initial[type].z, curve, this.differences[type].z, defaultValue);
+      }
+      step.y = this.getStepTransformValue(this.initial[type].y, curve, this.differences[type].y, defaultValue);
+      step.x = this.getStepTransformValue(this.initial[type].x, curve, this.differences[type].x, defaultValue);
+    } else {
+      step = this.getStepTransformValue((this.initial[type] || 0), curve, this.differences[type]);
+    }
+
+    return step;
+  };
+  Springer.getStepTransformValue = function(initial, curve, diff, defaultValue) {
+    if (typeof diff === &#x27;number&#x27; &amp;&amp; diff !== 0) {
+      return (initial + (curve / (100)) * diff);
+    } else if (defaultValue !== undefined &amp;&amp; defaultValue !== initial) {
+      return initial;
+    }
+    return undefined;
+  };
+
+  Springer.createTransform = function(options) {
+    var theTransform = this.createTranslate3d(options.translate) +
+      this.createScale3d(options.scale) +
+      this.createRotate(options.rotate) +
+      this.createSkew(options.skew) +
+      this.createPerspective(options.perspective);
+
+    return theTransform;
+  };
+
+  Springer.createTranslate3d = function(translate) {
+    if (translate.x !== undefined
+      || translate.y !== undefined
+      || translate.z !== undefined) {
+
+      return &#x27; translate3d(&#x27;+
+        (translate.x || 0) + &#x27;px&#x27;+&#x27;,&#x27;+
+        (translate.y || 0) + &#x27;px&#x27;+&#x27;,&#x27;+
+        (translate.z || 0) + &#x27;px&#x27;+&#x27;)&#x27;;
+    }
+    return &#x27;&#x27;;
+  };
+  Springer.createScale3d = function(scale) {
+    if (scale.x !== undefined
+      || scale.y !== undefined
+      || scale.z !== undefined) {
+
+      return &#x27; scale3d(&#x27;+ ((scale.x || scale.x === 0) ? scale.x : 1)+&#x27;,&#x27;+
+              ((scale.y || scale.y === 0) ? scale.y : 1)+&#x27;,&#x27;+
+              ((scale.z || scale.z === 0) ? scale.z : 1)+&#x27;)&#x27;;
+    }
+    return &#x27;&#x27;;
+  };
+  Springer.createRotate = function(rotate) {
+    var rotation = &#x27;&#x27;;
+    if (rotate.x !== undefined) {
+      rotation += &#x27; rotateX(&#x27;+(rotate.x)+&#x27;deg)&#x27;;
+    }
+    if (rotate.y !== undefined) {
+      rotation += &#x27; rotateY(&#x27;+(rotate.y)+&#x27;deg)&#x27;;
+    }
+    if (rotate.z !== undefined) {
+      rotation += &#x27; rotateZ(&#x27;+(rotate.z)+&#x27;deg)&#x27;;
+    }
+    return rotation;
+  };
+  Springer.createSkew = function(skew) {
+    var transform = &#x27;&#x27;;
+    if (skew.x !== undefined) {
+      transform += &#x27; skewX(&#x27;+(skew.x)+&#x27;deg)&#x27;;
+    }
+    if (skew.y !== undefined) {
+      transform += &#x27; skewY(&#x27;+(skew.y)+&#x27;deg)&#x27;;
+    }
+    return transform;
+  };
+  Springer.createPerspective = function(perspective) {
+    if (perspective !== undefined) {
+      return &#x27; perspective(&#x27; + perspective + &#x27;)&#x27;;
+    }
+    return &#x27;&#x27;;
+  };
+
+  /**
+   * Applies a spring keyframe animation to an element
+   * @method $.fn.spring
+   *
+   * @param {String} [name] The name of the animation
+   * @param {Object} [springOptions] Options for the spring
+     * @param {Number} [springOptions.tension] Positive integer representing the tension on the spring. Default is 50
+     * @param {Number} [springOptions.friction]  Positive integer representing the friction of the spring. Default is 2
+     * @param {Object} [springOptions.initialState]  Initial transform values. If element has previously been transformed with a spring, the initialState values will be merged into the result of the previous transformation.
+     * @param {Number} [springOptions.initialState.scale] Unitless number N that will be represented in CSS as scale3d(n,n,n)
+     * @param {Object} [springOptions.initialState.scale] Object with &#x60;x&#x60;, &#x60;y&#x60;, and &#x60;z&#x60; properties as numbers that will be represented in CSS as scale3d(x,y,z).  If any properties are not specified, they default to 1.
+     * @param {Number} [springOptions.initialState.translate] Number N that will be represented in CSS as translate3d(Npx,Npx,Npx)
+     * @param {Object} [springOptions.initialState.translate] Object with &#x60;x&#x60;, &#x60;y&#x60;, and &#x60;z&#x60; properties as numbers that will be represented in CSS as translate3d(xpx,ypx,zpx).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.rotate] Number N that will be represented in CSS as rotateZ(Ndeg)
+     * @param {Object} [springOptions.initialState.rotate] Object with &#x60;x&#x60;, &#x60;y&#x60;, and &#x60;z&#x60; properties as numbers that will be represented in CSS as rotateX(xdeg) rotateY(ydeg) rotateZ(zdeg).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.skew] Number N that will be represented in CSS as skewX(Ndeg) skewY(Ndeg)
+     * @param {Object} [springOptions.initialState.skew] Object with &#x60;x&#x60; and &#x60;y&#x60; properties as numbers that will be represented in CSS as skewX(xdeg) skewY(ydeg).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.perspective] Unitless number N that will be represented in CSS as perspective(Npx)
+     * @param {Object} [springOptions.differences]  Differences between initial and final transform values. Same format as &#x60;initialState&#x60;
+     * @param {Object} [springOptions.resultState]  Final transform values. Same format as &#x60;initialState&#x60;. If &#x60;differences&#x60; are also specified, &#x60;resultState&#x60; will be ignored
+   * @param {Object} [keyframeOptions]  Options for the animation
+     * @param {Number} [keyframeOptions.duration]  The number of milliseconds that the animation lasts
+     * @param {String} [keyframeOptions.easing]  The name of a CSS easing function
+     * @default &#x27;linear&#x27;
+     * @param {Number} [keyframeOptions.delay]  The number of milliseconds before the animation should start
+     * @default 0
+     * @param {Object} [keyframeOptions.iterations]  Either the number of iterations to play the animation or &#x27;infinite&#x27;
+     * @default 1
+     * @param {String} [keyframeOptions.direction]  The name of a CSS animation direction
+     * @default &#x27;normal&#x27;
+     * @param {String} [keyframeOptions.fillMode]  The name of a CSS animation fill-mode
+     * @param {Function} [keyframeOptions.complete]  A function to execute when the animation has completed
+     * @default null
+   * @return {jQuery}  The jQuery object, for chaining
+   */
+  $.fn.spring = function(name, springOptions, keyframeOptions) {
+    if (Animation.isSupported()) {
+      var theKeyframes;
+      if (typeof keyframeOptions === &#x27;object&#x27; &amp;&amp; typeof name === &#x27;string&#x27;) {
+        keyframeOptions.name = name;
+      }
+      theKeyframes = Springer.generateKeyframes(springOptions, this);
+      this.keyframe(theKeyframes, keyframeOptions);
+    }
+    return this;
+  };
+
+  return Springer;
+
+});
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
