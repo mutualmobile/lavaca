@@ -48,7 +48,7 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         options: {
-          paths: 'src/js/lavaca',
+          paths: 'src',
           outdir: 'docs',
           linkNatives: true,
           themedir: 'libs/yuidoc/themes/default'
