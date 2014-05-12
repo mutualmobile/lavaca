@@ -111,3 +111,31 @@ In many cases, it may be desirable to only listen for the next time an animation
     $('.animateable').nextAnimationEnd(function(e) {
       alert('The animation has ended. You will never see this function again.');
     });
+
+
+## Creating a Spring Keyframe Animation
+If you want to generate a keyframe animation that simulates spring physics, you can use the spring function:
+
+    require('lavaca/fx/Spring');
+    $('.animateable').spring('scale-in', {
+        tension: 20,
+        friction: 2,
+        initialState: { 
+          scale: {
+            x:0.2,
+            y:0.2,
+            z:1
+          } 
+        },
+        differences: { 
+          scale: {
+            x:0.8,
+            y:0.8,
+            z:1
+          } 
+        }
+      },{
+        duration: 900,
+        delay: 0,
+        fillMode: 'forwards'
+      });
