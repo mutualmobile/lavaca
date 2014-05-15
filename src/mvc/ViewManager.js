@@ -125,6 +125,10 @@ define(function(require) {
           this.pageViews.set(cacheKey, pageView);
           pageView.cacheKey = cacheKey;
         }
+      } else {
+        if (typeof params === 'object') {
+          merge(pageView, params);
+        }
       }
       function lastly() {
         self.enteringPageViews = [pageView];
