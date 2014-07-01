@@ -152,7 +152,7 @@ define(function(require) {
      * @param {String} url  The URL that supplies parameters to this route
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes this route's controller action see if work
@@ -162,7 +162,7 @@ define(function(require) {
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes this route's controller action see if work
@@ -173,17 +173,13 @@ define(function(require) {
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @param {Object} state  A history record object
      * @param {Object} params  Additional parameters to pass to the controller action
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     exec: function(url, router, viewManager, state, params) {
       var controller = new this.TController(router, viewManager),
-          urlParams = this.parse(url),
-          promise = controller.exec(this.action, merge(urlParams, params), state);
-      function dispose() {
-        setTimeout(this.dispose(),0);
-      }
-      promise.then(dispose, dispose);
-      return promise;
+          urlParams = this.parse(url);
+      return controller.exec(this.action, merge(urlParams, params), state)
+        .then(this.dispose.bind(this), this.dispose.bind(this));
     }
   });
 

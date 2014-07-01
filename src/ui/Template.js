@@ -17,7 +17,7 @@ define(function(require) {
      * @method render
      *
      * @param {Object} model  The data model to provide to the template
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     render: function() {
       throw 'Abstract';
@@ -50,7 +50,7 @@ define(function(require) {
    * @static
    */
    /**
-   * 
+   *
    * Scans the document for all templates with registered types and
    *   prepares template objects from them
    * @method init
@@ -97,7 +97,7 @@ define(function(require) {
    *
    * @param {String} name  The name of the template
    * @param {Object} model  The data model to provide to the template
-   * @return {Lavaca.util.Promise}  A promise
+   * @return {Promise}  A promise
    */
   Template.render = function(name, model) {
     var template = Template.get(name);

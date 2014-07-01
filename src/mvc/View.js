@@ -5,7 +5,6 @@ define(function(require) {
     Model = require('lavaca/mvc/Model'),
     Template = require('lavaca/ui/Template'),
     Cache = require('lavaca/util/Cache'),
-    Promise = require('lavaca/util/Promise'),
     ArrayUtils = require('lavaca/util/ArrayUtils'),
     uuid = require('lavaca/util/uuid');
 
@@ -173,36 +172,6 @@ define(function(require) {
      */
     viewType: null,
 
-    bindRenderEvents: function(renderPromise) {
-      var promise = new Promise(this);
-      /*
-       * Fires when html from template has rendered
-       * @event rendersuccess
-       */
-      promise
-        .success(function(html) {
-          this.trigger('rendersuccess', {html: html});
-          renderPromise.resolve();
-        })
-      /**
-       * Fired when there was an error during rendering process
-       * @event rendererror
-       */
-        .error(function(err) {
-          this.trigger('rendererror', {err: err});
-          renderPromise.reject();
-        });
-
-      return promise;
-    },
-
-    renderTemplate: function(template, promise, model) {
-      return template
-        .render(model)
-        .success(promise.resolver())
-        .error(promise.rejector());
-    },
-
     getRenderModel: function() {
       var model = this.model;
       return model instanceof Model ? model.toObject() : model;
@@ -214,21 +183,26 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     render: function() {
-      var self = this,
-          renderPromise = new Promise(this),
-          promise = this.bindRenderEvents(renderPromise),
-          template = Template.get(this.template),
+      var template = Template.get(this.template),
           model = this.getRenderModel();
 
-      this.renderTemplate(template, promise, model)
+      if (this.className){
+        this.el.addClass(this.className);
+      }
+
+      return Promise.resolve()
         .then(function() {
-          if (self.className){
-            self.el.addClass(self.className);
-          }
-        });
-
-      return renderPromise;
-
+          return template.render(model);
+        })
+        .then(
+          function(html) {
+            this.trigger('rendersuccess', {html: html});
+          }.bind(this),
+          function(err) {
+            this.trigger('rendererror', {err: err});
+            throw err;
+          }.bind(this)
+        );
     },
     /**
      * Renders the view using its template and model
@@ -237,9 +211,7 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     renderPageView: function() {
-      var renderPromise = new Promise(this),
-          promise = this.bindRenderEvents(renderPromise),
-          template = Template.get(this.template),
+      var template = Template.get(this.template),
           model = this.getRenderModel();
 
       if (this.el) {
@@ -254,10 +226,19 @@ define(function(require) {
         this.shell.addClass(this.className);
       }
 
-      this.renderTemplate(template, promise, model);
-
-      return renderPromise;
-
+      return Promise.resolve()
+        .then(function() {
+          return template.render(model);
+        })
+        .then(
+          function(html) {
+            this.trigger('rendersuccess', {html: html});
+          }.bind(this),
+          function(err) {
+            this.trigger('rendererror', {err: err});
+            throw err;
+          }.bind(this)
+        );
     },
 
     /**
@@ -327,13 +308,13 @@ define(function(require) {
      */
     redraw: function(selector, model) {
       var self = this,
-        templateRenderPromise = new Promise(this),
-        redrawPromise = new Promise(this),
         template = Template.get(this.template),
         replaceAll;
+
       if (!template) {
-        return redrawPromise.reject();
+        return Promise.reject();
       }
+
       if (typeof selector === 'object' || selector instanceof Model) {
         model = selector;
         replaceAll = true;
@@ -358,20 +339,24 @@ define(function(require) {
         self.applyChildViewEvents();
         self.trigger('redrawsuccess');
       }
-      templateRenderPromise
-        .success(function(html) {
+
+      return Promise.resolve()
+        .then(function() {
+          return template.render(model);
+        })
+        .then(function(html) {
           if (replaceAll) {
             this.disposeChildViews(this.el);
             this.disposeWidgets(this.el);
             this.el.html(html);
             processMaps();
-            redrawPromise.resolve(html);
-            return;
+            return html;
           }
+
           if(selector) {
             var $newEl = $('<div>' + html + '</div>').find(selector),
-              $oldEl = this.el.find(selector);
-            if($newEl.length === $oldEl.length) {
+                $oldEl = this.el.find(selector);
+            if ($newEl.length === $oldEl.length) {
               $oldEl.each(function(index) {
                 var $el = $(this);
                 self.disposeChildViews($el);
@@ -379,20 +364,14 @@ define(function(require) {
                 $el.replaceWith($newEl.eq(index)).remove();
               });
               processMaps();
-              redrawPromise.resolve(html);
+              return html;
             } else {
-              redrawPromise.reject('Count of items matching selector is not the same in the original html and in the newly rendered html.');
+              throw 'Count of items matching selector is not the same in the original html and in the newly rendered html.';
             }
-          } else {
-            redrawPromise.resolve(html);
           }
-        })
-        .error(redrawPromise.rejector());
-      template
-        .render(model)
-        .success(templateRenderPromise.resolver())
-        .error(templateRenderPromise.rejector());
-      return redrawPromise;
+
+          return html;
+        }.bind(this));
     },
 
     /**
@@ -890,28 +869,18 @@ define(function(require) {
      * @return {lavaca.util.Promise}  A promise
      */
     enter: function(container) {
-      var promise = new Promise(this),
-        renderPromise;
-      container = $(container);
+      var renderPromise;
       if (!this.hasRendered) {
-        renderPromise = this
-          .render()
-          .error(promise.rejector());
+        renderPromise = this.render();
       }
-      this.insertInto(container);
-      if (renderPromise) {
-        promise.when(renderPromise);
-      } else {
-        setTimeout(promise.resolver().bind(this),0);
-      }
-      promise.then(function() {
-        /**
-         * Fired when there was an error during rendering process
-         * @event rendererror
-         */
-        this.trigger('enter');
-      });
-      return promise;
+      return Promise.resolve()
+        .then(renderPromise)
+        .then(function() {
+          return this.insertInto( $(container) );
+        }.bind(this))
+        .then(function() {
+          this.trigger('enter');
+        }.bind(this));
     },
     /**
      * Executes when the user navigates away from this view
@@ -922,17 +891,9 @@ define(function(require) {
      * @return {lavaca.util.Promise}  A promise
      */
     exit: function() {
-      var promise = new Promise(this);
       this.shell.detach();
-      setTimeout(promise.resolver(),0);
-      promise.then(function() {
-        /**
-         * Fired when there was an error during rendering process
-         * @event rendererror
-         */
-        this.trigger('exit');
-      });
-      return promise;
+      this.trigger('exit');
+      return Promise.resolve();
     }
   });
 

@@ -3,7 +3,6 @@ define(function(require) {
   var dust = require('dust'),
       Template = require('lavaca/ui/Template'),
       Config = require('lavaca/util/Config'),
-      Promise = require('lavaca/util/Promise'),
       StringUtils = require('lavaca/util/StringUtils'),
       Translation = require('lavaca/util/Translation');
   require('dust-helpers');
@@ -94,7 +93,7 @@ define(function(require) {
       }
       return chunk.write(StringUtils.format.apply(this, args));
     },
-    /**     
+    /**
      * Helper function, exposed in dust templates, that uses
      *   [[Lavaca.ui.Template]] to include other templates. Accessed as:
      *
@@ -119,15 +118,25 @@ define(function(require) {
       var name = dust.helpers.tap(params.name, chunk, context),
           result;
 
-      // Note that this only works because
-      // dust renders are synchronous so
-      // the .then() is called before this
-      // helper function returns
-      Template
-        .render(name, context.stack.head)
-        .then(function(html) {
-          result = html;
-        });
+      // dust is the "asynchronous" template language... which doesn't allow its
+      // helpers to be asynchronous. I'm duplicating code from
+      // DustTemplate#render to avoid the Promise wrapper (which per the
+      // es6 spec must operate on a different turn of the event loop for each `.then`).
+      // The dust.render callback is also on a different turn of the event loop via
+      // setTimeout(0), but all calls within the same turn of the event
+      // loop will be in sequence (effectively synchronous) on the next turn.
+      var template = Template.get(name);
+      if (!template.code && template.src) {
+        template.load(template.src);
+      }
+      if (template.code && !template.compiled) {
+        template.compile();
+        template.compiled = true;
+      }
+      dust.render(name, context.stack.head, function(err, html) {
+        result = html;
+      });
+
       return chunk.write(result);
     },
     /**
@@ -208,10 +217,9 @@ define(function(require) {
      * @method render
      *
      * @param {Object} model  The data model to provide to the template
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     render: function(model) {
-      var promise = new Promise(this);
       if (!this.code && this.src) {
         this.load(this.src);
       }
@@ -219,14 +227,15 @@ define(function(require) {
         this.compile();
         this.compiled = true;
       }
-      dust.render(this.name, model, function(err, html) {
-        if (err) {
-          promise.reject(err);
-        } else {
-          promise.resolve(html);
-        }
-      });
-      return promise;
+      return new Promise(function(resolve, reject) {
+        dust.render(this.name, model, function(err, html) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(html);
+          }
+        });
+      }.bind(this));
     },
     /**
      * Makes this template ready for disposals
