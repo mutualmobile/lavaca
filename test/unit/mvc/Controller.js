@@ -39,12 +39,18 @@ define(function(require) {
     it('can execute an action on itself', function() {
       var controller = new testController(router, viewManager),
           params = {one: 1, two: 2},
-          promise = controller.exec('foo', params);
-      promise.success(function() {
-        expect(ob.foo).toHaveBeenCalled();
-        expect(ob.foo.calls[0].args[0].one).toBe(1);
-        expect(ob.foo.calls[0].args[0].two).toBe(2);
+          done = false;
+      runs(function() {
+        controller.exec('foo', params).then(function() {
+          expect(ob.foo).toHaveBeenCalled();
+          expect(ob.foo.calls[0].args[0].one).toBe(1);
+          expect(ob.foo.calls[0].args[0].two).toBe(2);
+          done = true;
+        });
       });
+      waitsFor(function() {
+        return !!done;
+      }, 'promises to resolve', 100);
     });
     describe('can load a view', function() {
       var noop = {
@@ -63,20 +69,18 @@ define(function(require) {
             myPageView = View.extend({
               template: 'hello-world',
             }),
-            promise,
+            done = false,
             response;
           runs(function() {
-            promise = controller.view('myView', myPageView);
+            controller.view('myView', myPageView).then(function() {
+              response = viewManager.pageViews.get('myView').hasRendered;
+              expect(response).toBe(true);
+              done = true;
+            });
           });
           waitsFor(function() {
-            promise.success(function() {
-              response = this.viewManager.pageViews.get('myView').hasRendered;
-            });
-            return response;
-          }, 'a view to be rendered', 300);
-          runs(function() {
-            expect(response).toBe(true);
-          });
+            return !!done;
+          }, 'promises to resolve', 100);
       });
     });
     it('can add a state to the browser history', function() {
@@ -100,11 +104,16 @@ define(function(require) {
     describe('can redirect user to another route', function() {
       it('directly', function() {
         var controller = new testController(router, viewManager),
-            promise;
-        promise = controller.redirect('/foo');
-        promise.success(function() {
-          expect(ob.foo).toHaveBeenCalled();
+            done = false;
+        runs(function() {
+          controller.redirect('/foo').then(function() {
+            expect(ob.foo).toHaveBeenCalled();
+            done = true;
+          });
         });
+        waitsFor(function() {
+          return !!done;
+        }, 'promises to resolve', 100);
       });
     });
   });

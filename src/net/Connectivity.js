@@ -1,7 +1,6 @@
 define(function(require) {
 
   var $ = require('$'),
-      Promise = require('lavaca/util/Promise'),
       resolve = require('lavaca/util/resolve');
 
   /**
@@ -53,31 +52,19 @@ define(function(require) {
    * @static
    *
    * @param {Object} opts  jQuery-style AJAX options
-   * @return {Lavaca.util.Promise}  A promise
+   * @return {Promise}  A promise
    */
   Connectivity.ajax = function(opts) {
-    var promise = new Promise(),
-        origSuccess = opts.success,
-        origError = opts.error;
-    opts.success = function() {
-      if (origSuccess) {
-        origSuccess.apply(this, arguments);
-      }
-      promise.resolve.apply(promise, arguments);
-    };
-    opts.error = function() {
-      if (origError) {
-        origError.apply(this, arguments);
-      }
-      promise.reject.apply(promise, arguments);
-    };
-    if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
-      promise.reject(_offlineErrorCode);
-    } else {
-      $.ajax(opts);
-    }
-    promise.error(_onAjaxError);
-    return promise;
+    return Promise.resolve()
+      .then(function() {
+        if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
+          throw _offlineErrorCode;
+        }
+      })
+      .then(function() {
+        return $.ajax(opts);
+      })
+      .catch(_onAjaxError);
   };
 
   /**

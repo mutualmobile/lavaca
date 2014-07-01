@@ -4,7 +4,6 @@ define(function(require) {
       Connectivity = require('lavaca/net/Connectivity'),
       ArrayUtils = require('lavaca/util/ArrayUtils'),
       Cache = require('lavaca/util/Cache'),
-      Promise = require('lavaca/util/Promise'),
       clone = require('mout/lang/deepClone'),
       merge = require('mout/object/merge'),
       Config = require('lavaca/util/Config');
@@ -421,14 +420,14 @@ define(function(require) {
      * @method fetch
      *
      * @param {String} url  The URL from which to load the data
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
      * @method fetch
      *
      * @param {Object} options  jQuery AJAX settings. If url property is missing, fetch() will try to use the url property on this model
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
@@ -436,7 +435,7 @@ define(function(require) {
      *
      * @param {String} url  The URL from which to load the data
      * @param {Object} options  jQuery AJAX settings
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     fetch: function(url, options) {
       if (typeof url === 'object') {
@@ -446,9 +445,8 @@ define(function(require) {
         options.url = url;
       }
       options.url = this.getApiURL(options.url || this.url);
-      return Promise.when(this, Connectivity.ajax(options))
-        .success(this.onFetchSuccess)
-        .error(this.onFetchError);
+      return Connectivity.ajax(options)
+        .then(this.onFetchSuccess.bind(this), this.onFetchError.bind(this));
     },
     /**
      * Converts a relative path to an absolute api url based on environment config 'apiRoot'
@@ -475,7 +473,7 @@ define(function(require) {
      * @param {Function} callback  A function callback(model, changedAttributes, attributes)
      *   that returns either a promise or a truthy value
      *   indicating whether the operation failed or succeeded
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Saves the model
@@ -485,50 +483,47 @@ define(function(require) {
      *   that returns either a promise or a truthy value
      *   indicating whether the operation failed or succeeded
      * @param {Object} thisp  The context for the callback
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
 
 //* @event saveSuccess
 //* @event saveError
 
     save: function(callback, thisp) {
-      var promise = new Promise(this),
-          attributes = this.toObject(),
+      var attributes = this.toObject(),
           changedAttributes = {},
           i = -1,
-          attribute,
-          result;
+          attribute;
+
       while (!!(attribute = this.unsavedAttributes[++i])) {
         changedAttributes[attribute] = attributes[attribute];
       }
-      promise
-        .success(function(value) {
-          var idAttribute = this.idAttribute;
-          if (this.isNew() && value[idAttribute] !== UNDEFINED) {
-            this.set(idAttribute, value[idAttribute]);
-          }
-          this.unsavedAttributes = [];
-          this.trigger('saveSuccess', {response: value});
-        })
-        .error(function(value) {
-          this.trigger('saveError', {response: value});
-        });
-      result = callback.call(thisp || this, this, changedAttributes, attributes);
-      if (result instanceof Promise) {
-        promise.when(result);
-      } else if (result) {
-        promise.resolve(result);
-      } else {
-        promise.reject(result);
-      }
-      return promise;
+
+      return Promise.resolve()
+        .then(function() {
+          return callback.call(thisp || this, this, changedAttributes, attributes);
+        }.bind(this))
+        .then(
+          function(value) {
+            var idAttribute = this.idAttribute;
+            if (this.isNew() && value[idAttribute] !== UNDEFINED) {
+              this.set(idAttribute, value[idAttribute]);
+            }
+            this.unsavedAttributes = [];
+            this.trigger('saveSuccess', {response: value});
+            return value;
+          }.bind(this),
+          function(value) {
+            this.trigger('saveError', {response: value});
+          }.bind(this)
+        );
     },
     /**
      * Saves the model to the server via POST
      * @method saveToServer
      *
      * @param {String} url  The URL to which to post the data
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     saveToServer: function(url) {
       return this.save(function(model, changedAttributes, attributes) {
@@ -540,13 +535,13 @@ define(function(require) {
           changedAttributes[this.idAttribute] = id;
           data = changedAttributes;
         }
-        return Promise.when(this, Connectivity.ajax({
+        return Connectivity.ajax({
             url: url,
             cache: false,
             type: 'POST',
             data: data,
             dataType: 'json'
-          }));
+        });
       });
     },
     /**

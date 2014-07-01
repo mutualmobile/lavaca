@@ -2,8 +2,7 @@ define(function(require) {
 
   var Route = require('./Route'),
       History = require('lavaca/net/History'),
-      Disposable = require('lavaca/util/Disposable'),
-      Promise = require('lavaca/util/Promise');
+      Disposable = require('lavaca/util/Disposable');
 
   /**
    * @class lavaca.mvc.Router
@@ -46,9 +45,10 @@ define(function(require) {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
           History.isRoutingBack = e.direction === 'back';
-          this.exec(e.url, e).always(function() {
+          var _always = function() {
             History.isRoutingBack = false;
-          });
+          };
+          this.exec(e.url, e).then(_always, _always);
         }
       };
       History.on('popstate', this.onpopstate, this);
@@ -116,7 +116,7 @@ define(function(require) {
      * @method exec
      *
      * @param {String} url  The URL
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes the action for a given URL
@@ -124,7 +124,7 @@ define(function(require) {
      *
      * @param {String} url  The URL
      * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes the action for a given URL
@@ -133,37 +133,43 @@ define(function(require) {
      * @param {String} url  The URL
      * @param {Object} state  A history record object
      * @param {Object} params  Additional parameters to pass to the route
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     exec: function(url, state, params) {
       if (this.locked) {
-        return (new Promise(this)).reject('locked');
+        return Promise.reject('locked');
       } else {
         this.locked = true;
       }
+
       if (!url) {
         url = '/';
       }
       if (url.indexOf('http') === 0) {
         url = url.replace(/^http(s?):\/\/.+?/, '');
       }
+
       var i = -1,
-          route,
-          promise = new Promise(this);
-      promise.always(function() {
-        this.unlock();
-      });
-      if (!this.hasNavigated) {
-        promise.success(function() {
-          this.hasNavigated = true;
-        });
-      }
+          route;
+
       while (!!(route = this.routes[++i])) {
         if (route.matches(url)) {
-          return promise.when(route.exec(url, this, this.viewManager, state, params));
+          break;
         }
       }
-      return promise.reject(url, state);
+
+      if (!route) {
+        return Promise.reject([url, state]);
+      }
+
+      return Promise.resolve()
+        .then(function() {
+          return route.exec(url, this, this.viewManager, state, params);
+        }.bind(this))
+        .then(function() {
+          this.hasNavigated = true;
+        }.bind(this))
+        .then(this.unlock.bind(this), this.unlock.bind(this));
     },
     /**
      * Unlocks the router so that it can be used again

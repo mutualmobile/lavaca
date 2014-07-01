@@ -28,16 +28,22 @@ define(function(require) {
       expect(router.routes.length).toBe(3);
     });
     it('can exec routes that delegate to a controller', function() {
-      var promise,
-          testController = Controller.extend(ob);
-      router.add('/foo/{param}', testController, 'foo', {});
-      promise = router.exec('/foo/bar', null, {one: 1});
-      promise.success(function() {
-        expect(ob.foo.calls[0].args[0]).toEqual(jasmine.any(Object));
-        expect(ob.foo.calls[0].args[0].param).toEqual('bar');
-        expect(ob.foo.calls[0].args[0].one).toEqual(1);
-        expect(ob.foo.calls[0].args[1]).toBeUndefined();
+      var testController = Controller.extend(ob),
+          done = false;
+
+      runs(function() {
+        router.add('/foo/{param}', testController, 'foo', {});
+        router.exec('/foo/bar', null, {one: 1}).then(function() {
+          expect(ob.foo.calls[0].args[0]).toEqual(jasmine.any(Object));
+          expect(ob.foo.calls[0].args[0].param).toEqual('bar');
+          expect(ob.foo.calls[0].args[0].one).toEqual(1);
+          expect(ob.foo.calls[0].args[1]).toBeUndefined();
+          done = true;
+        });
       });
+      waitsFor(function() {
+        return !!done;
+      }, 'promises to resolve', 100);
     });
   });
 
