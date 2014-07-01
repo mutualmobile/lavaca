@@ -9,7 +9,6 @@ define(function(require) {
     Connectivity = require('lavaca/net/Connectivity'),
     Template = require('lavaca/ui/Template'),
     Config = require('lavaca/util/Config'),
-    Promise = require('lavaca/util/Promise'),
     Translation = require('lavaca/util/Translation');
 
   function _stopEvent(e) {
@@ -27,8 +26,8 @@ define(function(require) {
 
   function _isExternal(url) {
     var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
-    if (typeof match[1] === 'string' 
-        && match[1].length > 0 
+    if (typeof match[1] === 'string'
+        && match[1].length > 0
         && match[1].toLowerCase() !== location.protocol) {
       return true;
     }
@@ -115,48 +114,49 @@ define(function(require) {
      * @param {Event} e  The event object
      */
     onTapLink: function(e) {
-      var link = $(e.currentTarget),
-          defaultPrevented = e.isDefaultPrevented(),
-          url = link.attr('href') || link.attr('data-href'),
-          rel = link.attr('rel'),
-          target = link.attr('target'),
-          isExternal = link.is('[data-external]') || _isExternal(url),
+      var link = $(e.currentTarget),
+          defaultPrevented = e.isDefaultPrevented(),
+          url = link.attr('href') || link.attr('data-href'),
+          rel = link.attr('rel'),
+          target = link.attr('target'),
+          isExternal = link.is('[data-external]') || _isExternal(url),
           metaKey = e.type === 'tap' ? (e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey) : (e.ctrlKey || e.metaKey);
       if (metaKey) {
         target = metaKey ? '_blank' : (target ? target : '_self');
       }
-      if (!defaultPrevented) {
+      if (!defaultPrevented) {
         if (Device.isCordova() && target) {
           e.preventDefault();
           window.open(url, target || '_blank');
         } else if (isExternal || target) {
           window.open(url, target);
-          return true;
-        } else {
-          e.preventDefault();
-          if (rel === 'back') {
-            History.back();
-          } else if (rel === 'force-back' && url) {
+          return true;
+        } else {
+          e.preventDefault();
+          if (rel === 'back') {
+            History.back();
+          } else if (rel === 'force-back' && url) {
             History.isRoutingBack = true;
-            this.router.exec(url, null, null).always(function() {
+            var _always = function() {
               History.isRoutingBack = false;
-            });
+            };
+            this.router.exec(url, null, null).then(_always, _always);
           } else if (rel === 'cancel') {
-            this.viewManager.dismiss(e.currentTarget);
-          } else if (url) {
-            url = url.replace(/^\/?#/, '');
-            this.router.exec(url).error(this.onInvalidRoute);
-          }
-        }
-      }
-    },
+            this.viewManager.dismiss(e.currentTarget);
+          } else if (url) {
+            url = url.replace(/^\/?#/, '');
+            this.router.exec(url).catch(this.onInvalidRoute);
+          }
+        }
+      }
+    },
     /**
      * Makes an AJAX request if the user is online. If the user is offline, the returned
      * promise will be rejected with the string argument "offline". (Alias for [[Lavaca.net.Connectivity]].ajax)
      * @method ajax
      *
      * @param {Object} opts  jQuery-style AJAX options
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     ajax: function() {
       return Connectivity.ajax.apply(Connectivity, arguments);
@@ -167,12 +167,9 @@ define(function(require) {
      *
      * @param {Object} args  Data of any type from a resolved promise returned by Application.beforeInit(). Defaults to null.
      *
-     * @return {Lavaca.util.Promise}  A promise that resolves when the application is ready for use
+     * @return {Promise}  A promise that resolves when the application is ready for use
      */
     init: function(args) {
-      var promise = new Promise(this),
-          _cbPromise,
-          lastly;
       Template.init();
       /**
        * View manager used to transition between UI states
@@ -191,32 +188,24 @@ define(function(require) {
        */
       this.router = router.setViewManager(this.viewManager);
 
-
-      lastly = function() {
-        this.router.startHistory();
-        if (!this.router.hasNavigated) {
-          promise.when(
-            this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
-          );
-          if (this.initState) {
-            History.replace(this.initState.state, this.initState.title, this.initState.url);
-          }
-        } else {
-          promise.resolve();
-        }
-      }.bind(this);
-
       this.bindLinkHandler();
 
-      if (this._callback) {
-        _cbPromise = this._callback(args);
-        _cbPromise instanceof Promise ? _cbPromise.then(lastly, promise.rejector()) : lastly();
-      } else {
-        lastly();
-      }
-      return promise.then(function() {
-        this.trigger('ready');
-      });
+      return Promise.resolve()
+        .then(function() {
+          return this._callback(args);
+        }.bind(this))
+        .then(function() {
+          this.router.startHistory();
+          if (!this.router.hasNavigated) {
+            if (this.initState) {
+              History.replace(this.initState.state, this.initState.title, this.initState.url);
+            }
+            return this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams);
+          }
+        }.bind(this))
+        .then(function() {
+          this.trigger('ready');
+        }.bind(this));
     },
     /**
      * Binds a global link handler
@@ -250,11 +239,10 @@ define(function(require) {
      *
      * @param {Lavaca.util.Config} Config cache that's been initialized
      *
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     beforeInit: function(Config) {
-      var promise = new Promise();
-      return promise.resolve(null);
+      return Promise.resolve(null);
     }
   });
 

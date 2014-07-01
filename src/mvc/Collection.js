@@ -3,7 +3,6 @@ define(function(require) {
   var Model = require('lavaca/mvc/Model'),
       Connectivity = require('lavaca/net/Connectivity'),
       ArrayUtils = require('lavaca/util/ArrayUtils'),
-      Promise = require('lavaca/util/Promise'),
       clone = require('mout/lang/deepClone'),
       merge = require('mout/object/merge');
 
@@ -188,7 +187,7 @@ define(function(require) {
      * @return {Boolean}  false if no items were able to be added, true otherwise.
      */
 //@event addItem
-    
+
     insert: function(insertIndex, item /*, item1, item2, item3...*/) {
       var result = false,
           idAttribute = this.TModel.prototype.idAttribute,
@@ -647,7 +646,7 @@ define(function(require) {
      * @method saveToServer
      *
      * @param {String} url  The URL to which to post the data
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     saveToServer: function(url) {
       return this.save(function(model, changedAttributes, attributes) {
@@ -659,13 +658,13 @@ define(function(require) {
           changedAttributes[this.idAttribute] = id;
           data = changedAttributes;
         }
-        return (new Promise(this)).when(Connectivity.ajax({
+        return Connectivity.ajax({
           url: url,
           cache: false,
           type: 'POST',
           data: data,
           dataType: 'json'
-        }));
+        });
       });
     },
     /**

@@ -1,8 +1,7 @@
 define(function(require) {
 
   var $ = require('$'),
-      Widget = require('lavaca/ui/Widget'),
-      Promise = require('lavaca/util/Promise');
+      Widget = require('lavaca/ui/Widget');
 
   function _required(value) {
     return value ? null : 'error_required';
@@ -361,20 +360,20 @@ define(function(require) {
     /**
      * Checks the entire form to see if it's in a valid state
      * @method validate
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Checks the entire form to see if it's in a valid state
      * @method validate
      * @param {Function} succcess  A callback to execute when the form is valid
      * @param {Function} error  A callback to execute when the form is invalid
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Checks the entire form to see if it's in a valid state
      * @method validate
      * @param {jQuery} input  An input to check
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Checks the entire form to see if it's in a valid state
@@ -382,7 +381,7 @@ define(function(require) {
      * @param {Function} succcess  A callback to execute when the input is valid
      * @param {Function} error  A callback to execute when the input is invalid
      * @param {jQuery} input  An input to check
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     validate: function(success, error, input) {
       if (success && typeof success !== 'function') {

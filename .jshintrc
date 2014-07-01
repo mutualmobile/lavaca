@@ -1,9 +1,11 @@
 {
   "globals": {
-    "define": false
+    "define": false,
+    "Promise": false
   },
 
   "node":      true,
+  "browser":   true,
   "devel":     true,
 
   "sub":       true,
