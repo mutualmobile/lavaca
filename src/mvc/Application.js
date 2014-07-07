@@ -7,9 +7,7 @@ define(function(require) {
     router = require('lavaca/mvc/Router'),
     viewManager = require('lavaca/mvc/ViewManager'),
     Connectivity = require('lavaca/net/Connectivity'),
-    Template = require('lavaca/ui/Template'),
-    Config = require('lavaca/util/Config'),
-    Translation = require('lavaca/util/Translation');
+    Config = require('lavaca/util/Config');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -170,7 +168,6 @@ define(function(require) {
      * @return {Promise}  A promise that resolves when the application is ready for use
      */
     init: function(args) {
-      Template.init();
       /**
        * View manager used to transition between UI states
        * @property viewManager

@@ -7,8 +7,6 @@ define(function(require) {
   var router = require('lavaca/mvc/Router');
   var viewManager = require('lavaca/mvc/ViewManager');
   var View = require('lavaca/mvc/View');
-  var Translation = require('lavaca/util/Translation');
-  var Template = require('lavaca/ui/Template');
 
 
   var testController,
@@ -59,7 +57,6 @@ define(function(require) {
       beforeEach(function(){
         spyOn(noop, 'success');
         $('body').append('<script type="text/dust-template" data-name="hello-world">Hello World</script>');
-        Template.init();
       });
       afterEach(function(){
         $('script[data-name="hello-world"]').remove();
