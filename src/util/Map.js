@@ -2,8 +2,7 @@ define(function(require) {
 
   var $ = require('$'),
       Cache = require('./Cache'),
-      Disposable = require('./Disposable'),
-      Connectivity = require('lavaca/net/Connectivity');
+      Disposable = require('./Disposable');
 
   function _absolute(url) {
     if (url && url.indexOf('http') !== 0) {
@@ -118,7 +117,7 @@ define(function(require) {
      */
     load: function(url) {
       var self = this;
-      Connectivity.ajax({
+      $.ajax({
         async: false,
         url: url,
         success: function(resp) {
