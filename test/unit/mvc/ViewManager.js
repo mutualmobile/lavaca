@@ -3,13 +3,11 @@ define(function(require) {
   var $ = require('$');
   var View = require('lavaca/mvc/View');
   var Cache = require('lavaca/util/Cache');
-  var Template = require('lavaca/ui/Template');
   var viewManager = require('lavaca/mvc/ViewManager');
 
   describe('A viewManager', function() {
     beforeEach(function(){
-      $('body').append('<div id="view-root"></div><script type="text/dust-template" data-name="hello-world">Hello World</script>');
-      Template.init();
+      $('body').append('<div id="view-root"></div>');
       viewManager = new viewManager.constructor();
       viewManager.setEl('#view-root');
     });

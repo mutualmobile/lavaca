@@ -3,7 +3,6 @@ define(function(require) {
   var $ = require('$'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     Model = require('lavaca/mvc/Model'),
-    Template = require('lavaca/ui/Template'),
     Cache = require('lavaca/util/Cache'),
     ArrayUtils = require('lavaca/util/ArrayUtils'),
     uuid = require('lavaca/util/uuid');
@@ -172,10 +171,19 @@ define(function(require) {
      */
     viewType: null,
 
-    getRenderModel: function() {
-      var model = this.model;
-      return model instanceof Model ? model.toObject() : model;
+    /**
+     * Generate the HTML to be used in render() and redraw() methods. Override
+     * from subclasses. Specified here rather than having subclasses override
+     * render() directly in order for subclasses to get selector-specific
+     * rendering (in redraw()) for "free".
+     *
+     * @param {Object} model  The data model, guaranteed to be a plain object
+     * @return {String|lavaca.util.Promise} The html to be rendered
+     */
+    generateHtml: function(model) {
+      return '';
     },
+
     /**
      * Renders the view using its template and model
      * @method render
@@ -183,20 +191,26 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     render: function() {
-      var template = Template.get(this.template),
-          model = this.getRenderModel();
-
-      if (this.className){
-        this.el.addClass(this.className);
+      var model = this.model;
+      if (model instanceof Model) {
+        model = model.toObject();
       }
-
-      return Promise.resolve()
-        .then(function() {
-          return template.render(model);
-        })
+      return Promise.resolve(this.generateHtml(model))
+        .then(function(html) {
+          this.el.html(html);
+          this.bindMappedEvents();
+          this.applyEvents();
+          this.createWidgets();
+          this.createChildViews();
+          this.applyChildViewEvents();
+          this.el.data('view', this);
+          this.el.attr('data-view-id', this.id);
+          this.hasRendered = true;
+          return html;
+        }.bind(this))
         .then(
-          function(html) {
-            this.trigger('rendersuccess', {html: html});
+          function() {
+            this.trigger('rendersuccess');
           }.bind(this),
           function(err) {
             this.trigger('rendererror', {err: err});
@@ -211,9 +225,6 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     renderPageView: function() {
-      var template = Template.get(this.template),
-          model = this.getRenderModel();
-
       if (this.el) {
         this.el.remove();
       }
@@ -226,19 +237,7 @@ define(function(require) {
         this.shell.addClass(this.className);
       }
 
-      return Promise.resolve()
-        .then(function() {
-          return template.render(model);
-        })
-        .then(
-          function(html) {
-            this.trigger('rendersuccess', {html: html});
-          }.bind(this),
-          function(err) {
-            this.trigger('rendererror', {err: err});
-            throw err;
-          }.bind(this)
-        );
+      return this.render();
     },
 
     /**
@@ -307,13 +306,7 @@ define(function(require) {
      * @return {lavaca.util.Promise}  A promise
      */
     redraw: function(selector, model) {
-      var self = this,
-        template = Template.get(this.template),
-        replaceAll;
-
-      if (!template) {
-        return Promise.reject();
-      }
+      var replaceAll;
 
       if (typeof selector === 'object' || selector instanceof Model) {
         model = selector;
@@ -331,45 +324,32 @@ define(function(require) {
         model = model.toObject();
       }
 
-      // process widget, child view, and
-      // child view event maps
-      function processMaps() {
-        self.createWidgets();
-        self.createChildViews();
-        self.applyChildViewEvents();
-        self.trigger('redrawsuccess');
-      }
-
-      return Promise.resolve()
-        .then(function() {
-          return template.render(model);
-        })
+      return Promise.resolve(this.generateHtml(model))
         .then(function(html) {
           if (replaceAll) {
             this.disposeChildViews(this.el);
             this.disposeWidgets(this.el);
             this.el.html(html);
-            processMaps();
-            return html;
           }
-
-          if(selector) {
+          else if (selector) {
             var $newEl = $('<div>' + html + '</div>').find(selector),
                 $oldEl = this.el.find(selector);
             if ($newEl.length === $oldEl.length) {
-              $oldEl.each(function(index) {
-                var $el = $(this);
-                self.disposeChildViews($el);
-                self.disposeWidgets($el);
+              $oldEl.each(function(index, el) {
+                var $el = $(el);
+                this.disposeChildViews($el);
+                this.disposeWidgets($el);
                 $el.replaceWith($newEl.eq(index)).remove();
-              });
-              processMaps();
-              return html;
+              }.bind(this));
             } else {
               throw 'Count of items matching selector is not the same in the original html and in the newly rendered html.';
             }
           }
 
+          this.createWidgets();
+          this.createChildViews();
+          this.applyChildViewEvents();
+          this.trigger('redrawsuccess');
           return html;
         }.bind(this));
     },
@@ -776,15 +756,6 @@ define(function(require) {
      *   that contains the template's rendered HTML output.
      */
     onRenderSuccess: function(e) {
-      this.el.html(e.html);
-      this.bindMappedEvents();
-      this.applyEvents();
-      this.createWidgets();
-      this.createChildViews();
-      this.applyChildViewEvents();
-      this.el.data('view', this);
-      this.el.attr('data-view-id', this.id);
-      this.hasRendered = true;
     },
     /**
      * Executes when the template fails to render
