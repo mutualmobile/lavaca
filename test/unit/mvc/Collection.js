@@ -2,7 +2,7 @@ define(function(require) {
 
   var Collection = require('lavaca/mvc/Collection');
   var Model = require('lavaca/mvc/Model');
-  var ArrayUtils = require('lavaca/util/ArrayUtils');
+  var isArray = require('mout/lang/isArray');
 
 
   describe('A Collection', function() {
@@ -308,7 +308,7 @@ define(function(require) {
       expect(testCollection.count()).toEqual(0);
       expect(testCollection.changedOrder).toEqual(false);
       ['addedItems', 'changedItems', 'models', 'removedItems'].forEach(function(key) {
-        expect(ArrayUtils.isArray(testCollection[key])).toBe(true);
+        expect(isArray(testCollection[key])).toBe(true);
         expect(testCollection[key].length).toEqual(0);
       });
     });

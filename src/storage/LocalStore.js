@@ -1,8 +1,9 @@
 define(function(require) {
 
   var Store = require('./Store'),
-      docCookies = require('lavaca/util/docCookies'),
-      ArrayUtils = require('lavaca/util/ArrayUtils');
+      removeAll = require('mout/array/removeAll'),
+      insert = require('mout/array/insert'),
+      docCookies = require('lavaca/util/docCookies');
 
   var _isLocalStorageSupported = (function(localStorage) {
     var testKey = 'qeTest';
@@ -65,7 +66,7 @@ define(function(require) {
         } catch(e) {
           return str;
         }
-      }      
+      }
       return null;
     },
     /**
@@ -77,7 +78,7 @@ define(function(require) {
      */
     set: function(id, value) {
       _storage.setItem(this.key(id), JSON.stringify(value));
-      ArrayUtils.pushIfNotExists(this.manifest, id);
+      insert(this.manifest, id);
       _saveManifest(this);
     },
     /**
@@ -88,7 +89,7 @@ define(function(require) {
      */
     remove: function(id) {
       _storage.removeItem(this.key(id));
-      ArrayUtils.remove(this.manifest, id);
+      removeAll(this.manifest, id);
       _saveManifest(this);
     },
     /**

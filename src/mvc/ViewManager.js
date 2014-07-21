@@ -2,12 +2,11 @@ define(function(require) {
 
   var $ = require('$'),
     View = require('lavaca/mvc/View'),
-    ArrayUtils = require('lavaca/util/ArrayUtils'),
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
     merge = require('mout/object/merge'),
     contains = require('mout/array/contains'),
-    difference = require('mout/array/difference');
+    removeAll = require('mout/array/removeAll');
 
   /**
    * Manager responsible for drawing views
@@ -264,7 +263,7 @@ define(function(require) {
               return layer.exit(this.el, this.enteringPageViews);
             }.bind(this))
             .then(function() {
-              ArrayUtils.remove(this.exitingPageViews, layer);
+              removeAll(this.exitingPageViews, layer);
               if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey === layer.cacheKey)) {
                 layer.dispose();
               }

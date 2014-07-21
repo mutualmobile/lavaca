@@ -2,9 +2,10 @@ define(function(require) {
 
   var EventDispatcher = require('lavaca/events/EventDispatcher'),
       Connectivity = require('lavaca/net/Connectivity'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
       Cache = require('lavaca/util/Cache'),
       clone = require('mout/lang/deepClone'),
+      contains = require('mout/array/contains'),
+      removeAll = require('mout/array/removeAll'),
       merge = require('mout/object/merge'),
       Config = require('lavaca/util/Config');
 
@@ -25,7 +26,7 @@ define(function(require) {
     if (!keys) {
       keys = model.flags[flag] = [];
     }
-    if (!ArrayUtils.contains(keys, name)) {
+    if (!contains(keys, name)) {
       keys.push(name);
     }
   }
@@ -155,7 +156,7 @@ define(function(require) {
           flags;
       if (typeof attr === 'function') {
         flags = this.flags[Model.DO_NOT_COMPUTE];
-        return !flags || ArrayUtils.indexOf(flags, attribute) === -1 ? attr.call(this) : attr;
+        return !flags || flags.indexOf(attribute) === -1 ? attr.call(this) : attr;
       }
       return attr;
     },
@@ -210,7 +211,7 @@ define(function(require) {
             }
             _triggerAttributeEvent(this, 'change', attribute, previous, value);
             if (!this.suppressTracking
-                && !ArrayUtils.contains(this.unsavedAttributes, attribute)) {
+                && !contains(this.unsavedAttributes, attribute)) {
               this.unsavedAttributes.push(attribute);
             }
           }
@@ -305,7 +306,7 @@ define(function(require) {
             item;
         if (attrs) {
           while (!!(attr = attrs[++i])) {
-            ArrayUtils.remove(this.unsavedAttributes, attr);
+            removeAll(this.unsavedAttributes, attr);
             item = this.get(attr);
             if (item && item.dispose) {
               item.dispose();
@@ -556,7 +557,7 @@ define(function(require) {
       for(var key in obj) {
         if(typeof obj[key] === "function") {
           flags = this.flags[Model.DO_NOT_COMPUTE];
-          if (!flags || ArrayUtils.indexOf(flags, key) === -1) {
+          if (!flags || flags.indexOf(key) === -1) {
             obj[key] = obj[key].call(this);
           }
         }

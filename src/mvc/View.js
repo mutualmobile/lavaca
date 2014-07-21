@@ -4,10 +4,10 @@ define(function(require) {
     isString = require('mout/lang/isString'),
     isBoolean = require('mout/lang/isBoolean'),
     isObject = require('mout/lang/isObject'),
+    isArray = require('mout/lang/isArray'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     Model = require('lavaca/mvc/Model'),
     Cache = require('lavaca/util/Cache'),
-    ArrayUtils = require('lavaca/util/ArrayUtils'),
     uuid = require('lavaca/util/uuid');
 
   var _UNDEFINED;
@@ -560,7 +560,7 @@ define(function(require) {
         if (typeof o === 'object') {
           TWidget = o.TWidget;
           args = o.args
-            ? ArrayUtils.isArray(o.args) ? o.args : [o.args]
+            ? isArray(o.args) ? o.args : [o.args]
             : null;
         } else {
           TWidget = o;

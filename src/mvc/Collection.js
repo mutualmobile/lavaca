@@ -2,8 +2,10 @@ define(function(require) {
 
   var Model = require('lavaca/mvc/Model'),
       Connectivity = require('lavaca/net/Connectivity'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
+      isArray = require('mout/lang/isArray'),
       clone = require('mout/lang/deepClone'),
+      removeAll = require('mout/array/removeAll'),
+      insert = require('mout/array/insert'),
       merge = require('mout/object/merge');
 
   var UNDEFINED;
@@ -151,7 +153,7 @@ define(function(require) {
             : this.TModel.prototype instanceof Collection
               ? new this.TModel(data[this.TModel.prototype.itemsProperty], data)
               : new this.TModel(data),
-          index = ArrayUtils.indexOf(this.models, model);
+          index = this.models.indexOf(model);
       if (index === -1) {
         model
           .on('change', this.onItemEvent, this)
@@ -198,7 +200,7 @@ define(function(require) {
           model,
           index,
           items;
-      items = item && ArrayUtils.isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
+      items = item && isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
       for (i = 0, j = items.length; i < j; i++) {
         model = items[i];
         if (typeof model === 'object') {
@@ -216,9 +218,9 @@ define(function(require) {
 
           this.models.splice(insertIndex, 0, model);
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.removedItems, model);
-            ArrayUtils.remove(this.changedItems, model);
-            ArrayUtils.pushIfNotExists(this.addedItems, model);
+            removeAll(this.removedItems, model);
+            removeAll(this.changedItems, model);
+            insert(this.addedItems, model);
           }
           _triggerItemEvent(this, 'addItem', null, insertIndex, this.models[insertIndex]);
           insertIndex++;
@@ -269,7 +271,7 @@ define(function(require) {
 // * @event moveItem
     moveTo: function(oldIndex, newIndex) {
       if (oldIndex instanceof this.TModel) {
-        oldIndex = ArrayUtils.indexOf(this.models, oldIndex);
+        oldIndex = this.models.indexOf(oldIndex);
       }
       if (oldIndex > -1) {
         var model = this.models.splice(oldIndex, 1)[0];
@@ -328,7 +330,7 @@ define(function(require) {
     remove: function(item /*, item1, item2, item3...*/) {
       var n, it, items, index, i, removed;
 
-      if (arguments.length === 1 && ArrayUtils.isArray(item)) {
+      if (arguments.length === 1 && isArray(item)) {
         n = 0;
         removed = [];
         while (!!(it = item[n++])) {
@@ -346,12 +348,13 @@ define(function(require) {
       }
 
       if (item instanceof this.TModel) {
-        index = ArrayUtils.remove(this.models, item);
+        index = this.models.indexOf(item);
+        removeAll(this.models, item);
         if (index > -1) {
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.addedItems, item);
-            ArrayUtils.remove(this.changedItems, item);
-            ArrayUtils.pushIfNotExists(this.removedItems, item);
+            removeAll(this.addedItems, item);
+            removeAll(this.changedItems, item);
+            insert(this.removedItems, item);
           }
           item
             .off('change', this.onItemEvent)
@@ -479,7 +482,7 @@ define(function(require) {
      */
     indexOf: function(test) {
       var match = this.first(test);
-      return match ? ArrayUtils.indexOf(this.models, match) : -1;
+      return match ? this.models.indexOf(match) : -1;
     },
     /**
      * Gets the item at a specific index
@@ -564,9 +567,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -588,9 +591,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -604,12 +607,12 @@ define(function(require) {
      */
     onItemEvent: function(e) {
       var model = e.target,
-          index = ArrayUtils.indexOf(this.models, model);
+          index = this.models.indexOf(model);
       if (!this.suppressTracking) {
         if (e.type === 'change') {
-          ArrayUtils.pushIfNotExists(this.changedItems, model);
+          insert(this.changedItems, model);
         } else if (e.type === 'saveSuccess') {
-          ArrayUtils.remove(this.changedItems, model);
+          removeAll(this.changedItems, model);
         }
       }
       this.trigger(e.type + 'Item', merge({}, e, {
