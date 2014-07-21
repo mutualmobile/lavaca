@@ -5,7 +5,6 @@ require.config({
     '$': 'components/jquery/jquery',
     'jquery': 'components/jquery/jquery',
     'mout': 'components/mout/src',
-    'iScroll': 'components/iscroll/dist/iscroll-lite-min',
     'lavaca': './'
   },
   shim: {
