@@ -80,23 +80,25 @@ define(function(require) {
       it('from a hash', function() {
         multiChildView.mapChildView({
           '.childView': {
-            TView: View,
-            model: handler.fn
+            TView: View
           },
           '.altChild1': {
-            TView: View
+            TView: View,
+            model: new Model({color: 'purple'})
           },
           '[data-id="abc"]': {
             TView: View,
-            model: new Model({color: 'purple'})
+            model: new Model({color: 'orange'})
           }
         });
         multiChildView.createChildViews();
         var childViews = multiChildView.childViews.toArray();
-        expect(childViews.length).toEqual(4);
-        expect(childViews[0].model.get('id')).toEqual('abc');
-        expect(childViews[2].model).toBe(multiChildView.model);
-        expect(childViews[3].model.get('color')).toEqual('purple');
+        // [data-id="abc"] matches '.childView' too, which has already been
+        // initialized. it won't be initialized a second time
+        expect(childViews.length).toEqual(3);
+        expect(childViews[0].model.get('color')).toEqual('blue');
+        expect(childViews[1].model).toBe(multiChildView.model);
+        expect(childViews[2].model.get('color')).toEqual('purple');
       });
     });
     it('can be rendered', function() {
@@ -139,7 +141,7 @@ define(function(require) {
           expect($(testView.el).length).toBe(1);
           expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
           model.set('color', 'red');
-          return testView.redraw();
+          return testView.render();
         }).then(function() {
           expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is red.</p>');
           done = true;
@@ -168,7 +170,7 @@ define(function(require) {
           expect(testView.hasRendered).toEqual(true);
           expect($(testView.el).length).toBe(1);
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p>');
-          return testView.redraw(otherModel);
+          return testView.render(otherModel);
         }).then(function() {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p>');
           done = true;
@@ -198,7 +200,7 @@ define(function(require) {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
           model.set('color', 'orange');
           model.set('primary', false);
-          return testView.redraw('p.redraw');
+          return testView.render('p.redraw');
         }).then(function() {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
           done = true;
@@ -227,7 +229,7 @@ define(function(require) {
           expect(testView.hasRendered).toEqual(true);
           expect($(testView.el).length).toBe(1);
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-          return testView.redraw('p.redraw', otherModel);
+          return testView.render('p.redraw', otherModel);
         }).then(function() {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
           done = true;
@@ -257,7 +259,7 @@ define(function(require) {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
           model.set('color', 'orange');
           model.set('primary', false);
-          return testView.redraw(false);
+          return testView.render(false);
         }).then(function(html) {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
           expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
@@ -287,7 +289,7 @@ define(function(require) {
           expect(testView.hasRendered).toEqual(true);
           expect($(testView.el).length).toBe(1);
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-          return testView.redraw(false, otherModel);
+          return testView.render(false, otherModel);
         }).then(function(html) {
           expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
           expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');

@@ -130,7 +130,7 @@ define(function(require) {
       return Promise.resolve()
         .then(function() {
           if (shouldRender) {
-            return pageView.renderPageView();
+            return pageView.render();
           }
         })
         .then(function() {

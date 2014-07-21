@@ -1,6 +1,9 @@
 define(function(require) {
 
   var $ = require('$'),
+    isString = require('mout/lang/isString'),
+    isBoolean = require('mout/lang/isBoolean'),
+    isObject = require('mout/lang/isObject'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     Model = require('lavaca/mvc/Model'),
     Cache = require('lavaca/util/Cache'),
@@ -40,14 +43,6 @@ define(function(require) {
     this.model = model || null;
 
     /**
-     * The element containing the view
-     * @property {jQuery} shell
-     * @default null
-     */
-    this.shell = null;
-
-
-    /**
      * An id is applied to a data property on the views container
      * @property id
      * @default generated from className and unique identifier
@@ -60,7 +55,7 @@ define(function(require) {
       /**
        * If the view is created in the context of a childView, the parent view is assigned to this view
        * @property parentView
-       * @default null
+      * @default null
        * @type Object
        *
        */
@@ -78,7 +73,19 @@ define(function(require) {
      * @type Object | String
      *
      */
-    this.el = typeof el === 'string' ? $(el) : (el || null);
+    if (isString(el)) {
+      this.el = $(el);
+    }
+    else if (el && el.length) {
+      this.el = el;
+    }
+    else {
+      this.el = $('<div></div>');
+    }
+    this.el.addClass('view');
+    this.el.addClass(this.className);
+    this.el.data('view', this);
+    this.el.attr('data-view-id', this.id);
 
 
     /**
@@ -184,85 +191,76 @@ define(function(require) {
       return '';
     },
 
-    /**
-     * Renders the view using its template and model
-     * @method render
-     *
-     * @return {lavaca.util.Promise} A promise
-     */
-    render: function() {
-      var model = this.model;
-      if (model instanceof Model) {
-        model = model.toObject();
+    _parseRenderArguments: function() {
+      var args = Array.prototype.slice.call(arguments);
+      var ret = {
+        selector: null,
+        model: null,
+        shouldRedraw: null
+      };
+
+      if (args.length === 0) {
+        ret.selector = null;
+        ret.model = this.model;
+        ret.shouldRedraw = true;
       }
-      return Promise.resolve(this.generateHtml(model))
-        .then(function(html) {
-          this.el.html(html);
-          this.bindMappedEvents();
-          this.applyEvents();
-          this.createWidgets();
-          this.createChildViews();
-          this.applyChildViewEvents();
-          this.el.data('view', this);
-          this.el.attr('data-view-id', this.id);
-          this.hasRendered = true;
-          return html;
-        }.bind(this))
-        .then(
-          function() {
-            this.trigger('rendersuccess');
-          }.bind(this),
-          function(err) {
-            this.trigger('rendererror', {err: err});
-            throw err;
-          }.bind(this)
-        );
-    },
-    /**
-     * Renders the view using its template and model
-     * @method renderPageView
-     *
-     * @return {lavaca.util.Promise} A promise
-     */
-    renderPageView: function() {
-      if (this.el) {
-        this.el.remove();
+      else if (args.length === 1) {
+        if (isString(args[0])) {
+          ret.selector = args[0];
+          ret.model = this.model;
+          ret.shouldRedraw = false;
+        }
+        else if (isObject(args[0]) || args[0] instanceof Model) {
+          ret.selector = null;
+          ret.model = args[0];
+          ret.shouldRedraw = true;
+        }
+        else if (isBoolean(args[0])) {
+          ret.selector = null;
+          ret.model = this.model;
+          ret.shouldRedraw = args[0];
+        }
+      }
+      else if (args.length === 2) {
+        if (isString(args[0])) {
+          ret.selector = args[0];
+          ret.model = args[1];
+          ret.shouldRedraw = false;
+        }
+        else if (isBoolean(args[0])) {
+          ret.selector = null;
+          ret.shouldRedraw = args[0];
+          ret.model = args[1];
+        }
       }
 
-      this.shell = this.wrapper();
-      this.el = this.interior();
-      this.shell.append(this.el);
-      this.shell.attr('data-layer-index', this.layer);
-      if (this.className) {
-        this.shell.addClass(this.className);
+      if (ret.model instanceof Model) {
+        ret.model = ret.model.toObject();
       }
 
-      return this.render();
+      return ret;
     },
 
     /**
-     * Re-renders the view's template and replaces the DOM nodes that match
-     * the selector argument. If no selector argument is provided, the whole view
-     * will be re-rendered. If the first parameter is passed as <code>false</code>
-     * the resulting html will pe passed with the promise and nothing will be replaced.
-     * Note: the number of elements that match the provided selector must be identical
-     * in the current markup and in the newly rendered markup or else the returned
-     * promise will be rejected.
-     * Re-renders the view's template using the view's model
-     * and redraws the entire view
+     * Renders the view's template and replaces the DOM nodes that match the
+     * selector argument. If no selector argument is provided, the whole view
+     * will be rendered. If the first parameter is passed as <code>false</code>
+     * the resulting html will pe passed with the promise and nothing will be
+     * replaced.  Note: the number of elements that match the provided selector
+     * must be identical in the current markup and in the newly rendered markup
+     * or else the returned promise will be rejected.
      * @method redraw
-     *
      * @return {lavaca.util.Promise} A promise
      */
     /**
-     * Re-renders the view's template using the specified model
-     * and redraws the entire view
+     * Renders the view's template using the specified model and redraws the
+     * entire view
      * @method redraw
      * @param {Object} model  The data model to be passed to the template
      * @return {lavaca.util.Promise} A promise
      */
     /**
-     * Re-renders the view's template using the view's model and only redraws the
+     * Renders the view's template using the view's model and only redraws the
      * elements that match the specified selector string.
      * Note: The numbers of items that match the selector must
      * be exactly the same in the view's current markup and in the newly rendered
@@ -273,7 +271,7 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     /**
-     * Re-renders the view's template using the specified model and only redraws the
+     * Renders the view's template using the specified model and only redraws the
      * elements that match the specified selector string.
      * Note: The numbers of items that match the selector must
      * be exactly the same in the view's current markup and in the newly rendered
@@ -285,7 +283,7 @@ define(function(require) {
      * @return {lavaca.util.Promise} A promise
      */
     /**
-     * Re-renders the view's template using the view's model. If shouldRedraw is true,
+     * Renders the view's template using the view's model. If shouldRedraw is true,
      * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
      * but the returned promise will be resolved with the newly rendered content. This allows
      * the caller to attach a success handler to the returned promise and define their own
@@ -295,7 +293,7 @@ define(function(require) {
      * @return {lavaca.util.Promise}  A promise
      */
     /**
-     * Re-renders the view's template using the specified model. If shouldRedraw is true,
+     * Renders the view's template using the specified model. If shouldRedraw is true,
      * the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
      * but the returned promise will be resolved with the newly rendered content. This allows
      * the caller to attach a success handler to the returned promise and define their own
@@ -305,35 +303,26 @@ define(function(require) {
      * @param {Object} model  The data model to be passed to the template
      * @return {lavaca.util.Promise}  A promise
      */
-    redraw: function(selector, model) {
-      var replaceAll;
+    render: function() {
+      var opts = this._parseRenderArguments.apply(this, arguments);
 
-      if (typeof selector === 'object' || selector instanceof Model) {
-        model = selector;
-        replaceAll = true;
-        selector = null;
-      }
-      else if (typeof selector === 'boolean') {
-        replaceAll = selector;
-        selector = null;
-      } else if (!selector) {
-        replaceAll = true;
-      }
-      model = model || this.model;
-      if (model instanceof Model) {
-        model = model.toObject();
+      var isFirstRender = !this.hasRendered;
+      if (isFirstRender) {
+        this.bindMappedEvents();
+        this.applyEvents();
       }
 
-      return Promise.resolve(this.generateHtml(model))
+      var promise = Promise.resolve(this.generateHtml(opts.model))
         .then(function(html) {
-          if (replaceAll) {
+          if (isFirstRender || opts.shouldRedraw) {
             this.disposeChildViews(this.el);
             this.disposeWidgets(this.el);
             this.el.html(html);
+            this.hasRendered = true;
           }
-          else if (selector) {
-            var $newEl = $('<div>' + html + '</div>').find(selector),
-                $oldEl = this.el.find(selector);
+          else if (opts.selector) {
+            var $newEl = $('<div>' + html + '</div>').find(opts.selector),
+                $oldEl = this.el.find(opts.selector);
             if ($newEl.length === $oldEl.length) {
               $oldEl.each(function(index, el) {
                 var $el = $(el);
@@ -349,9 +338,25 @@ define(function(require) {
           this.createWidgets();
           this.createChildViews();
           this.applyChildViewEvents();
-          this.trigger('redrawsuccess');
           return html;
         }.bind(this));
+
+      promise.then(
+        function() {
+          if (isFirstRender) {
+            this.trigger('rendersuccess');
+          }
+          else {
+            this.trigger('redrawsuccess');
+          }
+        }.bind(this),
+        function(err) {
+          this.trigger('rendererror', {err: err});
+          throw err;
+        }.bind(this)
+      );
+
+      return promise;
     },
 
     /**
@@ -791,25 +796,6 @@ define(function(require) {
       EventDispatcher.prototype.dispose.apply(this, arguments);
     },
 
-    // -------------- PageView methods --------------------
-
-    /**
-     * Creates the view's wrapper element
-     * @method wrapper
-     * @return {jQuery}  The wrapper element
-     */
-    wrapper: function() {
-      return $('<div class="view"></div>');
-    },
-    /**
-     * Creates the view's interior content wrapper element
-     * @method interior
-     * @return {jQuery} The interior content wrapper element
-     */
-    interior: function() {
-      return $('<div class="view-interior"></div>');
-    },
-
 
     /**
      * Adds this view to a container
@@ -817,18 +803,18 @@ define(function(require) {
      * @param {jQuery} container  The containing element
      */
     insertInto: function(container) {
-      if (this.shell.parent()[0] !== container[0]) {
+      if (this.el.parent()[0] !== container[0]) {
         var layers = container.children('[data-layer-index]'),
           i = -1,
           layer;
         while (!!(layer = layers[++i])) {
           layer = $(layer);
           if (layer.attr('data-layer-index') > this.index) {
-            this.shell.insertBefore(layer);
+            this.el.insertBefore(layer);
             return;
           }
         }
-        container.append(this.shell);
+        container.append(this.el);
       }
     },
 
@@ -862,7 +848,7 @@ define(function(require) {
      * @return {lavaca.util.Promise}  A promise
      */
     exit: function() {
-      this.shell.detach();
+      this.el.detach();
       this.trigger('exit');
       return Promise.resolve();
     }
