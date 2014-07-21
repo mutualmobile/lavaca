@@ -1,7 +1,7 @@
 define(function(require) {
 
   var $ = require('$'),
-      resolve = require('lavaca/util/resolve');
+      get = require('mout/object/get');
 
   /**
    * A utility type for working under different network connectivity situations.
@@ -37,9 +37,9 @@ define(function(require) {
    *    or if connection status cannot be determined
    */
   Connectivity.isOffline = function() {
-    var connectionType = resolve('navigator.connection.type');
+    var connectionType = get(window, 'navigator.connection.type');
     if (connectionType !== null) {
-      return connectionType === resolve('Connection.NONE');
+      return connectionType === get(window, 'Connection.NONE');
     } else {
       return _navigatorOnlineSupported ? !navigator.onLine : false;
     }
