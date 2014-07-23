@@ -60,29 +60,6 @@ define(function(require) {
             });
         expect(myModel.id()).toEqual('Hello, World!');
       });
-      it('should get an ID on save', function() {
-        var done = false;
-        testModel.apply({
-          foo: 'bar',
-          email: 'test@lavaca.com'
-        });
-        runs(function() {
-          testModel.save(function(model) {
-            expect(model.unsavedAttributes.length).toEqual(2);
-            model.set('email', null);
-            model.set('id', 1);
-            return model;
-          }).then(function(model) {
-            expect(model.unsavedAttributes.length).toEqual(0);
-            expect(model.get('id')).toEqual(1);
-            expect(model.isNew()).toEqual(false);
-            done = true;
-          });
-        });
-        waitsFor(function() {
-          return !!done;
-        }, 'promises to resolve', 100);
-      });
     });
 
     describe('cloning and converting', function() {
