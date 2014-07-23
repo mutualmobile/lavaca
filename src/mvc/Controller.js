@@ -3,8 +3,7 @@ define(function(require) {
   var Connectivity = require('lavaca/net/Connectivity'),
       History = require('lavaca/net/History'),
       Disposable = require('lavaca/util/Disposable'),
-      StringUtils = require('lavaca/util/StringUtils'),
-      Translation = require('lavaca/util/Translation');
+      StringUtils = require('lavaca/util/StringUtils');
 
   /**
    * Base type for controllers
