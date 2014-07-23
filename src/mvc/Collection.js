@@ -62,12 +62,8 @@ define(function(require) {
    *
    * @event change
    * @event invalid
-   * @event saveSuccess
-   * @event saveError
    * @event changeItem
    * @event invalidItem
-   * @event saveSuccessItem
-   * @event saveErrorItem
    *
    * @constructor
    * @param {Array} models  A list of models to add to the collection
@@ -155,9 +151,7 @@ define(function(require) {
       if (index === -1) {
         model
           .on('change', this.onItemEvent, this)
-          .on('invalid', this.onItemEvent, this)
-          .on('saveSuccess', this.onItemEvent, this)
-          .on('saveError', this.onItemEvent, this);
+          .on('invalid', this.onItemEvent, this);
       }
       return model;
     },
@@ -356,9 +350,7 @@ define(function(require) {
           }
           item
             .off('change', this.onItemEvent)
-            .off('invalid', this.onItemEvent)
-            .off('saveSuccess', this.onItemEvent)
-            .off('saveError', this.onItemEvent);
+            .off('invalid', this.onItemEvent);
           _triggerItemEvent(this, 'removeItem', index, null, item);
           return true;
         } else {
@@ -609,9 +601,7 @@ define(function(require) {
       if (!this.suppressTracking) {
         if (e.type === 'change') {
           insert(this.changedItems, model);
-        } else if (e.type === 'saveSuccess') {
-          removeAll(this.changedItems, model);
-        }
+        } 
       }
       this.trigger(e.type + 'Item', merge({}, e, {
         target: model,
@@ -619,32 +609,6 @@ define(function(require) {
         index: index,
         previousIndex: null
       }));
-    },
-    /**
-     * Saves the model to the server via POST
-     * @method saveToServer
-     *
-     * @param {String} url  The URL to which to post the data
-     * @return {Promise}  A promise
-     */
-    saveToServer: function(url) {
-      return this.save(function(model, changedAttributes, attributes) {
-        var id = this.id(),
-            data;
-        if (this.isNew()) {
-          data = attributes;
-        } else {
-          changedAttributes[this.idAttribute] = id;
-          data = changedAttributes;
-        }
-        return Connectivity.ajax({
-          url: url,
-          cache: false,
-          type: 'POST',
-          data: data,
-          dataType: 'json'
-        });
-      });
     },
     /**
      * Converts this model to a key-value hash

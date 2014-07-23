@@ -399,7 +399,6 @@ define(function(require) {
       apiURL = (apiRoot || '') + relPath;
       return apiURL;
     },
-    
     /**
      * Converts this model to a key-value hash
      * @method toObject
