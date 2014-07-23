@@ -62,8 +62,6 @@ define(function(require) {
    *
    * @event change
    * @event invalid
-   * @event fetchSuccess
-   * @event fetchError
    * @event saveSuccess
    * @event saveError
    * @event changeItem
@@ -623,28 +621,6 @@ define(function(require) {
       }));
     },
     /**
-     * Processes the data received from a fetch request
-     * @method onFetchSuccess
-     *
-     * @param {Object} response  The response data
-     */
-    onFetchSuccess: function(response) {
-      var list;
-      response = this.parse(response);
-      if (this.responseFilter && typeof this.responseFilter === 'function') {
-        response = this.responseFilter(response);
-      }
-      list = response;
-      if (!(list instanceof Array)) {
-        this.apply(response);
-        if (response && response.hasOwnProperty(this.itemsProperty)) {
-          list = response[this.itemsProperty];
-        }
-      }
-      this.add.apply(this, list);
-      this.trigger('fetchSuccess', {response: response});
-    },
-    /**
      * Saves the model to the server via POST
      * @method saveToServer
      *
@@ -687,16 +663,6 @@ define(function(require) {
         items[obj[prop].length] = idOnly && !item.isNew() ? item.id() : item.toObject();
       }
       return obj;
-    },
-    /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overridden)
-    * @method responseFilter
-    *
-    * @param {Object} response  The raw response passed in onFetchSuccess()
-    * @return {Object}  An object or array to be applied to this collection instance
-    */
-    responseFilter: function(response) {
-      return response;
     }
   });
 

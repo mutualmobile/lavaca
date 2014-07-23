@@ -97,10 +97,6 @@ define(function(require) {
    * Place the events where they are triggered in the code, see the yuidoc syntax reference and view.js for rendersuccess trigger
    * @event change
    * @event invalid
-   * @event fetchSuccess
-   * @event fetchError
-   * @event saveSuccess
-   * @event saveError
    *
    * @constructor
    * @param {Object} [map]  A parameter hash to apply to the model
@@ -387,69 +383,6 @@ define(function(require) {
       }
     },
     /**
-     * Processes the data received from a fetch request
-     * @method onFetchSuccess
-     *
-     * @param {Object} response  The response data
-     */
-    onFetchSuccess: function(response) {
-      response = this.parse(response);
-      if (this.responseFilter && typeof this.responseFilter === 'function') {
-        response = this.responseFilter(response);
-      }
-      this.apply(response, true);
-      this.trigger('fetchSuccess', {response: response});
-    },
-    /**
-     * Triggered when the model is unable to fetch data
-     * @method onFetchError
-     *
-     * @param {Object} value  The error value
-     */
-    onFetchError: function(response) {
-      this.trigger('fetchError', {response: response});
-    },
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @event fetchSuccess
-     * @event fetchError
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {String} url  The URL from which to load the data
-     * @return {Promise}  A promise
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {Object} options  jQuery AJAX settings. If url property is missing, fetch() will try to use the url property on this model
-     * @return {Promise}  A promise
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {String} url  The URL from which to load the data
-     * @param {Object} options  jQuery AJAX settings
-     * @return {Promise}  A promise
-     */
-    fetch: function(url, options) {
-      if (typeof url === 'object') {
-        options = url;
-      } else {
-        options = clone(options || {});
-        options.url = url;
-      }
-      options.url = this.getApiURL(options.url || this.url);
-      return Connectivity.ajax(options)
-        .then(this.onFetchSuccess.bind(this), this.onFetchError.bind(this));
-    },
-    /**
      * Converts a relative path to an absolute api url based on environment config 'apiRoot'
      * @method getApiURL
      *
@@ -466,85 +399,7 @@ define(function(require) {
       apiURL = (apiRoot || '') + relPath;
       return apiURL;
     },
-    /**
-     * Saves the model
-     * @method save
-     *
-     *
-     * @param {Function} callback  A function callback(model, changedAttributes, attributes)
-     *   that returns either a promise or a truthy value
-     *   indicating whether the operation failed or succeeded
-     * @return {Promise}  A promise
-     */
-    /**
-     * Saves the model
-     * @method save
-     *
-     * @param {Function} callback  A function callback(model, changedAttributes, attributes)
-     *   that returns either a promise or a truthy value
-     *   indicating whether the operation failed or succeeded
-     * @param {Object} thisp  The context for the callback
-     * @return {Promise}  A promise
-     */
-
-//* @event saveSuccess
-//* @event saveError
-
-    save: function(callback, thisp) {
-      var attributes = this.toObject(),
-          changedAttributes = {},
-          i = -1,
-          attribute;
-
-      while (!!(attribute = this.unsavedAttributes[++i])) {
-        changedAttributes[attribute] = attributes[attribute];
-      }
-
-      return Promise.resolve()
-        .then(function() {
-          return callback.call(thisp || this, this, changedAttributes, attributes);
-        }.bind(this))
-        .then(
-          function(value) {
-            var idAttribute = this.idAttribute;
-            if (this.isNew() && value[idAttribute] !== UNDEFINED) {
-              this.set(idAttribute, value[idAttribute]);
-            }
-            this.unsavedAttributes = [];
-            this.trigger('saveSuccess', {response: value});
-            return value;
-          }.bind(this),
-          function(value) {
-            this.trigger('saveError', {response: value});
-          }.bind(this)
-        );
-    },
-    /**
-     * Saves the model to the server via POST
-     * @method saveToServer
-     *
-     * @param {String} url  The URL to which to post the data
-     * @return {Promise}  A promise
-     */
-    saveToServer: function(url) {
-      return this.save(function(model, changedAttributes, attributes) {
-        var id = this.id(),
-            data;
-        if (this.isNew()) {
-          data = attributes;
-        } else {
-          changedAttributes[this.idAttribute] = id;
-          data = changedAttributes;
-        }
-        return Connectivity.ajax({
-            url: url,
-            cache: false,
-            type: 'POST',
-            data: data,
-            dataType: 'json'
-        });
-      });
-    },
+    
     /**
      * Converts this model to a key-value hash
      * @method toObject
@@ -622,16 +477,6 @@ define(function(require) {
       handler.fn = callback;
       handler.thisp = thisp;
       return EventDispatcher.prototype.on.call(this, type, handler, thisp);
-    },
-    /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
-    * @method responseFilter
-    *
-    * @param {Object} response  The raw response passed in onFetchSuccess()
-    * @return {Object}  An object to be applied to this model instance
-    */
-    responseFilter: function(response) {
-      return response;
     }
   });
   /**
