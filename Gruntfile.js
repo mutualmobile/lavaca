@@ -4,24 +4,40 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    jasmine: {
-      all: {
-        // PhantomJS is not fully ES5-compatible; shim it
-        src: [
-          'bower_components/es5-shim/es5-shim.js',
-          'bower_components/es6-shim/es6-shim.js'
-        ],
-        options: {
-          specs: 'test/unit/**/*.js',
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: 'src/boot.js',
-            requireConfig: {
-              baseUrl: 'src'
-            }
-          },
-          keepRunner: true
+    karma: {
+      run: {
+        configFile: '.karma.js',
+        singleRun: true,
+        reporters: ['dots'],
+        browsers: ['PhantomJS']
+      },
+      debug: {
+        configFile: '.karma.js',
+        reporters: ['dots'],
+        browsers: ['Chrome']
+      },
+      coverage: {
+        configFile: '.karma.js',
+        singleRun: true,
+        reporters: ['dots', 'coverage'],
+        browsers: ['PhantomJS'],
+        preprocessors: {
+          'src/**/*.js': ['coverage']
+        },
+        coverageReporter: {
+          type : 'lcov',
+          dir : 'test/coverage/'
         }
+      }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverage_dir: 'test/coverage',
+        dryRun: false,
+        force: true,
+        recursive: true
       }
     },
 
@@ -31,7 +47,7 @@ module.exports = function(grunt) {
           jshintrc: '.jshintrc'
         },
         files: {
-          lavaca: 'src/js/lavaca/**/*.js'
+          lavaca: 'src/**/*.js'
         }
       },
       test: {
@@ -82,12 +98,13 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   // Default task.
   grunt.registerTask('doc', ['yuidoc', 'open:doc']);
-  grunt.registerTask('test', 'generates runner and runs the tests', ['jasmine']);
+  grunt.registerTask('test', ['karma:run']);
 
 };

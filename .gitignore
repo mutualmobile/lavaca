@@ -5,6 +5,7 @@
 /tmp
 /build
 /log
+/test/coverage
 npm-debug.log
 
 .tern-port
