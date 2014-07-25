@@ -8,8 +8,8 @@ module.exports = function(grunt) {
       all: {
         // PhantomJS is not fully ES5-compatible; shim it
         src: [
-          'src/components/es5-shim/es5-shim.js',
-          'src/components/es6-shim/es6-shim.js'
+          'bower_components/es5-shim/es5-shim.js',
+          'bower_components/es6-shim/es6-shim.js'
         ],
         options: {
           specs: 'test/unit/**/*.js',

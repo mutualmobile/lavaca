@@ -1,10 +1,9 @@
 require.config({
   baseUrl: './',
   paths: {
-    'es5-shim': 'components/es5-shim/es5-shim',
-    '$': 'components/jquery/jquery',
-    'jquery': 'components/jquery/jquery',
-    'mout': 'components/mout/src',
+    '$': '../bower_components/jquery/jquery',
+    'jquery': '../bower_components/jquery/jquery',
+    'mout': '../bower_components/mout/src',
     'lavaca': './'
   },
   shim: {
@@ -16,5 +15,4 @@ require.config({
     }
   }
 });
-require(['es5-shim']);
 require(['app/app']);

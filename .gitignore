@@ -1,6 +1,5 @@
-/src/components
-
 /node_modules
+/bower_components
 /docs
 /pkg
 /tmp
