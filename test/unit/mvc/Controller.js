@@ -34,22 +34,6 @@ define(function(require) {
       expect(controller.router).toBe(router);
       expect(controller.viewManager).toBe(viewManager);
     });
-    it('can execute an action on itself', function() {
-      var controller = new testController(router, viewManager),
-          params = {one: 1, two: 2},
-          done = false;
-      runs(function() {
-        controller.exec('foo', params).then(function() {
-          expect(ob.foo).toHaveBeenCalled();
-          expect(ob.foo.calls[0].args[0].one).toBe(1);
-          expect(ob.foo.calls[0].args[0].two).toBe(2);
-          done = true;
-        });
-      });
-      waitsFor(function() {
-        return !!done;
-      }, 'promises to resolve', 100);
-    });
     describe('can load a view', function() {
       var noop = {
             success: function() {}

@@ -177,8 +177,18 @@ define(function(require) {
      */
     exec: function(url, router, viewManager, state, params) {
       var controller = new this.TController(router, viewManager),
-          urlParams = this.parse(url);
-      return controller.exec(this.action, merge(urlParams, params), state)
+          urlParams = this.parse(url),
+          model;
+      if (state) {
+        model = state.state;
+      }
+      params = merge(urlParams, params);
+      return Promise.resolve(controller[this.action](params, model))
+        .then(function() {
+          if (state) {
+            document.title = state.title;
+          }
+        })
         .then(this.dispose.bind(this), this.dispose.bind(this));
     }
   });

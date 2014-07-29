@@ -36,36 +36,6 @@ define(function(require) {
      */
     viewManager: null,
     /**
-     * Executes an action on this controller
-     * @method exec
-     *
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @return {Promise}  A promise
-     */
-     /**
-     * Executes an action on this controller
-     * @method exec
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @param {Object} state  A history record object
-     * @return {Promise}  A promise
-     */
-    exec: function(action, params, state) {
-      this.params = params;
-      this.state = state;
-      var model;
-      if (state) {
-        model = state.state;
-      }
-      return Promise.resolve(this[action](params, model))
-        .then(function() {
-          if (state) {
-            document.title = state.title;
-          }
-        });
-    },
-    /**
      * Loads a view
      * @method view
      *
