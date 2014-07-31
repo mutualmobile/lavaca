@@ -6,8 +6,7 @@ define(function(require) {
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     router = require('lavaca/mvc/Router'),
     viewManager = require('lavaca/mvc/ViewManager'),
-    Connectivity = require('lavaca/net/Connectivity'),
-    Config = require('lavaca/util/Config');
+    Connectivity = require('lavaca/net/Connectivity');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -53,7 +52,7 @@ define(function(require) {
       this._callback = callback.bind(this);
     }
     Device.init(function() {
-      this.beforeInit(Config)
+      this.beforeInit()
         .then(this.init.bind(this));
     }.bind(this));
   }, {
@@ -223,11 +222,9 @@ define(function(require) {
      * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
      * @method {String} beforeInit
      *
-     * @param {Lavaca.util.Config} Config cache that's been initialized
-     *
      * @return {Promise}  A promise
      */
-    beforeInit: function(Config) {
+    beforeInit: function() {
       return Promise.resolve(null);
     }
   });

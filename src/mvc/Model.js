@@ -6,8 +6,7 @@ define(function(require) {
       clone = require('mout/lang/deepClone'),
       contains = require('mout/array/contains'),
       removeAll = require('mout/array/removeAll'),
-      merge = require('mout/object/merge'),
-      Config = require('lavaca/util/Config');
+      merge = require('mout/object/merge');
 
 
   var UNDEFINED;
@@ -381,23 +380,6 @@ define(function(require) {
         }, this);
         return _isValid(messages);
       }
-    },
-    /**
-     * Converts a relative path to an absolute api url based on environment config 'apiRoot'
-     * @method getApiURL
-     *
-     * @param {String} relPath  A relative path
-     * @return {String}  A formated api url or an apparently bad url '/please_set_model_url' if relPath argument is faslsy
-     */
-    getApiURL: function(relPath) {
-      var badURL = '/please_set_model_url',
-          apiRoot = Config.get('apiRoot'),
-          apiURL;
-      if (!relPath) {
-        return badURL;
-      }
-      apiURL = (apiRoot || '') + relPath;
-      return apiURL;
     },
     /**
      * Converts this model to a key-value hash
