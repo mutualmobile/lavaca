@@ -149,17 +149,6 @@ define(function(require) {
       }
     },
     /**
-     * Makes an AJAX request if the user is online. If the user is offline, the returned
-     * promise will be rejected with the string argument "offline". (Alias for [[Lavaca.net.Connectivity]].ajax)
-     * @method ajax
-     *
-     * @param {Object} opts  jQuery-style AJAX options
-     * @return {Promise}  A promise
-     */
-    ajax: function() {
-      return Connectivity.ajax.apply(Connectivity, arguments);
-    },
-    /**
      * Initializes the application
      * @method init
      *
