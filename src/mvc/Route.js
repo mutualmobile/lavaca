@@ -179,6 +179,8 @@ define(function(require) {
       var controller = new this.TController(router, viewManager),
           urlParams = this.parse(url),
           model;
+      controller.params = params;
+      controller.state = state;
       if (state) {
         model = state.state;
       }
