@@ -3,7 +3,7 @@ define(function(require) {
   var Connectivity = require('lavaca/net/Connectivity'),
       History = require('lavaca/net/History'),
       Disposable = require('lavaca/util/Disposable'),
-      StringUtils = require('lavaca/util/StringUtils');
+      interpolate = require('mout/string/interpolate');
 
   /**
    * Base type for controllers
@@ -74,7 +74,8 @@ define(function(require) {
      * @return {String}  The formatted URL
      */
     url: function(str, args) {
-      return StringUtils.format(str, args, encodeURIComponent);
+      args = args.map(window.encodeURIComponent);
+      return interpolate(str, args, /\{(.+?)\}/);
     },
     /**
      * Directs the user to another route
