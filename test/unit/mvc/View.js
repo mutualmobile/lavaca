@@ -301,6 +301,67 @@ define(function(require) {
         return !!done;
       }, 'promises to resolve', 100);
     });
+    it('can map an event', function() {
+      var done = false;
+      runs(function() {
+        var TestView = View.extend(function() {
+          View.apply(this, arguments);
+
+          this.mapEvent({
+            'input': {
+              'click': function() {
+                done = true;
+              }
+            }
+          });
+        },
+        {
+          generateHtml: function() {
+            return '<input type="button" value="Click here!"></input>';
+          }
+        });
+
+        testView = new TestView(el, new Model());
+        testView.render().then(function() {
+          testView.el.find('input').trigger('click');
+        });
+      });
+      waitsFor(function() {
+        return !!done;
+      }, 'click event', 100);
+    });
+    it('always binds mapped event handlers to itself (`this` === View instance)', function() {
+      var done = false;
+      runs(function() {
+        var TestView = View.extend(function() {
+          View.apply(this, arguments);
+
+          var id = this.id;
+
+          this.mapEvent({
+            'input': {
+              'click': function() {
+                expect(this.id).toEqual(id);
+                done = true;
+              }
+            }
+          });
+        },
+        {
+          generateHtml: function() {
+            return '<input type="button" value="Click here!"></input>';
+          }
+        });
+
+        testView = new TestView(el, new Model());
+        testView.render().then(function() {
+          testView.el.find('input').trigger('click');
+        });
+      });
+      waitsFor(function() {
+        return !!done;
+      }, 'click event', 100);
+    });
     it('can map a widget', function() {
       var done = false;
       runs(function() {
