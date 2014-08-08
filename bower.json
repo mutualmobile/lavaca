@@ -23,6 +23,6 @@
     "es5-shim": "~2.1.0",
     "requirejs ": "~2.1.8",
     "iscroll ": "~5.0.5",
-    "hammerjs": "2.0.2"
+    "hammerjs": "1.0.5"
   }
 }
