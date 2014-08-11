@@ -95,7 +95,7 @@ define(function(require) {
                            !!handler.fn.guid && (handler.fn.guid === callback.guid) || // Check if is jQuery proxy of callback
                            !!handler.fn._zid && (handler.fn._zid === callback._zid); // Check if is Zepto proxy of callback
               isThisp = thisp && (handler.thisp === thisp || handler.fn.thisp === thisp);
-              if (!isCallback || (thisp && !isThisp)) {
+              if (isCallback || (thisp && !isThisp)) {
                 newList[newList.length] = handler;
               }
             }
