@@ -449,7 +449,7 @@ define(function(require) {
       this.extEventMap.forEach(function(o,i){
         o.delegate.off(o.event,o.callback);
       });
-      this.extEventMap = {};
+      this.extEventMap = [];
     },
 
     /**
