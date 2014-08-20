@@ -96,6 +96,16 @@ define(function(require) {
      * @type Object
      */
     this.eventMap = {};
+
+    /**
+     * An array of selectors and events in the form of
+     * {delegate:delegate, event:event, callback: callback}
+     * @property extEventMap
+     * @default []]
+     * @type Array
+     */
+    this.extEventMap = [];
+
     /**
      * A dictionary of selectors, View types and models in the form
      *   {selector: {TView: TView, model: model}}}
@@ -381,6 +391,7 @@ define(function(require) {
         }
       });
     },
+
     /**
      * Dispose old widgets and child views
      * @method disposeWidgets
@@ -428,6 +439,19 @@ define(function(require) {
         }
       }
     },
+
+    /**
+     * Unbinds all extEvents
+     * @method clearExtEvents
+     *
+     */
+    clearExtEvents: function(){
+      this.extEventMap.forEach(function(o,i){
+        o.delegate.off(o.event,o.callback);
+      });
+      this.extEventMap = {};
+    },
+
     /**
      * Binds events to the view
      * @method applyEvents
@@ -516,7 +540,12 @@ define(function(require) {
         o = delegate;
         for (delegate in o) {
           for (type in o[delegate]) {
-            this.mapEvent(delegate, type, o[delegate][type]);
+            if(delegate === 'ext'){
+              this.mapExtEvent(o[delegate][type].object,o[delegate][type].events);
+            }
+            else{
+              this.mapEvent(delegate, type, o[delegate][type]);
+            }
           }
         }
       } else {
@@ -527,6 +556,27 @@ define(function(require) {
         o[type] = callback;
       }
       return this;
+    },
+    /**
+     * Called from mapEvent to map an event to external objects that extend from EventDispatcher
+     * @method mapExtEvent
+     * Maps an event for the view
+     * @method mapEvent
+     * @param {Object} delegate The object/model to which to delegate the event
+     * @param {Object} events  An object of the callback events
+     */
+    mapExtEvent: function(delegate, events) {
+      var callback;
+      if(delegate && delegate instanceof (EventDispatcher)){
+        for(var event in events){
+          callback = events[event];
+          delegate.on(event,callback);
+          this.extEventMap.push({delegate:delegate,event:event,callback:callback});
+        }
+      }
+      else{
+        console.warn('You are trying to call mapExtEvent with something that does not extend from EventDispatcher.');
+      }
     },
     /**
      * Initializes widgets on the view
@@ -770,6 +820,9 @@ define(function(require) {
       }
       if (this.widgets.count()) {
         this.disposeWidgets(this.el);
+      }
+      if(this.extEventMap.length){
+        this.clearExtEvents();
       }
 
       // Do not dispose of template or model
