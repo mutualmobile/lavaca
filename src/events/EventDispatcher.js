@@ -162,10 +162,15 @@ define(function(require) {
       then checks if it is jQuery/zepto proxy of callback
      */
   function _checkIfSameCallback(a, b){
-    return (a === b || 
+    if((a === b || 
        a.fn === b ||
-       (!!a.fn.guid && a.fn.guid === b.guid ||
-        !!a.fn._zid && a.fn._zid === b._zid));
+       (a.fn && !!a.fn.guid && a.fn.guid === b.guid ||
+        a.fn && !!a.fn._zid && a.fn._zid === b._zid))){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   return EventDispatcher;
