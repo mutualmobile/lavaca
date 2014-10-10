@@ -185,13 +185,20 @@ define(function(require) {
         model = state.state;
       }
       params = merge(urlParams, params);
-      return Promise.resolve(controller[this.action](params, model))
+      return Promise.resolve()
+        .then(function() {
+          return controller[this.action](params, model);
+        }.bind(this))
         .then(function() {
           if (state) {
             document.title = state.title;
           }
         })
-        .then(this.dispose.bind(this), this.dispose.bind(this));
+        .then(this.dispose.bind(this))
+        .catch(function(err) {
+          this.dispose();
+          throw err;
+        }.bind(this));
     }
   });
 

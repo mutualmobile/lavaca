@@ -169,7 +169,11 @@ define(function(require) {
         .then(function() {
           this.hasNavigated = true;
         }.bind(this))
-        .then(this.unlock.bind(this), this.unlock.bind(this));
+        .then(this.unlock.bind(this))
+        .catch(function(err) {
+          this.unlock();
+          throw err;
+        }.bind(this));
     },
     /**
      * Unlocks the router so that it can be used again
