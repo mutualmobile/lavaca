@@ -479,7 +479,7 @@ define(function(require) {
             el.transitionEnd(delegate, callback);
           } else {
             if (el.hammer) {
-              el.hammer().on(type, delegate, callback);
+              el.hammer({domEvents:true}).on(type, delegate, callback);
             } else {
               el.on(type, delegate, callback);
             }
