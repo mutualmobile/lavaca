@@ -40,6 +40,13 @@ define(function(require) {
      * Whether or not this router has been used to navigate
      */
     hasNavigated: false,
+    /**
+     * @field {Boolean} runAuthenticationCheck
+     * @default false
+     * When true, this runs the defined authentication function
+     * set in this.setAuth() before executing a route.
+     */
+    runAuthenticationCheck: false,
 
     startHistory: function() {
       this.onpopstate = function(e) {
@@ -149,31 +156,19 @@ define(function(require) {
         url = url.replace(/^http(s?):\/\/.+?/, '');
       }
 
-      var i = -1,
-          route;
-
-      while (!!(route = this.routes[++i])) {
-        if (route.matches(url)) {
-          break;
-        }
-      }
-
-      if (!route) {
-        return Promise.reject([url, state]);
-      }
-
-      return Promise.resolve()
-        .then(function() {
-          return route.exec(url, this, this.viewManager, state, params);
-        }.bind(this))
-        .then(function() {
-          this.hasNavigated = true;
-        }.bind(this))
-        .then(this.unlock.bind(this))
-        .catch(function(err) {
-          this.unlock();
-          throw err;
+      var checkAuth = params && params.auth && typeof params.auth.runAuthenticationCheck === 'boolean' ? params.auth.runAuthenticationCheck : this.runAuthenticationCheck;
+      var failUrl = params && params.auth && typeof params.auth.failRoute === 'string' ? params.auth.failRoute : this.failRoute;
+      if(checkAuth && failUrl !== url){
+        this.authenticate().then(function authenticationSuccess(){
+          return _executeIfRouteExists.call(this, url, state, params);
+        }.bind(this), function authenticationError(){
+          return _executeIfRouteExists.call(this, failUrl, state, params);
         }.bind(this));
+      }
+      else{
+        return _executeIfRouteExists.call(this, url, state, params);
+      }
+
     },
     /**
      * Unlocks the router so that it can be used again
@@ -184,6 +179,31 @@ define(function(require) {
     unlock: function() {
       this.locked = false;
       return this;
+    },
+    /**
+     * Creates authentication check for routes
+     * @method setAuth
+     *
+     * @param {Function} func A function to run for specific authentication. Must return a Promise.
+     * @param {String} failRoute The route to execute if authentication fails.
+     */
+    /**
+     * Creates authentication check for routes
+     * @method setAuth
+     *
+     * @param {Function} func A function to run for specific authentication. Must return a Promise.
+     * @param {String} failRoute The route to execute if authentication fails.
+     * @param {Boolean} checkAuthForEveryRoute Sets the default behavior of whether to run authentication check for each route. If no value is passed, it defaults to true.
+     */
+    setAuth: function(func, failRoute, checkAuthForEveryRoute){
+      if(typeof func === 'function' && typeof failRoute === 'string'){
+        this.runAuthenticationCheck = typeof checkAuthForEveryRoute === 'boolean' ? checkAuthForEveryRoute : true;
+        this.authenticate = func;
+        this.failRoute = failRoute;
+      }
+      else{
+        console.warn('You must pass Router.setAuth() a function and a route to execute if authentication fails');
+      }
     },
     /**
      * Readies the router for garbage collection
@@ -197,6 +217,59 @@ define(function(require) {
       Disposable.prototype.dispose.apply(this, arguments);
     }
   });
+
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @return {Promise}  A promise
+   */
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @param {Object} state  A history record object
+   * @return {Promise}  A promise
+   */
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @param {Object} state  A history record object
+   * @param {Object} params  Additional parameters to pass to the route
+   * @return {Promise}  A promise
+   */
+  function _executeIfRouteExists(url, state, params){
+    var i = -1,
+        route;
+
+    while (!!(route = this.routes[++i])) {
+      if (route.matches(url)) {
+        break;
+      }
+    }
+
+    if (!route) {
+      return Promise.reject([url, state]);
+    }
+
+    return Promise.resolve()
+      .then(function() {
+        return route.exec(url, this, this.viewManager, state, params);
+      }.bind(this))
+      .then(function() {
+        this.hasNavigated = true;
+      }.bind(this))
+      .then(this.unlock.bind(this))
+      .catch(function(err) {
+        this.unlock();
+        throw err;
+      }.bind(this));
+  }
+
 
   return new Router();
 
