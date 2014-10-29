@@ -20,6 +20,6 @@
     "es5-shim": "~2.1.0",
     "es6-shim": "0.13.0",
     "requirejs ": "~2.1.8",
-    "hammerjs": "1.0.5"
+    "hammerjs": "2.0.4"
   }
 }
