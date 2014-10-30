@@ -117,10 +117,20 @@ define(function(require) {
           rel = link.attr('rel'),
           target = link.attr('target'),
           isExternal = link.is('[data-external]') || _isExternal(url),
-          metaKey = e.type === 'tap' ? (e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey) : (e.ctrlKey || e.metaKey);
+          metaKey;
+
+      // backwards compatilibity with jQuery < 2.1.x
+      if (e.type === 'tap' && e.gesture && e.gesture.srcEvent) {
+        metaKey = e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey;
+      } else if (e.type === 'tap' && e.originalEvent && e.originalEvent.gesture && e.originalEvent.srcEvent) {
+        metaKey = e.originalEvent.gesture.srcEvent.ctrlKey || e.originalEvent.gesture.srcEvent.metaKey;
+      } else {
+        metaKey = e.ctrlKey || e.metaKey;
+      }
       if (metaKey) {
         target = metaKey ? '_blank' : (target ? target : '_self');
       }
+
       if (!defaultPrevented) {
         if (Device.isCordova() && target) {
           e.preventDefault();
