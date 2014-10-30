@@ -155,10 +155,20 @@ define(function(require) {
       if (url.indexOf('http') === 0) {
         url = url.replace(/^http(s?):\/\/.+?/, '');
       }
+      var i = -1,
+        route;
 
-      var checkAuth = params && params.auth && typeof params.auth.runAuthenticationCheck === 'boolean' ? params.auth.runAuthenticationCheck : this.runAuthenticationCheck;
-      var failUrl = params && params.auth && typeof params.auth.failRoute === 'string' ? params.auth.failRoute : this.failRoute;
-      if(checkAuth && failUrl !== url){
+      while (!!(route = this.routes[++i])) {
+        if (route.matches(url)) {
+          break;
+        }
+      }
+
+
+      var checkAuth = params && params.auth && typeof params.auth.runAuthenticationCheck === 'boolean' ? params.auth.runAuthenticationCheck : this.runAuthenticationCheck,
+          failUrl = params && params.auth && typeof params.auth.failRoute === 'string' ? params.auth.failRoute : this.failRoute,
+          ignoreAuth = route && route.params && route.params.ignoreAuth ? route.params.ignoreAuth : false;
+      if(checkAuth && failUrl !== url && !ignoreAuth){
         this.authenticate().then(function authenticationSuccess(){
           return _executeIfRouteExists.call(this, url, state, params);
         }.bind(this), function authenticationError(){
