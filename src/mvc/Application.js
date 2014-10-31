@@ -119,7 +119,7 @@ define(function(require) {
           isExternal = link.is('[data-external]') || _isExternal(url),
           metaKey;
 
-      // backwards compatilibity with jQuery < 2.1.x
+      // backwards compatilibity with HammerJS < 2.0
       if (e.type === 'tap' && e.gesture && e.gesture.srcEvent) {
         metaKey = e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey;
       } else if (e.type === 'tap' && e.originalEvent && e.originalEvent.gesture && e.originalEvent.srcEvent) {
