@@ -166,10 +166,11 @@ define(function(require) {
 
 
       var checkAuth = params && params.auth && typeof params.auth.runAuthenticationCheck === 'boolean' ? params.auth.runAuthenticationCheck : this.runAuthenticationCheck,
+          func = params && params.auth && typeof params.auth.func === 'function' ? params.auth.func : this.authenticate,
           failUrl = params && params.auth && typeof params.auth.failRoute === 'string' ? params.auth.failRoute : this.failRoute,
           ignoreAuth = route && route.params && route.params.ignoreAuth ? route.params.ignoreAuth : false;
       if(checkAuth && failUrl !== url && !ignoreAuth){
-        this.authenticate().then(function authenticationSuccess(){
+        func().then(function authenticationSuccess(){
           return _executeIfRouteExists.call(this, url, state, params);
         }.bind(this), function authenticationError(){
           return _executeIfRouteExists.call(this, failUrl, state, params);
