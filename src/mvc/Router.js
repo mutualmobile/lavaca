@@ -169,6 +169,9 @@ define(function(require) {
           func = params && params.auth && typeof params.auth.func === 'function' ? params.auth.func : this.authenticate,
           failUrl = params && params.auth && typeof params.auth.failRoute === 'string' ? params.auth.failRoute : this.failRoute,
           ignoreAuth = route && route.params && route.params.ignoreAuth ? route.params.ignoreAuth : false;
+      if(route && route.params && typeof route.params.func === 'function'){
+        func = route.params.func;
+      }
       if(checkAuth && failUrl !== url && !ignoreAuth){
         func().then(function authenticationSuccess(){
           return _executeIfRouteExists.call(this, url, state, params);
