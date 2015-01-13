@@ -173,7 +173,7 @@ define(function(require) {
         func = route.params.func;
       }
       if(checkAuth && failUrl !== url && !ignoreAuth){
-        func().then(function authenticationSuccess(){
+        return func().then(function authenticationSuccess(){
           return _executeIfRouteExists.call(this, url, state, params);
         }.bind(this), function authenticationError(){
           return _executeIfRouteExists.call(this, failUrl, state, params);
