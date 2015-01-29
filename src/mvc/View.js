@@ -889,6 +889,36 @@ define(function(require) {
       this.el.detach();
       this.trigger('exit');
       return Promise.resolve();
+    },
+    /**
+     * Retrieves an array of widgets that match a selector
+     * @method getWidget
+     * @param {String} selector  The selector that should match the widgets you wish to retrieve
+     * @return {Array}  An array of widgets
+     */
+    getWidgets: function(selector) {
+      var items = [];
+      this.widgets.each(function(index, item) {
+        if (item.el.is(selector)) {
+          items.push(item);
+        }
+      });
+      return items;
+    },
+    /**
+     * Retrieves an array of childViews that match a selector
+     * @method getChildViews
+     * @param {String} selector  The selector that should match the childViews you wish to retrieve
+     * @return {Array}  An array of childViews
+     */
+    getChildViews: function(selector) {
+      var items = [];
+      this.childViews.each(function(index, item) {
+        if (item.el.is(selector)) {
+          items.push(item);
+        }
+      });
+      return items;
     }
   });
 
