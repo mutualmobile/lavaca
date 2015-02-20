@@ -1,5 +1,7 @@
 define(function(require) {
+  var React = require('react');
 
+  var mixin = require('lavaca-mixin');
   var $ = require('$'),
     View = require('lavaca/mvc/View'),
     Cache = require('lavaca/util/Cache'),
@@ -55,6 +57,7 @@ define(function(require) {
      * @default false
      */
     locked: false,
+    viewIndex:0,
     /**
      * Sets the el property on the instance
      * @method setEl
@@ -78,7 +81,7 @@ define(function(require) {
      * @method load
      *
      * @param {String} cacheKey  The cache key associated with the view
-     * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
+     * @param {Function} ReactView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
      * @param {Number} layer  The index of the layer on which the view will sit
      * @return {Promise}  A promise
@@ -88,71 +91,79 @@ define(function(require) {
      * @method load
      *
      * @param {String} cacheKey  The cache key associated with the view
-     * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
+     * @param {Function} ReactView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
      * @param {Object} params  Parameters to be mapped to the view
      * @return {Promise}  A promise
      */
-    load: function(cacheKey, TPageView, model, params) {
+    load: function(ReactView, model, params) {
       if (this.locked) {
         return Promise.reject('locked');
       } else {
-        this.locked = true;
+        // this.locked = true;
       }
-      params = params || {};
-      var layer = TPageView.prototype.layer || 0,
-          pageView = this.pageViews.get(cacheKey);
+      if(this.viewIndex){
+        var exitingView = document.getElementById('view'+this.viewIndex);
+        $(exitingView).remove();
+      }
+      this.viewIndex++;
+      this.el.append('<div class="view" id="view'+this.viewIndex+'"></div>');
+      React.renderComponent(<ReactView model={model}/>, document.getElementById('view'+this.viewIndex));
+      return Promise.resolve();
+      // params = params || {};
+      // var layer = ReactView.prototype.layer || 0,
+      //     pageView = this.pageViews.get(cacheKey);
 
-      if (typeof params === 'number') {
-        layer = params;
-      } else if (params.layer) {
-        layer = params.layer;
-      }
+      // if (typeof params === 'number') {
+      //   layer = params;
+      // } else if (params.layer) {
+      //   layer = params.layer;
+      // }
 
-      var shouldRender = false;
-      if (!pageView) {
-        pageView = new TPageView(null, model, layer);
-        if (typeof params === 'object') {
-          merge(pageView, params);
-        }
-        shouldRender = true;
-        if (cacheKey !== null) {
-          this.pageViews.set(cacheKey, pageView);
-          pageView.cacheKey = cacheKey;
-        }
-      } else {
-        if (typeof params === 'object') {
-          merge(pageView, params);
-        }
-      }
+      // var shouldRender = false;
+      // if (!pageView) {
+      //   pageView = new ReactView(null, model, layer);
+      //   if (typeof params === 'object') {
+      //     merge(pageView, params);
+      //   }
+      //   shouldRender = true;
+      //   if (cacheKey !== null) {
+      //     this.pageViews.set(cacheKey, pageView);
+      //     pageView.cacheKey = cacheKey;
+      //   }
+      // } else {
+      //   if (typeof params === 'object') {
+      //     merge(pageView, params);
+      //   }
+      // }
 
       return Promise.resolve()
         .then(function() {
-          if (shouldRender) {
-            return pageView.render();
-          }
+      //     if (shouldRender) {
+      //       return pageView.render();
+      //     }
         })
         .then(function() {
-          return this.beforeEnterExit(layer-1, pageView);
+      //     return this.beforeEnterExit(layer-1, pageView);
         }.bind(this))
-        .then(function() {
-          this.enteringPageViews = [pageView];
-          return Promise.all([
-            (function() {
-              if (this.layers[layer] !== pageView) {
-                return pageView.enter(this.el, this.exitingPageViews);
-              }
-            }.bind(this))(),
-            (function() {
-              return this.dismissLayersAbove(layer-1, pageView);
-            }.bind(this))()
-          ]);
-        }.bind(this))
-        .then(function() {
-          this.locked = false;
-          this.enteringPageViews = [];
-          this.layers[layer] = pageView;
-        }.bind(this));
+      //   .then(function() {
+      //     this.enteringPageViews = [pageView];
+      //     return Promise.all([
+      //       (function() {
+      //         if (this.layers[layer] !== pageView) {
+      //           return pageView.enter(this.el, this.exitingPageViews);
+      //         }
+      //       }.bind(this))(),
+      //       (function() {
+      //         return this.dismissLayersAbove(layer-1, pageView);
+      //       }.bind(this))()
+      //     ]);
+      //   }.bind(this))
+      //   .then(function() {
+      //     this.locked = false;
+      //     this.enteringPageViews = [];
+      //     this.layers[layer] = pageView;
+      //   }.bind(this));
     },
     /**
      * Execute beforeEnter or beforeExit for each layer. Both functions

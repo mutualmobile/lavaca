@@ -5,7 +5,7 @@ define(function(require) {
     Device = require('lavaca/env/Device'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     router = require('lavaca/mvc/Router'),
-    viewManager = require('lavaca/mvc/ViewManager'),
+    viewManager = require('jsx!lavaca/mvc/ViewManager'),
     Connectivity = require('lavaca/net/Connectivity');
 
   function _stopEvent(e) {

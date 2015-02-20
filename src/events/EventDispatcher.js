@@ -37,9 +37,15 @@ define(function(require) {
      * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
      */
     on: function(type, callback, thisp) {
-      var calls = this.callbacks || (this.callbacks = {}),
-          list = calls[type] || (calls[type] = []);
-      list[list.length] = {fn: callback, thisp: thisp};
+      var callbacks = this.callbacks || (this.callbacks = {}),
+          types = type.split(' ');
+
+      var i = 0;
+
+      while ( (type = types[ i++ ]) ) {
+        var list = callbacks[type] || (callbacks[type] = []);
+        list[list.length] = {fn: callback, thisp: thisp};
+      }
       return this;
     },
     /**

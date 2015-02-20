@@ -45,8 +45,8 @@ define(function(require) {
      * @param {Number} layer  The integer indicating what UI layer the view sits on
      * @return {Promise}  A promise
      */
-    view: function(cacheKey, TView, model, layer) {
-      return this.viewManager.load(cacheKey, TView, model, layer);
+    view: function(reactView, model, params) {
+      return this.viewManager.load(reactView, model, params);
     },
     /**
      * Adds a state to the browser history
