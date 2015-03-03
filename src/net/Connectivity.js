@@ -38,7 +38,7 @@ define(function(require) {
    */
   Connectivity.isOffline = function() {
     var connectionType = get(window, 'navigator.connection.type');
-    if (connectionType !== null) {
+    if (connectionType !== null && typeof connectionType !== 'undefined') {
       return connectionType === get(window, 'Connection.NONE');
     } else {
       return _navigatorOnlineSupported ? !navigator.onLine : false;
