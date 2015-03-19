@@ -41,7 +41,11 @@ define(function(require) {
     var none = get(window, 'Connection.NONE');
     if (!!connectionType && !!none) {
       return connectionType === none;
-    } else {
+    }
+    else if(connectionType === 'none'){
+      return true;
+    }
+    else {
       return _navigatorOnlineSupported ? !navigator.onLine : false;
     }
   };
