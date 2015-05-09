@@ -435,7 +435,7 @@ define(function(require) {
           if (dotIndex !== -1) {
             type = type.substr(0, dotIndex);
           }
-          this.model.off(type, callback);
+          this.model.off(type, callback, this);
         }
       }
     },
