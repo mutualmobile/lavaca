@@ -42,8 +42,8 @@ define(function(require) {
     if (!!connectionType && !!none) {
       return connectionType === none;
     }
-    else if(connectionType === 'none'){
-      return true;
+    else if(connectionType !== 'none'){
+      return false;
     }
     else {
       return _navigatorOnlineSupported ? !navigator.onLine : false;

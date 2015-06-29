@@ -451,7 +451,7 @@ define(function(require) {
         attr = null;
       }
       function handler(e) {
-        if (!attr || e.attribute === attr) {
+        if (callback && (!attr || e.attribute === attr)) {
           callback.call(thisp || this, e);
         }
       }
