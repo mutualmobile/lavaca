@@ -64,6 +64,7 @@ define(function(require) {
    * @event invalid
    * @event changeItem
    * @event invalidItem
+   * @event deepApply
    *
    * @constructor
    * @param {Array} models  A list of models to add to the collection
@@ -627,7 +628,26 @@ define(function(require) {
         items[obj[prop].length] = idOnly && !item.isNew() ? item.id() : item.toObject();
       }
       return obj;
-    }
+    },
+    /**
+     * Processes the data received from an object and apply it to self and the child models.
+     * @method deepApply
+     *
+     * @param {Object} obj  An object to apply to self and children
+     */
+    deepApply: function(obj) {
+      var list;
+      obj = this.parse(obj);
+      list = obj;
+      if (!(list instanceof Array)) {
+        this.apply(obj);
+        if (obj && obj.hasOwnProperty(this.itemsProperty)) {
+          list = obj[this.itemsProperty];
+        }
+      }
+      this.add.apply(this, list);
+      this.trigger('deepApply', {obj: obj});
+    },
   });
 
   return Collection;
