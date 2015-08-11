@@ -92,8 +92,8 @@ define(function(require) {
      * @param {Array} args  Format arguments to insert into the URL
      * @return {Promise}  A promise
      */
-    redirect: function(str, args) {
-      return this.router.unlock().exec(this.url(str, args || []));
+    redirect: function(str, args, params) {
+      return this.router.unlock().exec(this.url(str, args || []), null, params);
     },
     /**
      * Readies the controller for garbage collection
