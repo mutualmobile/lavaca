@@ -42,7 +42,7 @@ define(function(require) {
     if (!!connectionType && !!none) {
       return connectionType === none;
     }
-    else if(connectionType !== 'none'){
+    else if(connectionType && connectionType !== 'none'){
       return false;
     }
     else {
