@@ -154,6 +154,10 @@ define(function(require) {
       this.history = [];
       this.childViews.dispose();
       this.childViews = new Cache();
+    },
+    dispose:function(){
+      $(window).off('cvmexec',_exec.bind(this));
+      Disposable.prototype.dispose.apply(this,arguments);
     }
   });
   
