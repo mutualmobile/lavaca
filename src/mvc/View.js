@@ -8,6 +8,7 @@ define(function(require) {
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     Model = require('lavaca/mvc/Model'),
     Cache = require('lavaca/util/Cache'),
+    ChildViewManager = require('lavaca/mvc/ChildViewManager'),
     uuid = require('lavaca/util/uuid');
 
   var _UNDEFINED;
@@ -189,6 +190,13 @@ define(function(require) {
     viewType: null,
 
     /**
+     * Reference to the ChildViewManager if one is mapped
+     * @property {Lavaca.mvc.childViewManager} childViewManager
+     * @default false
+     */
+    childViewManager: false,
+
+    /**
      * Generate the HTML to be used in render() and redraw() methods. Override
      * from subclasses. Specified here rather than having subclasses override
      * render() directly in order for subclasses to get selector-specific
@@ -347,6 +355,7 @@ define(function(require) {
           this.createWidgets();
           this.createChildViews();
           this.applyChildViewEvents();
+          this.childViewManager && this.childViewManager.init(this.el);
           return html;
         }.bind(this));
 
@@ -730,6 +739,18 @@ define(function(require) {
         this.childViewMap[selector] = { TView: TView, model: model };
       }
       return this;
+    },
+
+    /**
+     * Instantiates a ChildViewManager for handling transitions between various childviews
+     * @method mapChildViewManager
+     * @param {String} el  The element selector for the child views to be rendred in
+     * @param {Object} map  An object containing all of the routes and view types to be rendered
+     *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
+     *
+    */
+    mapChildViewManager:function(el, map){
+      this.childViewManager = new ChildViewManager(el, map, this);
     },
 
     /**
