@@ -845,9 +845,6 @@ define(function(require) {
       if(this.extEventMap.length){
         this.clearExtEvents();
       }
-      if(this.childViewManager){
-        this.childViewManager.dispose();
-      }
 
       // Do not dispose of template or model
       this.template

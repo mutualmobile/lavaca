@@ -26,9 +26,7 @@ define(function(require) {
       console.warn('You must pass mapChildViewManager an element string and object of the routes.');
       return;
     }
-    !History.cvmanimations && (History.cvmanimations = []);
-    History.cvmanimations[el] = [];
-    $(window).on('cvmexec',_exec.bind(this));
+    $(window).on('cvmexec.'+this.id,_exec.bind(this));
   }, {
     history:[],
     animationBreadcrumb:[],
@@ -150,14 +148,15 @@ define(function(require) {
 
       return Promise.all(promises);
     },
+    dispose:function(){
+      this.model = this.parentView = null;
+      $(window).off('cvmexec.'+this.id);
+      Disposable.prototype.dispose.call(this);
+    },
     flush: function() {
       this.history = [];
       this.childViews.dispose();
       this.childViews = new Cache();
-    },
-    dispose:function(){
-      $(window).off('cvmexec',_exec.bind(this));
-      Disposable.prototype.dispose.apply(this,arguments);
     }
   });
   
@@ -175,6 +174,14 @@ define(function(require) {
 
   function _exec(e,obj){
     if(obj && obj.childViewSelector === this.elName){
+      if(obj.route === 'back' || obj.route === '#back'){
+        this.back();
+        return;
+      }
+      if(obj.route === 'stepback' || obj.route === '#stepback'){
+        this.stepback();
+        return;
+      }
       this.exec(obj.route);
     }
   }
