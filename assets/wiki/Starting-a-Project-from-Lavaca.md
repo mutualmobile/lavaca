@@ -35,7 +35,7 @@ $ bower install
 
 6. __Start Development Server__
 ```bash
-$ grunt server
+$ grunt
 ```
 Your application should now be running on `localhost:8080`.
 

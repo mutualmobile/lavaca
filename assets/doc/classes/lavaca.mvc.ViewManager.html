@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -300,6 +274,20 @@
                     <ul class="index-list methods extends">
                         
                             <li class="index-item method">
+                                <a href="#method_beforeEnterExit">beforeEnterExit</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_beforeEnterExit">beforeEnterExit</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_dismiss">dismiss</a>
 
                                 
@@ -442,8 +430,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_dismiss" class="method item">
-    <h3 class="name"><code>dismiss</code></h3>
+                    <div id="method_beforeEnterExit" class="method item">
+    <h3 class="name"><code>beforeEnterExit</code></h3>
 
     
         <div class="args">
@@ -451,7 +439,7 @@
             
                 <li class="arg">
                     
-                        <code>el</code>
+                        <code>index</code>
                     
                 </li>
             
@@ -459,6 +447,10 @@
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
     
 
     
@@ -484,7 +476,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l159"><code>src&#x2F;mvc&#x2F;ViewManager.js:159</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l157"><code>src&#x2F;mvc&#x2F;ViewManager.js:157</code></a>
         
         </p>
 
@@ -495,7 +487,8 @@
     </div>
 
     <div class="description">
-        <p>Removes all views on a layer</p>
+        <p>Execute beforeEnter or beforeExit for each layer. Both functions
+beforeEnter and beforeExit must return promises.</p>
 
     </div>
 
@@ -507,14 +500,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">el</code>
-                        <span class="type">JQuery</span>
+                        <code class="param-name">index</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>An element on the layer to remove (or the layer itself)</p>
+                        <p>The index above which is to be cleared</p>
 
                     </div>
 
@@ -525,6 +518,150 @@
         </div>
     
 
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_beforeEnterExit" class="method item">
+    <h3 class="name"><code>beforeEnterExit</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>index</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>enteringView</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_ViewManager.js.html#l165"><code>src&#x2F;mvc&#x2F;ViewManager.js:165</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Execute beforeEnter or beforeExit for each layer. Both functions
+beforeEnter and beforeExit must return promises.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">index</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The index above which is to be cleared</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">enteringView</code>
+                        <span class="type">Lavaca.mvc.View</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A view that will be entering</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
     
 
     
@@ -549,6 +686,10 @@
     
 
     
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
 
     
 
@@ -573,7 +714,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l153"><code>src&#x2F;mvc&#x2F;ViewManager.js:153</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l192"><code>src&#x2F;mvc&#x2F;ViewManager.js:192</code></a>
         
         </p>
 
@@ -615,6 +756,20 @@
     
 
     
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
 
     
 </div>
@@ -637,6 +792,10 @@
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
     
 
     
@@ -662,7 +821,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l165"><code>src&#x2F;mvc&#x2F;ViewManager.js:165</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l206"><code>src&#x2F;mvc&#x2F;ViewManager.js:206</code></a>
         
         </p>
 
@@ -704,6 +863,127 @@
     
 
     
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_dismiss" class="method item">
+    <h3 class="name"><code>dismiss</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>el</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_ViewManager.js.html#l199"><code>src&#x2F;mvc&#x2F;ViewManager.js:199</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Removes all views on a layer</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">el</code>
+                        <span class="type">JQuery</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>An element on the layer to remove (or the layer itself)</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
 
     
 </div>
@@ -734,7 +1014,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -761,7 +1041,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l195"><code>src&#x2F;mvc&#x2F;ViewManager.js:195</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l237"><code>src&#x2F;mvc&#x2F;ViewManager.js:237</code></a>
         
         </p>
 
@@ -825,7 +1105,7 @@
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise</p>
 
@@ -857,7 +1137,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -884,7 +1164,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l188"><code>src&#x2F;mvc&#x2F;ViewManager.js:188</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l230"><code>src&#x2F;mvc&#x2F;ViewManager.js:230</code></a>
         
         </p>
 
@@ -932,7 +1212,7 @@
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise</p>
 
@@ -977,7 +1257,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l253"><code>src&#x2F;mvc&#x2F;ViewManager.js:253</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l296"><code>src&#x2F;mvc&#x2F;ViewManager.js:296</code></a>
         
         </p>
 
@@ -1032,7 +1312,7 @@
             
         
         
-        <a href="../files/src_mvc_ViewManager.js.html#l232"><code>src&#x2F;mvc&#x2F;ViewManager.js:232</code></a>
+        <a href="../files/src_mvc_ViewManager.js.html#l275"><code>src&#x2F;mvc&#x2F;ViewManager.js:275</code></a>
         
         </p>
 
@@ -1092,7 +1372,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -1215,7 +1495,7 @@
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise</p>
 
@@ -1265,7 +1545,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -1388,7 +1668,7 @@
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise</p>
 

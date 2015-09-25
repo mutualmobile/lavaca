@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -162,8 +136,7 @@ define(function(require) {
 
   var Route = require(&#x27;./Route&#x27;),
       History = require(&#x27;lavaca/net/History&#x27;),
-      Disposable = require(&#x27;lavaca/util/Disposable&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;);
+      Disposable = require(&#x27;lavaca/util/Disposable&#x27;);
 
   /**
    * @class lavaca.mvc.Router
@@ -201,14 +174,22 @@ define(function(require) {
      * Whether or not this router has been used to navigate
      */
     hasNavigated: false,
+    /**
+     * @field {Boolean} runAuthenticationCheck
+     * @default false
+     * When true, this runs the defined authentication function
+     * set in this.setAuth() before executing a route.
+     */
+    runAuthenticationCheck: false,
 
     startHistory: function() {
       this.onpopstate = function(e) {
         if (this.hasNavigated) {
           History.isRoutingBack = e.direction === &#x27;back&#x27;;
-          this.exec(e.url, e).always(function() {
+          var _always = function() {
             History.isRoutingBack = false;
-          });
+          };
+          this.exec(e.url, e).then(_always, _always);
         }
       };
       History.on(&#x27;popstate&#x27;, this.onpopstate, this);
@@ -276,7 +257,7 @@ define(function(require) {
      * @method exec
      *
      * @param {String} url  The URL
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes the action for a given URL
@@ -284,7 +265,7 @@ define(function(require) {
      *
      * @param {String} url  The URL
      * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes the action for a given URL
@@ -293,14 +274,15 @@ define(function(require) {
      * @param {String} url  The URL
      * @param {Object} state  A history record object
      * @param {Object} params  Additional parameters to pass to the route
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     exec: function(url, state, params) {
       if (this.locked) {
-        return (new Promise(this)).reject(&#x27;locked&#x27;);
+        return Promise.reject(&#x27;locked&#x27;);
       } else {
         this.locked = true;
       }
+
       if (!url) {
         url = &#x27;/&#x27;;
       }
@@ -308,22 +290,33 @@ define(function(require) {
         url = url.replace(/^http(s?):\/\/.+?/, &#x27;&#x27;);
       }
       var i = -1,
-          route,
-          promise = new Promise(this);
-      promise.always(function() {
-        this.unlock();
-      });
-      if (!this.hasNavigated) {
-        promise.success(function() {
-          this.hasNavigated = true;
-        });
-      }
+        route;
+
       while (!!(route = this.routes[++i])) {
         if (route.matches(url)) {
-          return promise.when(route.exec(url, this, this.viewManager, state, params));
+          break;
         }
       }
-      return promise.reject(url, state);
+
+
+      var checkAuth = params &amp;&amp; params.auth &amp;&amp; typeof params.auth.runAuthenticationCheck === &#x27;boolean&#x27; ? params.auth.runAuthenticationCheck : this.runAuthenticationCheck,
+          func = params &amp;&amp; params.auth &amp;&amp; typeof params.auth.func === &#x27;function&#x27; ? params.auth.func : this.authenticate,
+          failUrl = params &amp;&amp; params.auth &amp;&amp; typeof params.auth.failRoute === &#x27;string&#x27; ? params.auth.failRoute : this.failRoute,
+          ignoreAuth = route &amp;&amp; route.params &amp;&amp; route.params.ignoreAuth ? route.params.ignoreAuth : false;
+      if(route &amp;&amp; route.params &amp;&amp; typeof route.params.func === &#x27;function&#x27;){
+        func = route.params.func;
+      }
+      if(checkAuth &amp;&amp; failUrl !== url &amp;&amp; !ignoreAuth){
+        return func().then(function authenticationSuccess(){
+          return _executeIfRouteExists.call(this, url, state, params);
+        }.bind(this), function authenticationError(){
+          return _executeIfRouteExists.call(this, failUrl, state, params);
+        }.bind(this));
+      }
+      else{
+        return _executeIfRouteExists.call(this, url, state, params);
+      }
+
     },
     /**
      * Unlocks the router so that it can be used again
@@ -334,6 +327,31 @@ define(function(require) {
     unlock: function() {
       this.locked = false;
       return this;
+    },
+    /**
+     * Creates authentication check for routes
+     * @method setAuth
+     *
+     * @param {Function} func A function to run for specific authentication. Must return a Promise.
+     * @param {String} failRoute The route to execute if authentication fails.
+     */
+    /**
+     * Creates authentication check for routes
+     * @method setAuth
+     *
+     * @param {Function} func A function to run for specific authentication. Must return a Promise.
+     * @param {String} failRoute The route to execute if authentication fails.
+     * @param {Boolean} checkAuthForEveryRoute Sets the default behavior of whether to run authentication check for each route. If no value is passed, it defaults to true.
+     */
+    setAuth: function(func, failRoute, checkAuthForEveryRoute){
+      if(typeof func === &#x27;function&#x27; &amp;&amp; typeof failRoute === &#x27;string&#x27;){
+        this.runAuthenticationCheck = typeof checkAuthForEveryRoute === &#x27;boolean&#x27; ? checkAuthForEveryRoute : true;
+        this.authenticate = func;
+        this.failRoute = failRoute;
+      }
+      else{
+        console.warn(&#x27;You must pass Router.setAuth() a function and a route to execute if authentication fails&#x27;);
+      }
     },
     /**
      * Readies the router for garbage collection
@@ -347,6 +365,59 @@ define(function(require) {
       Disposable.prototype.dispose.apply(this, arguments);
     }
   });
+
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @return {Promise}  A promise
+   */
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @param {Object} state  A history record object
+   * @return {Promise}  A promise
+   */
+  /**
+   * Checks if route exists and executes that route
+   * @method exec
+   *
+   * @param {String} url  The URL
+   * @param {Object} state  A history record object
+   * @param {Object} params  Additional parameters to pass to the route
+   * @return {Promise}  A promise
+   */
+  function _executeIfRouteExists(url, state, params){
+    var i = -1,
+        route;
+
+    while (!!(route = this.routes[++i])) {
+      if (route.matches(url)) {
+        break;
+      }
+    }
+
+    if (!route) {
+      return Promise.reject([url, state]);
+    }
+
+    return Promise.resolve()
+      .then(function() {
+        return route.exec(url, this, this.viewManager, state, params);
+      }.bind(this))
+      .then(function() {
+        this.hasNavigated = true;
+      }.bind(this))
+      .then(this.unlock.bind(this))
+      .catch(function(err) {
+        this.unlock();
+        throw err;
+      }.bind(this));
+  }
+
 
   return new Router();
 

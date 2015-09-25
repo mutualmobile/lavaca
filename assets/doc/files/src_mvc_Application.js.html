@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -166,11 +140,7 @@ define(function(require) {
     EventDispatcher = require(&#x27;lavaca/events/EventDispatcher&#x27;),
     router = require(&#x27;lavaca/mvc/Router&#x27;),
     viewManager = require(&#x27;lavaca/mvc/ViewManager&#x27;),
-    Connectivity = require(&#x27;lavaca/net/Connectivity&#x27;),
-    Template = require(&#x27;lavaca/ui/Template&#x27;),
-    Config = require(&#x27;lavaca/util/Config&#x27;),
-    Promise = require(&#x27;lavaca/util/Promise&#x27;),
-    Translation = require(&#x27;lavaca/util/Translation&#x27;);
+    Connectivity = require(&#x27;lavaca/net/Connectivity&#x27;);
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -187,8 +157,8 @@ define(function(require) {
 
   function _isExternal(url) {
     var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
-    if (typeof match[1] === &#x27;string&#x27; 
-        &amp;&amp; match[1].length &gt; 0 
+    if (typeof match[1] === &#x27;string&#x27;
+        &amp;&amp; match[1].length &gt; 0
         &amp;&amp; match[1].toLowerCase() !== location.protocol) {
       return true;
     }
@@ -216,7 +186,7 @@ define(function(require) {
       this._callback = callback.bind(this);
     }
     Device.init(function() {
-      this.beforeInit(Config)
+      this.beforeInit()
         .then(this.init.bind(this));
     }.bind(this));
   }, {
@@ -275,51 +245,51 @@ define(function(require) {
      * @param {Event} e  The event object
      */
     onTapLink: function(e) {
-      var link = $(e.currentTarget),
-          defaultPrevented = e.isDefaultPrevented(),
-          url = link.attr(&#x27;href&#x27;) || link.attr(&#x27;data-href&#x27;),
-          rel = link.attr(&#x27;rel&#x27;),
-          target = link.attr(&#x27;target&#x27;),
-          isExternal = link.is(&#x27;[data-external]&#x27;) || _isExternal(url),
-          metaKey = e.type === &#x27;tap&#x27; ? (e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey) : (e.ctrlKey || e.metaKey);
+      var link = $(e.currentTarget),
+          defaultPrevented = e.isDefaultPrevented(),
+          url = link.attr(&#x27;href&#x27;) || link.attr(&#x27;data-href&#x27;),
+          rel = link.attr(&#x27;rel&#x27;),
+          target = link.attr(&#x27;target&#x27;),
+          isExternal = link.is(&#x27;[data-external]&#x27;) || _isExternal(url),
+          metaKey;
+
+      // backwards compatilibity with HammerJS &lt; 2.0
+      if (e.type === &#x27;tap&#x27; &amp;&amp; e.gesture &amp;&amp; e.gesture.srcEvent) {
+        metaKey = e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey;
+      } else if (e.type === &#x27;tap&#x27; &amp;&amp; e.originalEvent &amp;&amp; e.originalEvent.gesture &amp;&amp; e.originalEvent.srcEvent) {
+        metaKey = e.originalEvent.gesture.srcEvent.ctrlKey || e.originalEvent.gesture.srcEvent.metaKey;
+      } else {
+        metaKey = e.ctrlKey || e.metaKey;
+      }
       if (metaKey) {
         target = metaKey ? &#x27;_blank&#x27; : (target ? target : &#x27;_self&#x27;);
       }
-      if (!defaultPrevented) {
+
+      if (!defaultPrevented) {
         if (Device.isCordova() &amp;&amp; target) {
           e.preventDefault();
           window.open(url, target || &#x27;_blank&#x27;);
         } else if (isExternal || target) {
           window.open(url, target);
-          return true;
-        } else {
-          e.preventDefault();
-          if (rel === &#x27;back&#x27;) {
-            History.back();
-          } else if (rel === &#x27;force-back&#x27; &amp;&amp; url) {
+          return true;
+        } else {
+          e.preventDefault();
+          if (rel === &#x27;back&#x27;) {
+            History.back();
+          } else if (rel === &#x27;force-back&#x27; &amp;&amp; url) {
             History.isRoutingBack = true;
-            this.router.exec(url, null, null).always(function() {
+            var _always = function() {
               History.isRoutingBack = false;
-            });
+            };
+            this.router.exec(url, null, null).then(_always, _always);
           } else if (rel === &#x27;cancel&#x27;) {
-            this.viewManager.dismiss(e.currentTarget);
-          } else if (url) {
-            url = url.replace(/^\/?#/, &#x27;&#x27;);
-            this.router.exec(url).error(this.onInvalidRoute);
-          }
-        }
-      }
-    },
-    /**
-     * Makes an AJAX request if the user is online. If the user is offline, the returned
-     * promise will be rejected with the string argument &quot;offline&quot;. (Alias for [[Lavaca.net.Connectivity]].ajax)
-     * @method ajax
-     *
-     * @param {Object} opts  jQuery-style AJAX options
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    ajax: function() {
-      return Connectivity.ajax.apply(Connectivity, arguments);
+            this.viewManager.dismiss(e.currentTarget);
+          } else if (url) {
+            url = url.replace(/^\/?#/, &#x27;&#x27;);
+            this.router.exec(url).catch(this.onInvalidRoute);
+          }
+        }
+      }
     },
     /**
      * Initializes the application
@@ -327,13 +297,9 @@ define(function(require) {
      *
      * @param {Object} args  Data of any type from a resolved promise returned by Application.beforeInit(). Defaults to null.
      *
-     * @return {Lavaca.util.Promise}  A promise that resolves when the application is ready for use
+     * @return {Promise}  A promise that resolves when the application is ready for use
      */
     init: function(args) {
-      var promise = new Promise(this),
-          _cbPromise,
-          lastly;
-      Template.init();
       /**
        * View manager used to transition between UI states
        * @property viewManager
@@ -351,32 +317,24 @@ define(function(require) {
        */
       this.router = router.setViewManager(this.viewManager);
 
-
-      lastly = function() {
-        this.router.startHistory();
-        if (!this.router.hasNavigated) {
-          promise.when(
-            this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams)
-          );
-          if (this.initState) {
-            History.replace(this.initState.state, this.initState.title, this.initState.url);
-          }
-        } else {
-          promise.resolve();
-        }
-      }.bind(this);
-
       this.bindLinkHandler();
 
-      if (this._callback) {
-        _cbPromise = this._callback(args);
-        _cbPromise instanceof Promise ? _cbPromise.then(lastly, promise.rejector()) : lastly();
-      } else {
-        lastly();
-      }
-      return promise.then(function() {
-        this.trigger(&#x27;ready&#x27;);
-      });
+      return Promise.resolve()
+        .then(function() {
+          return this._callback(args);
+        }.bind(this))
+        .then(function() {
+          this.router.startHistory();
+          if (!this.router.hasNavigated) {
+            if (this.initState) {
+              History.replace(this.initState.state, this.initState.title, this.initState.url);
+            }
+            return this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams);
+          }
+        }.bind(this))
+        .then(function() {
+          this.trigger(&#x27;ready&#x27;);
+        }.bind(this));
     },
     /**
      * Binds a global link handler
@@ -408,13 +366,10 @@ define(function(require) {
      * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
      * @method {String} beforeInit
      *
-     * @param {Lavaca.util.Config} Config cache that&#x27;s been initialized
-     *
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
-    beforeInit: function(Config) {
-      var promise = new Promise();
-      return promise.resolve(null);
+    beforeInit: function() {
+      return Promise.resolve(null);
     }
   });
 

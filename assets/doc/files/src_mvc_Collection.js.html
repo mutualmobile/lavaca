@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -162,9 +136,10 @@ define(function(require) {
 
   var Model = require(&#x27;lavaca/mvc/Model&#x27;),
       Connectivity = require(&#x27;lavaca/net/Connectivity&#x27;),
-      ArrayUtils = require(&#x27;lavaca/util/ArrayUtils&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;),
+      isArray = require(&#x27;mout/lang/isArray&#x27;),
       clone = require(&#x27;mout/lang/deepClone&#x27;),
+      removeAll = require(&#x27;mout/array/removeAll&#x27;),
+      insert = require(&#x27;mout/array/insert&#x27;),
       merge = require(&#x27;mout/object/merge&#x27;);
 
   var UNDEFINED;
@@ -221,14 +196,9 @@ define(function(require) {
    *
    * @event change
    * @event invalid
-   * @event fetchSuccess
-   * @event fetchError
-   * @event saveSuccess
-   * @event saveError
    * @event changeItem
    * @event invalidItem
-   * @event saveSuccessItem
-   * @event saveErrorItem
+   * @event deepApply
    *
    * @constructor
    * @param {Array} models  A list of models to add to the collection
@@ -312,13 +282,11 @@ define(function(require) {
             : this.TModel.prototype instanceof Collection
               ? new this.TModel(data[this.TModel.prototype.itemsProperty], data)
               : new this.TModel(data),
-          index = ArrayUtils.indexOf(this.models, model);
+          index = this.models.indexOf(model);
       if (index === -1) {
         model
           .on(&#x27;change&#x27;, this.onItemEvent, this)
-          .on(&#x27;invalid&#x27;, this.onItemEvent, this)
-          .on(&#x27;saveSuccess&#x27;, this.onItemEvent, this)
-          .on(&#x27;saveError&#x27;, this.onItemEvent, this);
+          .on(&#x27;invalid&#x27;, this.onItemEvent, this);
       }
       return model;
     },
@@ -348,7 +316,7 @@ define(function(require) {
      * @return {Boolean}  false if no items were able to be added, true otherwise.
      */
 //@event addItem
-    
+
     insert: function(insertIndex, item /*, item1, item2, item3...*/) {
       var result = false,
           idAttribute = this.TModel.prototype.idAttribute,
@@ -359,7 +327,7 @@ define(function(require) {
           model,
           index,
           items;
-      items = item &amp;&amp; ArrayUtils.isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
+      items = item &amp;&amp; isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
       for (i = 0, j = items.length; i &lt; j; i++) {
         model = items[i];
         if (typeof model === &#x27;object&#x27;) {
@@ -377,9 +345,9 @@ define(function(require) {
 
           this.models.splice(insertIndex, 0, model);
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.removedItems, model);
-            ArrayUtils.remove(this.changedItems, model);
-            ArrayUtils.pushIfNotExists(this.addedItems, model);
+            removeAll(this.removedItems, model);
+            removeAll(this.changedItems, model);
+            insert(this.addedItems, model);
           }
           _triggerItemEvent(this, &#x27;addItem&#x27;, null, insertIndex, this.models[insertIndex]);
           insertIndex++;
@@ -430,7 +398,7 @@ define(function(require) {
 // * @event moveItem
     moveTo: function(oldIndex, newIndex) {
       if (oldIndex instanceof this.TModel) {
-        oldIndex = ArrayUtils.indexOf(this.models, oldIndex);
+        oldIndex = this.models.indexOf(oldIndex);
       }
       if (oldIndex &gt; -1) {
         var model = this.models.splice(oldIndex, 1)[0];
@@ -489,7 +457,7 @@ define(function(require) {
     remove: function(item /*, item1, item2, item3...*/) {
       var n, it, items, index, i, removed;
 
-      if (arguments.length === 1 &amp;&amp; ArrayUtils.isArray(item)) {
+      if (arguments.length === 1 &amp;&amp; isArray(item)) {
         n = 0;
         removed = [];
         while (!!(it = item[n++])) {
@@ -507,18 +475,17 @@ define(function(require) {
       }
 
       if (item instanceof this.TModel) {
-        index = ArrayUtils.remove(this.models, item);
+        index = this.models.indexOf(item);
+        removeAll(this.models, item);
         if (index &gt; -1) {
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.addedItems, item);
-            ArrayUtils.remove(this.changedItems, item);
-            ArrayUtils.pushIfNotExists(this.removedItems, item);
+            removeAll(this.addedItems, item);
+            removeAll(this.changedItems, item);
+            insert(this.removedItems, item);
           }
           item
             .off(&#x27;change&#x27;, this.onItemEvent)
-            .off(&#x27;invalid&#x27;, this.onItemEvent)
-            .off(&#x27;saveSuccess&#x27;, this.onItemEvent)
-            .off(&#x27;saveError&#x27;, this.onItemEvent);
+            .off(&#x27;invalid&#x27;, this.onItemEvent);
           _triggerItemEvent(this, &#x27;removeItem&#x27;, index, null, item);
           return true;
         } else {
@@ -640,7 +607,7 @@ define(function(require) {
      */
     indexOf: function(test) {
       var match = this.first(test);
-      return match ? ArrayUtils.indexOf(this.models, match) : -1;
+      return match ? this.models.indexOf(match) : -1;
     },
     /**
      * Gets the item at a specific index
@@ -725,9 +692,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, &#x27;moveItem&#x27;, ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, &#x27;moveItem&#x27;, oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -749,9 +716,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, &#x27;moveItem&#x27;, ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, &#x27;moveItem&#x27;, oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -765,13 +732,11 @@ define(function(require) {
      */
     onItemEvent: function(e) {
       var model = e.target,
-          index = ArrayUtils.indexOf(this.models, model);
+          index = this.models.indexOf(model);
       if (!this.suppressTracking) {
         if (e.type === &#x27;change&#x27;) {
-          ArrayUtils.pushIfNotExists(this.changedItems, model);
-        } else if (e.type === &#x27;saveSuccess&#x27;) {
-          ArrayUtils.remove(this.changedItems, model);
-        }
+          insert(this.changedItems, model);
+        } 
       }
       this.trigger(e.type + &#x27;Item&#x27;, merge({}, e, {
         target: model,
@@ -779,54 +744,6 @@ define(function(require) {
         index: index,
         previousIndex: null
       }));
-    },
-    /**
-     * Processes the data received from a fetch request
-     * @method onFetchSuccess
-     *
-     * @param {Object} response  The response data
-     */
-    onFetchSuccess: function(response) {
-      var list;
-      response = this.parse(response);
-      if (this.responseFilter &amp;&amp; typeof this.responseFilter === &#x27;function&#x27;) {
-        response = this.responseFilter(response);
-      }
-      list = response;
-      if (!(list instanceof Array)) {
-        this.apply(response);
-        if (response &amp;&amp; response.hasOwnProperty(this.itemsProperty)) {
-          list = response[this.itemsProperty];
-        }
-      }
-      this.add.apply(this, list);
-      this.trigger(&#x27;fetchSuccess&#x27;, {response: response});
-    },
-    /**
-     * Saves the model to the server via POST
-     * @method saveToServer
-     *
-     * @param {String} url  The URL to which to post the data
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    saveToServer: function(url) {
-      return this.save(function(model, changedAttributes, attributes) {
-        var id = this.id(),
-            data;
-        if (this.isNew()) {
-          data = attributes;
-        } else {
-          changedAttributes[this.idAttribute] = id;
-          data = changedAttributes;
-        }
-        return (new Promise(this)).when(Connectivity.ajax({
-          url: url,
-          cache: false,
-          type: &#x27;POST&#x27;,
-          data: data,
-          dataType: &#x27;json&#x27;
-        }));
-      });
     },
     /**
      * Converts this model to a key-value hash
@@ -847,15 +764,24 @@ define(function(require) {
       return obj;
     },
     /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overridden)
-    * @method responseFilter
-    *
-    * @param {Object} response  The raw response passed in onFetchSuccess()
-    * @return {Object}  An object or array to be applied to this collection instance
-    */
-    responseFilter: function(response) {
-      return response;
-    }
+     * Processes the data received from an object and apply it to self and the child models.
+     * @method deepApply
+     *
+     * @param {Object} obj  An object to apply to self and children
+     */
+    deepApply: function(obj) {
+      var list;
+      obj = this.parse(obj);
+      list = obj;
+      if (!(list instanceof Array)) {
+        this.apply(obj);
+        if (obj &amp;&amp; obj.hasOwnProperty(this.itemsProperty)) {
+          list = obj[this.itemsProperty];
+        }
+      }
+      this.add.apply(this, list);
+      this.trigger(&#x27;deepApply&#x27;, {obj: obj});
+    },
   });
 
   return Collection;

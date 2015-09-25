@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -166,7 +140,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_mvc_View.js.html#l14"><code>src&#x2F;mvc&#x2F;View.js:14</code></a>
+            Defined in: <a href="../files/src_mvc_View.js.html#l16"><code>src&#x2F;mvc&#x2F;View.js:16</code></a>
         </div>
     
 
@@ -257,7 +231,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l14"><code>src&#x2F;mvc&#x2F;View.js:14</code></a>
+        <a href="../files/src_mvc_View.js.html#l16"><code>src&#x2F;mvc&#x2F;View.js:16</code></a>
         
         </p>
 
@@ -401,8 +375,6 @@
         
         
         
-            <li class="api-class-tab events"><a href="#events">Events</a></li>
-        
     </ul>
 
     <div>
@@ -414,6 +386,13 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                        
+                            <li class="index-item method inherited">
+                                <a href="#method__checkIfSameCallback (private)">_checkIfSameCallback (private)</a>
+
+                                
+                                
+                            </li>
                         
                             <li class="index-item method">
                                 <a href="#method_applyChildViewEvent">applyChildViewEvent</a>
@@ -430,7 +409,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_bindMappedEvents">bindMappedEvents</a>
+                                <a href="#method_clearExtEvents">clearExtEvents</a>
 
                                 
                                 
@@ -500,14 +479,21 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_insertInto">insertInto</a>
+                                <a href="#method_getChildViews">getChildViews</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_interior">interior</a>
+                                <a href="#method_getWidget">getWidget</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_insertInto">insertInto</a>
 
                                 
                                 
@@ -529,6 +515,20 @@
                         
                             <li class="index-item method">
                                 <a href="#method_mapChildViewEvent">mapChildViewEvent</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_mapChildViewManager">mapChildViewManager</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_mapEvent">mapEvent</a>
 
                                 
                                 
@@ -639,29 +639,8 @@
                                 
                             </li>
                         
-                            <li class="index-item method">
-                                <a href="#method_render">render</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_renderPageView">renderPageView</a>
-
-                                
-                                
-                            </li>
-                        
                             <li class="index-item method inherited inherited">
                                 <a href="#method_trigger">trigger</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_wrapper">wrapper</a>
 
                                 
                                 
@@ -686,6 +665,13 @@
                         
                             <li class="index-item property">
                                 <a href="#property_childViewEventMap">childViewEventMap</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_childViewManager">childViewManager</a>
 
                                 
                                 
@@ -720,6 +706,13 @@
                             </li>
                         
                             <li class="index-item property">
+                                <a href="#property_extEventMap">extEventMap</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
                                 <a href="#property_id">id</a>
 
                                 
@@ -742,13 +735,6 @@
                         
                             <li class="index-item property">
                                 <a href="#property_parentView">parentView</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item property">
-                                <a href="#property_shell">shell</a>
 
                                 
                                 
@@ -803,40 +789,137 @@
             
 
             
-                <div class="index-section events">
-                    <h3>Events</h3>
-
-                    <ul class="index-list events extends">
-                        
-                            <li class="index-item event">
-                                <a href="#event_rendererror">rendererror</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event">
-                                <a href="#event_rendererror">rendererror</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event">
-                                <a href="#event_rendererror">rendererror</a>
-
-                                
-                                
-                            </li>
-                        
-                    </ul>
-                </div>
-            
         </div>
 
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method__checkIfSameCallback (private)" class="method item inherited">
+    <h3 class="name"><code>_checkIfSameCallback (private)</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>a</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>b</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/lavaca.events.EventDispatcher.html#method__checkIfSameCallback (private)">lavaca.events.EventDispatcher</a>:
+            
+        
+        
+        <a href="../files/src_events_EventDispatcher.js.html#l151"><code>src&#x2F;events&#x2F;EventDispatcher.js:151</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Checks if two callbacks are the same</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>first function</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>function to compare a to</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                    
+                    <p>returns true or false</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
 
                 
                     <div id="method_applyChildViewEvent" class="method item">
@@ -871,7 +954,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l766"><code>src&#x2F;mvc&#x2F;View.js:766</code></a>
+        <a href="../files/src_mvc_View.js.html#l786"><code>src&#x2F;mvc&#x2F;View.js:786</code></a>
         
         </p>
 
@@ -926,7 +1009,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l485"><code>src&#x2F;mvc&#x2F;View.js:485</code></a>
+        <a href="../files/src_mvc_View.js.html#l464"><code>src&#x2F;mvc&#x2F;View.js:464</code></a>
         
         </p>
 
@@ -949,8 +1032,8 @@
 </div>
 
                 
-                    <div id="method_bindMappedEvents" class="method item">
-    <h3 class="name"><code>bindMappedEvents</code></h3>
+                    <div id="method_clearExtEvents" class="method item">
+    <h3 class="name"><code>clearExtEvents</code></h3>
 
     
         <span class="paren">()</span>
@@ -981,7 +1064,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l468"><code>src&#x2F;mvc&#x2F;View.js:468</code></a>
+        <a href="../files/src_mvc_View.js.html#l452"><code>src&#x2F;mvc&#x2F;View.js:452</code></a>
         
         </p>
 
@@ -992,7 +1075,7 @@
     </div>
 
     <div class="description">
-        <p>Checks for strings in the event map to bind events to this automatically</p>
+        <p>Unbinds all extEvents</p>
 
     </div>
 
@@ -1036,7 +1119,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l442"><code>src&#x2F;mvc&#x2F;View.js:442</code></a>
+        <a href="../files/src_mvc_View.js.html#l425"><code>src&#x2F;mvc&#x2F;View.js:425</code></a>
         
         </p>
 
@@ -1091,7 +1174,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l667"><code>src&#x2F;mvc&#x2F;View.js:667</code></a>
+        <a href="../files/src_mvc_View.js.html#l675"><code>src&#x2F;mvc&#x2F;View.js:675</code></a>
         
         </p>
 
@@ -1160,7 +1243,7 @@
             
         
         
-        <a href="../files/src_events_EventDispatcher.js.html#l136"><code>src&#x2F;events&#x2F;EventDispatcher.js:136</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l127"><code>src&#x2F;events&#x2F;EventDispatcher.js:127</code></a>
         
         </p>
 
@@ -1253,7 +1336,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l582"><code>src&#x2F;mvc&#x2F;View.js:582</code></a>
+        <a href="../files/src_mvc_View.js.html#l590"><code>src&#x2F;mvc&#x2F;View.js:590</code></a>
         
         </p>
 
@@ -1308,7 +1391,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l820"><code>src&#x2F;mvc&#x2F;View.js:820</code></a>
+        <a href="../files/src_mvc_View.js.html#l831"><code>src&#x2F;mvc&#x2F;View.js:831</code></a>
         
         </p>
 
@@ -1373,7 +1456,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l398"><code>src&#x2F;mvc&#x2F;View.js:398</code></a>
+        <a href="../files/src_mvc_View.js.html#l380"><code>src&#x2F;mvc&#x2F;View.js:380</code></a>
         
         </p>
 
@@ -1462,7 +1545,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l421"><code>src&#x2F;mvc&#x2F;View.js:421</code></a>
+        <a href="../files/src_mvc_View.js.html#l404"><code>src&#x2F;mvc&#x2F;View.js:404</code></a>
         
         </p>
 
@@ -1534,7 +1617,7 @@
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+            <span class="type">lavaca.util.Promise</span>
         </span>
     
 
@@ -1561,7 +1644,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l885"><code>src&#x2F;mvc&#x2F;View.js:885</code></a>
+        <a href="../files/src_mvc_View.js.html#l880"><code>src&#x2F;mvc&#x2F;View.js:880</code></a>
         
         </p>
 
@@ -1625,7 +1708,7 @@
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                        <span class="type">lavaca.util.Promise</span>:
                     
                     <p>A promise</p>
 
@@ -1663,7 +1746,7 @@
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+            <span class="type">lavaca.util.Promise</span>
         </span>
     
 
@@ -1690,7 +1773,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l916"><code>src&#x2F;mvc&#x2F;View.js:916</code></a>
+        <a href="../files/src_mvc_View.js.html#l901"><code>src&#x2F;mvc&#x2F;View.js:901</code></a>
         
         </p>
 
@@ -1754,9 +1837,223 @@
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                        <span class="type">lavaca.util.Promise</span>:
                     
                     <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getChildViews" class="method item">
+    <h3 class="name"><code>getChildViews</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>selector</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l929"><code>src&#x2F;mvc&#x2F;View.js:929</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Retrieves an array of childViews that match a selector</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">selector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The selector that should match the childViews you wish to retrieve</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                    
+                    <p>An array of childViews</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getWidget" class="method item">
+    <h3 class="name"><code>getWidget</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>selector</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l914"><code>src&#x2F;mvc&#x2F;View.js:914</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Retrieves an array of widgets that match a selector</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">selector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The selector that should match the widgets you wish to retrieve</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                    
+                    <p>An array of widgets</p>
 
                 
             </div>
@@ -1809,7 +2106,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l864"><code>src&#x2F;mvc&#x2F;View.js:864</code></a>
+        <a href="../files/src_mvc_View.js.html#l859"><code>src&#x2F;mvc&#x2F;View.js:859</code></a>
         
         </p>
 
@@ -1850,79 +2147,6 @@
         </div>
     
 
-    
-
-    
-</div>
-
-                
-                    <div id="method_interior" class="method item">
-    <h3 class="name"><code>interior</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">JQuery</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l854"><code>src&#x2F;mvc&#x2F;View.js:854</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Creates the view&#39;s interior content wrapper element</p>
-
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">JQuery</span>:
-                    
-                    <p>The interior content wrapper element</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -1975,7 +2199,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l716"><code>src&#x2F;mvc&#x2F;View.js:716</code></a>
+        <a href="../files/src_mvc_View.js.html#l724"><code>src&#x2F;mvc&#x2F;View.js:724</code></a>
         
         </p>
 
@@ -2046,96 +2270,6 @@
             
                 <li class="arg">
                     
-                        <code>map</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l744"><code>src&#x2F;mvc&#x2F;View.js:744</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Maps multiple child event types</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">map</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A hash of event types with callbacks and TView&#39;s associated with that type
- The map should be in the form {type : {callback : {Function}, TView : TView}}</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_mapChildViewEvent" class="method item">
-    <h3 class="name"><code>mapChildViewEvent</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
                         <code>type</code>
                     
                 </li>
@@ -2181,7 +2315,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l736"><code>src&#x2F;mvc&#x2F;View.js:736</code></a>
+        <a href="../files/src_mvc_View.js.html#l756"><code>src&#x2F;mvc&#x2F;View.js:756</code></a>
         
         </p>
 
@@ -2260,6 +2394,208 @@
 </div>
 
                 
+                    <div id="method_mapChildViewEvent" class="method item">
+    <h3 class="name"><code>mapChildViewEvent</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>map</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l764"><code>src&#x2F;mvc&#x2F;View.js:764</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Maps multiple child event types</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">map</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A hash of event types with callbacks and TView&#39;s associated with that type
+ The map should be in the form {type : {callback : {Function}, TView : TView}}</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_mapChildViewManager" class="method item">
+    <h3 class="name"><code>mapChildViewManager</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>el</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>map</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l744"><code>src&#x2F;mvc&#x2F;View.js:744</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Instantiates a ChildViewManager for handling transitions between various childviews</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">el</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The element selector for the child views to be rendred in</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">map</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>An object containing all of the routes and view types to be rendered
+    The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {&#39;form&#39;: {TView : ExampleView, model : new Model(), step: 1}}</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_mapEvent" class="method item">
     <h3 class="name"><code>mapEvent</code></h3>
 
@@ -2318,7 +2654,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l556"><code>src&#x2F;mvc&#x2F;View.js:556</code></a>
+        <a href="../files/src_mvc_View.js.html#l538"><code>src&#x2F;mvc&#x2F;View.js:538</code></a>
         
         </p>
 
@@ -2457,7 +2793,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l541"><code>src&#x2F;mvc&#x2F;View.js:541</code></a>
+        <a href="../files/src_mvc_View.js.html#l523"><code>src&#x2F;mvc&#x2F;View.js:523</code></a>
         
         </p>
 
@@ -2526,8 +2862,8 @@
 </div>
 
                 
-                    <div id="method_mapWidget" class="method item">
-    <h3 class="name"><code>mapWidget</code></h3>
+                    <div id="method_mapEvent" class="method item">
+    <h3 class="name"><code>mapEvent</code></h3>
 
     
         <div class="args">
@@ -2535,7 +2871,13 @@
             
                 <li class="arg">
                     
-                        <code>map</code>
+                        <code>delegate</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>events</code>
                     
                 </li>
             
@@ -2543,10 +2885,6 @@
         </div>
     
 
-    
-        <span class="returns-inline">
-            <span class="type">Lavaca.mvc.View</span>
-        </span>
     
 
     
@@ -2572,7 +2910,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l630"><code>src&#x2F;mvc&#x2F;View.js:630</code></a>
+        <a href="../files/src_mvc_View.js.html#l569"><code>src&#x2F;mvc&#x2F;View.js:569</code></a>
         
         </p>
 
@@ -2583,7 +2921,7 @@
     </div>
 
     <div class="description">
-        <p>Assigns multiple widget types to elements on the view</p>
+        <p>Called from mapEvent to map an event to external objects that extend from EventDispatcher</p>
 
     </div>
 
@@ -2595,17 +2933,30 @@
             
                 <li class="param">
                     
-                        <code class="param-name">map</code>
+                        <code class="param-name">delegate</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>A hash of selectors to bind widgets to when the view is rendered.
-    The map should be in the form {selector: [[Lavaca.ui.Widget]]} or
-    {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.
-    For example, {&#39;form&#39;: Lavaca.ui.Form} or {&#39;form&#39;: {TWidget: Lavaca.ui.Form, args: [...]}}</p>
+                        <p>The object/model to which to delegate the event</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">events</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>An object of the callback events</p>
 
                     </div>
 
@@ -2616,20 +2967,6 @@
         </div>
     
 
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Lavaca.mvc.View</span>:
-                    
-                    <p>This view (for chaining)</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -2688,7 +3025,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l640"><code>src&#x2F;mvc&#x2F;View.js:640</code></a>
+        <a href="../files/src_mvc_View.js.html#l648"><code>src&#x2F;mvc&#x2F;View.js:648</code></a>
         
         </p>
 
@@ -2817,7 +3154,7 @@
             
         
         
-        <a href="../files/src_mvc_View.js.html#l647"><code>src&#x2F;mvc&#x2F;View.js:647</code></a>
+        <a href="../files/src_mvc_View.js.html#l655"><code>src&#x2F;mvc&#x2F;View.js:655</code></a>
         
         </p>
 
@@ -2866,6 +3203,116 @@ accepts optional arguments to pass to the widget constructor</p>
                     <div class="param-description">
                         <p>An object with a &#39;TWidget&#39; key and an optional &#39;args&#39; key which can be
     an array of arguments to pass to the widget&#39;s constructor</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Lavaca.mvc.View</span>:
+                    
+                    <p>This view (for chaining)</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_mapWidget" class="method item">
+    <h3 class="name"><code>mapWidget</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>map</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Lavaca.mvc.View</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l638"><code>src&#x2F;mvc&#x2F;View.js:638</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Assigns multiple widget types to elements on the view</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">map</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A hash of selectors to bind widgets to when the view is rendered.
+    The map should be in the form {selector: [[Lavaca.ui.Widget]]} or
+    {selector: {TWidget: [[Lavaca.ui.Widget]], args: [optional arguments to pass to widget constructor]}}.
+    For example, {&#39;form&#39;: Lavaca.ui.Form} or {&#39;form&#39;: {TWidget: Lavaca.ui.Form, args: [...]}}</p>
 
                     </div>
 
@@ -3140,7 +3587,7 @@ accepts optional arguments to pass to the widget constructor</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l810"><code>src&#x2F;mvc&#x2F;View.js:810</code></a>
+        <a href="../files/src_mvc_View.js.html#l821"><code>src&#x2F;mvc&#x2F;View.js:821</code></a>
         
         </p>
 
@@ -3230,7 +3677,7 @@ accepts optional arguments to pass to the widget constructor</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l792"><code>src&#x2F;mvc&#x2F;View.js:792</code></a>
+        <a href="../files/src_mvc_View.js.html#l812"><code>src&#x2F;mvc&#x2F;View.js:812</code></a>
         
         </p>
 
@@ -3291,229 +3738,6 @@ accepts optional arguments to pass to the widget constructor</p>
                     
                 </li>
             
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l284"><code>src&#x2F;mvc&#x2F;View.js:284</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Re-renders the view&#39;s template using the view&#39;s model and only redraws the
-elements that match the specified selector string.
-Note: The numbers of items that match the selector must
-be exactly the same in the view&#39;s current markup and in the newly rendered
-markup. If that is not the case, the returned promise will be rejected and
-nothing will be redrawn.</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">selector</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Selector string that defines elements to redraw</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_redraw" class="method item">
-    <h3 class="name"><code>redraw</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>shouldRedraw</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l307"><code>src&#x2F;mvc&#x2F;View.js:307</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Re-renders the view&#39;s template using the view&#39;s model. If shouldRedraw is true,
-the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
-but the returned promise will be resolved with the newly rendered content. This allows
-the caller to attach a success handler to the returned promise and define their own
-redrawing behavior.</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">shouldRedraw</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Whether the view should be automatically redrawn.</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_redraw" class="method item">
-    <h3 class="name"><code>redraw</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>selector</code>
-                    
-                </li>
-            
                 <li class="arg">
                     
                         <code>model</code>
@@ -3526,7 +3750,7 @@ redrawing behavior.</p>
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+            <span class="type">lavaca.util.Promise</span>
         </span>
     
 
@@ -3553,7 +3777,7 @@ redrawing behavior.</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l295"><code>src&#x2F;mvc&#x2F;View.js:295</code></a>
+        <a href="../files/src_mvc_View.js.html#l291"><code>src&#x2F;mvc&#x2F;View.js:291</code></a>
         
         </p>
 
@@ -3564,7 +3788,7 @@ redrawing behavior.</p>
     </div>
 
     <div class="description">
-        <p>Re-renders the view&#39;s template using the specified model and only redraws the
+        <p>Renders the view&#39;s template using the specified model and only redraws the
 elements that match the specified selector string.
 Note: The numbers of items that match the selector must
 be exactly the same in the view&#39;s current markup and in the newly rendered
@@ -3622,7 +3846,338 @@ nothing will be redrawn.</p>
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                        <span class="type">lavaca.util.Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_redraw" class="method item">
+    <h3 class="name"><code>redraw</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>shouldRedraw</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">lavaca.util.Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l303"><code>src&#x2F;mvc&#x2F;View.js:303</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders the view&#39;s template using the view&#39;s model. If shouldRedraw is true,
+the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
+but the returned promise will be resolved with the newly rendered content. This allows
+the caller to attach a success handler to the returned promise and define their own
+redrawing behavior.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">shouldRedraw</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Whether the view should be automatically redrawn.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">lavaca.util.Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_redraw" class="method item">
+    <h3 class="name"><code>redraw</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>model</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">lavaca.util.Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l273"><code>src&#x2F;mvc&#x2F;View.js:273</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders the view&#39;s template using the specified model and redraws the
+entire view</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">model</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The data model to be passed to the template</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">lavaca.util.Promise</span>:
+                    
+                    <p>A promise</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_redraw" class="method item">
+    <h3 class="name"><code>redraw</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>selector</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">lavaca.util.Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l280"><code>src&#x2F;mvc&#x2F;View.js:280</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders the view&#39;s template using the view&#39;s model and only redraws the
+elements that match the specified selector string.
+Note: The numbers of items that match the selector must
+be exactly the same in the view&#39;s current markup and in the newly rendered
+markup. If that is not the case, the returned promise will be rejected and
+nothing will be redrawn.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">selector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Selector string that defines elements to redraw</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">lavaca.util.Promise</span>:
                     
                     <p>A promise</p>
 
@@ -3660,7 +4215,7 @@ nothing will be redrawn.</p>
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+            <span class="type">lavaca.util.Promise</span>
         </span>
     
 
@@ -3687,7 +4242,7 @@ nothing will be redrawn.</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l317"><code>src&#x2F;mvc&#x2F;View.js:317</code></a>
+        <a href="../files/src_mvc_View.js.html#l313"><code>src&#x2F;mvc&#x2F;View.js:313</code></a>
         
         </p>
 
@@ -3698,7 +4253,7 @@ nothing will be redrawn.</p>
     </div>
 
     <div class="description">
-        <p>Re-renders the view&#39;s template using the specified model. If shouldRedraw is true,
+        <p>Renders the view&#39;s template using the specified model. If shouldRedraw is true,
 the entire view will be redrawn. If shouldRedraw is false, nothing will be redrawn,
 but the returned promise will be resolved with the newly rendered content. This allows
 the caller to attach a success handler to the returned promise and define their own
@@ -3755,115 +4310,7 @@ redrawing behavior.</p>
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_redraw" class="method item">
-    <h3 class="name"><code>redraw</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>model</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l277"><code>src&#x2F;mvc&#x2F;View.js:277</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Re-renders the view&#39;s template using the specified model
-and redraws the entire view</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">model</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The data model to be passed to the template</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                        <span class="type">lavaca.util.Promise</span>:
                     
                     <p>A promise</p>
 
@@ -3885,7 +4332,7 @@ and redraws the entire view</p>
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
+            <span class="type">lavaca.util.Promise</span>
         </span>
     
 
@@ -3912,7 +4359,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l263"><code>src&#x2F;mvc&#x2F;View.js:263</code></a>
+        <a href="../files/src_mvc_View.js.html#l262"><code>src&#x2F;mvc&#x2F;View.js:262</code></a>
         
         </p>
 
@@ -3923,15 +4370,13 @@ and redraws the entire view</p>
     </div>
 
     <div class="description">
-        <p>Re-renders the view&#39;s template and replaces the DOM nodes that match
-the selector argument. If no selector argument is provided, the whole view
-will be re-rendered. If the first parameter is passed as <code>false</code>
-the resulting html will pe passed with the promise and nothing will be replaced.
-Note: the number of elements that match the provided selector must be identical
-in the current markup and in the newly rendered markup or else the returned
-promise will be rejected.
-Re-renders the view&#39;s template using the view&#39;s model
-and redraws the entire view</p>
+        <p>Renders the view&#39;s template and replaces the DOM nodes that match the
+selector argument. If no selector argument is provided, the whole view
+will be rendered. If the first parameter is passed as <code>false</code>
+the resulting html will pe passed with the promise and nothing will be
+replaced.  Note: the number of elements that match the provided selector
+must be identical in the current markup and in the newly rendered markup
+or else the returned promise will be rejected.</p>
 
     </div>
 
@@ -3944,153 +4389,7 @@ and redraws the entire view</p>
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_render" class="method item">
-    <h3 class="name"><code>render</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l210"><code>src&#x2F;mvc&#x2F;View.js:210</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Renders the view using its template and model</p>
-
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
-                    
-                    <p>A promise</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_renderPageView" class="method item">
-    <h3 class="name"><code>renderPageView</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l233"><code>src&#x2F;mvc&#x2F;View.js:233</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Renders the view using its template and model</p>
-
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="../classes/lavaca.util.Promise.html" class="crosslink">lavaca.util.Promise</a></span>:
+                        <span class="type">lavaca.util.Promise</span>:
                     
                     <p>A promise</p>
 
@@ -4149,7 +4448,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_events_EventDispatcher.js.html#l107"><code>src&#x2F;events&#x2F;EventDispatcher.js:107</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l98"><code>src&#x2F;events&#x2F;EventDispatcher.js:98</code></a>
         
         </p>
 
@@ -4210,79 +4509,6 @@ and redraws the entire view</p>
 </div>
 
                 
-                    <div id="method_wrapper" class="method item">
-    <h3 class="name"><code>wrapper</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">JQuery</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l846"><code>src&#x2F;mvc&#x2F;View.js:846</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Creates the view&#39;s wrapper element</p>
-
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">JQuery</span>:
-                    
-                    <p>The wrapper element</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
             </div>
         
 
@@ -4314,7 +4540,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l138"><code>src&#x2F;mvc&#x2F;View.js:138</code></a>
+        <a href="../files/src_mvc_View.js.html#l154"><code>src&#x2F;mvc&#x2F;View.js:154</code></a>
         
         </p>
 
@@ -4361,7 +4587,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l125"><code>src&#x2F;mvc&#x2F;View.js:125</code></a>
+        <a href="../files/src_mvc_View.js.html#l141"><code>src&#x2F;mvc&#x2F;View.js:141</code></a>
         
         </p>
 
@@ -4378,6 +4604,53 @@ and redraws the entire view</p>
 
     
         <p><strong>Default:</strong> Object</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_childViewManager" class="property item">
+    <h3 class="name"><code>childViewManager</code></h3>
+    <span class="type">Lavaca.mvc.childViewManager</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l192"><code>src&#x2F;mvc&#x2F;View.js:192</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Reference to the ChildViewManager if one is mapped</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> false</p>
     
 
     
@@ -4409,7 +4682,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l94"><code>src&#x2F;mvc&#x2F;View.js:94</code></a>
+        <a href="../files/src_mvc_View.js.html#l110"><code>src&#x2F;mvc&#x2F;View.js:110</code></a>
         
         </p>
 
@@ -4457,7 +4730,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l103"><code>src&#x2F;mvc&#x2F;View.js:103</code></a>
+        <a href="../files/src_mvc_View.js.html#l119"><code>src&#x2F;mvc&#x2F;View.js:119</code></a>
         
         </p>
 
@@ -4504,7 +4777,7 @@ and redraws the entire view</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l75"><code>src&#x2F;mvc&#x2F;View.js:75</code></a>
+        <a href="../files/src_mvc_View.js.html#l69"><code>src&#x2F;mvc&#x2F;View.js:69</code></a>
         
         </p>
 
@@ -4552,7 +4825,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l86"><code>src&#x2F;mvc&#x2F;View.js:86</code></a>
+        <a href="../files/src_mvc_View.js.html#l92"><code>src&#x2F;mvc&#x2F;View.js:92</code></a>
         
         </p>
 
@@ -4569,6 +4842,54 @@ if it is a PageView</p>
 
     
         <p><strong>Default:</strong> {}</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_extEventMap" class="property item">
+    <h3 class="name"><code>extEventMap</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_mvc_View.js.html#l101"><code>src&#x2F;mvc&#x2F;View.js:101</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>An array of selectors and events in the form of
+{delegate:delegate, event:event, callback: callback}</p>
+
+    </div>
+
+    
+        <p><strong>Default:</strong> []]</p>
     
 
     
@@ -4600,7 +4921,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l52"><code>src&#x2F;mvc&#x2F;View.js:52</code></a>
+        <a href="../files/src_mvc_View.js.html#l46"><code>src&#x2F;mvc&#x2F;View.js:46</code></a>
         
         </p>
 
@@ -4647,7 +4968,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l162"><code>src&#x2F;mvc&#x2F;View.js:162</code></a>
+        <a href="../files/src_mvc_View.js.html#l178"><code>src&#x2F;mvc&#x2F;View.js:178</code></a>
         
         </p>
 
@@ -4694,7 +5015,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l34"><code>src&#x2F;mvc&#x2F;View.js:34</code></a>
+        <a href="../files/src_mvc_View.js.html#l36"><code>src&#x2F;mvc&#x2F;View.js:36</code></a>
         
         </p>
 
@@ -4741,7 +5062,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l62"><code>src&#x2F;mvc&#x2F;View.js:62</code></a>
+        <a href="../files/src_mvc_View.js.html#l56"><code>src&#x2F;mvc&#x2F;View.js:56</code></a>
         
         </p>
 
@@ -4752,53 +5073,6 @@ if it is a PageView</p>
 
     <div class="description">
         <p>If the view is created in the context of a childView, the parent view is assigned to this view</p>
-
-    </div>
-
-    
-        <p><strong>Default:</strong> null</p>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="property_shell" class="property item">
-    <h3 class="name"><code>shell</code></h3>
-    <span class="type">JQuery</span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l44"><code>src&#x2F;mvc&#x2F;View.js:44</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>The element containing the view</p>
 
     </div>
 
@@ -4835,7 +5109,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l153"><code>src&#x2F;mvc&#x2F;View.js:153</code></a>
+        <a href="../files/src_mvc_View.js.html#l169"><code>src&#x2F;mvc&#x2F;View.js:169</code></a>
         
         </p>
 
@@ -4882,7 +5156,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l169"><code>src&#x2F;mvc&#x2F;View.js:169</code></a>
+        <a href="../files/src_mvc_View.js.html#l185"><code>src&#x2F;mvc&#x2F;View.js:185</code></a>
         
         </p>
 
@@ -4973,7 +5247,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l146"><code>src&#x2F;mvc&#x2F;View.js:146</code></a>
+        <a href="../files/src_mvc_View.js.html#l162"><code>src&#x2F;mvc&#x2F;View.js:162</code></a>
         
         </p>
 
@@ -5020,7 +5294,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l110"><code>src&#x2F;mvc&#x2F;View.js:110</code></a>
+        <a href="../files/src_mvc_View.js.html#l126"><code>src&#x2F;mvc&#x2F;View.js:126</code></a>
         
         </p>
 
@@ -5068,7 +5342,7 @@ if it is a PageView</p>
             
         
         
-        <a href="../files/src_mvc_View.js.html#l118"><code>src&#x2F;mvc&#x2F;View.js:118</code></a>
+        <a href="../files/src_mvc_View.js.html#l134"><code>src&#x2F;mvc&#x2F;View.js:134</code></a>
         
         </p>
 
@@ -5097,144 +5371,6 @@ if it is a PageView</p>
 
         
 
-        
-            <div id="events" class="api-class-tabpanel">
-                <h2 class="off-left">Events</h2>
-
-                
-                    <div id="event_rendererror" class="events item">
-    <h3 class="name"><code>rendererror</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l187"><code>src&#x2F;mvc&#x2F;View.js:187</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when there was an error during rendering process</p>
-
-    </div>
-
-    
-
-
-    
-</div>
-
-                
-                    <div id="event_rendererror" class="events item">
-    <h3 class="name"><code>rendererror</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l908"><code>src&#x2F;mvc&#x2F;View.js:908</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when there was an error during rendering process</p>
-
-    </div>
-
-    
-
-
-    
-</div>
-
-                
-                    <div id="event_rendererror" class="events item">
-    <h3 class="name"><code>rendererror</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_mvc_View.js.html#l929"><code>src&#x2F;mvc&#x2F;View.js:929</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when there was an error during rendering process</p>
-
-    </div>
-
-    
-
-
-    
-</div>
-
-                
-            </div>
         
     </div>
 </div>

@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -235,10 +209,6 @@ define(function(require) {
     off: function(type, callback, thisp) {
       var calls = this.callbacks,
           list,
-          handler,
-          i = -1,
-          newList,
-          isCallback,
           isThisp;
       if (!type) {
         delete this.callbacks;
@@ -248,15 +218,10 @@ define(function(require) {
         } else {
           list = calls[type];
           if (list) {
-            newList = calls[type] = [];
-            while (!!(handler = list[++i])) {
-              isCallback = handler.fn === callback ||
-                           handler.fn.fn === callback ||
-                           (handler.fn.guid &amp;&amp; handler.fn.guid === callback.guid) || // Check if is jQuery proxy of callback
-                           (handler.fn._zid &amp;&amp; handler.fn._zid === callback._zid); // Check if is Zepto proxy of callback
-              isThisp = thisp &amp;&amp; (handler.thisp === thisp || handler.fn.thisp === thisp);
-              if (!isCallback || (thisp &amp;&amp; !isThisp)) {
-                newList[newList.length] = handler;
+            for(var i = list.length-1; i &gt;= 0; i--) {
+              isThisp = thisp &amp;&amp; (list[i].thisp === thisp || list[i].fn.thisp === thisp);
+              if (_checkIfSameCallback(list[i].fn,callback) || (thisp &amp;&amp; !isThisp)){
+                calls[type].splice(i,1);
               }
             }
           }
@@ -316,6 +281,31 @@ define(function(require) {
       });
     }
   });
+  
+    /**
+     * Checks if two callbacks are the same
+     * @method _checkIfSameCallback (private)
+     *
+     * @param {Function} a first function
+     * @param {Function} b function to compare a to
+     * @return {Boolean}  returns true or false
+     */
+
+    /*
+      checks if callback a matches b, then checks if a.fn matches b, 
+      then checks if it is jQuery/zepto proxy of callback
+     */
+  function _checkIfSameCallback(a, b){
+    if((a === b || 
+       a.fn === b ||
+       (a.fn &amp;&amp; !!a.fn.guid &amp;&amp; a.fn.guid === b.guid ||
+        a.fn &amp;&amp; !!a.fn._zid &amp;&amp; a.fn._zid === b._zid))){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   return EventDispatcher;
 

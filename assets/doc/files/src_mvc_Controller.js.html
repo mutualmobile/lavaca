@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -163,9 +137,7 @@ define(function(require) {
   var Connectivity = require(&#x27;lavaca/net/Connectivity&#x27;),
       History = require(&#x27;lavaca/net/History&#x27;),
       Disposable = require(&#x27;lavaca/util/Disposable&#x27;),
-      Promise = require(&#x27;lavaca/util/Promise&#x27;),
-      StringUtils = require(&#x27;lavaca/util/StringUtils&#x27;),
-      Translation = require(&#x27;lavaca/util/Translation&#x27;);
+      interpolate = require(&#x27;mout/string/interpolate&#x27;);
 
   /**
    * Base type for controllers
@@ -198,42 +170,6 @@ define(function(require) {
      */
     viewManager: null,
     /**
-     * Executes an action on this controller
-     * @method exec
-     *
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @return {Lavaca.util.Promise}  A promise
-     */
-     /**
-     * Executes an action on this controller
-     * @method exec
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    exec: function(action, params, state) {
-      this.params = params;
-      this.state = state;
-      var promise = new Promise(this),
-          model,
-          result;
-      if (state) {
-        model = state.state;
-        promise.success(function() {
-          document.title = state.title;
-        });
-      }
-      result = this[action](params, model);
-      if (result instanceof Promise) {
-        promise.when(result);
-      } else {
-        promise.resolve();
-      }
-      return promise;
-    },
-    /**
      * Loads a view
      * @method view
      *
@@ -241,10 +177,10 @@ define(function(require) {
      * @param {Function} TView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The data object to pass to the view
      * @param {Number} layer  The integer indicating what UI layer the view sits on
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     view: function(cacheKey, TView, model, layer) {
-      return Promise.when(this, this.viewManager.load(cacheKey, TView, model, layer));
+      return this.viewManager.load(cacheKey, TView, model, layer);
     },
     /**
      * Adds a state to the browser history
@@ -272,14 +208,15 @@ define(function(require) {
      * @return {String}  The formatted URL
      */
     url: function(str, args) {
-      return StringUtils.format(str, args, encodeURIComponent);
+      args = args.map(window.encodeURIComponent);
+      return interpolate(str, args, /\{(.+?)\}/);
     },
     /**
      * Directs the user to another route
      * @method redirect
      *
      * @param {String} str  The URL string
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      *
      */
     /**
@@ -287,10 +224,10 @@ define(function(require) {
      * @method redirect
      * @param {String} str  The URL string
      * @param {Array} args  Format arguments to insert into the URL
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
-    redirect: function(str, args) {
-      return this.router.unlock().exec(this.url(str, args || []));
+    redirect: function(str, args, params) {
+      return this.router.unlock().exec(this.url(str, args || []), null, params);
     },
     /**
      * Readies the controller for garbage collection

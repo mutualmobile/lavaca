@@ -4,17 +4,17 @@ Lavaca includes an iOS Xcode project that you can use as the basis of your iOS C
 Make sure that you've followed the steps outlined in [Starting a Project from Lavaca](Starting-a-Project-from-Lavaca) first.
 
 # Modifing the Xcode Project
-1. In your project folder, open `/cordova/platforms/ios/App.xcodeproj` in Xcode.
+1. In your project folder, open `/cordova/platforms/ios/lavaca.xcodeproj` in Xcode.
 
 # Changing the App Name
-1. In Xcode, select the project root (`App`). You should see target information for it appear
+1. In Xcode, select the project root (`lavaca`). You should see target information for it appear
 1. Go to the `Build Settings` tab of the target
 1. Search for product name
 1. You should see a node called `Product Name` in the search results
 1. Expand the `Product Name` node and set the name of your app for both `Debug` and `Release`
 
 # Changing the App Icons
-The iOS app icons are located under the `/cordova/platforms/ios/App/Resources/icons` and `/cordova/platforms/ios/App/Resources/splash` folders of your Xcode project. Replace these files with the desired images.
+The iOS app icons are located under the `/cordova/platforms/ios/App/Resources/icons` and `/cordova/platforms/ios/App/Resources/splash` folders of your Xcode project. (See [Auto Generating Icons](Auto-Generating-Icons))
 
 # Running an iOS Project
 Follow these steps to run a project in the iOS Simulator:

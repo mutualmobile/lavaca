@@ -77,41 +77,15 @@
             
                 <li><a href="../classes/lavaca.net.History.html">lavaca.net.History</a></li>
             
-                <li><a href="../classes/lavaca.storage.LocalStore.html">lavaca.storage.LocalStore</a></li>
-            
-                <li><a href="../classes/lavaca.storage.Store.html">lavaca.storage.Store</a></li>
-            
-                <li><a href="../classes/lavaca.ui.DustTemplate.html">lavaca.ui.DustTemplate</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Form.html">lavaca.ui.Form</a></li>
-            
                 <li><a href="../classes/lavaca.ui.LoadingIndicator.html">lavaca.ui.LoadingIndicator</a></li>
-            
-                <li><a href="../classes/lavaca.ui.Template.html">lavaca.ui.Template</a></li>
             
                 <li><a href="../classes/lavaca.ui.Widget.html">lavaca.ui.Widget</a></li>
             
-                <li><a href="../classes/lavaca.util.ArrayUtils.html">lavaca.util.ArrayUtils</a></li>
-            
                 <li><a href="../classes/lavaca.util.Cache.html">lavaca.util.Cache</a></li>
-            
-                <li><a href="../classes/lavaca.util.Config.html">lavaca.util.Config</a></li>
-            
-                <li><a href="../classes/lavaca.util.DateUtils.html">lavaca.util.DateUtils</a></li>
             
                 <li><a href="../classes/lavaca.util.Disposable.html">lavaca.util.Disposable</a></li>
             
                 <li><a href="../classes/lavaca.util.extend.html">lavaca.util.extend</a></li>
-            
-                <li><a href="../classes/lavaca.util.Map.html">lavaca.util.Map</a></li>
-            
-                <li><a href="../classes/lavaca.util.Promise.html">lavaca.util.Promise</a></li>
-            
-                <li><a href="../classes/lavaca.util.resolve.html">lavaca.util.resolve</a></li>
-            
-                <li><a href="../classes/lavaca.util.StringUtils.html">lavaca.util.StringUtils</a></li>
-            
-                <li><a href="../classes/lavaca.util.Translation.html">lavaca.util.Translation</a></li>
             
                 <li><a href="../classes/lavaca.util.uuid.html">lavaca.util.uuid</a></li>
             
@@ -166,7 +140,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_mvc_Application.js.html#l43"><code>src&#x2F;mvc&#x2F;Application.js:43</code></a>
+            Defined in: <a href="../files/src_mvc_Application.js.html#l39"><code>src&#x2F;mvc&#x2F;Application.js:39</code></a>
         </div>
     
 
@@ -208,8 +182,8 @@
 
                     <ul class="index-list methods extends">
                         
-                            <li class="index-item method">
-                                <a href="#method_ajax">ajax</a>
+                            <li class="index-item method inherited">
+                                <a href="#method__checkIfSameCallback (private)">_checkIfSameCallback (private)</a>
 
                                 
                                 
@@ -365,8 +339,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_ajax" class="method item">
-    <h3 class="name"><code>ajax</code></h3>
+                    <div id="method__checkIfSameCallback (private)" class="method item inherited">
+    <h3 class="name"><code>_checkIfSameCallback (private)</code></h3>
 
     
         <div class="args">
@@ -374,7 +348,13 @@
             
                 <li class="arg">
                     
-                        <code>opts</code>
+                        <code>a</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>b</code>
                     
                 </li>
             
@@ -384,7 +364,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
         </span>
     
 
@@ -403,15 +383,12 @@
     <div class="meta">
         
             
-                
-                <p>
-                
-                Defined in
-                
+                <p>Inherited from
+                <a href="../classes/lavaca.events.EventDispatcher.html#method__checkIfSameCallback (private)">lavaca.events.EventDispatcher</a>:
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l153"><code>src&#x2F;mvc&#x2F;Application.js:153</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l151"><code>src&#x2F;events&#x2F;EventDispatcher.js:151</code></a>
         
         </p>
 
@@ -422,8 +399,7 @@
     </div>
 
     <div class="description">
-        <p>Makes an AJAX request if the user is online. If the user is offline, the returned
-promise will be rejected with the string argument &quot;offline&quot;. (Alias for [[Lavaca.net.Connectivity]].ajax)</p>
+        <p>Checks if two callbacks are the same</p>
 
     </div>
 
@@ -435,14 +411,30 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
                 <li class="param">
                     
-                        <code class="param-name">opts</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>jQuery-style AJAX options</p>
+                        <p>first function</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>function to compare a to</p>
 
                     </div>
 
@@ -460,9 +452,9 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
                     
-                    <p>A promise</p>
+                    <p>returns true or false</p>
 
                 
             </div>
@@ -477,22 +469,12 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
     <h3 class="name"><code>beforeInit</code></h3>
 
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>Config</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -519,7 +501,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l247"><code>src&#x2F;mvc&#x2F;Application.js:247</code></a>
+        <a href="../files/src_mvc_Application.js.html#l231"><code>src&#x2F;mvc&#x2F;Application.js:231</code></a>
         
         </p>
 
@@ -535,30 +517,6 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">Config</code>
-                        <span class="type">Lavaca.util.Config</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>cache that&#39;s been initialized</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
 
     
         <div class="returns">
@@ -567,7 +525,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise</p>
 
@@ -612,7 +570,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l221"><code>src&#x2F;mvc&#x2F;Application.js:221</code></a>
+        <a href="../files/src_mvc_Application.js.html#l205"><code>src&#x2F;mvc&#x2F;Application.js:205</code></a>
         
         </p>
 
@@ -681,7 +639,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_events_EventDispatcher.js.html#l136"><code>src&#x2F;events&#x2F;EventDispatcher.js:136</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l127"><code>src&#x2F;events&#x2F;EventDispatcher.js:127</code></a>
         
         </p>
 
@@ -813,7 +771,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
 
     
         <span class="returns-inline">
-            <span class="type">Lavaca.util.Promise</span>
+            <span class="type">Promise</span>
         </span>
     
 
@@ -840,7 +798,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l164"><code>src&#x2F;mvc&#x2F;Application.js:164</code></a>
+        <a href="../files/src_mvc_Application.js.html#l160"><code>src&#x2F;mvc&#x2F;Application.js:160</code></a>
         
         </p>
 
@@ -888,7 +846,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             <div class="returns-description">
                 
                     
-                        <span class="type">Lavaca.util.Promise</span>:
+                        <span class="type">Promise</span>:
                     
                     <p>A promise that resolves when the application is ready for use</p>
 
@@ -1145,7 +1103,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l98"><code>src&#x2F;mvc&#x2F;Application.js:98</code></a>
+        <a href="../files/src_mvc_Application.js.html#l94"><code>src&#x2F;mvc&#x2F;Application.js:94</code></a>
         
         </p>
 
@@ -1234,7 +1192,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l111"><code>src&#x2F;mvc&#x2F;Application.js:111</code></a>
+        <a href="../files/src_mvc_Application.js.html#l107"><code>src&#x2F;mvc&#x2F;Application.js:107</code></a>
         
         </p>
 
@@ -1327,7 +1285,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_events_EventDispatcher.js.html#l107"><code>src&#x2F;events&#x2F;EventDispatcher.js:107</code></a>
+        <a href="../files/src_events_EventDispatcher.js.html#l98"><code>src&#x2F;events&#x2F;EventDispatcher.js:98</code></a>
         
         </p>
 
@@ -1419,7 +1377,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l237"><code>src&#x2F;mvc&#x2F;Application.js:237</code></a>
+        <a href="../files/src_mvc_Application.js.html#l221"><code>src&#x2F;mvc&#x2F;Application.js:221</code></a>
         
         </p>
 
@@ -1466,7 +1424,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l80"><code>src&#x2F;mvc&#x2F;Application.js:80</code></a>
+        <a href="../files/src_mvc_Application.js.html#l76"><code>src&#x2F;mvc&#x2F;Application.js:76</code></a>
         
         </p>
 
@@ -1513,7 +1471,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l63"><code>src&#x2F;mvc&#x2F;Application.js:63</code></a>
+        <a href="../files/src_mvc_Application.js.html#l59"><code>src&#x2F;mvc&#x2F;Application.js:59</code></a>
         
         </p>
 
@@ -1560,7 +1518,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l72"><code>src&#x2F;mvc&#x2F;Application.js:72</code></a>
+        <a href="../files/src_mvc_Application.js.html#l68"><code>src&#x2F;mvc&#x2F;Application.js:68</code></a>
         
         </p>
 
@@ -1607,7 +1565,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l185"><code>src&#x2F;mvc&#x2F;Application.js:185</code></a>
+        <a href="../files/src_mvc_Application.js.html#l177"><code>src&#x2F;mvc&#x2F;Application.js:177</code></a>
         
         </p>
 
@@ -1698,7 +1656,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l177"><code>src&#x2F;mvc&#x2F;Application.js:177</code></a>
+        <a href="../files/src_mvc_Application.js.html#l169"><code>src&#x2F;mvc&#x2F;Application.js:169</code></a>
         
         </p>
 
@@ -1745,7 +1703,7 @@ promise will be rejected with the string argument &quot;offline&quot;. (Alias fo
             
         
         
-        <a href="../files/src_mvc_Application.js.html#l89"><code>src&#x2F;mvc&#x2F;Application.js:89</code></a>
+        <a href="../files/src_mvc_Application.js.html#l85"><code>src&#x2F;mvc&#x2F;Application.js:85</code></a>
         
         </p>
 

@@ -13,7 +13,13 @@ from your terminal application.  This must be installed before you can proceed w
 ## Initializing the project with cordova
 The Gruntfile has configuation options for setting some initial properties for your Cordova project. Out of the box, the grunt tasks will initialize the project for both ios and android. To only build for ios for example, locate the platforms property of the initPlatforms task, and alter the array to only contain 'ios'.  To set the application name for your platforms projects, either use the configuration in the initCordova task in the Gruntfile.js or after you have initialized the project use the config.xml file. In your terminal application, navigate to the root of your project where the Gruntfile.js is located.
 
+Before you create the initial Cordova projects, make sure to edit `build-config.json` with your desired `appName` and `bundleId`.  These can be changed later, but it is much easier to start the project off on the right foot.
+
 Execute `grunt cordovaInit`.
+
+and then initialize the platforms
+
+Execute `grunt initPlatforms`. (this will init iOS and Android by default, but you can configure any platforms desired in `Gruntfile.js`)
 
 This will automate running the commands that you would normall have to run separately with the Cordova cli, plus integrate the base Lavaca project into the process.
 

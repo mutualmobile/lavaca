@@ -262,7 +262,7 @@ To listen for events from a model, use its `on()` function. You can either liste
 </code></pre>
 <pre class="runable validation-events"><code>person.set('age', 131);
 </code></pre>
-You can stop a model from generating events by setting its `suppressEvents` property to `false`.
+You can stop a model from generating events by setting its `suppressEvents` property to `true`.
 
 For more information about events, see [Understanding Event Dispatchers](Understanding-Event-Dispatchers).
 
