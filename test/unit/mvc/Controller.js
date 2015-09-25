@@ -7,8 +7,6 @@ define(function(require) {
   var router = require('lavaca/mvc/Router');
   var viewManager = require('lavaca/mvc/ViewManager');
   var View = require('lavaca/mvc/View');
-  var Translation = require('lavaca/util/Translation');
-  var Template = require('lavaca/ui/Template');
 
 
   var testController,
@@ -36,16 +34,6 @@ define(function(require) {
       expect(controller.router).toBe(router);
       expect(controller.viewManager).toBe(viewManager);
     });
-    it('can execute an action on itself', function() {
-      var controller = new testController(router, viewManager),
-          params = {one: 1, two: 2},
-          promise = controller.exec('foo', params);
-      promise.success(function() {
-        expect(ob.foo).toHaveBeenCalled();
-        expect(ob.foo.calls[0].args[0].one).toBe(1);
-        expect(ob.foo.calls[0].args[0].two).toBe(2);
-      });
-    });
     describe('can load a view', function() {
       var noop = {
             success: function() {}
@@ -53,7 +41,6 @@ define(function(require) {
       beforeEach(function(){
         spyOn(noop, 'success');
         $('body').append('<script type="text/dust-template" data-name="hello-world">Hello World</script>');
-        Template.init();
       });
       afterEach(function(){
         $('script[data-name="hello-world"]').remove();
@@ -63,20 +50,18 @@ define(function(require) {
             myPageView = View.extend({
               template: 'hello-world',
             }),
-            promise,
+            done = false,
             response;
           runs(function() {
-            promise = controller.view('myView', myPageView);
+            controller.view('myView', myPageView).then(function() {
+              response = viewManager.pageViews.get('myView').hasRendered;
+              expect(response).toBe(true);
+              done = true;
+            });
           });
           waitsFor(function() {
-            promise.success(function() {
-              response = this.viewManager.pageViews.get('myView').hasRendered;
-            });
-            return response;
-          }, 'a view to be rendered', 300);
-          runs(function() {
-            expect(response).toBe(true);
-          });
+            return !!done;
+          }, 'promises to resolve', 100);
       });
     });
     it('can add a state to the browser history', function() {
@@ -100,11 +85,16 @@ define(function(require) {
     describe('can redirect user to another route', function() {
       it('directly', function() {
         var controller = new testController(router, viewManager),
-            promise;
-        promise = controller.redirect('/foo');
-        promise.success(function() {
-          expect(ob.foo).toHaveBeenCalled();
+            done = false;
+        runs(function() {
+          controller.redirect('/foo').then(function() {
+            expect(ob.foo).toHaveBeenCalled();
+            done = true;
+          });
         });
+        waitsFor(function() {
+          return !!done;
+        }, 'promises to resolve', 100);
       });
     });
   });

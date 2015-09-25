@@ -1,22 +1,13 @@
-/src/components
-
 /node_modules
+/bower_components
 /docs
 /pkg
 /tmp
 /build
 /log
+/test/coverage
 npm-debug.log
 
 .tern-port
 .DS_Store
 .idea
-
-#### files installed via npm then symlinked  ######
-src/js/libs/dust-full-2.0.3.js
-src/js/libs/dust-helpers-1.1.1.js
-src/js/libs/es5-shim.js
-src/js/libs/iscroll-lite.js
-src/js/libs/less-1.4.2.js
-src/js/libs/mout
-src/js/libs/require.js

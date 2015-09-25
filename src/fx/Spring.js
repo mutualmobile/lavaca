@@ -1,5 +1,13 @@
 define(function(require) {
 
+<<<<<<< HEAD
+=======
+  /**
+   * Static utility type for creating a CSS keyframe animation with a spring effect
+   * @class lavaca.fx.Spring
+   */
+
+>>>>>>> v3
   var $ = require('$'),
       Animation = require('./Animation');
 
@@ -408,6 +416,7 @@ define(function(require) {
    * Applies a spring keyframe animation to an element
    * @method $.fn.spring
    *
+<<<<<<< HEAD
    * @param {String} name The name of the animation
    * @param {Object} options  Options for the spring
      * @opt {Number} tension Positive integer representing the tension on the spring
@@ -431,6 +440,36 @@ define(function(require) {
      * @opt {String} direction  The name of a CSS animation direction
      * @default 'normal'
      * @opt {Function} complete  A function to execute when the animation has completed
+=======
+   * @param {String} [name] The name of the animation
+   * @param {Object} [springOptions] Options for the spring
+     * @param {Number} [springOptions.tension] Positive integer representing the tension on the spring. Default is 50
+     * @param {Number} [springOptions.friction]  Positive integer representing the friction of the spring. Default is 2
+     * @param {Object} [springOptions.initialState]  Initial transform values. If element has previously been transformed with a spring, the initialState values will be merged into the result of the previous transformation.
+     * @param {Number} [springOptions.initialState.scale] Unitless number N that will be represented in CSS as scale3d(n,n,n)
+     * @param {Object} [springOptions.initialState.scale] Object with `x`, `y`, and `z` properties as numbers that will be represented in CSS as scale3d(x,y,z).  If any properties are not specified, they default to 1.
+     * @param {Number} [springOptions.initialState.translate] Number N that will be represented in CSS as translate3d(Npx,Npx,Npx)
+     * @param {Object} [springOptions.initialState.translate] Object with `x`, `y`, and `z` properties as numbers that will be represented in CSS as translate3d(xpx,ypx,zpx).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.rotate] Number N that will be represented in CSS as rotateZ(Ndeg)
+     * @param {Object} [springOptions.initialState.rotate] Object with `x`, `y`, and `z` properties as numbers that will be represented in CSS as rotateX(xdeg) rotateY(ydeg) rotateZ(zdeg).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.skew] Number N that will be represented in CSS as skewX(Ndeg) skewY(Ndeg)
+     * @param {Object} [springOptions.initialState.skew] Object with `x` and `y` properties as numbers that will be represented in CSS as skewX(xdeg) skewY(ydeg).  If any properties are not specified, they default to 0.
+     * @param {Number} [springOptions.initialState.perspective] Unitless number N that will be represented in CSS as perspective(Npx)
+     * @param {Object} [springOptions.differences]  Differences between initial and final transform values. Same format as `initialState`
+     * @param {Object} [springOptions.resultState]  Final transform values. Same format as `initialState`. If `differences` are also specified, `resultState` will be ignored
+   * @param {Object} [keyframeOptions]  Options for the animation
+     * @param {Number} [keyframeOptions.duration]  The number of milliseconds that the animation lasts
+     * @param {String} [keyframeOptions.easing]  The name of a CSS easing function
+     * @default 'linear'
+     * @param {Number} [keyframeOptions.delay]  The number of milliseconds before the animation should start
+     * @default 0
+     * @param {Object} [keyframeOptions.iterations]  Either the number of iterations to play the animation or 'infinite'
+     * @default 1
+     * @param {String} [keyframeOptions.direction]  The name of a CSS animation direction
+     * @default 'normal'
+     * @param {String} [keyframeOptions.fillMode]  The name of a CSS animation fill-mode
+     * @param {Function} [keyframeOptions.complete]  A function to execute when the animation has completed
+>>>>>>> v3
      * @default null
    * @return {jQuery}  The jQuery object, for chaining
    */

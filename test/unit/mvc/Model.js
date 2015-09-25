@@ -6,13 +6,13 @@ define(function(require) {
     var testModel;
     beforeEach(function() {
       testModel = new Model();
-    }); 
+    });
     afterEach(function() {
       testModel.clear();
     });
     it('can be initialized', function() {
       testModel = new Model();
-      var type = typeof testModel;  
+      var type = typeof testModel;
       expect(type).toEqual(typeof new Model());
     });
     it('can be initialized with a hash of attributes', function() {
@@ -41,7 +41,7 @@ define(function(require) {
       expect(testModel.get('myAttribute')).toEqual(true);
       expect(testModel.get('email')).toBeNull();
     });
-    
+
     describe('Saving and IDs', function() {
       it('should not have an ID if it has not been saved', function() {
         expect(testModel.get('id')).toBeNull();
@@ -59,24 +59,6 @@ define(function(require) {
               id : 'This is not my ID'
             });
         expect(myModel.id()).toEqual('Hello, World!');
-      });
-      it('should get an ID on save', function() {
-        var promise;
-        testModel.apply({
-          foo: 'bar',
-          email: 'test@lavaca.com'
-        });
-        promise = testModel.save(function(model) {
-          expect(model.unsavedAttributes.length).toEqual(2);
-          model.set('email', null);
-          model.set('id', 1);
-          return model;
-        });
-        promise.success(function(model) {
-          expect(model.unsavedAttributes.length).toEqual(0);
-          expect(model.get('id')).toEqual(1);
-          expect(model.isNew()).toEqual(false);
-        });
       });
     });
 

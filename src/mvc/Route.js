@@ -1,7 +1,6 @@
 define(function(require) {
 
   var Disposable = require('lavaca/util/Disposable'),
-      delay = require('lavaca/util/delay'),
       clone = require('mout/lang/deepClone'),
       merge = require('mout/object/merge');
 
@@ -153,7 +152,7 @@ define(function(require) {
      * @param {String} url  The URL that supplies parameters to this route
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes this route's controller action see if work
@@ -163,7 +162,7 @@ define(function(require) {
      * @param {Lavaca.mvc.Router} router  The router used by the application
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Executes this route's controller action see if work
@@ -174,17 +173,32 @@ define(function(require) {
      * @param {Lavaca.mvc.ViewManager}  viewManager The view manager used by the application
      * @param {Object} state  A history record object
      * @param {Object} params  Additional parameters to pass to the controller action
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     exec: function(url, router, viewManager, state, params) {
       var controller = new this.TController(router, viewManager),
           urlParams = this.parse(url),
-          promise = controller.exec(this.action, merge(urlParams, params), state);
-      function dispose() {
-        delay(controller.dispose, controller);
+          model;
+      controller.params = params;
+      controller.state = state;
+      if (state) {
+        model = state.state;
       }
-      promise.then(dispose, dispose);
-      return promise;
+      params = merge(urlParams, params);
+      return Promise.resolve()
+        .then(function() {
+          return controller[this.action](params, model);
+        }.bind(this))
+        .then(function() {
+          if (state) {
+            document.title = state.title;
+          }
+        })
+        .then(this.dispose.bind(this))
+        .catch(function(err) {
+          this.dispose();
+          throw err;
+        }.bind(this));
     }
   });
 

@@ -1,6 +1,7 @@
 {
   "globals": {
     "define": false,
+    "Promise": false,
     "describe": false,
     "expect": false,
     "beforeEach": false,

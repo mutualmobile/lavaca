@@ -2,12 +2,11 @@ define(function(require) {
 
   var EventDispatcher = require('lavaca/events/EventDispatcher'),
       Connectivity = require('lavaca/net/Connectivity'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
       Cache = require('lavaca/util/Cache'),
-      Promise = require('lavaca/util/Promise'),
       clone = require('mout/lang/deepClone'),
-      merge = require('mout/object/merge'),
-      Config = require('lavaca/util/Config');
+      contains = require('mout/array/contains'),
+      removeAll = require('mout/array/removeAll'),
+      merge = require('mout/object/merge');
 
 
   var UNDEFINED;
@@ -26,7 +25,7 @@ define(function(require) {
     if (!keys) {
       keys = model.flags[flag] = [];
     }
-    if (!ArrayUtils.contains(keys, name)) {
+    if (!contains(keys, name)) {
       keys.push(name);
     }
   }
@@ -97,15 +96,12 @@ define(function(require) {
    * Place the events where they are triggered in the code, see the yuidoc syntax reference and view.js for rendersuccess trigger
    * @event change
    * @event invalid
-   * @event fetchSuccess
-   * @event fetchError
-   * @event saveSuccess
-   * @event saveError
    *
    * @constructor
    * @param {Object} [map]  A parameter hash to apply to the model
    */
   var Model = EventDispatcher.extend(function(map) {
+    var suppressEvents, suppressTracking;
     EventDispatcher.call(this);
     this.attributes = new Cache();
     this.rules = new Cache();
@@ -115,13 +111,14 @@ define(function(require) {
       map = merge({}, this.defaults, map);
     }
     if (map) {
+      suppressEvents = this.suppressEvents;
+      suppressTracking = this.suppressTracking;
       this.suppressEvents
         = this.suppressTracking
         = true;
       this.apply(map);
-      this.suppressEvents
-        = this.suppressTracking
-        = false;
+      this.suppressEvents = suppressEvents;
+      this.suppressTracking = suppressTracking;
     }
   }, {
     /**
@@ -154,7 +151,7 @@ define(function(require) {
           flags;
       if (typeof attr === 'function') {
         flags = this.flags[Model.DO_NOT_COMPUTE];
-        return !flags || ArrayUtils.indexOf(flags, attribute) === -1 ? attr.call(this) : attr;
+        return !flags || flags.indexOf(attribute) === -1 ? attr.call(this) : attr;
       }
       return attr;
     },
@@ -209,7 +206,7 @@ define(function(require) {
             }
             _triggerAttributeEvent(this, 'change', attribute, previous, value);
             if (!this.suppressTracking
-                && !ArrayUtils.contains(this.unsavedAttributes, attribute)) {
+                && !contains(this.unsavedAttributes, attribute)) {
               this.unsavedAttributes.push(attribute);
             }
           }
@@ -304,7 +301,7 @@ define(function(require) {
             item;
         if (attrs) {
           while (!!(attr = attrs[++i])) {
-            ArrayUtils.remove(this.unsavedAttributes, attr);
+            removeAll(this.unsavedAttributes, attr);
             item = this.get(attr);
             if (item && item.dispose) {
               item.dispose();
@@ -385,169 +382,6 @@ define(function(require) {
       }
     },
     /**
-     * Processes the data received from a fetch request
-     * @method onFetchSuccess
-     *
-     * @param {Object} response  The response data
-     */
-    onFetchSuccess: function(response) {
-      response = this.parse(response);
-      if (this.responseFilter && typeof this.responseFilter === 'function') {
-        response = this.responseFilter(response);
-      }
-      this.apply(response, true);
-      this.trigger('fetchSuccess', {response: response});
-    },
-    /**
-     * Triggered when the model is unable to fetch data
-     * @method onFetchError
-     *
-     * @param {Object} value  The error value
-     */
-    onFetchError: function(response) {
-      this.trigger('fetchError', {response: response});
-    },
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @event fetchSuccess
-     * @event fetchError
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {String} url  The URL from which to load the data
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {Object} options  jQuery AJAX settings. If url property is missing, fetch() will try to use the url property on this model
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    /**
-     * Loads the data for this model from the server and only apply to this model attributes (Note: Does not clear the model first)
-     * @method fetch
-     *
-     * @param {String} url  The URL from which to load the data
-     * @param {Object} options  jQuery AJAX settings
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    fetch: function(url, options) {
-      if (typeof url === 'object') {
-        options = url;
-      } else {
-        options = clone(options || {});
-        options.url = url;
-      }
-      options.url = this.getApiURL(options.url || this.url);
-      return Promise.when(this, Connectivity.ajax(options))
-        .success(this.onFetchSuccess)
-        .error(this.onFetchError);
-    },
-    /**
-     * Converts a relative path to an absolute api url based on environment config 'apiRoot'
-     * @method getApiURL
-     *
-     * @param {String} relPath  A relative path
-     * @return {String}  A formated api url or an apparently bad url '/please_set_model_url' if relPath argument is faslsy
-     */
-    getApiURL: function(relPath) {
-      var badURL = '/please_set_model_url',
-          apiRoot = Config.get('apiRoot'),
-          apiURL;
-      if (!relPath) {
-        return badURL;
-      }
-      apiURL = (apiRoot || '') + relPath;
-      return apiURL;
-    },
-    /**
-     * Saves the model
-     * @method save
-     *
-     *
-     * @param {Function} callback  A function callback(model, changedAttributes, attributes)
-     *   that returns either a promise or a truthy value
-     *   indicating whether the operation failed or succeeded
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    /**
-     * Saves the model
-     * @method save
-     *
-     * @param {Function} callback  A function callback(model, changedAttributes, attributes)
-     *   that returns either a promise or a truthy value
-     *   indicating whether the operation failed or succeeded
-     * @param {Object} thisp  The context for the callback
-     * @return {Lavaca.util.Promise}  A promise
-     */
-
-//* @event saveSuccess
-//* @event saveError
-
-    save: function(callback, thisp) {
-      var promise = new Promise(this),
-          attributes = this.toObject(),
-          changedAttributes = {},
-          i = -1,
-          attribute,
-          result;
-      while (!!(attribute = this.unsavedAttributes[++i])) {
-        changedAttributes[attribute] = attributes[attribute];
-      }
-      promise
-        .success(function(value) {
-          var idAttribute = this.idAttribute;
-          if (this.isNew() && value[idAttribute] !== UNDEFINED) {
-            this.set(idAttribute, value[idAttribute]);
-          }
-          this.unsavedAttributes = [];
-          this.trigger('saveSuccess', {response: value});
-        })
-        .error(function(value) {
-          this.trigger('saveError', {response: value});
-        });
-      result = callback.call(thisp || this, this, changedAttributes, attributes);
-      if (result instanceof Promise) {
-        promise.when(result);
-      } else if (result) {
-        promise.resolve(result);
-      } else {
-        promise.reject(result);
-      }
-      return promise;
-    },
-    /**
-     * Saves the model to the server via POST
-     * @method saveToServer
-     *
-     * @param {String} url  The URL to which to post the data
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    saveToServer: function(url) {
-      return this.save(function(model, changedAttributes, attributes) {
-        var id = this.id(),
-            data;
-        if (this.isNew()) {
-          data = attributes;
-        } else {
-          changedAttributes[this.idAttribute] = id;
-          data = changedAttributes;
-        }
-        return Promise.when(this, Connectivity.ajax({
-            url: url,
-            cache: false,
-            type: 'POST',
-            data: data,
-            dataType: 'json'
-          }));
-      });
-    },
-    /**
      * Converts this model to a key-value hash
      * @method toObject
      *
@@ -559,7 +393,7 @@ define(function(require) {
       for(var key in obj) {
         if(typeof obj[key] === "function") {
           flags = this.flags[Model.DO_NOT_COMPUTE];
-          if (!flags || ArrayUtils.indexOf(flags, key) === -1) {
+          if (!flags || flags.indexOf(key) === -1) {
             obj[key] = obj[key].call(this);
           }
         }
@@ -617,23 +451,13 @@ define(function(require) {
         attr = null;
       }
       function handler(e) {
-        if (!attr || e.attribute === attr) {
+        if (callback && (!attr || e.attribute === attr)) {
           callback.call(thisp || this, e);
         }
       }
       handler.fn = callback;
       handler.thisp = thisp;
       return EventDispatcher.prototype.on.call(this, type, handler, thisp);
-    },
-    /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
-    * @method responseFilter
-    *
-    * @param {Object} response  The raw response passed in onFetchSuccess()
-    * @return {Object}  An object to be applied to this model instance
-    */
-    responseFilter: function(response) {
-      return response;
     }
   });
   /**

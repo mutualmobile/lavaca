@@ -1,28 +1,53 @@
 module.exports = function(grunt) {
-  'use strict';  
+  'use strict';
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    jasmine: {
-      all: ['test/runner.html'],
-      options: {
-        junit: {
-          path: 'log/tests',
-          consolidate: true
+
+    karma: {
+      run: {
+        configFile: '.karma.js',
+        singleRun: true,
+        reporters: ['dots'],
+        browsers: ['PhantomJS']
+      },
+      debug: {
+        configFile: '.karma.js',
+        reporters: ['dots'],
+        browsers: ['Chrome']
+      },
+      coverage: {
+        configFile: '.karma.js',
+        singleRun: true,
+        reporters: ['dots', 'coverage'],
+        browsers: ['PhantomJS'],
+        preprocessors: {
+          'src/**/*.js': ['coverage']
+        },
+        coverageReporter: {
+          type : 'lcov',
+          dir : 'test/coverage/'
         }
       }
     },
-    'amd-test': {
-      mode: 'jasmine',
-      files: 'test/unit/**/*.js'
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverage_dir: 'test/coverage',
+        dryRun: false,
+        force: true,
+        recursive: true
+      }
     },
+
     jshint: {
       src: {
         options: {
           jshintrc: '.jshintrc'
         },
         files: {
-          lavaca: 'src/js/lavaca/**/*.js'
+          lavaca: 'src/**/*.js'
         }
       },
       test: {
@@ -34,6 +59,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     yuidoc: {
       compile: {
         name: '<%= pkg.name %>',
@@ -41,7 +67,7 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         options: {
-          paths: 'src/js/lavaca',
+          paths: 'src',
           outdir: 'docs',
           linkNatives: true,
           themedir: 'libs/yuidoc/themes/default'
@@ -72,15 +98,13 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-amd-dist');
-  grunt.loadNpmTasks('grunt-amd-check');
-  grunt.loadNpmTasks('grunt-amd-test');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   // Default task.
   grunt.registerTask('doc', ['yuidoc', 'open:doc']);
-  grunt.registerTask('test', 'generates runner and runs the tests', ['amd-test', 'jasmine']);
+  grunt.registerTask('test', ['karma:run']);
 
 };

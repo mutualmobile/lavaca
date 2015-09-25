@@ -3,13 +3,11 @@ define(function(require) {
   var $ = require('$');
   var View = require('lavaca/mvc/View');
   var Cache = require('lavaca/util/Cache');
-  var Template = require('lavaca/ui/Template');
   var viewManager = require('lavaca/mvc/ViewManager');
 
   describe('A viewManager', function() {
     beforeEach(function(){
-      $('body').append('<div id="view-root"></div><script type="text/dust-template" data-name="hello-world">Hello World</script>');
-      Template.init();
+      $('body').append('<div id="view-root"></div>');
       viewManager = new viewManager.constructor();
       viewManager.setEl('#view-root');
     });
@@ -24,161 +22,150 @@ define(function(require) {
       var myPageView = View.extend(function(){View.apply(this, arguments);},{
             template: 'hello-world'
           }),
-          promise,
-          response;
+          done = false;
       runs(function() {
-        promise = viewManager.load('myView', myPageView);
+        Promise.resolve()
+          .then(function() {
+            return viewManager.load('myView', myPageView);
+          })
+          .then(function() {
+            var response = viewManager.pageViews.get('myView').hasRendered;
+            expect(response).toBe(true);
+            done = true;
+          });
       });
       waitsFor(function() {
-        promise.success(function() {
-          response = viewManager.pageViews.get('myView').hasRendered;
-        });
-        return response;
-      }, 'a view to be rendered', 300);
-      runs(function() {
-        expect(response).toBe(true);
-      });
+        return !!done;
+      }, 'promises to resolve', 100);
     });
     describe('can remove', function() {
       it('a view on a layer and all views above', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
             template: 'hello-world',
             }),
-            promise,
-            secondP,
-            response;
+            done = false;
 
         runs(function() {
-          promise = viewManager.load('myView', myPageView);
+          Promise.resolve()
+            .then(function() {
+              return viewManager.load('myView', myPageView);
+            })
+            .then(function() {
+              return viewManager.load('anotherView', myPageView, null, 1);
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(2);
+              return viewManager.dismiss(0);
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(0);
+              done = true;
+            });
         });
         waitsFor(function() {
-          promise.success(function() {
-            response = true;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          secondP = viewManager.load('anotherView', myPageView, null, 1);
-        });
-        waitsFor(function() {
-          secondP.success(function() {
-            response = true;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          expect($('#view-root').children().length).toBe(2);
-          viewManager.dismiss(0);
-          expect($('#view-root').children().length).toBe(0);
-        });
+          return !!done;
+        }, 'promises to resolve', 100);
       });
       it('a view on layer without removing views below', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
             template: 'hello-world',
             }),
-            promise,
-            secondP,
-            response;
-
+            done = false;
         runs(function() {
-          promise = viewManager.load('myView', myPageView);
+          Promise.resolve()
+            .then(function() {
+              return viewManager.load('myView', myPageView);
+            })
+            .then(function() {
+              return viewManager.load('anotherView', myPageView, null, 1);
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(2);
+              return viewManager.dismiss(1);
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(1);
+              done = true;
+            });
         });
         waitsFor(function() {
-          promise.success(function() {
-            response = true;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          secondP = viewManager.load('anotherView', myPageView, null, 1);
-        });
-        waitsFor(function() {
-          secondP.success(function() {
-            response = true;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          expect($('#view-root').children().length).toBe(2);
-          viewManager.dismiss(1);
-          expect($('#view-root').children().length).toBe(1);
-        });
+          return !!done;
+        }, 'promises to resolve', 100);
       });
       it('a layer by an el', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
               className: 'test-view',
             }),
-            promise,
-            response;
+            done = false;
         runs(function() {
-          promise = viewManager.load('myView', myPageView);
+          Promise.resolve()
+            .then(function() {
+              return viewManager.load('myView', myPageView);
+            })
+            .then(function() {
+              return viewManager.dismiss('.test-view');
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(0);
+              done = true;
+            });
         });
         waitsFor(function() {
-          promise.success(function() {
-            response = viewManager.pageViews.get('myView').hasRendered;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          viewManager.dismiss('.test-view');
-          expect($('#view-root').children().length).toBe(0);
-        });
+          return !!done;
+        }, 'promises to resolve', 100);
       });
       it('a layer relative to view object in the cache', function() {
         var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
               className: 'test-view',
             }),
-            promise,
-            response;
+            done = false;
         runs(function() {
-          promise = viewManager.load('myView', myPageView);
+          Promise.resolve()
+            .then(function() {
+              return viewManager.load('myView', myPageView);
+            })
+            .then(function() {
+              return viewManager.dismiss(viewManager.pageViews.get('myView'));
+            })
+            .then(function() {
+              expect($('#view-root').children().length).toBe(0);
+              done = true;
+            });
         });
         waitsFor(function() {
-          promise.success(function() {
-            response = viewManager.pageViews.get('myView').hasRendered;
-          });
-          return response;
-        }, 'a view to be rendered', 300);
-        runs(function() {
-          viewManager.dismiss(viewManager.pageViews.get('myView'));
-          expect($('#view-root').children().length).toBe(0);
-        });
+          return !!done;
+        }, 'promises to resolve', 100);
       });
     });
     it('can empty the view cache', function() {
       var myPageView = View.extend(function(){View.apply(this, arguments);},{
               template: 'hello-world',
           }),
-          promise,
-          secondP,
-          response;
+          done = false;
 
       runs(function() {
-        promise = viewManager.load('myView', myPageView);
+        Promise.resolve()
+          .then(function() {
+            return viewManager.load('myView', myPageView);
+          })
+          .then(function() {
+            return viewManager.load('anotherView', myPageView, null, 1);
+          })
+          .then(function() {
+            return viewManager.dismiss(1);
+          })
+          .then(function() {
+            viewManager.flush();
+            expect(viewManager.pageViews).toEqual(new Cache());
+            expect(viewManager.layers[0].cacheKey).toEqual('myView');
+            done = true;
+          });
       });
       waitsFor(function() {
-        promise.success(function() {
-          response = true;
-        });
-        return response;
-      }, 'a view to be rendered', 300);
-      runs(function() {
-        secondP = viewManager.load('anotherView', myPageView, null, 1);
-      });
-      waitsFor(function() {
-        secondP.success(function() {
-          response = true;
-        });
-        return response;
-      }, 'a view to be rendered', 300);
-      runs(function() {
-        viewManager.dismiss(1);
-        viewManager.flush();
-        expect(viewManager.pageViews).toEqual(new Cache());
-        expect(viewManager.layers[0].cacheKey).toEqual('myView');
-      });
+        return !!done;
+      }, 'promises to resolve', 100);
     });
 
   });

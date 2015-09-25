@@ -3,9 +3,7 @@ define(function(require) {
   var Connectivity = require('lavaca/net/Connectivity'),
       History = require('lavaca/net/History'),
       Disposable = require('lavaca/util/Disposable'),
-      Promise = require('lavaca/util/Promise'),
-      StringUtils = require('lavaca/util/StringUtils'),
-      Translation = require('lavaca/util/Translation');
+      interpolate = require('mout/string/interpolate');
 
   /**
    * Base type for controllers
@@ -38,42 +36,6 @@ define(function(require) {
      */
     viewManager: null,
     /**
-     * Executes an action on this controller
-     * @method exec
-     *
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @return {Lavaca.util.Promise}  A promise
-     */
-     /**
-     * Executes an action on this controller
-     * @method exec
-     * @param {String} action  The name of the controller method to call
-     * @param {Object} params  Key-value arguments to pass to the action
-     * @param {Object} state  A history record object
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    exec: function(action, params, state) {
-      this.params = params;
-      this.state = state;
-      var promise = new Promise(this),
-          model,
-          result;
-      if (state) {
-        model = state.state;
-        promise.success(function() {
-          document.title = state.title;
-        });
-      }
-      result = this[action](params, model);
-      if (result instanceof Promise) {
-        promise.when(result);
-      } else {
-        promise.resolve();
-      }
-      return promise;
-    },
-    /**
      * Loads a view
      * @method view
      *
@@ -81,10 +43,10 @@ define(function(require) {
      * @param {Function} TView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The data object to pass to the view
      * @param {Number} layer  The integer indicating what UI layer the view sits on
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     view: function(cacheKey, TView, model, layer) {
-      return Promise.when(this, this.viewManager.load(cacheKey, TView, model, layer));
+      return this.viewManager.load(cacheKey, TView, model, layer);
     },
     /**
      * Adds a state to the browser history
@@ -112,14 +74,15 @@ define(function(require) {
      * @return {String}  The formatted URL
      */
     url: function(str, args) {
-      return StringUtils.format(str, args, encodeURIComponent);
+      args = args.map(window.encodeURIComponent);
+      return interpolate(str, args, /\{(.+?)\}/);
     },
     /**
      * Directs the user to another route
      * @method redirect
      *
      * @param {String} str  The URL string
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      *
      */
     /**
@@ -127,10 +90,10 @@ define(function(require) {
      * @method redirect
      * @param {String} str  The URL string
      * @param {Array} args  Format arguments to insert into the URL
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
-    redirect: function(str, args) {
-      return this.router.unlock().exec(this.url(str, args || []));
+    redirect: function(str, args, params) {
+      return this.router.unlock().exec(this.url(str, args || []), null, params);
     },
     /**
      * Readies the controller for garbage collection

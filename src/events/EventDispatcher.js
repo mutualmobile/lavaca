@@ -75,10 +75,6 @@ define(function(require) {
     off: function(type, callback, thisp) {
       var calls = this.callbacks,
           list,
-          handler,
-          i = -1,
-          newList,
-          isCallback,
           isThisp;
       if (!type) {
         delete this.callbacks;
@@ -88,15 +84,10 @@ define(function(require) {
         } else {
           list = calls[type];
           if (list) {
-            newList = calls[type] = [];
-            while (!!(handler = list[++i])) {
-              isCallback = handler.fn === callback ||
-                           handler.fn.fn === callback ||
-                           (handler.fn.guid && handler.fn.guid === callback.guid) || // Check if is jQuery proxy of callback
-                           (handler.fn._zid && handler.fn._zid === callback._zid); // Check if is Zepto proxy of callback
-              isThisp = thisp && (handler.thisp === thisp || handler.fn.thisp === thisp);
-              if (!isCallback || (thisp && !isThisp)) {
-                newList[newList.length] = handler;
+            for(var i = list.length-1; i >= 0; i--) {
+              isThisp = thisp && (list[i].thisp === thisp || list[i].fn.thisp === thisp);
+              if (_checkIfSameCallback(list[i].fn,callback) || (thisp && !isThisp)){
+                calls[type].splice(i,1);
               }
             }
           }
@@ -156,6 +147,31 @@ define(function(require) {
       });
     }
   });
+  
+    /**
+     * Checks if two callbacks are the same
+     * @method _checkIfSameCallback (private)
+     *
+     * @param {Function} a first function
+     * @param {Function} b function to compare a to
+     * @return {Boolean}  returns true or false
+     */
+
+    /*
+      checks if callback a matches b, then checks if a.fn matches b, 
+      then checks if it is jQuery/zepto proxy of callback
+     */
+  function _checkIfSameCallback(a, b){
+    if((a === b || 
+       a.fn === b ||
+       (a.fn && !!a.fn.guid && a.fn.guid === b.guid ||
+        a.fn && !!a.fn._zid && a.fn._zid === b._zid))){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   return EventDispatcher;
 

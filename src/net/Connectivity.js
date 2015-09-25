@@ -1,8 +1,7 @@
 define(function(require) {
 
   var $ = require('$'),
-      Promise = require('lavaca/util/Promise'),
-      resolve = require('lavaca/util/resolve');
+      get = require('mout/object/get');
 
   /**
    * A utility type for working under different network connectivity situations.
@@ -38,10 +37,15 @@ define(function(require) {
    *    or if connection status cannot be determined
    */
   Connectivity.isOffline = function() {
-    var connectionType = resolve('navigator.connection.type');
-    if (connectionType !== null) {
-      return connectionType === resolve('Connection.NONE');
-    } else {
+    var connectionType = get(window, 'navigator.connection.type');
+    var none = get(window, 'Connection.NONE');
+    if (!!connectionType && !!none) {
+      return connectionType === none;
+    }
+    else if(connectionType && connectionType !== 'none'){
+      return false;
+    }
+    else {
       return _navigatorOnlineSupported ? !navigator.onLine : false;
     }
   };
@@ -53,31 +57,19 @@ define(function(require) {
    * @static
    *
    * @param {Object} opts  jQuery-style AJAX options
-   * @return {Lavaca.util.Promise}  A promise
+   * @return {Promise}  A promise
    */
   Connectivity.ajax = function(opts) {
-    var promise = new Promise(),
-        origSuccess = opts.success,
-        origError = opts.error;
-    opts.success = function() {
-      if (origSuccess) {
-        origSuccess.apply(this, arguments);
-      }
-      promise.resolve.apply(promise, arguments);
-    };
-    opts.error = function() {
-      if (origError) {
-        origError.apply(this, arguments);
-      }
-      promise.reject.apply(promise, arguments);
-    };
-    if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
-      promise.reject(_offlineErrorCode);
-    } else {
-      $.ajax(opts);
-    }
-    promise.error(_onAjaxError);
-    return promise;
+    return Promise.resolve()
+      .then(function() {
+        if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
+          throw _offlineErrorCode;
+        }
+      })
+      .then(function() {
+        return $.ajax(opts);
+      })
+      .catch(_onAjaxError);
   };
 
   /**

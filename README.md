@@ -1,5 +1,8 @@
 # Lavaca
 
+[![Build Status](https://travis-ci.org/mutualmobile/lavaca.svg?branch=v3)](https://travis-ci.org/mutualmobile/lavaca)
+[![Coverage Status](https://coveralls.io/repos/mutualmobile/lavaca/badge.png?branch=v3)](https://coveralls.io/r/mutualmobile/lavaca?branch=v3)
+
 A curated collection of tools built for mobile
 
 ## Getting Started
@@ -43,5 +46,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 [View Change Log](https://github.com/mutualmobile/lavaca/blob/master/CHANGELOG.md)
 
 ## License
-Copyright (c) 2013 mutualmobile  
+Copyright (c) 2013 mutualmobile
 Licensed under the MIT license.

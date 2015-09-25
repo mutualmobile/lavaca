@@ -2,9 +2,10 @@ define(function(require) {
 
   var Model = require('lavaca/mvc/Model'),
       Connectivity = require('lavaca/net/Connectivity'),
-      ArrayUtils = require('lavaca/util/ArrayUtils'),
-      Promise = require('lavaca/util/Promise'),
+      isArray = require('mout/lang/isArray'),
       clone = require('mout/lang/deepClone'),
+      removeAll = require('mout/array/removeAll'),
+      insert = require('mout/array/insert'),
       merge = require('mout/object/merge');
 
   var UNDEFINED;
@@ -61,14 +62,9 @@ define(function(require) {
    *
    * @event change
    * @event invalid
-   * @event fetchSuccess
-   * @event fetchError
-   * @event saveSuccess
-   * @event saveError
    * @event changeItem
    * @event invalidItem
-   * @event saveSuccessItem
-   * @event saveErrorItem
+   * @event deepApply
    *
    * @constructor
    * @param {Array} models  A list of models to add to the collection
@@ -152,13 +148,11 @@ define(function(require) {
             : this.TModel.prototype instanceof Collection
               ? new this.TModel(data[this.TModel.prototype.itemsProperty], data)
               : new this.TModel(data),
-          index = ArrayUtils.indexOf(this.models, model);
+          index = this.models.indexOf(model);
       if (index === -1) {
         model
           .on('change', this.onItemEvent, this)
-          .on('invalid', this.onItemEvent, this)
-          .on('saveSuccess', this.onItemEvent, this)
-          .on('saveError', this.onItemEvent, this);
+          .on('invalid', this.onItemEvent, this);
       }
       return model;
     },
@@ -188,7 +182,7 @@ define(function(require) {
      * @return {Boolean}  false if no items were able to be added, true otherwise.
      */
 //@event addItem
-    
+
     insert: function(insertIndex, item /*, item1, item2, item3...*/) {
       var result = false,
           idAttribute = this.TModel.prototype.idAttribute,
@@ -199,7 +193,7 @@ define(function(require) {
           model,
           index,
           items;
-      items = item && ArrayUtils.isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
+      items = item && isArray(item) ? item : Array.prototype.slice.call(arguments, 1);
       for (i = 0, j = items.length; i < j; i++) {
         model = items[i];
         if (typeof model === 'object') {
@@ -217,9 +211,9 @@ define(function(require) {
 
           this.models.splice(insertIndex, 0, model);
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.removedItems, model);
-            ArrayUtils.remove(this.changedItems, model);
-            ArrayUtils.pushIfNotExists(this.addedItems, model);
+            removeAll(this.removedItems, model);
+            removeAll(this.changedItems, model);
+            insert(this.addedItems, model);
           }
           _triggerItemEvent(this, 'addItem', null, insertIndex, this.models[insertIndex]);
           insertIndex++;
@@ -270,7 +264,7 @@ define(function(require) {
 // * @event moveItem
     moveTo: function(oldIndex, newIndex) {
       if (oldIndex instanceof this.TModel) {
-        oldIndex = ArrayUtils.indexOf(this.models, oldIndex);
+        oldIndex = this.models.indexOf(oldIndex);
       }
       if (oldIndex > -1) {
         var model = this.models.splice(oldIndex, 1)[0];
@@ -329,7 +323,7 @@ define(function(require) {
     remove: function(item /*, item1, item2, item3...*/) {
       var n, it, items, index, i, removed;
 
-      if (arguments.length === 1 && ArrayUtils.isArray(item)) {
+      if (arguments.length === 1 && isArray(item)) {
         n = 0;
         removed = [];
         while (!!(it = item[n++])) {
@@ -347,18 +341,17 @@ define(function(require) {
       }
 
       if (item instanceof this.TModel) {
-        index = ArrayUtils.remove(this.models, item);
+        index = this.models.indexOf(item);
+        removeAll(this.models, item);
         if (index > -1) {
           if (!this.suppressTracking) {
-            ArrayUtils.remove(this.addedItems, item);
-            ArrayUtils.remove(this.changedItems, item);
-            ArrayUtils.pushIfNotExists(this.removedItems, item);
+            removeAll(this.addedItems, item);
+            removeAll(this.changedItems, item);
+            insert(this.removedItems, item);
           }
           item
             .off('change', this.onItemEvent)
-            .off('invalid', this.onItemEvent)
-            .off('saveSuccess', this.onItemEvent)
-            .off('saveError', this.onItemEvent);
+            .off('invalid', this.onItemEvent);
           _triggerItemEvent(this, 'removeItem', index, null, item);
           return true;
         } else {
@@ -480,7 +473,7 @@ define(function(require) {
      */
     indexOf: function(test) {
       var match = this.first(test);
-      return match ? ArrayUtils.indexOf(this.models, match) : -1;
+      return match ? this.models.indexOf(match) : -1;
     },
     /**
      * Gets the item at a specific index
@@ -565,9 +558,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -589,9 +582,9 @@ define(function(require) {
       }
       if (!this.suppressEvents) {
         this.each(function(index, model) {
-          oldIndex = ArrayUtils.indexOf(oldModels, model);
+          oldIndex = oldModels.indexOf(model);
           if (oldIndex !== index) {
-            _triggerItemEvent(this, 'moveItem', ArrayUtils.indexOf(oldModels, model), index, model);
+            _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
           }
         });
       }
@@ -605,11 +598,11 @@ define(function(require) {
      */
     onItemEvent: function(e) {
       var model = e.target,
-          index = ArrayUtils.indexOf(this.models, model);
-      if (e.type === 'change') {
-        ArrayUtils.pushIfNotExists(this.changedItems, model);
-      } else if (e.type === 'saveSuccess') {
-        ArrayUtils.remove(this.changedItems, model);
+          index = this.models.indexOf(model);
+      if (!this.suppressTracking) {
+        if (e.type === 'change') {
+          insert(this.changedItems, model);
+        } 
       }
       this.trigger(e.type + 'Item', merge({}, e, {
         target: model,
@@ -617,54 +610,6 @@ define(function(require) {
         index: index,
         previousIndex: null
       }));
-    },
-    /**
-     * Processes the data received from a fetch request
-     * @method onFetchSuccess
-     *
-     * @param {Object} response  The response data
-     */
-    onFetchSuccess: function(response) {
-      var list;
-      response = this.parse(response);
-      if (this.responseFilter && typeof this.responseFilter === 'function') {
-        response = this.responseFilter(response);
-      }
-      list = response;
-      if (!(list instanceof Array)) {
-        this.apply(response);
-        if (response && response.hasOwnProperty(this.itemsProperty)) {
-          list = response[this.itemsProperty];
-        }
-      }
-      this.add.apply(this, list);
-      this.trigger('fetchSuccess', {response: response});
-    },
-    /**
-     * Saves the model to the server via POST
-     * @method saveToServer
-     *
-     * @param {String} url  The URL to which to post the data
-     * @return {Lavaca.util.Promise}  A promise
-     */
-    saveToServer: function(url) {
-      return this.save(function(model, changedAttributes, attributes) {
-        var id = this.id(),
-            data;
-        if (this.isNew()) {
-          data = attributes;
-        } else {
-          changedAttributes[this.idAttribute] = id;
-          data = changedAttributes;
-        }
-        return (new Promise(this)).when(Connectivity.ajax({
-          url: url,
-          cache: false,
-          type: 'POST',
-          data: data,
-          dataType: 'json'
-        }));
-      });
     },
     /**
      * Converts this model to a key-value hash
@@ -685,15 +630,24 @@ define(function(require) {
       return obj;
     },
     /**
-    * Filters the raw response from onFetchSuccess() down to a custom object. (Meant to be overriden)
-    * @method responseFilter
-    *
-    * @param {Object} response  The raw response passed in onFetchSuccess()
-    * @return {Object}  An object or array to be applied to this collection instance
-    */
-    responseFilter: function(response) {
-      return response;
-    }
+     * Processes the data received from an object and apply it to self and the child models.
+     * @method deepApply
+     *
+     * @param {Object} obj  An object to apply to self and children
+     */
+    deepApply: function(obj) {
+      var list;
+      obj = this.parse(obj);
+      list = obj;
+      if (!(list instanceof Array)) {
+        this.apply(obj);
+        if (obj && obj.hasOwnProperty(this.itemsProperty)) {
+          list = obj[this.itemsProperty];
+        }
+      }
+      this.add.apply(this, list);
+      this.trigger('deepApply', {obj: obj});
+    },
   });
 
   return Collection;

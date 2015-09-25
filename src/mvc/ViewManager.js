@@ -2,12 +2,11 @@ define(function(require) {
 
   var $ = require('$'),
     View = require('lavaca/mvc/View'),
-    ArrayUtils = require('lavaca/util/ArrayUtils'),
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
-    Promise = require('lavaca/util/Promise'),
-    delay = require('lavaca/util/delay'),
-    merge = require('mout/object/merge');
+    merge = require('mout/object/merge'),
+    contains = require('mout/array/contains'),
+    removeAll = require('mout/array/removeAll');
 
   /**
    * Manager responsible for drawing views
@@ -82,7 +81,7 @@ define(function(require) {
      * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
      * @param {Number} layer  The index of the layer on which the view will sit
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Loads a view
@@ -92,88 +91,130 @@ define(function(require) {
      * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
      * @param {Object} model  The views model
      * @param {Object} params  Parameters to be mapped to the view
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     load: function(cacheKey, TPageView, model, params) {
       if (this.locked) {
-        return (new Promise(this)).reject('locked');
+        return Promise.reject('locked');
       } else {
         this.locked = true;
       }
       params = params || {};
-      var self = this,
-          layer = TPageView.prototype.layer || 0,
-          pageView = this.pageViews.get(cacheKey),
-          promise = new Promise(this),
-          enterPromise = new Promise(promise),
-          renderPromise = null,
-          exitPromise = null;
-      promise.always(function() {
-        this.locked = false;
-      });
+      var layer = TPageView.prototype.layer || 0,
+          pageView = this.pageViews.get(cacheKey);
+
       if (typeof params === 'number') {
         layer = params;
       } else if (params.layer) {
         layer = params.layer;
       }
+
+      var shouldRender = false;
       if (!pageView) {
         pageView = new TPageView(null, model, layer);
         if (typeof params === 'object') {
           merge(pageView, params);
         }
-        renderPromise = pageView.renderPageView();
+        shouldRender = true;
         if (cacheKey !== null) {
           this.pageViews.set(cacheKey, pageView);
           pageView.cacheKey = cacheKey;
         }
-      }
-      function lastly() {
-        self.enteringPageViews = [pageView];
-        promise.success(function() {
-          delay(function() {
-            self.enteringPageViews = [];
-          });
-        });
-        exitPromise = self.dismissLayersAbove(layer - 1, pageView);
-        if (self.layers[layer] !== pageView) {
-          enterPromise
-            .when(pageView.enter(self.el, self.exitingPageViews), exitPromise)
-            .then(promise.resolve);
-          self.layers[layer] = pageView;
-        } else {
-          promise.when(exitPromise);
+      } else {
+        if (typeof params === 'object') {
+          merge(pageView, params);
         }
       }
-      if (renderPromise) {
-        renderPromise.then(lastly, promise.rejector());
-      } else {
-        lastly();
+
+      return Promise.resolve()
+        .then(function() {
+          if (shouldRender) {
+            return pageView.render();
+          }
+        })
+        .then(function() {
+          return this.beforeEnterExit(layer-1, pageView);
+        }.bind(this))
+        .then(function() {
+          this.enteringPageViews = [pageView];
+          return Promise.all([
+            (function() {
+              if (this.layers[layer] !== pageView) {
+                return pageView.enter(this.el, this.exitingPageViews);
+              }
+            }.bind(this))(),
+            (function() {
+              return this.dismissLayersAbove(layer-1, pageView);
+            }.bind(this))()
+          ]);
+        }.bind(this))
+        .then(function() {
+          this.locked = false;
+          this.enteringPageViews = [];
+          this.layers[layer] = pageView;
+        }.bind(this));
+    },
+    /**
+     * Execute beforeEnter or beforeExit for each layer. Both functions
+     * beforeEnter and beforeExit must return promises.
+     * @method beforeEnterExit
+     *
+     * @param {Number}  index The index above which is to be cleared
+     * @return {Promise}  A promise
+     */
+    /**
+     * Execute beforeEnter or beforeExit for each layer. Both functions
+     * beforeEnter and beforeExit must return promises.
+     * @method beforeEnterExit
+     *
+     * @param {Number} index  The index above which is to be cleared
+     * @param {Lavaca.mvc.View}  enteringView A view that will be entering
+     * @return {Promise}  A promise
+     */
+    beforeEnterExit: function(index, enteringView) {
+      var i,
+        layer,
+        list = [];
+      if (enteringView && typeof enteringView.beforeEnter === 'function') {
+        list.push(enteringView.beforeEnter());
       }
-      return promise;
+      for (i = this.layers.length - 1; i > index; i--) {
+        if ((layer = this.layers[i]) && (!enteringView || enteringView !== layer)) {
+          (function(layer) {
+            if (typeof layer.beforeExit === 'function') {
+              list.push(layer.beforeExit());
+            }
+          }).call(this, layer);
+        }
+      }
+      return Promise.all(list);
     },
     /**
      * Removes all views on a layer
      * @method dismiss
      *
      * @param {Number} index  The index of the layer to remove
+     * @return {Promise}  A promise
      */
     /**
      * Removes all views on a layer
      * @method dismiss
      *
      * @param {jQuery} el  An element on the layer to remove (or the layer itself)
+     * @return {Promise}  A promise
      */
     /**
      * Removes all views on a layer
      * @method dismiss
      *
      * @param {Lavaca.mvc.View} view  The view on the layer to remove
+     * @return {Promise}  A promise
      */
     dismiss: function(layer) {
       if (typeof layer === 'number') {
-        this.dismissLayersAbove(layer - 1);
+        return this.dismissLayersAbove(layer - 1);
       } else if (layer instanceof View) {
-        this.dismiss(layer.layer);
+        return this.dismiss(layer.layer);
       } else {
         layer = $(layer);
         var index = layer.attr('data-layer-index');
@@ -182,7 +223,7 @@ define(function(require) {
           index = layer.attr('data-layer-index');
         }
         if (index !== null) {
-          this.dismiss(Number(index));
+          return this.dismiss(Number(index));
         }
       }
     },
@@ -191,7 +232,7 @@ define(function(require) {
      * @method dismissLayersAbove
      *
      * @param {Number}  index The index above which to clear
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     /**
      * Removes all layers above a given index
@@ -199,36 +240,37 @@ define(function(require) {
      *
      * @param {Number} index  The index above which to clear
      * @param {Lavaca.mvc.View}  exceptForView A view that should not be dismissed
-     * @return {Lavaca.util.Promise}  A promise
+     * @return {Promise}  A promise
      */
     dismissLayersAbove: function(index, exceptForView) {
-      var promise = new Promise(this),
-        dismissedLayers = false,
-        i,
-        layer;
-      for (i = this.layers.length - 1; i > index; i--) {
-        if ((layer = this.layers[i]) && (!exceptForView || exceptForView !== layer)) {
-          (function(layer) {
-            this.exitingPageViews.push(layer);
-            promise
-              .when(layer.exit(this.el, this.enteringPageViews))
-              .success(function() {
-                delay(function() {
-                  ArrayUtils.remove(this.exitingPageViews, layer);
-                  if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey === layer.cacheKey)) {
-                    layer.dispose();
-                  }
-                }, this);
-              });
-            this.layers[i] = null;
-          }).call(this, layer);
-          dismissedLayers = true;
+      var toDismiss = this.layers.slice(index+1)
+        .filter(function(layer) {
+          return (layer && (!exceptForView || exceptForView !== layer));
+        });
+
+      this.layers = this.layers.map(function(layer) {
+        if (contains(toDismiss, layer)) {
+          return null;
         }
-      }
-      if (!dismissedLayers) {
-        promise.resolve();
-      }
-      return promise;
+        return layer;
+      });
+
+      var promises = toDismiss
+        .map(function(layer) {
+          return Promise.resolve()
+            .then(function() {
+              this.exitingPageViews.push(layer);
+              return layer.exit(this.el, this.enteringPageViews);
+            }.bind(this))
+            .then(function() {
+              removeAll(this.exitingPageViews, layer);
+              if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey === layer.cacheKey)) {
+                layer.dispose();
+              }
+            }.bind(this));
+        }.bind(this));
+
+      return Promise.all(promises);
     },
     /**
      * Empties the view cache
