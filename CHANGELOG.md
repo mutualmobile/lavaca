@@ -1,3 +1,7 @@
+Changed in 3.0.0
+======
+* Major overhaul
+
 Changed in 2.3.1 and 2.3.2
 ======
 * Patches for onTapLink
