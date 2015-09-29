@@ -6,6 +6,7 @@ define(function(require) {
   var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
       _standardsMode = !_isAndroid && typeof history.pushState === 'function',
       _hasPushed = false,
+      _shouldUseHashBang = false,
       _lastHash,
       _hist,
       _currentId,
@@ -20,7 +21,9 @@ define(function(require) {
           url: url
         };
     hist.sequence[position] = record;
-    location.hash = _lastHash = url + '#@' + id;
+    var hashReplacement = url + '#@' + id;
+    hashReplacement = _lastHash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+    location.hash = hashReplacement;
     return record;
   }
 
@@ -76,7 +79,7 @@ define(function(require) {
             previousCode,
             i = -1;
         if (hash) {
-          hash = hash.replace(/^#/, '');
+          hash = _shouldUseHashBang ? hash.replace(/^#!/, '') : hash.replace(/^#/, '');
         }
         if (hash !== _lastHash) {
           previousCode = _lastHash.split('#@')[1];
@@ -85,7 +88,7 @@ define(function(require) {
             _pushCount--;
             code = hash.split('#@')[1];
             if (!code) {
-              History.back();
+              window.location.reload();
             }
             while (!!(item = self.sequence[++i])) {
               if (item.id === parseInt(code, 10)) {
@@ -95,7 +98,9 @@ define(function(require) {
               }
             }
             if (record) {
-              location.hash = record.url + '#@' + record.id;
+              var hashReplacement = record.url + '#@' + record.id;
+              hashReplacement = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+              location.hash = hashReplacement;
               document.title = record.title;
               self.trigger('popstate', {
                 state: record.state,
@@ -294,6 +299,7 @@ define(function(require) {
   History.off = function() {
     return History.init().off.apply(_hist, arguments);
   };
+
   /**
    * Sets Histroy to hash mode
    * @method overrideStandardsMode
@@ -301,6 +307,15 @@ define(function(require) {
    */
   History.overrideStandardsMode = function() {
     _standardsMode = false;
+  };
+
+  /**
+   * Sets Histroy to use google crawlable #!
+   * @method useHashBang
+   * @static
+   */
+  History.useHashBang = function() {
+    _shouldUseHashBang = true;
   };
 
   /**

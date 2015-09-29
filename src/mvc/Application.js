@@ -5,8 +5,7 @@ define(function(require) {
     Device = require('lavaca/env/Device'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     router = require('lavaca/mvc/Router'),
-    viewManager = require('lavaca/mvc/ViewManager'),
-    Connectivity = require('lavaca/net/Connectivity');
+    viewManager = require('lavaca/mvc/ViewManager');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -14,6 +13,7 @@ define(function(require) {
   }
 
   function _matchHashRoute(hash) {
+    hash = hash.replace('#!', '#');
     var matches = decodeURIComponent(hash).match(/^(?:#)(\/.*)#?@?/);
     if (matches instanceof Array && matches[1]) {
       return matches[1].replace(/#.*/, '');
