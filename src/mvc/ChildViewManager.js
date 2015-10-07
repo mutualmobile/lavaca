@@ -3,7 +3,6 @@ define(function(require) {
   var $ = require('$'),
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
-    merge = require('mout/object/merge'),
     contains = require('mout/array/contains'),
     History = require('lavaca/net/History'),
     removeAll = require('mout/array/removeAll');
@@ -100,8 +99,13 @@ define(function(require) {
         }.bind(this))
         .then(function() {
           this.enteringPageViews = [];
-          this.step = this.currentView.step;
+          this.step = this.routes[route].step;
           this.layers[layer] = childView;
+          if (this.parentView && 
+              this.parentView.onChildViewManagerExec && 
+              typeof this.parentView.onChildViewManagerExec === 'function') {
+            this.parentView.onChildViewManagerExec(route, this.step);
+          }
         }.bind(this));
     },
     dismiss: function(layer) {
