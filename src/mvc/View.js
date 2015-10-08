@@ -154,11 +154,11 @@ define(function(require) {
     /**
      * Will render any childViews automatically when set to true
      * @property autoRender
-     * @default false
+     * @default true
      *
      * @type Boolean
      */
-    autoRender: false,
+    autoRender: true,
     /**
      * The name of the template associated with the view
      * @property {String} template
