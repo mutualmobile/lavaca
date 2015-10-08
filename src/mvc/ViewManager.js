@@ -112,9 +112,13 @@ define(function(require) {
       var shouldRender = false;
       if (!pageView) {
         pageView = new TPageView(null, model, layer);
+        if (typeof this.pageViewMixin === 'object') {
+          merge(pageView, this.pageViewMixin);
+        }
         if (typeof params === 'object') {
           merge(pageView, params);
         }
+        pageView.isViewManagerView = true;
         shouldRender = true;
         if (cacheKey !== null) {
           this.pageViews.set(cacheKey, pageView);

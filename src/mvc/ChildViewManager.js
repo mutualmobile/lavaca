@@ -4,6 +4,7 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
     contains = require('mout/array/contains'),
+    merge = require('mout/object/merge'),
     History = require('lavaca/net/History'),
     removeAll = require('mout/array/removeAll');
 
@@ -67,7 +68,7 @@ define(function(require) {
         this.back();
       }
     },
-    exec: function(route) {
+    exec: function(route, params) {
       if(!route){
         route = 1;
       }
@@ -75,13 +76,31 @@ define(function(require) {
       if(!route){
         return;
       }
+
       this.history.push(route);
       var ChildView = this.routes[route].TView, 
           model = this.routes[route].model;
 
       var layer = ChildView.prototype.layer || 0,
           childView = new ChildView(null, model, this.parentView);
+
+          params = params || {};
+          if (typeof params === 'number') {
+            layer = params;
+          } else if (params.layer) {
+            layer = params.layer;
+          }
           childView.layer = layer;
+
+          if (typeof this.childViewMixin === 'object') {
+            merge(childView, this.childViewMixin);
+          }
+          if (typeof params === 'object') {
+            merge(childView, params);
+          }
+
+          childView.isChildViewManagerView = true;
+
       return childView.render().then(function() {
           this.currentView = childView;
           this.enteringViews = [childView];
