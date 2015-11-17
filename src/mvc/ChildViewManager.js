@@ -37,8 +37,10 @@ define(function(require) {
     isRoutingBack:false,
     init: function(view) {
       this.el = view.find(this.elName);
-      this.el.addClass('cvm');
-      this.exec();
+      if (!this.el.hasClass('cvm')){
+        this.el.addClass('cvm');
+        this.exec();
+      }
     },
     back:function(){
       if(!this.history || this.history.length - 1 <= 0){
