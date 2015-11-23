@@ -1,13 +1,10 @@
 define(function(require) {
 
-<<<<<<< HEAD
-=======
   /**
    * Static utility type for creating a CSS keyframe animation with a spring effect
    * @class lavaca.fx.Spring
    */
 
->>>>>>> v3
   var $ = require('$'),
       Animation = require('./Animation');
 
@@ -416,31 +413,6 @@ define(function(require) {
    * Applies a spring keyframe animation to an element
    * @method $.fn.spring
    *
-<<<<<<< HEAD
-   * @param {String} name The name of the animation
-   * @param {Object} options  Options for the spring
-     * @opt {Number} tension Positive integer representing the tension on the spring
-     * @default 50
-     * @opt {Number} friction  Positive integer representing the friction of the spring
-     * @default 2
-     * @opt {Object} initialState  Initial transform values. If element has previously been transformed with a spring, the initialState values will be merged into the result of the previous transformation
-     * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
-     * @opt {Object} differences  Differences between initial and final transform values
-     * @default { scale: 0, translate: 0, rotate: 0, skew: 0, perspective: undefined }
-     * @opt {Object} resultState  Final transform values. If differences are specified, resultState will be ignored
-     * @default { scale: 1, translate: 0, rotate: 0, skew: 0, perspective: undefined }
-   * @param {Object} options  Options for the animation
-     * @opt {Number} duration  The number of milliseconds that the animation lasts
-     * @opt {String} easing  The name of a CSS easing function
-     * @default 'linear'
-     * @opt {Number} delay  The number of milliseconds before the animation should start
-     * @default 0
-     * @opt {Object} iterations  Either the number of iterations to play the animation or 'infinite'
-     * @default 1
-     * @opt {String} direction  The name of a CSS animation direction
-     * @default 'normal'
-     * @opt {Function} complete  A function to execute when the animation has completed
-=======
    * @param {String} [name] The name of the animation
    * @param {Object} [springOptions] Options for the spring
      * @param {Number} [springOptions.tension] Positive integer representing the tension on the spring. Default is 50
@@ -469,7 +441,6 @@ define(function(require) {
      * @default 'normal'
      * @param {String} [keyframeOptions.fillMode]  The name of a CSS animation fill-mode
      * @param {Function} [keyframeOptions.complete]  A function to execute when the animation has completed
->>>>>>> v3
      * @default null
    * @return {jQuery}  The jQuery object, for chaining
    */
