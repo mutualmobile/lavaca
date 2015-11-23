@@ -22,8 +22,8 @@ define(function(require) {
         };
     hist.sequence[position] = record;
     var hashReplacement = url + '#@' + id;
-    hashReplacement = _lastHash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
-    location.hash = hashReplacement;
+    _lastHash = hashReplacement;
+    location.hash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
     return record;
   }
 
