@@ -5,6 +5,7 @@ define(function(require) {
     Disposable = require('lavaca/util/Disposable'),
     contains = require('mout/array/contains'),
     merge = require('mout/object/merge'),
+    fillIn = require('mout/object/fillIn'),
     History = require('lavaca/net/History'),
     removeAll = require('mout/array/removeAll');
 
@@ -96,6 +97,9 @@ define(function(require) {
 
           if (typeof this.childViewMixin === 'object') {
             merge(childView, this.childViewMixin);
+          }
+          if (typeof this.childViewfillin === 'object') {
+            fillIn(childView, this.childViewFillin);
           }
           if (typeof params === 'object') {
             merge(childView, params);

@@ -749,10 +749,13 @@ define(function(require) {
      *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
      *
     */
-    mapChildViewManager:function(el, map, mixin){
+    mapChildViewManager:function(el, map, mixin, fillin){
       this.childViewManager = new ChildViewManager(el, map, this);
       if (typeof mixin === 'object') {
         this.childViewManager.childViewMixin = mixin;
+      }
+      if (typeof fillin === 'object') {
+        this.childViewManager.childViewFillin = fillin;
       }
     },
 

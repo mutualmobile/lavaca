@@ -5,6 +5,7 @@ define(function(require) {
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
     merge = require('mout/object/merge'),
+    fillIn = require('mout/object/fillIn'),
     contains = require('mout/array/contains'),
     removeAll = require('mout/array/removeAll');
 
@@ -114,6 +115,9 @@ define(function(require) {
         pageView = new TPageView(null, model, layer);
         if (typeof this.pageViewMixin === 'object') {
           merge(pageView, this.pageViewMixin);
+        }
+        if (typeof this.pageViewFillin === 'object') {
+          fillIn(pageView, this.pageViewFillin);
         }
         if (typeof params === 'object') {
           merge(pageView, params);
