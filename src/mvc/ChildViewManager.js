@@ -98,7 +98,7 @@ define(function(require) {
           if (typeof this.childViewMixin === 'object') {
             merge(childView, this.childViewMixin);
           }
-          if (typeof this.childViewfillin === 'object') {
+          if (typeof this.childViewFillin === 'object') {
             fillIn(childView, this.childViewFillin);
           }
           if (typeof params === 'object') {
