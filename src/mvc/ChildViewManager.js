@@ -20,7 +20,7 @@ define(function(require) {
     this.parentView = parent;
     if (typeof routes === 'object') {
       for (var r in routes) {
-        this.routes[r] = { TView: routes[r].TView, model: routes[r].model , step: routes[r].step};
+        this.routes[r] = routes[r];
       }
     }
     else{
@@ -83,7 +83,9 @@ define(function(require) {
       this.history.push(route);
       var ChildView = this.routes[route].TView, 
           model = this.routes[route].model;
-
+      if(!model){
+        model = this.parentView ? this.parentView.model : null;
+      }
       var layer = ChildView.prototype.layer || 0,
           childView = new ChildView(null, model, this.parentView);
 
