@@ -444,7 +444,7 @@ define(function(require) {
           if (dotIndex !== -1) {
             type = type.substr(0, dotIndex);
           }
-          this.model.off(type, callback, this);
+          this.model.off(type + '.' + this.id, callback, this);
         }
       }
     },
@@ -504,7 +504,7 @@ define(function(require) {
                 property = type.substr(dotIndex+1);
                 type = type.substr(0, dotIndex);
               }
-              this.model.on(type, property, callback);
+              this.model.on(type + '.' + this.id, property, callback);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
