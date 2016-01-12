@@ -164,9 +164,6 @@ define(function(require) {
     */
   function _getMatchingCallbacks(type){
     var returnCallbacks = [];
-    if(type == 'contentLoaded'){
-      debugger;
-    }
     for(var x in this.callbacks){
       if(x.split){
         if(x.split('.')[0] === type){
