@@ -75,20 +75,6 @@ module.exports = function(grunt) {
       }
     },
 
-    requirejs: {
-      baseUrl: 'src',
-      mainConfigFile: 'src/boot.js',
-      optimize: 'none',
-      keepBuildDir: true,
-      locale: "en-us",
-      useStrict: false,
-      skipModuleInsertion: false,
-      findNestedDependencies: false,
-      removeCombined: false,
-      preserveLicenseComments: false,
-      logLevel: 0
-    },
-
     open : {
       doc : {
         path: 'docs/index.html'
