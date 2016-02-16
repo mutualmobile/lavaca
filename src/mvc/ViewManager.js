@@ -93,17 +93,22 @@ define(function(require) {
       this.shouldTrackBreadcrumb = true;
       History.on('popstate', function(e) {
         if (e.direction === 'back') {
-          this.breadcrumb.pop();
+          this.popBreadcrumb();
           if (!e.bypassLoad) {
-            this.breadcrumb.pop();
+            this.popBreadcrumb();
           }
         }
       }.bind(this));
     },
-    trackBreadcrumb: function(pageView) {
-      if (!this.shouldTrackBreadcrumb) {
-        return;
+    popBreadcrumb: function() {
+      var pageView = this.breadcrumb.pop();
+      if (pageView && !pageView.cacheKey) {
+        pageView.dispose();
+        pageView = null;
       }
+    },
+    trackBreadcrumb: function(pageView) {
+      pageView.render();
       if (pageView.root) {
         this.breadcrumb = [];
       }
@@ -132,6 +137,34 @@ define(function(require) {
     },
 
 
+
+    buildPageView: function(cacheKey, TPageView, model, params, layer) {
+      var pageView = this.pageViews.get(cacheKey);
+
+      if (!pageView) {
+        pageView = new TPageView(null, model, layer);
+        if (typeof this.pageViewMixin === 'object') {
+          merge(pageView, this.pageViewMixin);
+        }
+        if (typeof this.pageViewFillin === 'object') {
+          fillIn(pageView, this.pageViewFillin);
+        }
+        if (typeof params === 'object') {
+          merge(pageView, params);
+        }
+        pageView.isViewManagerView = true;
+        if (cacheKey !== null) {
+          this.pageViews.set(cacheKey, pageView);
+          pageView.cacheKey = cacheKey;
+        }
+      } else {
+        if (typeof params === 'object') {
+          merge(pageView, params);
+        }
+      }
+
+      return pageView;
+    },
     /**
      * Loads a view
      * @method load
@@ -161,13 +194,11 @@ define(function(require) {
       params = params || {};
 
       if (params.bypassLoad) {
-        console.log('bypassLoad');
         this.locked = false;
         return Promise.resolve();
       }
 
-      var layer = TPageView.prototype.layer || 0,
-          pageView = this.pageViews.get(cacheKey);
+      var layer = TPageView.prototype.layer || 0;
 
       if (typeof params === 'number') {
         layer = params;
@@ -175,34 +206,14 @@ define(function(require) {
         layer = params.layer;
       }
 
-      var shouldRender = false;
-      if (!pageView) {
-        pageView = new TPageView(null, model, layer);
-        if (typeof this.pageViewMixin === 'object') {
-          merge(pageView, this.pageViewMixin);
-        }
-        if (typeof this.pageViewFillin === 'object') {
-          fillIn(pageView, this.pageViewFillin);
-        }
-        if (typeof params === 'object') {
-          merge(pageView, params);
-        }
-        pageView.isViewManagerView = true;
-        shouldRender = true;
-        if (cacheKey !== null) {
-          this.pageViews.set(cacheKey, pageView);
-          pageView.cacheKey = cacheKey;
-        }
-      } else {
-        if (typeof params === 'object') {
-          merge(pageView, params);
-        }
+      var pageView = this.buildPageView(cacheKey, TPageView, model, params, layer);
+      if (this.shouldTrackBreadcrumb) {
+        this.trackBreadcrumb(this.buildPageView(cacheKey, TPageView, model, params, layer));
       }
-      this.trackBreadcrumb(pageView);
 
       return Promise.resolve()
         .then(function() {
-          if (shouldRender) {
+          if (!pageView.hasRendered) {
             return pageView.render();
           }
         })
