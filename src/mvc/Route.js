@@ -181,8 +181,10 @@ define(function(require) {
           model;
       controller.params = params;
       controller.state = state;
+      params = params || {};
       if (state) {
         model = state.state;
+        params.bypassLoad = state.bypassLoad;
       }
       params = merge(urlParams, params);
       return Promise.resolve()

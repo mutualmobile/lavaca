@@ -1,6 +1,7 @@
 define(function(require) {
 
   var $ = require('$'),
+    History = require('lavaca/net/History'),
     View = require('lavaca/mvc/View'),
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
@@ -38,6 +39,18 @@ define(function(require) {
      */
     this.layers = [];
     /**
+     * Toggles breadcrumb tracking
+     * @property {Boolean} shouldTrackBreadcrumb
+     * @default false
+     */
+    this.shouldTrackBreadcrumb = false;
+    /**
+     * A list containing all views starting from the last root
+     * @property {Array} breadcrumb
+     * @default []
+     */
+    this.breadcrumb = [];
+    /**
      * A list containing all views that are currently exiting
      * @property {Array} exitingPageViews
      * @default []
@@ -74,6 +87,51 @@ define(function(require) {
       this.el = typeof el === 'string' ? $(el) : el;
       return this;
     },
+
+
+    initBreadcrumbTracking: function() {
+      this.shouldTrackBreadcrumb = true;
+      History.on('popstate', function(e) {
+        if (e.direction === 'back') {
+          this.breadcrumb.pop();
+          if (!e.bypassLoad) {
+            this.breadcrumb.pop();
+          }
+        }
+      }.bind(this));
+    },
+    trackBreadcrumb: function(pageView) {
+      if (!this.shouldTrackBreadcrumb) {
+        return;
+      }
+      if (pageView.root) {
+        this.breadcrumb = [];
+      }
+      this.breadcrumb.push(pageView);
+    },
+    rewind: function() {
+      var pageView;
+      if (this.breadcrumb.length > 1) {
+        pageView = this.breadcrumb[this.breadcrumb.length - 2];
+      }
+
+      History.silentBack();
+      History.animationBreadcrumb.pop();
+
+      var replacingPageView = this.layers[0];
+      if (!replacingPageView.cacheKey) {
+        replacingPageView.dispose();
+      }
+      if (replacingPageView.el) {
+        replacingPageView.el.detach();
+      }
+
+      if (pageView) {
+        this.layers[0] = pageView;
+      }
+    },
+
+
     /**
      * Loads a view
      * @method load
@@ -101,6 +159,13 @@ define(function(require) {
         this.locked = true;
       }
       params = params || {};
+
+      if (params.bypassLoad) {
+        console.log('bypassLoad');
+        this.locked = false;
+        return Promise.resolve();
+      }
+
       var layer = TPageView.prototype.layer || 0,
           pageView = this.pageViews.get(cacheKey);
 
@@ -133,6 +198,7 @@ define(function(require) {
           merge(pageView, params);
         }
       }
+      this.trackBreadcrumb(pageView);
 
       return Promise.resolve()
         .then(function() {
