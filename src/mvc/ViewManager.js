@@ -164,6 +164,10 @@ define(function(require) {
     buildPageView: function(cacheKey, TPageView, model, params, layer) {
       var pageView = this.pageViews.get(cacheKey);
 
+      if (typeof params === 'object') {
+        params.breadcrumbLength = this.breadcrumb.length;
+      }
+
       if (!pageView) {
         pageView = new TPageView(null, model, layer);
         if (typeof this.pageViewMixin === 'object') {
@@ -214,7 +218,6 @@ define(function(require) {
       } else {
         this.locked = true;
       }
-      console.log('loading:'+this.locked);
       params = params || {};
 
       if (params.bypassLoad) {
@@ -226,6 +229,7 @@ define(function(require) {
 
       if (typeof params === 'number') {
         layer = params;
+        params = {'layer': layer};
       } else if (params.layer) {
         layer = params.layer;
       }
@@ -249,7 +253,7 @@ define(function(require) {
           return Promise.all([
             (function() {
               if (this.layers[layer] !== pageView) {
-                return pageView.enter(this.el, this.exitingPageViews).then(function(){console.log('enter done');});
+                return pageView.enter(this.el, this.exitingPageViews);
               }
             }.bind(this))(),
             (function() {
@@ -258,7 +262,6 @@ define(function(require) {
           ]);
         }.bind(this))
         .then(function() {
-          console.log('unlock');
           this.locked = false;
           this.enteringPageViews = [];
           this.layers[layer] = pageView;
