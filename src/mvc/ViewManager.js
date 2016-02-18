@@ -87,8 +87,10 @@ define(function(require) {
       this.el = typeof el === 'string' ? $(el) : el;
       return this;
     },
-
-
+    /**
+     * Initializes Breadcrumb tracking to handle contextual animations and enable edge swipe history states
+     * @method initBreadcrumbTracking
+     */
     initBreadcrumbTracking: function() {
       this.shouldTrackBreadcrumb = true;
       History.on('popstate', function(e) {
@@ -100,6 +102,10 @@ define(function(require) {
         }
       }.bind(this));
     },
+    /**
+     * Handles the disposal of views that are popped out of the breadcrumb array
+     * @method popBreadcrumb
+     */
     popBreadcrumb: function() {
       var pageView = this.breadcrumb.pop();
       if (pageView && !pageView.cacheKey) {
@@ -107,6 +113,10 @@ define(function(require) {
         pageView = null;
       }
     },
+    /**
+     * Tracks new breadcrumbs and resets root links
+     * @method trackBreadcrumb
+     */
     trackBreadcrumb: function(pageView) {
       pageView.render();
       if (pageView.root) {
@@ -114,6 +124,11 @@ define(function(require) {
       }
       this.breadcrumb.push(pageView);
     },
+    /**
+     * A method to silently rewind history without fully routing back.
+     * This is an important tool for implementing edge swipe history back
+     * @method rewind
+     */
     rewind: function() {
       var pageView;
       if (this.breadcrumb.length > 1) {
@@ -135,9 +150,17 @@ define(function(require) {
         this.layers[0] = pageView;
       }
     },
-
-
-
+    /**
+     * Builds a pageView and merges in parameters
+     * @method buildPageView
+     *
+     * @param {String} cacheKey  The cache key associated with the view
+     * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
+     * @param {Object} model  The views model
+     * @param {Object} params  Parameters to be mapped to the view
+     * @param {Number} layer  The index of the layer on which the view will sit
+     * @return {Lavaca.mvc.View}  A View instance
+     */
     buildPageView: function(cacheKey, TPageView, model, params, layer) {
       var pageView = this.pageViews.get(cacheKey);
 
@@ -191,6 +214,7 @@ define(function(require) {
       } else {
         this.locked = true;
       }
+      console.log('loading:'+this.locked);
       params = params || {};
 
       if (params.bypassLoad) {
@@ -225,7 +249,7 @@ define(function(require) {
           return Promise.all([
             (function() {
               if (this.layers[layer] !== pageView) {
-                return pageView.enter(this.el, this.exitingPageViews);
+                return pageView.enter(this.el, this.exitingPageViews).then(function(){console.log('enter done');});
               }
             }.bind(this))(),
             (function() {
@@ -234,6 +258,7 @@ define(function(require) {
           ]);
         }.bind(this))
         .then(function() {
+          console.log('unlock');
           this.locked = false;
           this.enteringPageViews = [];
           this.layers[layer] = pageView;
