@@ -418,7 +418,13 @@ define(function(require) {
         attrs = test;
         test = function(index, item) {
           for (var n in attrs) {
-            if (item.get(n) !== attrs[n]) {
+            if (typeof attrs[n] === 'object') {
+              var key = Object.keys(attrs[n])[0];
+              if (item.get(n)[key] !== attrs[n][key]) {
+                return false;
+              }
+            }
+            else if (item.get(n) !== attrs[n]) {
               return false;
             }
           }
