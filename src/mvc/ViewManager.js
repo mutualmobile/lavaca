@@ -89,6 +89,7 @@ define(function(require) {
     },
     /**
      * Initializes Breadcrumb tracking to handle contextual animations and enable edge swipe history states
+     *
      * @method initBreadcrumbTracking
      */
     initBreadcrumbTracking: function() {
@@ -107,34 +108,28 @@ define(function(require) {
      * @method popBreadcrumb
      */
     popBreadcrumb: function() {
-      var pageView = this.breadcrumb.pop();
-      if (pageView && !pageView.cacheKey) {
-        pageView.dispose();
-        pageView = null;
-      }
+      this.breadcrumb.pop();
     },
     /**
      * Tracks new breadcrumbs and resets root links
+     *
+     * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer)
      * @method trackBreadcrumb
      */
-    trackBreadcrumb: function(pageView) {
-      pageView.render();
-      if (pageView.root) {
+    trackBreadcrumb: function(obj) {
+      if (obj.params.root) {
         this.breadcrumb = [];
       }
-      this.breadcrumb.push(pageView);
+      this.breadcrumb.push(obj);
     },
     /**
      * A method to silently rewind history without fully routing back.
      * This is an important tool for implementing edge swipe history back
+     *
+     * @param {Lavaca.mvc.View} pageView A View instance
      * @method rewind
      */
-    rewind: function() {
-      var pageView;
-      if (this.breadcrumb.length > 1) {
-        pageView = this.breadcrumb[this.breadcrumb.length - 2];
-      }
-
+    rewind: function(pageView) {
       History.silentBack();
       History.animationBreadcrumb.pop();
 
@@ -154,22 +149,18 @@ define(function(require) {
      * Builds a pageView and merges in parameters
      * @method buildPageView
      *
-     * @param {String} cacheKey  The cache key associated with the view
-     * @param {Function} TPageView  The type of view to load (should derive from [[Lavaca.mvc.View]])
-     * @param {Object} model  The views model
-     * @param {Object} params  Parameters to be mapped to the view
-     * @param {Number} layer  The index of the layer on which the view will sit
+     * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer) 
      * @return {Lavaca.mvc.View}  A View instance
      */
-    buildPageView: function(cacheKey, TPageView, model, params, layer) {
-      var pageView = this.pageViews.get(cacheKey);
+    buildPageView: function(obj) {
+      var pageView = this.pageViews.get(obj.cacheKey);
 
       if (typeof params === 'object') {
-        params.breadcrumbLength = this.breadcrumb.length;
+        obj.params.breadcrumbLength = this.breadcrumb.length;
       }
 
       if (!pageView) {
-        pageView = new TPageView(null, model, layer);
+        pageView = new obj.TPageView(null, obj.model, obj.layer);
         if (typeof this.pageViewMixin === 'object') {
           merge(pageView, this.pageViewMixin);
         }
@@ -177,16 +168,16 @@ define(function(require) {
           fillIn(pageView, this.pageViewFillin);
         }
         if (typeof params === 'object') {
-          merge(pageView, params);
+          merge(pageView, obj.params);
         }
         pageView.isViewManagerView = true;
-        if (cacheKey !== null) {
-          this.pageViews.set(cacheKey, pageView);
-          pageView.cacheKey = cacheKey;
+        if (obj.cacheKey !== null) {
+          this.pageViews.set(obj.cacheKey, pageView);
+          pageView.cacheKey = obj.cacheKey;
         }
       } else {
         if (typeof params === 'object') {
-          merge(pageView, params);
+          merge(pageView, obj.params);
         }
       }
 
@@ -234,9 +225,17 @@ define(function(require) {
         layer = params.layer;
       }
 
-      var pageView = this.buildPageView(cacheKey, TPageView, model, params, layer);
+      var obj = {
+          'cacheKey':cacheKey, 
+          'TPageView':TPageView, 
+          'model':model, 
+          'params':params, 
+          'layer':layer
+        };
+
+      var pageView = this.buildPageView(obj);
       if (this.shouldTrackBreadcrumb) {
-        this.trackBreadcrumb(this.buildPageView(cacheKey, TPageView, model, params, layer));
+        this.trackBreadcrumb(obj);
       }
 
       return Promise.resolve()
