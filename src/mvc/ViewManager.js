@@ -155,7 +155,7 @@ define(function(require) {
     buildPageView: function(obj) {
       var pageView = this.pageViews.get(obj.cacheKey);
 
-      if (typeof params === 'object') {
+      if (typeof obj.params === 'object') {
         obj.params.breadcrumbLength = this.breadcrumb.length;
       }
 
@@ -167,7 +167,7 @@ define(function(require) {
         if (typeof this.pageViewFillin === 'object') {
           fillIn(pageView, this.pageViewFillin);
         }
-        if (typeof params === 'object') {
+        if (typeof obj.params === 'object') {
           merge(pageView, obj.params);
         }
         pageView.isViewManagerView = true;
@@ -176,7 +176,7 @@ define(function(require) {
           pageView.cacheKey = obj.cacheKey;
         }
       } else {
-        if (typeof params === 'object') {
+        if (typeof obj.params === 'object') {
           merge(pageView, obj.params);
         }
       }
