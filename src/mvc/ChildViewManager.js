@@ -9,8 +9,15 @@ define(function(require) {
     History = require('lavaca/net/History'),
     removeAll = require('mout/array/removeAll');
 
-  var ChildViewManager = Disposable.extend(function(el, routes, parent) {
+  var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
     Disposable.call(this);
+    this.history = [];
+    this.animationBreadcrumb = [];
+    this.step = 1;
+    this.initialStep = 1;
+    this.routes = [];
+    this.currentView = false;
+    this.isRoutingBack = false;
     this.childViews = new Cache();
     this.layers = [];
     this.exitingViews = [];
@@ -18,6 +25,7 @@ define(function(require) {
     this.routes = {};
     this.elName = el;
     this.parentView = parent;
+    this.id = id;
     if (typeof routes === 'object') {
       for (var r in routes) {
         this.routes[r] = routes[r];
@@ -29,14 +37,7 @@ define(function(require) {
     }
     $(window).on('cvmexec.'+this.id,_exec.bind(this));
   }, {
-    history:[],
-    animationBreadcrumb:[],
-    step:1,
-    initialStep:1,
-    routes:[],
-    currentView:false,
-    isRoutingBack:false,
-    init: function(view) {
+    init: function(view, id) {
       this.el = view.find(this.elName);
       if (!this.el.hasClass('cvm')){
         this.el.addClass('cvm');
@@ -79,7 +80,6 @@ define(function(require) {
       if(!route){
         return;
       }
-
       this.history.push(route);
       var ChildView = this.routes[route].TView, 
           model = this.routes[route].model;
