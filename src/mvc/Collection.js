@@ -413,12 +413,28 @@ define(function(require) {
       var result = [],
           i = -1,
           item,
-          attrs;
+          attrs,
+          props,
+          iterate;
       if (typeof test !== 'function') {
         attrs = test;
+        iterate = function(obj, stack) {
+          var key = Object.keys(obj)[0];
+          if (typeof obj[key] === 'object') {
+            stack = key + '.' + Object.keys(obj[key])[0];
+            iterate(obj[key], stack);
+          }
+          return stack || key;
+        };
         test = function(index, item) {
           for (var n in attrs) {
-            if (item.get(n) !== attrs[n]) {
+            if (item.get(n) && typeof attrs[n] === 'object') {
+              props = iterate(attrs[n]);
+              if (eval('item.get(n).'+props) !== eval('attrs[n].'+props)) {
+                return false;
+              }
+            }
+            else if (item.get(n) !== attrs[n]) {
               return false;
             }
           }
