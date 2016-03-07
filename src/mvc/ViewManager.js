@@ -157,6 +157,9 @@ define(function(require) {
 
       if (typeof obj.params === 'object') {
         obj.params.breadcrumbLength = this.breadcrumb.length;
+        if ((this.breadcrumb.length >= 1)) {
+          obj.params.shouldShowBack = true;
+        }
       }
 
       if (!pageView) {
