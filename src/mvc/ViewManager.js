@@ -1,4 +1,5 @@
 var $ = require('jquery'),
+  History = require('lavaca/net/History'),
   View = require('lavaca/mvc/View'),
   Cache = require('lavaca/util/Cache'),
   Disposable = require('lavaca/util/Disposable'),
@@ -35,6 +36,18 @@ var ViewManager = Disposable.extend(function(el) {
    * @default []
    */
   this.layers = [];
+  /**
+   * Toggles breadcrumb tracking
+   * @property {Boolean} shouldTrackBreadcrumb
+   * @default false
+   */
+  this.shouldTrackBreadcrumb = false;
+  /**
+   * A list containing all views starting from the last root
+   * @property {Array} breadcrumb
+   * @default []
+   */
+  this.breadcrumb = [];
   /**
    * A list containing all views that are currently exiting
    * @property {Array} exitingPageViews
@@ -73,6 +86,105 @@ var ViewManager = Disposable.extend(function(el) {
     return this;
   },
   /**
+   * Initializes Breadcrumb tracking to handle contextual animations and enable edge swipe history states
+   *
+   * @method initBreadcrumbTracking
+   */
+  initBreadcrumbTracking: function() {
+    this.shouldTrackBreadcrumb = true;
+    History.on('popstate', function(e) {
+      if (e.direction === 'back') {
+        this.popBreadcrumb();
+        if (!e.bypassLoad) {
+          this.popBreadcrumb();
+        }
+      }
+    }.bind(this));
+  },
+  /**
+   * Handles the disposal of views that are popped out of the breadcrumb array
+   * @method popBreadcrumb
+   */
+  popBreadcrumb: function() {
+    this.breadcrumb.pop();
+  },
+  /**
+   * Tracks new breadcrumbs and resets root links
+   *
+   * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer)
+   * @method trackBreadcrumb
+   */
+  trackBreadcrumb: function(obj) {
+    if (obj.params.root) {
+      this.breadcrumb = [];
+    }
+    this.breadcrumb.push(obj);
+  },
+  /**
+   * A method to silently rewind history without fully routing back.
+   * This is an important tool for implementing edge swipe history back
+   *
+   * @param {Lavaca.mvc.View} pageView A View instance
+   * @method rewind
+   */
+  rewind: function(pageView) {
+    History.silentBack();
+    History.animationBreadcrumb.pop();
+
+    var replacingPageView = this.layers[0];
+    if (!replacingPageView.cacheKey) {
+      replacingPageView.dispose();
+    }
+    if (replacingPageView.el) {
+      replacingPageView.el.detach();
+    }
+
+    if (pageView) {
+      this.layers[0] = pageView;
+    }
+  },
+  /**
+   * Builds a pageView and merges in parameters
+   * @method buildPageView
+   *
+   * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer) 
+   * @return {Lavaca.mvc.View}  A View instance
+   */
+  buildPageView: function(obj) {
+    var pageView = this.pageViews.get(obj.cacheKey);
+
+    if (typeof obj.params === 'object') {
+      obj.params.breadcrumbLength = this.breadcrumb.length;
+      if ((this.breadcrumb.length > 1)) {
+        obj.params.shouldShowBack = true;
+      }
+    }
+
+    if (!pageView) {
+      pageView = new obj.TPageView(null, obj.model, obj.layer);
+      if (typeof this.pageViewMixin === 'object') {
+        merge(pageView, this.pageViewMixin);
+      }
+      if (typeof this.pageViewFillin === 'object') {
+        fillIn(pageView, this.pageViewFillin);
+      }
+      if (typeof obj.params === 'object') {
+        merge(pageView, obj.params);
+      }
+      pageView.isViewManagerView = true;
+      if (obj.cacheKey !== null) {
+        this.pageViews.set(obj.cacheKey, pageView);
+        pageView.cacheKey = obj.cacheKey;
+      }
+    } else {
+      if (typeof obj.params === 'object') {
+        merge(pageView, obj.params);
+      }
+    }
+
+    return pageView;
+  },
+  /**
    * Loads a view
    * @method load
    *
@@ -99,42 +211,38 @@ var ViewManager = Disposable.extend(function(el) {
       this.locked = true;
     }
     params = params || {};
-    var layer = TPageView.prototype.layer || 0,
-        pageView = this.pageViews.get(cacheKey);
+
+    if (params.bypassLoad) {
+      this.locked = false;
+      return Promise.resolve();
+    }
+
+    var layer = TPageView.prototype.layer || 0;
 
     if (typeof params === 'number') {
       layer = params;
+      params = {'layer': layer};
     } else if (params.layer) {
       layer = params.layer;
     }
 
-    var shouldRender = false;
-    if (!pageView) {
-      pageView = new TPageView(null, model, layer);
-      if (typeof this.pageViewMixin === 'object') {
-        merge(pageView, this.pageViewMixin);
-      }
-      if (typeof this.pageViewFillin === 'object') {
-        fillIn(pageView, this.pageViewFillin);
-      }
-      if (typeof params === 'object') {
-        merge(pageView, params);
-      }
-      pageView.isViewManagerView = true;
-      shouldRender = true;
-      if (cacheKey !== null) {
-        this.pageViews.set(cacheKey, pageView);
-        pageView.cacheKey = cacheKey;
-      }
-    } else {
-      if (typeof params === 'object') {
-        merge(pageView, params);
-      }
+    var pageView,
+        obj = {
+          'cacheKey':cacheKey,
+          'TPageView':TPageView,
+          'model':model,
+          'params':params,
+          'layer':layer
+        };
+
+    if (this.shouldTrackBreadcrumb) {
+      this.trackBreadcrumb(obj);
     }
+    pageView = this.buildPageView(obj);
 
     return Promise.resolve()
       .then(function() {
-        if (shouldRender) {
+        if (!pageView.hasRendered) {
           return pageView.render();
         }
       })

@@ -748,7 +748,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    *
   */
   mapChildViewManager:function(el, map, mixin, fillin){
-    this.childViewManager = new ChildViewManager(el, map, this);
+    this.childViewManager = new ChildViewManager(el, map, this, 'cvm-'+this.id);
     if (typeof mixin === 'object') {
       this.childViewManager.childViewMixin = mixin;
     }

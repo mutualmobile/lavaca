@@ -148,6 +148,8 @@ var Application = EventDispatcher.extend(function(callback) {
           this.router.exec(url, null, null).then(_always, _always);
         } else if (rel === 'cancel') {
           this.viewManager.dismiss(e.currentTarget);
+        } else if (rel === 'root' && url) {
+          this.router.exec(url, null, {'root': true}).catch(this.onInvalidRoute);
         } else if (url) {
           url = url.replace(/^\/?#/, '');
           this.router.exec(url).catch(this.onInvalidRoute);

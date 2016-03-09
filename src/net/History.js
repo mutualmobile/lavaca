@@ -8,7 +8,8 @@ var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
     _lastHash,
     _hist,
     _currentId,
-    _pushCount = 0;
+    _pushCount = 0,
+    _silentPop = false;
 
 function _insertState(hist, position, id, state, title, url) {
   hist.position = position;
@@ -58,13 +59,17 @@ var History = EventDispatcher.extend(function() {
         _pushCount--;
         var previousId = _currentId;
         _currentId = e.state.id;
+
         self.trigger('popstate', {
+          bypassLoad: _silentPop,
           state: e.state.state,
           title: e.state.title,
           url: e.state.url,
           id: e.state.id,
           direction: _currentId > previousId ? 'forward' : 'back'
         });
+        _silentPop = false;
+        
       }
     };
     window.addEventListener('popstate', this.onPopState, false);
@@ -100,13 +105,17 @@ var History = EventDispatcher.extend(function() {
             hashReplacement = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
             location.hash = hashReplacement;
             document.title = record.title;
+
             self.trigger('popstate', {
+              bypassLoad: _silentPop,
               state: record.state,
               title: record.title,
               url: record.url,
               id: record.id,
               direction: record.id > parseInt(previousCode, 10) ? 'forward' : 'back'
             });
+            _silentPop = false;
+
           }
         } else {
           History.back();
@@ -251,6 +260,15 @@ History.replace = function() {
  * @static
  */
 History.back = function() {
+  history.back();
+};
+/**
+ * Goes to the previous history state without notifying router
+ * @method back
+ * @static
+ */
+History.silentBack = function() {
+  _silentPop = true;
   history.back();
 };
 /**
