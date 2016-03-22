@@ -163,7 +163,7 @@ var EventDispatcher = Disposable.extend({
 function _getMatchingCallbacks(type){
   var returnCallbacks = [];
   if(type == 'contentLoaded'){
-    debugger;
+    //debugger;
   }
   for(var x in this.callbacks){
     if(x.split){

@@ -1,13 +1,29 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', 'requirejs'],
+    browsers: ['PhantomJS'],
     files: [
-      'test/boot.js',
-      {pattern: 'bower_components/**/*.js', included: false},
-      {pattern: 'src/**/*.js', included: false},
-      {pattern: 'test/unit/**/*.js', included: false}
+        { pattern: 'test/test-context.js', watched: false }
     ],
+    frameworks: ['jasmine', 'requirejs'],
+    preprocessors: {
+        'test-context.js': ['webpack']
+    },
+    webpack: {
+        module: {
+            loaders: [
+                { 
+                  test: /\.js/, 
+                  exclude: /node_modules/, 
+                  loader: 'babel-loader' 
+                }
+            ]
+        },
+        watch: true
+    },
+    webpackServer: {
+        noInfo: true
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
