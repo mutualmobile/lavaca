@@ -5,7 +5,9 @@ module.exports = function(config) {
     basePath: '',
     browsers: ['PhantomJS'],
     files: [
-        { pattern: 'test-context.js', watched: false }
+      { pattern: 'bower_components/es5-shim/es5-shim.js', watched: false },
+      { pattern: 'bower_components/es6-shim/es6-shim.js', watched: false },
+      { pattern: 'test-context.js', watched: false }
     ],
     frameworks: ['jasmine'],
     preprocessors: {
@@ -34,10 +36,10 @@ module.exports = function(config) {
         ],
         module: {
             loaders: [
-                { 
-                  test: /\.js/, 
-                  exclude: /node_modules/, 
-                  loader: 'babel-loader' 
+                {
+                  test: /\.js/,
+                  exclude: /node_modules/,
+                  loader: 'babel-loader'
                 }
             ]
         },

@@ -1,9 +1,12 @@
 {
   "globals": {
+    "$": false,
     "define": false,
+    "require": false,
     "Promise": false,
     "describe": false,
     "expect": false,
+    "fail": false,
     "beforeEach": false,
     "afterEach": false,
     "spyOn": false,

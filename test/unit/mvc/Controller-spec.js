@@ -44,23 +44,17 @@ module.exports = describe('A Controller', function() {
     afterEach(function(){
       $('script[data-name="hello-world"]').remove();
     });
-    it('with a view helper method', function() {
+    it('with a view helper method', function(done) {
       var controller = new testController(router, viewManager),
           myPageView = View.extend({
             template: 'hello-world',
           }),
-          done = false,
           response;
-        runs(function() {
-          controller.view('myView', myPageView).then(function() {
-            response = viewManager.pageViews.get('myView').hasRendered;
-            expect(response).toBe(true);
-            done = true;
-          });
-        });
-        waitsFor(function() {
-          return !!done;
-        }, 'promises to resolve', 100);
+      controller.view('myView', myPageView).then(function() {
+        response = viewManager.pageViews.get('myView').hasRendered;
+        expect(response).toBe(true);
+        done();
+      });
     });
   });
   it('can add a state to the browser history', function() {
@@ -82,18 +76,12 @@ module.exports = describe('A Controller', function() {
     expect(response).toEqual('/foo/bar');
   });
   describe('can redirect user to another route', function() {
-    it('directly', function() {
-      var controller = new testController(router, viewManager),
-          done = false;
-      runs(function() {
-        controller.redirect('/foo').then(function() {
-          expect(ob.foo).toHaveBeenCalled();
-          done = true;
-        });
+    it('directly', function(done) {
+      var controller = new testController(router, viewManager);
+      controller.redirect('/foo').then(function() {
+        expect(ob.foo).toHaveBeenCalled();
+        done();
       });
-      waitsFor(function() {
-        return !!done;
-      }, 'promises to resolve', 100);
     });
   });
 });

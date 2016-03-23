@@ -1,5 +1,3 @@
-
-//var $ = require('$');
 var View = require('lavaca/mvc/View');
 var Model = require('lavaca/mvc/Model');
 var Widget = require('lavaca/ui/Widget');
@@ -100,342 +98,276 @@ describe('A View', function() {
       expect(childViews[2].model.get('color')).toEqual('purple');
     });
   });
-  it('can be rendered', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function() {
-          return '<h2>Hello World</h2><p>Color is blue.</p>';
-        }
-      });
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
-        done = true;
-      });
+  it('can be rendered', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function() {
+        return '<h2>Hello World</h2><p>Color is blue.</p>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
-  });
-  it('can redraw whole view', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function() {
-          return '<h2>Hello World</h2><p>Color is ' + this.model.get('color') + '.</p>';
-        }
-      });
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
-        model.set('color', 'red');
-        return testView.render();
-      }).then(function() {
-        expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is red.</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
+      done();
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
   });
-  it('can redraw whole view using a custom model', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function(model) {
-          return '<p class="redraw">Color is ' + model.color + '.</p>';
-        }
-      });
+  it('can redraw whole view', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function() {
+        return '<h2>Hello World</h2><p>Color is ' + this.model.get('color') + '.</p>';
+      }
+    });
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is blue.</p>');
+      model.set('color', 'red');
+      return testView.render();
+    }).then(function() {
+      expect($(testView.el).html()).toBe('<h2>Hello World</h2><p>Color is red.</p>');
+      done();
+    });
+    $('script[data-name="model-tmpl"]').remove();
+  });
+  it('can redraw whole view using a custom model', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function(model) {
+        return '<p class="redraw">Color is ' + model.color + '.</p>';
+      }
+    });
 
-      var otherModel = new Model({color: 'orange'});
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p>');
-        return testView.render(otherModel);
-      }).then(function() {
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+    var otherModel = new Model({color: 'orange'});
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p>');
+      return testView.render(otherModel);
+    }).then(function() {
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p>');
+      done();
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
+    $('script[data-name="model-tmpl"]').remove();
   });
-  it('can redraw part of a based on a selector', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function(model) {
-          return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
-        }
-      });
-
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        model.set('color', 'orange');
-        model.set('primary', false);
-        return testView.render('p.redraw');
-      }).then(function() {
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+  it('can redraw part of a based on a selector', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function(model) {
+        return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
-  });
-  it('can redraw part of a based on a selector with a custom model', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function(model) {
-          return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
-        }
-      });
 
-      var otherModel = new Model({color: 'orange', primary: false});
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        return testView.render('p.redraw', otherModel);
-      }).then(function() {
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      model.set('color', 'orange');
+      model.set('primary', false);
+      return testView.render('p.redraw');
+    }).then(function() {
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
+      done();
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
+    $('script[data-name="model-tmpl"]').remove();
   });
-  it('can re-render without redrawing', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function(model) {
-          return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
-        }
-      });
-
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        model.set('color', 'orange');
-        model.set('primary', false);
-        return testView.render(false);
-      }).then(function(html) {
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+  it('can redraw part of a based on a selector with a custom model', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function(model) {
+        return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
-  });
-  it('can re-render using a custom model without redrawing', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function(model) {
-          return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
-        }
-      });
 
-      var otherModel = new Model({color: 'orange', primary: false});
-      testView = new TestView(el, model);
-      testView.render().then(function() {
-        expect(testView.hasRendered).toEqual(true);
-        expect($(testView.el).length).toBe(1);
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        return testView.render(false, otherModel);
-      }).then(function(html) {
-        expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-        expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+    var otherModel = new Model({color: 'orange', primary: false});
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      return testView.render('p.redraw', otherModel);
+    }).then(function() {
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is orange.</p><p>It is primary</p>');
+      done();
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
+    $('script[data-name="model-tmpl"]').remove();
   });
-  it('can map an event', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
+  it('can re-render without redrawing', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function(model) {
+        return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
+      }
+    });
 
-        this.mapEvent({
-          'input': {
-            'click': function() {
-              done = true;
-            }
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      model.set('color', 'orange');
+      model.set('primary', false);
+      return testView.render(false);
+    }).then(function(html) {
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
+      done();
+    });
+    $('script[data-name="model-tmpl"]').remove();
+  });
+  it('can re-render using a custom model without redrawing', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function(model) {
+        return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
+      }
+    });
+
+    var otherModel = new Model({color: 'orange', primary: false});
+    testView = new TestView(el, model);
+    testView.render().then(function() {
+      expect(testView.hasRendered).toEqual(true);
+      expect($(testView.el).length).toBe(1);
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      return testView.render(false, otherModel);
+    }).then(function(html) {
+      expect($(testView.el).html()).toBe('<p class="redraw">Color is blue.</p><p>It is primary</p>');
+      expect(html).toBe('<p class="redraw">Color is orange.</p><p>It is not primary</p>');
+      done();
+    });
+    $('script[data-name="model-tmpl"]').remove();
+  });
+  it('can map an event', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+
+      this.mapEvent({
+        'input': {
+          'click': function() {
+            done();
           }
-        });
-      },
-      {
-        generateHtml: function() {
-          return '<input type="button" value="Click here!"></input>';
         }
       });
-
-      testView = new TestView(el, new Model());
-      testView.render().then(function() {
-        testView.el.find('input').trigger('click');
-      });
+    },
+    {
+      generateHtml: function() {
+        return '<input type="button" value="Click here!"></input>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'click event', 100);
+
+    testView = new TestView(el, new Model());
+    testView.render().then(function() {
+      testView.el.find('input').trigger('click');
+    });
   });
-  it('always binds mapped event handlers to itself (`this` === View instance)', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
+  it('always binds mapped event handlers to itself (`this` === View instance)', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
 
-        var id = this.id;
+      var id = this.id;
 
-        this.mapEvent({
-          'input': {
-            'click': function() {
-              expect(this.id).toEqual(id);
-              done = true;
-            }
+      this.mapEvent({
+        'input': {
+          'click': function() {
+            expect(this.id).toEqual(id);
+            done();
           }
-        });
-      },
-      {
-        generateHtml: function() {
-          return '<input type="button" value="Click here!"></input>';
         }
       });
-
-      testView = new TestView(el, new Model());
-      testView.render().then(function() {
-        testView.el.find('input').trigger('click');
-      });
+    },
+    {
+      generateHtml: function() {
+        return '<input type="button" value="Click here!"></input>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'click event', 100);
+
+    testView = new TestView(el, new Model());
+    testView.render().then(function() {
+      testView.el.find('input').trigger('click');
+    });
   });
-  it('can map a widget', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function() {
-          return '<div class="widget" id="widget"></div>';
-        }
-      });
-
-      var MyWidget = Widget.extend(function MyWidget() {
-        Widget.apply(this, arguments);
-        this.testProp = 'abc';
-      });
-
-      testView = new TestView(el, new Model());
-      testView.mapWidget('.widget', MyWidget);
-      testView.render().then(function() {
-        expect(testView.widgets.get('widget').testProp).toEqual('abc');
-        done = true;
-      });
-      $('script[data-name="model-tmpl"]').remove();
+  it('can map a widget', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function() {
+        return '<div class="widget" id="widget"></div>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
+
+    var MyWidget = Widget.extend(function MyWidget() {
+      Widget.apply(this, arguments);
+      this.testProp = 'abc';
+    });
+
+    testView = new TestView(el, new Model());
+    testView.mapWidget('.widget', MyWidget);
+    testView.render().then(function() {
+      expect(testView.widgets.get('widget').testProp).toEqual('abc');
+      done();
+    });
+    $('script[data-name="model-tmpl"]').remove();
   });
-  it('can map a widget with custom arguments', function() {
-    var done = false;
-    runs(function() {
-      var TestView = View.extend(function() {
-        View.apply(this, arguments);
-      },
-      {
-        generateHtml: function() {
-          return '<div class="widget" id="widget"></div><div class="other-widget" id="other-widget"></div>';
-        }
-      });
-
-      var MyWidget = Widget.extend(function MyWidget(el, testProp) {
-        Widget.apply(this, arguments);
-        this.testProp = testProp;
-      });
-
-      var MyOtherWidget = Widget.extend(function MyOtherWidget(el, testStr, testInt) {
-        Widget.apply(this, arguments);
-        this.testStr = testStr;
-        this.testInt = testInt;
-      });
-
-      testView = new TestView(el, new Model());
-      testView.mapWidget({
-        '.widget': {
-          TWidget: MyWidget,
-          args: 'xyz'
-        },
-        '.other-widget': {
-          TWidget: MyOtherWidget,
-          args: ['qwert', 12345]
-        }
-      });
-      testView.render().then(function() {
-        expect(testView.widgets.get('widget').testProp).toEqual('xyz');
-        expect(testView.widgets.get('other-widget').testStr).toEqual('qwert');
-        expect(testView.widgets.get('other-widget').testInt).toEqual(12345);
-        done = true;
-      });
-
-      $('script[data-name="model-tmpl"]').remove();
+  it('can map a widget with custom arguments', function(done) {
+    var TestView = View.extend(function() {
+      View.apply(this, arguments);
+    },
+    {
+      generateHtml: function() {
+        return '<div class="widget" id="widget"></div><div class="other-widget" id="other-widget"></div>';
+      }
     });
-    waitsFor(function() {
-      return !!done;
-    }, 'promises to resolve', 100);
+
+    var MyWidget = Widget.extend(function MyWidget(el, testProp) {
+      Widget.apply(this, arguments);
+      this.testProp = testProp;
+    });
+
+    var MyOtherWidget = Widget.extend(function MyOtherWidget(el, testStr, testInt) {
+      Widget.apply(this, arguments);
+      this.testStr = testStr;
+      this.testInt = testInt;
+    });
+
+    testView = new TestView(el, new Model());
+    testView.mapWidget({
+      '.widget': {
+        TWidget: MyWidget,
+        args: 'xyz'
+      },
+      '.other-widget': {
+        TWidget: MyOtherWidget,
+        args: ['qwert', 12345]
+      }
+    });
+    testView.render().then(function() {
+      expect(testView.widgets.get('widget').testProp).toEqual('xyz');
+      expect(testView.widgets.get('other-widget').testStr).toEqual('qwert');
+      expect(testView.widgets.get('other-widget').testInt).toEqual(12345);
+      done();
+    });
+
+    $('script[data-name="model-tmpl"]').remove();
   });
 });
 

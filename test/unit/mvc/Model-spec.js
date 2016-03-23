@@ -98,79 +98,41 @@ module.exports = describe('A Model', function() {
   });
 
   describe('Events', function() {
-    it('can fire an onChange event', function() {
-      var noop = {
-            changeModel: function() {}
-          };
-
-      spyOn(noop, 'changeModel');
-
-      runs(function() {
-        testModel.on('change', noop.changeModel);
-        testModel.set('someAttribute', 'someValue');
+    it('can fire an onChange event', function(done) {
+      testModel.on('change', function() {
+        expect(testModel.get('someAttribute')).toEqual('someValue');
+        done();
       });
-
-      waitsFor(function() {
-        return testModel.get('someAttribute') === 'someValue';
-      });
-
-      runs(function() {
-        expect(noop.changeModel).toHaveBeenCalled();
-      });
+      testModel.set('someAttribute', 'someValue');
     });
-    it('can fire a scoped onChange event', function() {
-      var noop = {
-        changeModel: function() {}
-      };
-
-      spyOn(noop, 'changeModel');
-
-      runs(function() {
-        testModel.on('change', 'someAttribute', noop.changeModel);
-        testModel.set('someAttribute', 'someValue');
+    it('can fire a scoped onChange event', function(done) {
+      testModel.on('change', 'someAttribute', function() {
+        expect(testModel.get('someAttribute')).toEqual('someValue');
+        done();
       });
-
-      waitsFor(function() {
-        return testModel.get('someAttribute') === 'someValue';
-      });
-
-      runs(function() {
-        expect(noop.changeModel).toHaveBeenCalled();
-      });
+      testModel.set('someAttribute', 'someValue');
     });
-    it('should not fire a change event when suppressed is set on the apply() method', function() {
-      var noop = {
-            changeModel: function() {}
-          };
-
-      spyOn(noop, 'changeModel');
-
-      runs(function() {
-        testModel.on('change', noop.changeModel);
-        testModel.apply({'someAttribute': 'someValue'}, true);
+    it('should not fire a change event when suppressed is set on the apply() method', function(done) {
+      testModel.on('change', function() {
+        fail('Change event was fired');
       });
+      testModel.apply({'someAttribute': 'someValue'}, true);
 
-      waitsFor(function() {
-        return testModel.get('someAttribute') === 'someValue';
-      });
-
-      runs(function() {
-        expect(noop.changeModel).not.toHaveBeenCalled();
-      });
+      setTimeout(function() {
+        expect(testModel.get('someAttribute')).toEqual('someValue');
+        done();
+      }, 50);
     });
-    it('should not add unsaved attributes when suppressTracking is true', function() {
+    it('should not add unsaved attributes when suppressTracking is true', function(done) {
       testModel.suppressTracking = true;
-      runs(function() {
-        testModel.set('someAttribute', 'someValue');
-      });
 
-      waitsFor(function() {
-        return testModel.get('someAttribute') === 'someValue';
-      });
+      testModel.set('someAttribute', 'someValue');
 
-      runs(function() {
+      setTimeout(function() {
+        expect(testModel.get('someAttribute')).toEqual('someValue');
         expect(testModel.unsavedAttributes.length).toEqual(0);
-      });
+        done();
+      }, 50);
     });
   });
 
