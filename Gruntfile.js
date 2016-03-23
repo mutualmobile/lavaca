@@ -6,18 +6,18 @@ module.exports = function(grunt) {
 
     karma: {
       run: {
-        configFile: '.karma.js',
+        configFile: 'karma.conf.js',
         singleRun: true,
         reporters: ['dots'],
         browsers: ['PhantomJS']
       },
       debug: {
-        configFile: '.karma.js',
+        configFile: 'karma.conf.js',
         reporters: ['dots'],
         browsers: ['Chrome']
       },
       coverage: {
-        configFile: '.karma.js',
+        configFile: 'karma.conf.js',
         singleRun: true,
         reporters: ['dots', 'coverage'],
         browsers: ['PhantomJS'],

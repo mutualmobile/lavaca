@@ -10,7 +10,6 @@ describe('An EventDispatcher', function() {
       };
   beforeEach(function() {
     eventDispatcher = new EventDispatcher();
-    console.log(typeof eventDispatcher.on);
   });
   afterEach(function() {
     eventDispatcher.dispose();
@@ -24,7 +23,6 @@ describe('An EventDispatcher', function() {
   });
   describe('can bind', function() {
     it('an event handler', function() {
-      console.log(eventDispatcher);
       eventDispatcher.on('test', noop.func);
       expect(eventDispatcher.callbacks.test[0].fn).toEqual(noop.func);
     });

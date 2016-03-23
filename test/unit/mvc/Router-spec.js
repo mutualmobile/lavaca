@@ -13,7 +13,7 @@ module.exports = describe('A Router', function() {
     $('body').append('<div id="view-root"></div>');
     viewManager = new viewManager.constructor('#view-root');
     router = new router.constructor(viewManager);
-    spyOn(ob, 'foo').andCallThrough();
+    spyOn(ob, 'foo').and.callThrough();
   });
   afterEach(function(){
     $('#view-root').remove();

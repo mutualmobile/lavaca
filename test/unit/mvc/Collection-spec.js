@@ -68,8 +68,8 @@ module.exports = describe('A Collection', function() {
     testCollection.on('addItem', noop.addItem);
     testCollection.on('removeItem', noop.removedItem);
     testCollection.insert(1, items);
-    expect(noop.addItem.callCount).toEqual(5);
-    expect(noop.removedItem.callCount).toEqual(2);
+    expect(noop.addItem).toHaveBeenCalledTimes(5);
+    expect(noop.removedItem).toHaveBeenCalledTimes(2);
     expectedResult = [colors[0]].concat(items).concat([colors[1]]);
     expect(testCollection.toObject().items).toEqual(expectedResult);
   });
@@ -157,7 +157,7 @@ module.exports = describe('A Collection', function() {
             eventModel = e.model;
           }
         };
-    spyOn(noop, 'addItem').andCallThrough();
+    spyOn(noop, 'addItem').and.callThrough();
     testCollection = new Collection(colors);
     testCollection.on('addItem', noop.addItem);
     testCollection.add({color: 'purple', primary: false});
@@ -170,7 +170,7 @@ module.exports = describe('A Collection', function() {
             expect(e.model).toEqual(testCollection.itemAt(4));
           }
         };
-    spyOn(noop, 'changeItem').andCallThrough();
+    spyOn(noop, 'changeItem').and.callThrough();
     testCollection = new Collection(colors);
     testCollection.on('changeItem', noop.changeItem);
     testCollection.add({color: 'purple', primary: false});
@@ -186,7 +186,7 @@ module.exports = describe('A Collection', function() {
           }
         },
         moveRecords = [];
-    spyOn(noop, 'moveItem').andCallThrough();
+    spyOn(noop, 'moveItem').and.callThrough();
     testCollection.on('moveItem', noop.moveItem);
     testCollection.add([
       { testVal: 'B' },
@@ -201,7 +201,7 @@ module.exports = describe('A Collection', function() {
       { testVal: 'C' },
       { testVal: 'D' }
     ]);
-    expect(noop.moveItem.callCount).toEqual(3);
+    expect(noop.moveItem).toHaveBeenCalledTimes(3);
     expect(moveRecords).toEqual([
       ['A', 2, 1],
       ['A', 1, 0],
@@ -215,7 +215,7 @@ module.exports = describe('A Collection', function() {
           }
         },
         model;
-    spyOn(noop, 'removedItem').andCallThrough();
+    spyOn(noop, 'removedItem').and.callThrough();
     testCollection = new Collection(colors);
     testCollection.on('removeItem', noop.removedItem);
     model = testCollection.itemAt(1);
@@ -238,7 +238,7 @@ module.exports = describe('A Collection', function() {
       { testVal: 'B' },
       { testVal: 'C' }
     ]);
-    expect(noop.moveItem.callCount).toEqual(3);
+    expect(noop.moveItem).toHaveBeenCalledTimes(3);
   });
   it('can sort via a specified attribute name in descending order', function() {
     var noop = {
@@ -256,7 +256,7 @@ module.exports = describe('A Collection', function() {
       { testVal: 'B' },
       { testVal: 'A' }
     ]);
-    expect(noop.moveItem.callCount).toEqual(2);
+    expect(noop.moveItem).toHaveBeenCalledTimes(2);
   });
   it('can sort via a compare function', function() {
     var noop = {
@@ -272,7 +272,7 @@ module.exports = describe('A Collection', function() {
                   ? -1
                   : 1;
     }
-    spyOn(noop, 'moveItem').andCallThrough();
+    spyOn(noop, 'moveItem').and.callThrough();
     testCollection.on('moveItem', noop.moveItem);
     testCollection.add([
       { testVal: 'B' },
@@ -284,7 +284,7 @@ module.exports = describe('A Collection', function() {
       { testVal: 'B' },
       { testVal: 'C' }
     ]);
-    expect(noop.moveItem.callCount).toEqual(3);
+    expect(noop.moveItem).toHaveBeenCalledTimes(3);
   });
   it('can reverse order of models', function() {
     testCollection.add([

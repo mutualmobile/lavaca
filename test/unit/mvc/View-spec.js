@@ -49,7 +49,7 @@ describe('A View', function() {
           return new Model({index: index, id: $(el).attr('data-id')});
         }
       };
-      spyOn(handler, 'fn').andCallThrough();
+      spyOn(handler, 'fn').and.callThrough();
     });
     it('with the same model as the parent view', function() {
       testView.mapChildView('.childView', View);
@@ -69,7 +69,7 @@ describe('A View', function() {
     it('with a function that returns a model', function() {
       multiChildView.mapChildView('.childView', View, handler.fn);
       multiChildView.createChildViews();
-      expect(handler.fn.callCount).toEqual(2);
+      expect(handler.fn).toHaveBeenCalledTimes(2);
       var childViews = multiChildView.childViews.toArray();
       expect(childViews[0].model.get('index')).toBe(0);
       expect(childViews[0].model.get('id')).toBe('abc');

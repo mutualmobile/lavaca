@@ -18,7 +18,7 @@ module.exports = describe('A Controller', function() {
     $('body').append('<div id="view-root"></div>');
     viewManager = (new viewManager.constructor()).setEl('#view-root');
     router = (new router.constructor()).setViewManager(viewManager);
-    spyOn(ob, 'foo').andCallThrough();
+    spyOn(ob, 'foo').and.callThrough();
     testController = Controller.extend(ob);
     router.add({
       '/foo': [testController, 'foo', {}]

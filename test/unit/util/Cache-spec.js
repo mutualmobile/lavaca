@@ -27,7 +27,9 @@ describe('A Cache', function() {
   });
   it('can interate over each item', function() {
     var noop = {
-          cb: function() {}
+          cb: function() {
+            console.log('cb');
+          }
         };
     spyOn(noop, 'cb');
     cache.add('red');
@@ -35,7 +37,7 @@ describe('A Cache', function() {
     cache.add('blue');
     cache.add('yellow');
     cache.each(noop.cb);
-    expect(noop.cb.callCount).toBe(4);
+    expect(noop.cb).toHaveBeenCalledTimes(4);
   });
   it('can stop iteration early', function() {
     var ops = {
@@ -45,13 +47,13 @@ describe('A Cache', function() {
             }
           }
         };
-    spyOn(ops, 'cb').andCallThrough();
+    spyOn(ops, 'cb').and.callThrough();
     cache.set('a', 1);
     cache.set('b', 2);
     cache.set('c', 3);
     cache.set('d', 4);
     cache.each(ops.cb);
-    expect(ops.cb.callCount).toBe(3);
+    expect(ops.cb).toHaveBeenCalledTimes(3);
   });
   it('can return an object of the key-value hash', function() {
     cache.set('a', 1);
