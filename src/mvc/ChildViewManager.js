@@ -5,7 +5,7 @@ import { default as History } from '../net/History';
 import {fillIn, merge} from 'mout/object';
 import {removeAll, contains} from 'mout/array';
 
-var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
+var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, id){
   Disposable.call(this);
   this.history = [];
   this.animationBreadcrumb = [];
@@ -187,7 +187,7 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
   }
 });
 
-let _getRoute = (url) => {
+let _getRoute = function(url){
   var route = false;
   if(this.routes){    
     for(var r in this.routes){
@@ -199,7 +199,7 @@ let _getRoute = (url) => {
   return route;
 }
 
-let _exec = (e,obj) => {
+let _exec = function(e,obj){
   if(obj && obj.childViewSelector === this.elName){
     if(obj.route === 'back' || obj.route === '#back'){
       this.back();
