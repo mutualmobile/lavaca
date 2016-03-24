@@ -33,14 +33,14 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
   }
   $(window).on('cvmexec.'+this.id,_exec.bind(this));
 }, {
-  init: function(view, id) {
+  init(view, id) {
     this.el = view.find(this.elName);
     if (!this.el.hasClass('cvm')){
       this.el.addClass('cvm');
       this.exec();
     }
   },
-  back: function() {
+  back() {
     if(!this.history || this.history.length - 1 <= 0){
       History.back();
     }
@@ -54,7 +54,7 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
       this.exec(route).then(_always, _always);
     }
   },
-  stepBack: function() {
+  stepBack() {
     if(this.history.length > 1){
       var route = _getRoute.call(this, this.history[this.history.length - 1]);
       if(this.routes[route].step !== this.initialStep){
@@ -68,7 +68,7 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
       this.back();
     }
   },
-  exec: function(route, params) {
+  exec(route, params) {
     if(!route){
       route = 1;
     }
@@ -131,7 +131,7 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
         }
       });
   },
-  dismiss: function(layer) {
+  dismiss(layer) {
     if (typeof layer === 'number') {
       return this.dismissLayersAbove(layer - 1);
     // } 
@@ -149,7 +149,7 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
       }
     }
   },
-  dismissLayersAbove: function(index, exceptForView) {
+  dismissLayersAbove(index, exceptForView) {
     var toDismiss = this.layers.slice(index+1)
       .filter((layer) => {
         return (layer && (!exceptForView || exceptForView !== layer));
@@ -175,12 +175,12 @@ var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
 
     return Promise.all(promises);
   },
-  dispose: function() {
+  dispose() {
     this.model = this.parentView = null;
     $(window).off('cvmexec.'+this.id);
     Disposable.prototype.dispose.call(this);
   },
-  flush: function() {
+  flush() {
     this.history = [];
     this.childViews.dispose();
     this.childViews = new Cache();

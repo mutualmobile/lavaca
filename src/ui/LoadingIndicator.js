@@ -20,14 +20,14 @@ var LoadingIndicator = Widget.extend({
    * Activates the loading indicator
    * @method show
    */
-  show: function() {
+  show() {
     this.el.addClass(this.className);
   },
   /**
    * Deactivates the loading indicator
    * @method hide
    */
-  hide: function() {
+  hide() {
     this.el.removeClass(this.className);
   }
 });

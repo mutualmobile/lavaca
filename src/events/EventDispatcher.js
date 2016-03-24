@@ -34,7 +34,7 @@ var EventDispatcher = Disposable.extend({
    * @param {Object} thisp  The context of the handler
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  on: function(type, callback, thisp) {
+  on(type, callback, thisp) {
     var calls = this.callbacks || (this.callbacks = {}),
         list = calls[type] || (calls[type] = []);
     list[list.length] = {fn: callback, thisp: thisp};
@@ -70,7 +70,7 @@ var EventDispatcher = Disposable.extend({
    * @param {Object} thisp  The context of the handler
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  off: function(type, callback, thisp) {
+  off(type, callback, thisp) {
     var calls = this.callbacks,
         list,
         isThisp;
@@ -108,7 +108,7 @@ var EventDispatcher = Disposable.extend({
    * @param {Object} params  Additional data points to add to the event
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  trigger: function(type, params) {
+  trigger(type, params) {
     if (!this.suppressEvents && this.callbacks) {
       var list = _getMatchingCallbacks.call(this,type),
           event = this.createEvent(type, params),
@@ -141,7 +141,7 @@ var EventDispatcher = Disposable.extend({
    * @param {Object} params  Additional data points to add to the event
    * @return {Object}  The event object
    */
-  createEvent: function(type, params) {
+  createEvent(type, params) {
     return deepMixIn({}, params || {}, {
       type: type,
       target: params && params.target ? params.target : this,

@@ -200,11 +200,11 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Object} model  The data model, guaranteed to be a plain object
    * @return {String|lavaca.util.Promise} The html to be rendered
    */
-  generateHtml: function(model) {
+  generateHtml(model) {
     return '';
   },
 
-  _parseRenderArguments: function() {
+  _parseRenderArguments() {
     var args = Array.prototype.slice.call(arguments);
     var ret = {
       selector: null,
@@ -316,7 +316,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Object} model  The data model to be passed to the template
    * @return {lavaca.util.Promise}  A promise
    */
-  render: function() {
+  render() {
     var opts = this._parseRenderArguments.apply(this, arguments);
 
     var isFirstRender = !this.hasRendered;
@@ -401,7 +401,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method disposeWidgets
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeWidgets: function($el) {
+  disposeWidgets($el) {
     var self = this;
 
     // Remove widgets
@@ -422,7 +422,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method clearModelEvents
    *
    */
-  clearModelEvents: function() {
+  clearModelEvents() {
     var callback,
       dotIndex;
     if (this.eventMap
@@ -448,7 +448,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method clearExtEvents
    *
    */
-  clearExtEvents: function() {
+  clearExtEvents() {
     this.extEventMap.forEach(function(o,i){
       o.delegate.off(o.event,o.callback);
     });
@@ -460,7 +460,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method applyEvents
    *
    */
-  applyEvents: function() {
+  applyEvents() {
     var el = this.el,
       callbacks,
       callback,
@@ -536,7 +536,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Function} callback  The event handler
    * @return {lavaca.mvc.View}  This view (for chaining)
    */
-  mapEvent: function(delegate, eventType, callback) {
+  mapEvent(delegate, eventType, callback) {
     var o;
     if (typeof delegate === 'object') {
       o = delegate;
@@ -567,7 +567,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Object} delegate The object/model to which to delegate the event
    * @param {Object} events  An object of the callback events
    */
-  mapExtEvent: function(delegate, events) {
+  mapExtEvent(delegate, events) {
     var callback;
     if(delegate && delegate instanceof (EventDispatcher)){
       for(let event in events){
@@ -585,7 +585,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method createWidgets
    *
    */
-  createWidgets: function() {
+  createWidgets() {
     var cache = this.widgets,
       n,
       o,
@@ -645,7 +645,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    *     an array of arguments to pass to the widget's constructor
    * @return {Lavaca.mvc.View}  This view (for chaining)
    */
-  mapWidget: function(selector, TWidget) {
+  mapWidget(selector, TWidget) {
     if (typeof selector === 'object') {
       var widgetTypes = selector;
       for (selector in widgetTypes) {
@@ -661,7 +661,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method createChildViews
    *
    */
-  createChildViews: function() {
+  createChildViews() {
     var cache = this.childViews,
       self = this,
       o;
@@ -712,7 +712,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @return {lavaca.mvc.View}  This view (for chaining)
    *
   */
-  mapChildView: function(selector, TView, model) {
+  mapChildView(selector, TView, model) {
     if (typeof selector === 'object') {
       var childViewTypes = selector;
       for (selector in childViewTypes) {
@@ -732,7 +732,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
    *
   */
-  mapChildViewManager: function(el, map, mixin, fillin) {
+  mapChildViewManager(el, map, mixin, fillin) {
     this.childViewManager = new ChildViewManager(el, map, this, 'cvm-'+this.id);
     if (typeof mixin === 'object') {
       this.childViewManager.childViewMixin = mixin;
@@ -757,7 +757,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Object} map A hash of event types with callbacks and TView's associated with that type
    *  The map should be in the form {type : {callback : {Function}, TView : TView}}
    */
-  mapChildViewEvent: function(type, callback, TView) {
+  mapChildViewEvent(type, callback, TView) {
     if (typeof type === 'object'){
       var eventTypes = type;
       for (t in eventTypes){
@@ -777,7 +777,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method applyChildViewEvent
    *
    */
-  applyChildViewEvents: function() {
+  applyChildViewEvents() {
     var childViewEventMap = this.childViewEventMap,
       type;
     for (ev in childViewEventMap) {
@@ -805,7 +805,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Event} e  The render event. This object should have a string property named "html"
    *   that contains the template's rendered HTML output.
    */
-  onRenderSuccess: function(e){},
+  onRenderSuccess(e){},
   /**
    * Executes when the template fails to render
    * @method onRenderError
@@ -813,14 +813,14 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Event} e  The error event. This object should have a string property named "err"
    *   that contains the error message.
    */
-  onRenderError: function(e) {
+  onRenderError(e) {
     console.log(e.err)
   },
   /**
    * Readies the view for garbage collection
    * @method dispose
    */
-  dispose: function() {
+  dispose() {
     if (this.model) {
       this.clearModelEvents();
     }
@@ -849,7 +849,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method insertInto
    * @param {jQuery} container  The containing element
    */
-  insertInto: function(container) {
+  insertInto(container) {
     if (this.el.parent()[0] !== container[0]) {
       var layers = container.children('[data-layer-index]'),
         i = -1,
@@ -872,7 +872,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Array} exitingViews  The views that are exiting as this one enters
    * @return {lavaca.util.Promise}  A promise
    */
-  enter: function(container) {
+  enter(container) {
     var renderPromise;
     if (!this.hasRendered) {
       renderPromise = this.render();
@@ -894,7 +894,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {Array} enteringViews  The views that are entering as this one exits
    * @return {lavaca.util.Promise}  A promise
    */
-  exit: function() {
+  exit() {
     this.el.detach();
     this.trigger('exit');
     return Promise.resolve();
@@ -905,7 +905,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {String} selector  The selector that should match the widgets you wish to retrieve
    * @return {Array}  An array of widgets
    */
-  getWidgets: function(selector) {
+  getWidgets(selector) {
     var items = [];
     this.widgets.each(function(index, item) {
       if (item.el.is(selector)) {
@@ -920,7 +920,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @param {String} selector  The selector that should match the childViews you wish to retrieve
    * @return {Array}  An array of childViews
    */
-  getChildViews: function(selector) {
+  getChildViews(selector) {
     var items = [];
     this.childViews.each(function(index, item) {
       if (item.el.is(selector)) {

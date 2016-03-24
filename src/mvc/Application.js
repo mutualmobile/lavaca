@@ -92,7 +92,7 @@ var Application = EventDispatcher.extend(function (callback){
    *
    * @param {Object} err  The routing error
    */
-  onInvalidRoute: function(err) {
+  onInvalidRoute(err) {
     // If the error is equal to "locked", it means that the router or view manager was
     // busy while while the user was attempting to navigate
     if (err !== 'locked') {
@@ -105,7 +105,7 @@ var Application = EventDispatcher.extend(function (callback){
    *
    * @param {Event} e  The event object
    */
-  onTapLink: function(e) {
+  onTapLink(e) {
     var link = $(e.currentTarget),
         defaultPrevented = e.isDefaultPrevented(),
         url = link.attr('href') || link.attr('data-href'),
@@ -162,7 +162,7 @@ var Application = EventDispatcher.extend(function (callback){
    *
    * @return {Promise}  A promise that resolves when the application is ready for use
    */
-  init: function(args) {
+  init(args) {
     /**
      * View manager used to transition between UI states
      * @property viewManager
@@ -201,7 +201,7 @@ var Application = EventDispatcher.extend(function (callback){
    * Binds a global link handler
    * @method bindLinkHandler
    */
-  bindLinkHandler: function() {
+  bindLinkHandler() {
     var $body = $(document.body),
         type = 'click';
     if ($body.hammer) {

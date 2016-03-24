@@ -79,7 +79,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {String} el  A CSS selector matching the element that contains all layers
    * @return {Lavaca.mvc.ViewManager}  This View Manager instance
    */
-  setEl: function(el) {
+  setEl(el) {
     this.el = typeof el === 'string' ? $(el) : el;
     return this;
   },
@@ -88,7 +88,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    *
    * @method initBreadcrumbTracking
    */
-  initBreadcrumbTracking: function() {
+  initBreadcrumbTracking() {
     this.shouldTrackBreadcrumb = true;
     History.on('popstate', (e) => {
       if (e.direction === 'back') {
@@ -103,7 +103,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * Handles the disposal of views that are popped out of the breadcrumb array
    * @method popBreadcrumb
    */
-  popBreadcrumb: function() {
+  popBreadcrumb() {
     this.breadcrumb.pop();
   },
   /**
@@ -112,7 +112,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer)
    * @method trackBreadcrumb
    */
-  trackBreadcrumb: function(obj) {
+  trackBreadcrumb(obj) {
     if (obj.params.root) {
       this.breadcrumb = [];
     }
@@ -125,7 +125,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Lavaca.mvc.View} pageView A View instance
    * @method rewind
    */
-  rewind: function(pageView) {
+  rewind(pageView) {
     History.silentBack();
     History.animationBreadcrumb.pop();
 
@@ -148,7 +148,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer) 
    * @return {Lavaca.mvc.View}  A View instance
    */
-  buildPageView: function(obj) {
+  buildPageView(obj) {
     var pageView = this.pageViews.get(obj.cacheKey);
 
     if (typeof obj.params === 'object') {
@@ -202,7 +202,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Object} params  Parameters to be mapped to the view
    * @return {Promise}  A promise
    */
-  load: function(cacheKey, TPageView, model, params) {
+  load(cacheKey, TPageView, model, params) {
     if (this.locked) {
       return Promise.reject('locked');
     } else {
@@ -275,7 +275,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Lavaca.mvc.View}  enteringView A view that will be entering
    * @return {Promise}  A promise
    */
-  beforeEnterExit: function(index, enteringView) {
+  beforeEnterExit(index, enteringView) {
     var i,
       layer,
       list = [];
@@ -314,7 +314,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Lavaca.mvc.View} view  The view on the layer to remove
    * @return {Promise}  A promise
    */
-  dismiss: function(layer) {
+  dismiss(layer) {
     if (typeof layer === 'number') {
       return this.dismissLayersAbove(layer - 1);
     } else if (layer instanceof View) {
@@ -346,7 +346,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * @param {Lavaca.mvc.View}  exceptForView A view that should not be dismissed
    * @return {Promise}  A promise
    */
-  dismissLayersAbove: function(index, exceptForView) {
+  dismissLayersAbove(index, exceptForView) {
     var toDismiss = this.layers.slice(index+1)
       .filter((layer) => {
         return (layer && (!exceptForView || exceptForView !== layer));
@@ -380,7 +380,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * Empties the view cache
    * @method flush
    */
-  flush: function(cacheKey) {
+  flush(cacheKey) {
     // Don't dispose of any views that are currently displayed
     //flush individual cacheKey
     if (cacheKey){
@@ -401,7 +401,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * Readies the view manager for garbage collection
    * @method dispose
    */
-  dispose: function() {
+  dispose() {
     Disposable.prototype.dispose.call(this);
   }
 });

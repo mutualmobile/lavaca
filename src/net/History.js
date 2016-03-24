@@ -134,7 +134,7 @@ var History = EventDispatcher.extend(function() {
    *
    * @return {Object}  The current history record
    */
-  current: function() {
+  current() {
     return this.sequence[this.position] || null;
   },
   /**
@@ -143,7 +143,7 @@ var History = EventDispatcher.extend(function() {
    *
    * @returns {Boolean} True when there is a history state
    */
-  hasHistory: function() {
+  hasHistory() {
     return _pushCount > 0;
   },
   /**
@@ -154,7 +154,7 @@ var History = EventDispatcher.extend(function() {
    * @param {String} title  The title of the page state
    * @param {String} url  The URL of the page state
    */
-  push: function(state, title, url) {
+  push(state, title, url) {
     _pushCount++;
     if (_hasPushed) {
       document.title = title;
@@ -176,7 +176,7 @@ var History = EventDispatcher.extend(function() {
    * @param {String} title  The title of the page state
    * @param {String} url  The URL of the page state
    */
-  replace: function(state, title, url) {
+  replace(state, title, url) {
     _hasPushed = true;
     document.title = title;
     if (_standardsMode) {
@@ -192,7 +192,7 @@ var History = EventDispatcher.extend(function() {
    * Unbind the history object and ready it for garbage collection
    * @method dispose
    */
-  dispose: function() {
+  dispose() {
     if (this.onPopState) {
       if (_standardsMode) {
         window.removeEventListener('popstate', this.onPopState, false);

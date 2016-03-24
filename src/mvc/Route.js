@@ -78,7 +78,7 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
    * @param {String} url  The URL to test
    * @return {Boolean}  True when this route matches the URL
    */
-  matches: function(url) {
+  matches(url) {
     return _patternToRegExp(this.pattern).test(url);
   },
   /**
@@ -88,7 +88,7 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
    * @param {String} url  The URL to convert
    * @return {Object}  The params object
    */
-  parse: function(url) {
+  parse(url) {
     var result = clone(this.params),
         pattern = this.pattern.slice(1),
         urlParts = url.split('#'),
@@ -162,7 +162,7 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
    * @param {Object} params  Additional parameters to pass to the controller action
    * @return {Promise}  A promise
    */
-  exec: function(url, router, viewManager, state, params) {
+  exec(url, router, viewManager, state, params) {
     var controller = new this.TController(router, viewManager),
         urlParams = this.parse(url),
         model;

@@ -45,7 +45,7 @@ var Router = Disposable.extend(function(viewManager){
    */
   runAuthenticationCheck: false,
 
-  startHistory: function() {
+  startHistory() {
     this.onpopstate = (e) => {
       if (this.hasNavigated) {
         History.isRoutingBack = e.direction === 'back';
@@ -64,7 +64,7 @@ var Router = Disposable.extend(function(viewManager){
    * @param {Lavaca.mvc.ViewManager} viewManager
    * @return {Lavaca.mvc.Router}  This Router instance
    */
-  setViewManager: function(viewManager) {
+  setViewManager(viewManager) {
     this.viewManager = viewManager;
     return this;
   },
@@ -95,7 +95,7 @@ var Router = Disposable.extend(function(viewManager){
    * @param {Object} params  Key-value pairs that will be passed to the action
    * @return {Lavaca.mvc.Router}  The router (for chaining)
    */
-  add: function(pattern, TController, action, params) {
+  add(pattern, TController, action, params) {
     if (typeof pattern === 'object') {
       for (var p in pattern) {
         var args = pattern[p];
@@ -139,7 +139,7 @@ var Router = Disposable.extend(function(viewManager){
    * @param {Object} params  Additional parameters to pass to the route
    * @return {Promise}  A promise
    */
-  exec: function(url, state, params) {
+  exec(url, state, params) {
     if (this.locked) {
       return Promise.reject('locked');
     } else {
@@ -193,7 +193,7 @@ var Router = Disposable.extend(function(viewManager){
    *
    * @return {Lavaca.mvc.Router}  This router (for chaining)
    */
-  unlock: function() {
+  unlock() {
     this.locked = false;
     return this;
   },
@@ -212,7 +212,7 @@ var Router = Disposable.extend(function(viewManager){
    * @param {String} failRoute The route to execute if authentication fails.
    * @param {Boolean} checkAuthForEveryRoute Sets the default behavior of whether to run authentication check for each route. If no value is passed, it defaults to true.
    */
-  setAuth: function(func, failRoute, checkAuthForEveryRoute) {
+  setAuth(func, failRoute, checkAuthForEveryRoute) {
     if(typeof func === 'function' && typeof failRoute === 'string'){
       this.runAuthenticationCheck = typeof checkAuthForEveryRoute === 'boolean' ? checkAuthForEveryRoute : true;
       this.authenticate = func;
@@ -226,7 +226,7 @@ var Router = Disposable.extend(function(viewManager){
    * Readies the router for garbage collection
    * @method dispose
    */
-  dispose: function() {
+  dispose() {
     if (this.onpopstate) {
       History.off('popstate', this.onpopstate);
       this.onpopstate = null;

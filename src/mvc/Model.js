@@ -151,7 +151,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {String} attribute  The name of the attribute
    * @return {Object}  The value of the attribute, or null if there is no value
    */
-  get: function(attribute) {
+  get(attribute) {
     var attr = this.attributes.get(attribute),
         flags;
     if (typeof attr === 'function') {
@@ -167,7 +167,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {String} attribute  The name of the attribute
    * @return {Boolean}  True if you can assign to the attribute
    */
-  canSet: function(){
+  canSet(){
     return true;
   },
   /**
@@ -193,7 +193,7 @@ var Model = EventDispatcher.extend(function Model(map) {
 //* @event change
 
 
-  set: function(attribute, value, flag, suppress) {
+  set(attribute, value, flag, suppress) {
     return _suppressChecked(this, suppress, function() {
       if (!this.canSet(attribute)) {
         return false;
@@ -226,7 +226,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {String} attribute  The name of the attribute
    * @return {Boolean}  True if the attribute exists and has a value
    */
-  has: function(attribute) {
+  has(attribute) {
     return this.get(attribute) !== null;
   },
   /**
@@ -235,7 +235,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *
    * @return {String}  The ID of the model
    */
-  id: function() {
+  id() {
     return this.get(this.idAttribute);
   },
   /**
@@ -244,7 +244,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *
    * @return {Boolean}  True when the model has no ID associated with it
    */
-  isNew: function() {
+  isNew() {
     return null === this.id();
   },
   /**
@@ -254,7 +254,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {Object} map  The string or key-value hash to parse
    * @return {Object}  The parsed version of the map
    */
-  parse: function(map) {
+  parse(map) {
     if (typeof map === 'string') {
       map = JSON.parse(map);
     }
@@ -273,7 +273,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {Object} map  The string or key-value map to parse and apply
    * @param {Boolean} suppress  When true, validation, events and tracking are suppressed
    */
-  apply: function(map, suppress) {
+  apply(map, suppress) {
     _suppressChecked(this, suppress, () => {
       map = this.parse(map);
       for (var n in map) {
@@ -289,7 +289,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * Removes all flagged data from the model
    * @param {String} flag  The metadata flag describing the data to remove
    */
-  clear: function(flag) {
+  clear(flag) {
     if (flag) {
       var attrs = this.flags[flag],
           i = -1,
@@ -317,7 +317,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *
    * @return {Lavaca.mvc.Model}  The copy
    */
-  clone: function() {
+  clone() {
     return new this.constructor(this.attributes.toObject());
   },
   /**
@@ -329,7 +329,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *   form callback(attribute, value)
    * @param {String} message  A text message used when a value fails the test
    */
-  addRule: function(attribute, callback, message) {
+  addRule(attribute, callback, message) {
     this.rules.get(attribute, []).push({rule: callback, message: message});
   },
   /**
@@ -352,7 +352,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {Object} value  The potential value for the attribute
    * @return {Array}  A list of validation error messages
    */
-  validate: function(attribute, value) {
+  validate(attribute, value) {
     var messages,
         rules,
         i = -1,
@@ -383,7 +383,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *
    * @return {Object}  The key-value hash
    */
-  toObject: function() {
+  toObject() {
     var obj = this.attributes.toObject(),
         flags;
     for(var key in obj) {
@@ -402,7 +402,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    *
    * @return {String}  The JSON string representing the model
    */
-  toJSON: function() {
+  toJSON() {
     return JSON.stringify(this.toObject());
   },
   /**
@@ -440,7 +440,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {Object} thisp  The context of the handler
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  on: function(type, attr, callback, thisp) {
+  on(type, attr, callback, thisp) {
     if (typeof attr === 'function') {
       thisp = callback;
       callback = attr;

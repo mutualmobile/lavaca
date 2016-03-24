@@ -45,7 +45,7 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    * @param {Number} layer  The integer indicating what UI layer the view sits on
    * @return {Promise}  A promise
    */
-  view:function(cacheKey, TView, model, layer) {
+  view(cacheKey, TView, model, layer) {
     return this.viewManager.load(cacheKey, TView, model, layer);
   },
   /**
@@ -57,7 +57,7 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    * @param {String} url  The URL of the page state
    * @param {Boolean} useReplace  The bool to decide if to remove previous history
    */
-  history:function(state, title, url, useReplace) {
+  history(state, title, url, useReplace) {
     var needsHistory = !this.state;
     return () => {
       if (needsHistory) {
@@ -73,7 +73,7 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    * @param {Array} args  Format arguments to insert into the URL
    * @return {String}  The formatted URL
    */
-  url:function(str, args) {
+  url(str, args) {
     args = args.map(window.encodeURIComponent);
     return interpolate(str, args, /\{(.+?)\}/);
   },
@@ -92,14 +92,14 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    * @param {Array} args  Format arguments to insert into the URL
    * @return {Promise}  A promise
    */
-  redirect:function(str, args, params) {
+  redirect(str, args, params) {
     return this.router.unlock().exec(this.url(str, args || []), null, params);
   },
   /**
    * Readies the controller for garbage collection
    * @method dispose
    */
-  dispose:function() {
+  dispose() {
     // Do not dispose of view manager or router
     this.router
       = this.viewManager

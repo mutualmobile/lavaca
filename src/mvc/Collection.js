@@ -111,7 +111,7 @@ var Collection = Model.extend(function (models, map){
    *
    */
 //  @event removeItem
-  clear: function() {
+  clear() {
     Model.prototype.clear.apply(this, arguments);
     this.clearModels();
   },
@@ -120,7 +120,7 @@ var Collection = Model.extend(function (models, map){
    * @method clearModels
    *
    */
-  clearModels: function() {
+  clearModels() {
     var model;
     while (!!(model = this.models[0])) {
       this.remove(model);
@@ -139,7 +139,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Object} data  The model or object to be added
    * @return {Lavaca.mvc.Model}  The model derived from the data
    */
-  prepare: function(data) {
+  prepare(data) {
     var model = data instanceof this.TModel
           ? data
           : this.TModel.prototype instanceof Collection
@@ -160,7 +160,7 @@ var Collection = Model.extend(function (models, map){
    * @param {String} attribute  The name of the attribute
    * @return {Boolean}  True if you can assign to the attribute
    */
-  canSet: function(attribute) {
+  canSet(attribute) {
     return attribute !== this.itemsProperty;
   },
   /**
@@ -180,7 +180,7 @@ var Collection = Model.extend(function (models, map){
    */
 //@event addItem
 
-  insert: function(insertIndex, item /*, item1, item2, item3...*/) {
+  insert(insertIndex, item /*, item1, item2, item3...*/) {
     var result = false,
         idAttribute = this.TModel.prototype.idAttribute,
         compareObj = {},
@@ -237,7 +237,7 @@ var Collection = Model.extend(function (models, map){
    * @return {Boolean}  True if an item was added, false otherwise
    */
 // * @event addItem
-  add: function(/* item1, item2, itemN */) {
+  add(/* item1, item2, itemN */) {
     if (arguments.length && arguments[0] instanceof Array) {
       return this.add.apply(this, arguments[0]);
     }
@@ -259,7 +259,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Number} newIndex  The new index at which the model should be placed
    */
 // * @event moveItem
-  moveTo: function(oldIndex, newIndex) {
+  moveTo(oldIndex, newIndex) {
     if (oldIndex instanceof this.TModel) {
       oldIndex = this.models.indexOf(oldIndex);
     }
@@ -317,7 +317,7 @@ var Collection = Model.extend(function (models, map){
    */
 //* @event removeItem
 
-  remove: function(item /*, item1, item2, item3...*/) {
+  remove(item /*, item1, item2, item3...*/) {
     var n, it, items, index, i, removed;
 
     if (arguments.length === 1 && isArray(item)) {
@@ -405,7 +405,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Number} maxResults  The maximum number of results to return
    * @return {Array}  A list of this collection's models that passed the test
    */
-  filter: function(test, maxResults) {
+  filter(test, maxResults) {
     maxResults = maxResults === UNDEFINED ? Number.MAX_VALUE : maxResults;
     var result = [],
         i = -1,
@@ -448,7 +448,7 @@ var Collection = Model.extend(function (models, map){
    *     as the result
    * @return {Lavaca.mvc.Model}  The first model that passed the test (or null)
    */
-  first: function(test) {
+  first(test) {
     return this.filter(test, 1)[0] || null;
   },
   /**
@@ -468,7 +468,7 @@ var Collection = Model.extend(function (models, map){
    *     as the result
    * @return {Number}  Index of the matching model, or -1 if no match is found
    */
-  indexOf: function(test) {
+  indexOf(test) {
     var match = this.first(test);
     return match ? this.models.indexOf(match) : -1;
   },
@@ -479,7 +479,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Number} index  The index of the item
    * @return {Lavaca.mvc.Model}  The model at that index
    */
-  itemAt: function(index) {
+  itemAt(index) {
     return this.models[index];
   },
   /**
@@ -488,7 +488,7 @@ var Collection = Model.extend(function (models, map){
    *
    * @return {Number}  The number of items in the collection
    */
-  count: function() {
+  count() {
     return this.models.length;
   },
   /**
@@ -505,7 +505,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Function} callback  A function to execute for each item, callback(index, model)
    * @param {Object} thisp  The context of the callback
    */
-  each: function(cb, thisp) {
+  each(cb, thisp) {
     var i = -1,
         returned,
         item;
@@ -545,7 +545,7 @@ var Collection = Model.extend(function (models, map){
    */
 //* @event moveItem
 
-  sort: function(attribute, descending) {
+  sort(attribute, descending) {
     var comparator = typeof attribute === "function" ? attribute : _getComparator(attribute, descending),
         oldModels = clone(this.models),
         oldIndex;
@@ -570,7 +570,7 @@ var Collection = Model.extend(function (models, map){
    * @return {Lavaca.mvc.Collection}  The updated collection (for chaining)
    */
 //* @event moveItem
-  reverse: function() {
+  reverse() {
     var oldModels = clone(this.models),
         oldIndex;
     this.models.reverse();
@@ -593,7 +593,7 @@ var Collection = Model.extend(function (models, map){
    *
    * @param {Lavaca.mvc.ModelEvent} e  The item event
    */
-  onItemEvent: function(e) {
+  onItemEvent(e) {
     var model = e.target,
         index = this.models.indexOf(model);
     if (!this.suppressTracking) {
@@ -615,7 +615,7 @@ var Collection = Model.extend(function (models, map){
    * @param {Boolean} idOnly  When true, only include item IDs for pre-existing items
    * @return {Object}  The key-value hash
    */
-  toObject: function(idOnly) {
+  toObject(idOnly) {
     let obj = Model.prototype.toObject.apply(this, arguments),
         prop = this.itemsProperty,
         items = obj[prop] = [],
@@ -632,7 +632,7 @@ var Collection = Model.extend(function (models, map){
    *
    * @param {Object} obj  An object to apply to self and children
    */
-  deepApply: function(obj) {
+  deepApply(obj) {
     var list;
     obj = this.parse(obj);
     list = obj;

@@ -36,7 +36,7 @@ var Disposable = extend({
    * @method dispose
    *
    */
-  dispose: function() {
+  dispose() {
       _disposeOf(this);
   }
 });
