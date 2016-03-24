@@ -7,4 +7,4 @@ script:
     - "npm install -g karma"
     - "npm install"
     - "bower install"
-    - "karma start"
+    - "grunt karma:coverage coveralls"
