@@ -364,6 +364,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
         }
       },
       (err) => {
+        console.error('There was a problem rendering your view');
+        console.error(err);
         this.trigger('rendererror', {err: err});
         throw err;
       }
@@ -884,7 +886,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
       }.bind(this))
       .then(function() {
         this.trigger('enter');
-      }.bind(this));
+      }.bind(this)).catch(err=>console.error(err));
   },
   /**
    * Executes when the user navigates away from this view

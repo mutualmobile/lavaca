@@ -118,7 +118,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
           (() => {
             return this.dismissLayersAbove(layer-1, childView);
           })()
-        ]);
+        ]).catch(err=>console.error(err));
       })
       .then(() => {
         this.enteringPageViews = [];
@@ -173,7 +173,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
           });
       });
 
-    return Promise.all(promises);
+    return Promise.all(promises).catch(err=>console.error(err));
   },
   dispose() {
     this.model = this.parentView = null;
