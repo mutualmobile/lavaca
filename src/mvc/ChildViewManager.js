@@ -187,7 +187,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   }
 });
 
-let _getRoute = function(url){
+function _getRoute(url){
   var route = false;
   if(this.routes){    
     for(var r in this.routes){
@@ -199,7 +199,7 @@ let _getRoute = function(url){
   return route;
 }
 
-let _exec = function(e,obj){
+function _exec(e,obj){
   if(obj && obj.childViewSelector === this.elName){
     if(obj.route === 'back' || obj.route === '#back'){
       this.back();
