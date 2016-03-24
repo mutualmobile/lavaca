@@ -1,6 +1,6 @@
-var $ = require('jquery'),
-    EventDispatcher = require('lavaca/events/EventDispatcher'),
-    uuid = require('lavaca/util/uuid');
+import { default as EventDispatcher } from '../events/EventDispatcher';
+import { default as uuid } from '../util/uuid';
+import $ from 'jquery';
 
 /**
  * Base type for all UI elements
@@ -11,7 +11,7 @@ var $ = require('jquery'),
  *
  * @param {jQuery} el  The DOM element that is the root of the widget
  */
-var Widget = EventDispatcher.extend(function(el) {
+var Widget = EventDispatcher.extend(function (el){
   EventDispatcher.call(this);
   /**
    * The DOM element that is the root of the widget
@@ -31,4 +31,4 @@ var Widget = EventDispatcher.extend(function(el) {
   this.id = id;
 });
 
-module.exports = Widget;
+export default Widget;

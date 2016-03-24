@@ -31,21 +31,17 @@
  * @param {Object} overrides  A hash of key-value pairs that will be added to the subType
  * @return {Function}  The subtype
  */
-var extend = function(TSuper, TSub, overrides) {
+var extend = function (TSuper, TSub, overrides){
   if (typeof TSuper === 'object') {
     overrides = TSuper;
     TSuper = Object;
-    TSub = function() {
-      // Empty
-    };
+    TSub = () => {/* Empty*/};
   } else if (typeof TSub === 'object') {
     overrides = TSub;
     TSub = TSuper;
     TSuper = Object;
   }
-  function ctor() {
-    // Empty
-  }
+  let ctor = () => {/*Empty*/}
   ctor.prototype = TSuper.prototype;
   TSub.prototype = new ctor;
   TSub.prototype.constructor = TSub;
@@ -54,7 +50,7 @@ var extend = function(TSuper, TSub, overrides) {
       TSub.prototype[name] = overrides[name];
     }
   }
-  TSub.extend = function(T, overrides) {
+  TSub.extend = function (T, overrides){
     if (typeof T === 'object') {
       overrides = T;
       T = function() {
@@ -67,4 +63,4 @@ var extend = function(TSuper, TSub, overrides) {
   return TSub;
 };
 
-module.exports = extend;
+export default extend;

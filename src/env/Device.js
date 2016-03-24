@@ -12,9 +12,7 @@ var Device = {};
  *
  * @return {Boolean}  True if app is being run through Cordova
  */
-Device.isCordova = function() {
-  return !!window.cordova;
-};
+Device.isCordova = () => !!window.cordova;
 
 /**
  * Executes a callback when the device is ready to be used
@@ -23,7 +21,7 @@ Device.isCordova = function() {
  *
  * @param {Function} callback  The handler to execute when the device is ready
  */
-Device.init = function(callback) {
+Device.init = (callback) => {
   if (!Device.isCordova()) {
     $(document).ready(callback);
   } else if (document.addEventListener) {
@@ -34,4 +32,4 @@ Device.init = function(callback) {
   }
 };
 
-module.exports = Device;
+export default Device;

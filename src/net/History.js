@@ -1,5 +1,5 @@
-var EventDispatcher = require('lavaca/events/EventDispatcher'),
-    uuid = require('lavaca/util/uuid');
+import { default as EventDispatcher } from '../events/EventDispatcher';
+import { default as uuid } from '../util/uuid';
 
 var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
     _standardsMode = !_isAndroid && typeof history.pushState === 'function',
@@ -11,7 +11,7 @@ var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
     _pushCount = 0,
     _silentPop = false;
 
-function _insertState(hist, position, id, state, title, url) {
+let _insertState = (hist, position, id, state, title, url) => {
   hist.position = position;
   var record = {
         id: id,
@@ -20,9 +20,8 @@ function _insertState(hist, position, id, state, title, url) {
         url: url
       };
   hist.sequence[position] = record;
-  var hashReplacement = url + '#@' + id;
-  _lastHash = hashReplacement;
-  location.hash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+  _lastHash = url + '#@' + id;
+  location.hash = _shouldUseHashBang ? '!' + hashReplacement : _lastHash;
   return record;
 }
 
@@ -54,7 +53,7 @@ var History = EventDispatcher.extend(function() {
      * @property {Function} onPopState
      */
      var self = this;
-    this.onPopState = function(e) {
+    this.onPopState = (e) => {
       if (e.state) {
         _pushCount--;
         var previousId = _currentId;
@@ -74,7 +73,7 @@ var History = EventDispatcher.extend(function() {
     };
     window.addEventListener('popstate', this.onPopState, false);
   } else {
-    this.onPopState = function() {
+    this.onPopState = () => {
       var hash = location.hash,
           code,
           record,
@@ -221,7 +220,7 @@ var History = EventDispatcher.extend(function() {
  * @param {Boolean} useHash  When true, use the location hash to manage history state instead of HTML5 history
  * @return {Lavaca.mvc.History}  The history instance
  */
-History.init = function(useHash) {
+History.init = (useHash) => {
   if (!_hist) {
     if (useHash) {
       History.overrideStandardsMode();
@@ -230,6 +229,7 @@ History.init = function(useHash) {
   }
   return _hist;
 };
+
 /**
  * Adds a record to the history
  * @method push
@@ -239,9 +239,8 @@ History.init = function(useHash) {
  * @param {String} title  The title of the page state
  * @param {String} url  The URL of the page state
  */
-History.push = function() {
-  History.init().push.apply(_hist, arguments);
-};
+History.push = () => History.init().push.apply(_hist, arguments);
+
 /**
  * Replaces the current record in the history
  * @method replace
@@ -251,45 +250,44 @@ History.push = function() {
  * @param {String} title  The title of the page state
  * @param {String} url  The URL of the page state
  */
-History.replace = function() {
-  History.init().replace.apply(_hist, arguments);
-};
+History.replace = () => History.init().replace.apply(_hist, arguments);
+
 /**
  * Goes to the previous history state
  * @method back
  * @static
  */
-History.back = function() {
-  history.back();
-};
+History.back = () => history.back();
+
 /**
  * Goes to the previous history state without notifying router
  * @method back
  * @static
  */
-History.silentBack = function() {
+History.silentBack = () => {
   _silentPop = true;
   history.back();
 };
+
 /**
  * Goes to the next history state
  * @method forward
  * @static
  */
-History.forward = function() {
-  history.forward();
-};
+History.forward = () => history.forward();
+
 /**
  * Unbind the history object and ready it for garbage collection
  * @method dispose
  * @static
  */
-History.dispose = function() {
+History.dispose = () => {
   if (_hist) {
     _hist.dispose();
     _hist = null;
   }
 };
+
 /**
  * Binds an event handler to the singleton history
  * @method on
@@ -299,9 +297,8 @@ History.dispose = function() {
  * @param {Function} callback  The function to execute when the event occurs
  * @return {Lavaca.mvc.History}  The history object (for chaining)
  */
-History.on = function() {
-  return History.init().on.apply(_hist, arguments);
-};
+History.on = () => History.init().on.apply(_hist, arguments);
+
 /**
  * Unbinds an event handler from the singleton history
  * @method off
@@ -312,27 +309,21 @@ History.on = function() {
  *    event occurs
  * @return {Lavaca.mvc.History}  The history object (for chaining)
  */
-History.off = function() {
-  return History.init().off.apply(_hist, arguments);
-};
+History.off = () => History.init().off.apply(_hist, arguments);
 
 /**
  * Sets Histroy to hash mode
  * @method overrideStandardsMode
  * @static
  */
-History.overrideStandardsMode = function() {
-  _standardsMode = false;
-};
+History.overrideStandardsMode = () => _standardsMode = false;
 
 /**
  * Sets Histroy to use google crawlable #!
  * @method useHashBang
  * @static
  */
-History.useHashBang = function() {
-  _shouldUseHashBang = true;
-};
+History.useHashBang = () => _shouldUseHashBang = true;
 
 /**
  * Stores the page transition animations so that if you route back, it will animate correctly
@@ -346,4 +337,4 @@ History.animationBreadcrumb = [];
  */
 History.isRoutingBack = false;
 
-module.exports = History;
+export default History;

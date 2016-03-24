@@ -1,5 +1,5 @@
-var Disposable = require('lavaca/util/Disposable'),
-    deepMixIn = require('mout/object/deepMixIn');
+import { default as Disposable } from '../util/Disposable'
+import {deepMixIn} from 'mout/object'
 
 /**
  * Basic event dispatcher type
@@ -82,7 +82,7 @@ var EventDispatcher = Disposable.extend({
       } else {
         list = calls[type];
         if (list) {
-          for(var i = list.length-1; i >= 0; i--) {
+          for(let i = list.length-1; i >= 0; i--) {
             isThisp = thisp && (list[i].thisp === thisp || list[i].fn.thisp === thisp);
             if (_checkIfSameCallback(list[i].fn,callback) || (thisp && !isThisp)){
               calls[type].splice(i,1);
@@ -160,12 +160,12 @@ var EventDispatcher = Disposable.extend({
   /*
     Returns all callbacks that match a specific trigger event
   */
-function _getMatchingCallbacks(type){
+var _getMatchingCallbacks = function(type){
   var returnCallbacks = [];
   if(type == 'contentLoaded'){
     //debugger;
   }
-  for(var x in this.callbacks){
+  for(let x in this.callbacks){
     if(x.split){
       if(x.split('.')[0] === type){
         returnCallbacks.push(this.callbacks[x]);
@@ -189,7 +189,7 @@ function _getMatchingCallbacks(type){
     checks if callback a matches b, then checks if a.fn matches b, 
     then checks if it is jQuery/zepto proxy of callback
    */
-function _checkIfSameCallback(a, b){
+  let _checkIfSameCallback = (a, b)=>{
   if((a === b || 
      a.fn === b ||
      (a.fn && !!a.fn.guid && a.fn.guid === b.guid ||
@@ -200,4 +200,5 @@ function _checkIfSameCallback(a, b){
     return false;
   }
 }
-module.exports = EventDispatcher;
+
+export default EventDispatcher;

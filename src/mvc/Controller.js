@@ -1,7 +1,9 @@
-var Connectivity = require('lavaca/net/Connectivity'),
-    History = require('lavaca/net/History'),
-    Disposable = require('lavaca/util/Disposable'),
-    interpolate = require('mout/string/interpolate');
+import $ from 'jquery';
+import { default as Model } from './Model';
+import { default as Connectivity } from '../net/Connectivity';
+import { default as History } from '../net/History';
+import { default as Disposable } from '../util/Disposable';
+import {interpolate} from 'mout/string';
 
 /**
  * Base type for controllers
@@ -12,7 +14,7 @@ var Connectivity = require('lavaca/net/Connectivity'),
  * @param {Lavaca.mvc.Router} [router]  The application's router
  * @param {Lavaca.mvc.ViewManager} [viewManager]  The application's view manager
  */
-var Controller = Disposable.extend(function(router, viewManager) {
+var Controller = Disposable.extend(function Controller(router, viewManager){
   if (router instanceof Controller) {
     this.router = router.router;
     this.viewManager = router.viewManager;
@@ -43,7 +45,7 @@ var Controller = Disposable.extend(function(router, viewManager) {
    * @param {Number} layer  The integer indicating what UI layer the view sits on
    * @return {Promise}  A promise
    */
-  view: function(cacheKey, TView, model, layer) {
+  view:function(cacheKey, TView, model, layer) {
     return this.viewManager.load(cacheKey, TView, model, layer);
   },
   /**
@@ -55,9 +57,9 @@ var Controller = Disposable.extend(function(router, viewManager) {
    * @param {String} url  The URL of the page state
    * @param {Boolean} useReplace  The bool to decide if to remove previous history
    */
-  history: function(state, title, url, useReplace) {
+  history:function(state, title, url, useReplace) {
     var needsHistory = !this.state;
-    return function() {
+    return () => {
       if (needsHistory) {
         History[useReplace ? 'replace' : 'push'](state, title, url);
       }
@@ -71,7 +73,7 @@ var Controller = Disposable.extend(function(router, viewManager) {
    * @param {Array} args  Format arguments to insert into the URL
    * @return {String}  The formatted URL
    */
-  url: function(str, args) {
+  url:function(str, args) {
     args = args.map(window.encodeURIComponent);
     return interpolate(str, args, /\{(.+?)\}/);
   },
@@ -90,14 +92,14 @@ var Controller = Disposable.extend(function(router, viewManager) {
    * @param {Array} args  Format arguments to insert into the URL
    * @return {Promise}  A promise
    */
-  redirect: function(str, args, params) {
+  redirect:function(str, args, params) {
     return this.router.unlock().exec(this.url(str, args || []), null, params);
   },
   /**
    * Readies the controller for garbage collection
    * @method dispose
    */
-  dispose: function() {
+  dispose:function() {
     // Do not dispose of view manager or router
     this.router
       = this.viewManager
@@ -106,4 +108,4 @@ var Controller = Disposable.extend(function(router, viewManager) {
   }
 });
 
-module.exports = Controller;
+export default Controller;

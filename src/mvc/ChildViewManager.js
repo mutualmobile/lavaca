@@ -1,13 +1,11 @@
-var $ = require('jquery'),
-  Cache = require('lavaca/util/Cache'),
-  Disposable = require('lavaca/util/Disposable'),
-  contains = require('mout/array/contains'),
-  merge = require('mout/object/merge'),
-  fillIn = require('mout/object/fillIn'),
-  History = require('lavaca/net/History'),
-  removeAll = require('mout/array/removeAll');
+import $ from 'jquery';
+import { default as Cache } from '../util/Cache';
+import { default as Disposable } from '../util/Disposable';
+import { default as History } from '../net/History';
+import {fillIn, merge} from 'mout/object';
+import {removeAll, contains} from 'mout/array';
 
-var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
+var ChildViewManager = Disposable.extend(function (el, routes, parent, id){
   Disposable.call(this);
   this.history = [];
   this.animationBreadcrumb = [];
@@ -42,7 +40,7 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
       this.exec();
     }
   },
-  back:function(){
+  back: function() {
     if(!this.history || this.history.length - 1 <= 0){
       History.back();
     }
@@ -50,13 +48,13 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
       this.history.pop();
       var route = this.history.pop();
       this.isRoutingBack = true;
-      var _always = function() {
+      var _always = () => {
         this.isRoutingBack = false;
-      }.bind(this);
+      };
       this.exec(route).then(_always, _always);
     }
   },
-  stepBack:function(){
+  stepBack: function() {
     if(this.history.length > 1){
       var route = _getRoute.call(this, this.history[this.history.length - 1]);
       if(this.routes[route].step !== this.initialStep){
@@ -107,22 +105,22 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
 
         childView.isChildViewManagerView = true;
 
-    return childView.render().then(function() {
+    return childView.render().then(() => {
         this.currentView = childView;
         this.enteringViews = [childView];
         return Promise.all([
-          (function() {
+          (() => {
             if (this.layers[layer] !== childView) {
               return childView.enter(this.el, this.exitingViews);
             }
             return Promise.resolve();
-          }.bind(this))(),
-          (function() {
+          })(),
+          (() => {
             return this.dismissLayersAbove(layer-1, childView);
-          }.bind(this))()
+          })()
         ]);
-      }.bind(this))
-      .then(function() {
+      })
+      .then(() => {
         this.enteringPageViews = [];
         this.step = this.routes[route].step;
         this.layers[layer] = childView;
@@ -131,7 +129,7 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
             typeof this.parentView.onChildViewManagerExec === 'function') {
           this.parentView.onChildViewManagerExec(route, this.step);
         }
-      }.bind(this));
+      });
   },
   dismiss: function(layer) {
     if (typeof layer === 'number') {
@@ -153,31 +151,31 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
   },
   dismissLayersAbove: function(index, exceptForView) {
     var toDismiss = this.layers.slice(index+1)
-      .filter(function(layer) {
+      .filter((layer) => {
         return (layer && (!exceptForView || exceptForView !== layer));
       });
-    this.layers = this.layers.map(function(layer) {
+    this.layers = this.layers.map((layer) => {
       if (contains(toDismiss, layer)) {
         return null;
       }
       return layer;
     });
 
-    var promises = toDismiss.map(function(layer) {
+    var promises = toDismiss.map((layer) => {
         return Promise.resolve()
-          .then(function() {
+          .then(() => {
             this.exitingViews.push(layer);
             return layer.exit(this.el, this.enteringViews);
-          }.bind(this))
-          .then(function() {
+          })
+          .then(() => {
             removeAll(this.exitingViews, layer);
             layer.dispose();
-          }.bind(this));
-      }.bind(this));
+          });
+      });
 
     return Promise.all(promises);
   },
-  dispose:function(){
+  dispose: function() {
     this.model = this.parentView = null;
     $(window).off('cvmexec.'+this.id);
     Disposable.prototype.dispose.call(this);
@@ -189,7 +187,7 @@ var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
   }
 });
 
-function _getRoute(url){
+let _getRoute = (url) => {
   var route = false;
   if(this.routes){    
     for(var r in this.routes){
@@ -201,7 +199,7 @@ function _getRoute(url){
   return route;
 }
 
-function _exec(e,obj){
+let _exec = (e,obj) => {
   if(obj && obj.childViewSelector === this.elName){
     if(obj.route === 'back' || obj.route === '#back'){
       this.back();
@@ -215,4 +213,4 @@ function _exec(e,obj){
   }
 }
 
-module.exports = ChildViewManager;
+export default ChildViewManager;

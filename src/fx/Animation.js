@@ -1,20 +1,20 @@
-var $ = require('jquery'),
-    Transform = require('./Transform');
+import $ from 'jquery';
+import { default as Transform } from './Transform';
 
 var Animation = {};
 
-var _props = {
+const _props = {
       animation: ['animation', 'animationend', 'keyframes'],
       webkitAnimation: ['-webkit-animation', 'webkitAnimationEnd', '-webkit-keyframes'],
       MozAnimation: ['-moz-animation', 'animationend', '-moz-keyframes']
-    },
-    _prop,
+    };
+let _prop,
     _cssProp,
     _declaration,
     _event;
 
-(function() {
-  var style = document.createElement('div').style,
+(() => {
+  let style = document.createElement('div').style,
       s,
       opts;
   for (s in _props) {
@@ -41,7 +41,7 @@ var _props = {
  *
  * @return {Boolean}  True if CSS keyframe animations are supported
  */
-Animation.isSupported = function() {
+Animation.isSupported = () => {
   return !!_prop;
 };
 
@@ -52,7 +52,7 @@ Animation.isSupported = function() {
  *
  * @return {String}  The name of the event
  */
-Animation.animationEndEvent = function() {
+Animation.animationEndEvent = () => {
   return _event;
 };
 
@@ -65,7 +65,7 @@ Animation.animationEndEvent = function() {
  * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
  * @return {String}  The CSS keyframe animation declaration
  */
-Animation.keyframesToCSS = function(name, keyframes) {
+Animation.keyframesToCSS = (name, keyframes) => {
   var css = ['@', _declaration, ' ', name, '{'],
   time,
   keyframe,
@@ -108,7 +108,7 @@ Animation.keyframesToCSS = function(name, keyframes) {
  * @param {Object} keyframes  A list of timestamped keyframes in the form {'0%': {color: 'red'}, '100%': 'color: blue'}
  * @return {String}  The name fo the animation
  */
-Animation.generateKeyframes = function(name, keyframes) {
+Animation.generateKeyframes = (name, keyframes) => {
   if (typeof name === 'object') {
     keyframes = name;
     name = 'a' + new Date().getTime();
@@ -125,7 +125,7 @@ Animation.generateKeyframes = function(name, keyframes) {
  *
  * @return {String}  The name of the CSS property
  */
-Animation.cssProperty = function() {
+Animation.cssProperty = () => {
   return _cssProp;
 };
 
@@ -285,4 +285,4 @@ $.fn.nextAnimationEnd = function(delegate, callback) {
   }
 };
 
-module.exports = Animation;
+export default Animation;

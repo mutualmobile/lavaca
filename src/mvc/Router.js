@@ -1,7 +1,6 @@
-var Route = require('./Route'),
-    History = require('lavaca/net/History'),
-    Disposable = require('lavaca/util/Disposable');
-
+import { default as Route } from './Route';
+import { default as History } from '../net/History';
+import { default as Disposable } from '../util/Disposable';
 /**
  * @class lavaca.mvc.Router
  * @extends lavaca.util.Disposable
@@ -10,7 +9,7 @@ var Route = require('./Route'),
  * @constructor
  * @param {Lavaca.mvc.ViewManager} viewManager  The view manager
  */
-var Router = Disposable.extend(function(viewManager) {
+var Router = Disposable.extend(function(viewManager){
   Disposable.call(this);
   /**
    * @field {Array} routes
@@ -47,10 +46,10 @@ var Router = Disposable.extend(function(viewManager) {
   runAuthenticationCheck: false,
 
   startHistory: function() {
-    this.onpopstate = function(e) {
+    this.onpopstate = (e) => {
       if (this.hasNavigated) {
         History.isRoutingBack = e.direction === 'back';
-        var _always = function() {
+        var _always = () => {
           History.isRoutingBack = false;
         };
         this.exec(e.url, e).then(_always, _always);
@@ -179,11 +178,9 @@ var Router = Disposable.extend(function(viewManager) {
       func = route.params.func;
     }
     if(checkAuth && failUrl !== url && !ignoreAuth){
-      return func().then(function authenticationSuccess(){
-        return _executeIfRouteExists.call(this, url, state, params);
-      }.bind(this), function authenticationError(){
-        return _executeIfRouteExists.call(this, failUrl, state, params);
-      }.bind(this));
+      return func().then(
+        () => _executeIfRouteExists.call(this, url, state, params), 
+        () => _executeIfRouteExists.call(this, failUrl, state, params));
     }
     else{
       return _executeIfRouteExists.call(this, url, state, params);
@@ -215,7 +212,7 @@ var Router = Disposable.extend(function(viewManager) {
    * @param {String} failRoute The route to execute if authentication fails.
    * @param {Boolean} checkAuthForEveryRoute Sets the default behavior of whether to run authentication check for each route. If no value is passed, it defaults to true.
    */
-  setAuth: function(func, failRoute, checkAuthForEveryRoute){
+  setAuth: function(func, failRoute, checkAuthForEveryRoute) {
     if(typeof func === 'function' && typeof failRoute === 'string'){
       this.runAuthenticationCheck = typeof checkAuthForEveryRoute === 'boolean' ? checkAuthForEveryRoute : true;
       this.authenticate = func;
@@ -262,10 +259,10 @@ var Router = Disposable.extend(function(viewManager) {
  * @param {Object} params  Additional parameters to pass to the route
  * @return {Promise}  A promise
  */
-function _executeIfRouteExists(url, state, params){
+let _executeIfRouteExists = function(url, state, params) {
   var i = -1,
       route;
-
+      
   while (!!(route = this.routes[++i])) {
     if (route.matches(url)) {
       break;
@@ -275,20 +272,15 @@ function _executeIfRouteExists(url, state, params){
   if (!route) {
     return Promise.reject([url, state]);
   }
-
   return Promise.resolve()
-    .then(function() {
-      return route.exec(url, this, this.viewManager, state, params);
-    }.bind(this))
-    .then(function() {
-      this.hasNavigated = true;
-    }.bind(this))
-    .then(this.unlock.bind(this))
-    .catch(function(err) {
+    .then(() => route.exec(url, this, this.viewManager, state, params))
+    .then(() => this.hasNavigated = true)
+    .then(() => this.unlock())
+    .catch((err) => {
       this.unlock();
       throw err;
-    }.bind(this));
+    });
 }
 
-
-module.exports = new Router();
+let singletonRouter = new Router();
+export default singletonRouter;

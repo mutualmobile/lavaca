@@ -1,15 +1,12 @@
-var $ = require('jquery'),
-  isString = require('mout/lang/isString'),
-  isBoolean = require('mout/lang/isBoolean'),
-  isObject = require('mout/lang/isObject'),
-  isArray = require('mout/lang/isArray'),
-  EventDispatcher = require('lavaca/events/EventDispatcher'),
-  Model = require('lavaca/mvc/Model'),
-  Cache = require('lavaca/util/Cache'),
-  ChildViewManager = require('lavaca/mvc/ChildViewManager'),
-  uuid = require('lavaca/util/uuid');
+import { default as EventDispatcher } from '../events/EventDispatcher';
+import { default as Model } from '../mvc/Model';
+import { default as ChildViewManager } from '../mvc/ChildViewManager';
+import { default as Cache } from '../util/Cache';
+import { default as uuid } from '../util/uuid';
+import {isString, isBoolean, isObject, isArray} from 'mout/lang';
+import $ from 'jquery';
 
-var _UNDEFINED;
+let _UNDEFINED;
 
 /**
  * Base View Class
@@ -28,7 +25,7 @@ var _UNDEFINED;
  *
  *
  */
-var View = EventDispatcher.extend(function(el, model, parentView) {
+var View = EventDispatcher.extend(function View(el, model, parentView){
   EventDispatcher.call(this);
 
   /**
@@ -328,7 +325,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
     }
 
     var promise = Promise.resolve(this.generateHtml(opts.model))
-      .then(function(html) {
+      .then((html) => {
         if (isFirstRender || opts.shouldRedraw) {
           this.disposeChildViews(this.el);
           this.disposeWidgets(this.el);
@@ -339,12 +336,12 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
           var $newEl = $('<div>' + html + '</div>').find(opts.selector),
               $oldEl = this.el.find(opts.selector);
           if ($newEl.length === $oldEl.length) {
-            $oldEl.each(function(index, el) {
+            $oldEl.each((index, el) => {
               var $el = $(el);
               this.disposeChildViews($el);
               this.disposeWidgets($el);
               $el.replaceWith($newEl.eq(index)).remove();
-            }.bind(this));
+            });
           } else {
             throw 'Count of items matching selector is not the same in the original html and in the newly rendered html.';
           }
@@ -355,21 +352,21 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
         this.applyChildViewEvents();
         this.childViewManager && this.childViewManager.init(this.el);
         return html;
-      }.bind(this));
+      });
 
     promise.then(
-      function() {
+      () => {
         if (isFirstRender) {
           this.trigger('rendersuccess');
         }
         else {
           this.trigger('redrawsuccess');
         }
-      }.bind(this),
-      function(err) {
+      },
+      (err) => {
         this.trigger('rendererror', {err: err});
         throw err;
-      }.bind(this)
+      }
     );
 
     return promise;
@@ -380,7 +377,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    * @method disposeChildViews
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeChildViews: function ($el) {
+  disposeChildViews:  function($el) {
     var childViewSearch,
       self = this;
 
@@ -389,7 +386,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
     if ($el !== self.el && $el.is('[data-view-id]')) {
       childViewSearch = childViewSearch.add($el);
     }
-    childViewSearch.each(function(index, item) {
+    childViewSearch.each((index, item) => {
       var $item = $(item),
         childView = $item.data('view');
       if (childView) {
@@ -404,11 +401,11 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    * @method disposeWidgets
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeWidgets: function ($el) {
+  disposeWidgets: function($el) {
     var self = this;
 
     // Remove widgets
-    $el.add($el.find('[data-has-widgets]')).each(function(index, item) {
+    $el.add($el.find('[data-has-widgets]')).each((index, item) => {
       var $item = $(item),
         widgets = $item.data('widgets'),
         selector, widget;
@@ -426,23 +423,22 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    *
    */
   clearModelEvents: function() {
-    var type,
-      callback,
+    var callback,
       dotIndex;
     if (this.eventMap
       && this.eventMap.model
       && this.model
       && this.model instanceof EventDispatcher) {
-      for (type in this.eventMap.model) {
-        callback = this.eventMap.model[type];
+      for (let event in this.eventMap.model) {
+        callback = this.eventMap.model[event];
         if (typeof callback === 'object') {
           callback = callback.on;
         }
-        dotIndex = type.indexOf('.');
+        dotIndex = event.indexOf('.');
         if (dotIndex !== -1) {
-          type = type.substr(0, dotIndex);
+          event = event.substr(0, dotIndex);
         }
-        this.model.off(type + '.' + this.id, callback, this);
+        this.model.off(event + '.' + this.id, callback, this);
       }
     }
   },
@@ -452,7 +448,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    * @method clearExtEvents
    *
    */
-  clearExtEvents: function(){
+  clearExtEvents: function() {
     this.extEventMap.forEach(function(o,i){
       o.delegate.off(o.event,o.callback);
     });
@@ -470,7 +466,6 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
       callback,
       property,
       delegate,
-      type,
       dotIndex,
       opts;
     for (delegate in this.eventMap) {
@@ -478,8 +473,8 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
       if (delegate === 'self') {
         delegate = null;
       }
-      for (type in callbacks) {
-        callback = callbacks[type];
+      for (let callbackType in callbacks) {
+        callback = callbacks[callbackType];
         property = _UNDEFINED;
         if (typeof callback === 'object') {
           opts = callback;
@@ -497,22 +492,22 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
 
         if (delegate === 'model') {
           if (this.model && this.model instanceof Model) {
-            dotIndex = type.indexOf('.');
+            dotIndex = callbackType.indexOf('.');
             if (dotIndex !== -1) {
-              property = type.substr(dotIndex+1);
-              type = type.substr(0, dotIndex);
+              property = callbackType.substr(dotIndex+1);
+              callbackType = callbackType.substr(0, dotIndex);
             }
-            this.model.on(type + '.' + this.id, property, callback);
+            this.model.on(callbackType + '.' + this.id, property, callback);
           }
-        } else if (type === 'animationEnd' && el.animationEnd) {
+        } else if (callbackType === 'animationEnd' && el.animationEnd) {
           el.animationEnd(delegate, callback);
-        } else if (type === 'transitionEnd' && el.transitionEnd) {
+        } else if (callbackType === 'transitionEnd' && el.transitionEnd) {
           el.transitionEnd(delegate, callback);
         } else {
           if (el.hammer) {
-            el.hammer({domEvents:true}).on(type, delegate, callback);
+            el.hammer({domEvents:true}).on(callbackType, delegate, callback);
           } else {
-            el.on(type, delegate, callback);
+            el.on(callbackType, delegate, callback);
           }
         }
       }
@@ -537,21 +532,21 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    * Maps an event for the view
    * @method mapEvent
    * @param {String} delegate  The element to which to delegate the event
-   * @param {String} type  The type of event
+   * @param {String} eventType  The type of event
    * @param {Function} callback  The event handler
    * @return {lavaca.mvc.View}  This view (for chaining)
    */
-  mapEvent: function(delegate, type, callback) {
+  mapEvent: function(delegate, eventType, callback) {
     var o;
     if (typeof delegate === 'object') {
       o = delegate;
       for (delegate in o) {
-        for (type in o[delegate]) {
+        for (eventType in o[delegate]) {
           if(delegate === 'ext'){
-            this.mapExtEvent(o[delegate][type].object,o[delegate][type].events);
+            this.mapExtEvent(o[delegate][eventType].object,o[delegate][eventType].events);
           }
           else{
-            this.mapEvent(delegate, type, o[delegate][type]);
+            this.mapEvent(delegate, eventType, o[delegate][eventType]);
           }
         }
       }
@@ -560,7 +555,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
       if (!o) {
         o = this.eventMap[delegate] = {};
       }
-      o[type] = callback;
+      o[eventType] = callback;
     }
     return this;
   },
@@ -575,7 +570,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
   mapExtEvent: function(delegate, events) {
     var callback;
     if(delegate && delegate instanceof (EventDispatcher)){
-      for(var event in events){
+      for(let event in events){
         callback = events[event];
         delegate.on(event,callback);
         this.extEventMap.push({delegate:delegate,event:event,callback:callback});
@@ -608,18 +603,9 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
         TWidget = o;
         args = null;
       }
-      if (args) {
-        makeWidget = function(el) {
-          var factoryFunction = TWidget.bind.apply(TWidget, [null, el].concat(args));
-          return new factoryFunction();
-        };
-      } else {
-        makeWidget = function(el) {
-          return new TWidget(el);
-        };
-      }
+      makeWidget = args ? (el) => new TWidget.bind.apply(TWidget, [null, el].concat(args)) : (el) => new TWidget(el);
       (n === 'self' ? this.el : this.el.find(n))
-        .each(function(index, item) {
+        .each((index, item) => {
           var $el = $(item),
             widgetMap = $el.data('widgets') || {},
             widget;
@@ -677,13 +663,12 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    */
   createChildViews: function() {
     var cache = this.childViews,
-      n,
       self = this,
       o;
-    for (n in this.childViewMap) {
+    for (let n in this.childViewMap) {
       o = this.childViewMap[n];
       this.el.find(n)
-        .each(function(index, item) {
+        .each((index, item) => {
           var $el = $(item),
               childView,
               model;
@@ -747,7 +732,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
    *
   */
-  mapChildViewManager:function(el, map, mixin, fillin){
+  mapChildViewManager: function(el, map, mixin, fillin) {
     this.childViewManager = new ChildViewManager(el, map, this, 'cvm-'+this.id);
     if (typeof mixin === 'object') {
       this.childViewManager.childViewMixin = mixin;
@@ -775,12 +760,12 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
   mapChildViewEvent: function(type, callback, TView) {
     if (typeof type === 'object'){
       var eventTypes = type;
-      for (type in eventTypes){
+      for (t in eventTypes){
         //add in view type to limit events created
-        this.mapChildViewEvent(type, eventTypes[type].callback, eventTypes[type].TView);
+        this.mapChildViewEvent(t, eventTypes[t].callback, eventTypes[t].TView);
       }
     } else {
-      this.childViewEventMap[type] = {
+      this.childViewEventMap[t] = {
         TView: TView,
         callback: callback
       };
@@ -795,20 +780,20 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
   applyChildViewEvents: function() {
     var childViewEventMap = this.childViewEventMap,
       type;
-    for (type in childViewEventMap) {
-      this.childViews.each(function(key, item) {
+    for (ev in childViewEventMap) {
+      this.childViews.each((key, item) => {
         var callbacks,
           callback,
           i = -1;
 
-        if (!childViewEventMap[type].TView || item instanceof childViewEventMap[type].TView) {
-          callbacks = item.callbacks[type] || [];
+        if (!childViewEventMap[ev].TView || item instanceof childViewEventMap[ev].TView) {
+          callbacks = item.callbacks[ev] || [];
           while (!!(callback = callbacks[++i])) {
-            if (callback === childViewEventMap[type].callback) {
+            if (callback === childViewEventMap[ev].callback) {
               return;
             }
           }
-          item.on(type, childViewEventMap[type].callback);
+          item.on(type, childViewEventMap[ev].callback);
         }
       });
     }
@@ -820,8 +805,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    * @param {Event} e  The render event. This object should have a string property named "html"
    *   that contains the template's rendered HTML output.
    */
-  onRenderSuccess: function(e) {
-  },
+  onRenderSuccess: function(e){},
   /**
    * Executes when the template fails to render
    * @method onRenderError
@@ -830,7 +814,7 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
    *   that contains the error message.
    */
   onRenderError: function(e) {
-    console.log(e.err);
+    console.log(e.err)
   },
   /**
    * Readies the view for garbage collection
@@ -947,4 +931,4 @@ var View = EventDispatcher.extend(function(el, model, parentView) {
   }
 });
 
-module.exports = View;
+export default View;

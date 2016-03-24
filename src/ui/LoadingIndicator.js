@@ -1,5 +1,5 @@
-var $ = require('jquery'),
-    Widget = require('./Widget');
+import { default as Widget } from './Widget';
+import $ from 'jquery';
 
 /**
  * Type that shows/hides a loading indicator
@@ -41,15 +41,11 @@ var LoadingIndicator = Widget.extend({
  * @static
  * @param {Function} TLoadingIndicator  The type of loading indicator to create (should derive from [[Lavaca.ui.LoadingIndicator]])
  */
-LoadingIndicator.init = function(TLoadingIndicator) {
+LoadingIndicator.init = (TLoadingIndicator) => {
   TLoadingIndicator = TLoadingIndicator || LoadingIndicator;
   var indicator = new TLoadingIndicator(document.body);
-  function show() {
-    indicator.show();
-  }
-  function hide() {
-    indicator.hide();
-  }
+  let show = () => indicator.show();
+  let hide = () => indicator.hide();
   $(document)
     .on('ajaxStart', show)
     .on('ajaxStop', hide)
@@ -57,4 +53,4 @@ LoadingIndicator.init = function(TLoadingIndicator) {
   return indicator;
 };
 
-module.exports = LoadingIndicator.init();
+export default LoadingIndicator.init();

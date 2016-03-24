@@ -1,6 +1,6 @@
-var extend = require('./extend');
+import { default as extend } from './extend';
 
-function _disposeOf(obj) {
+const _disposeOf = (obj) => {
   var n,
       o,
       i;
@@ -40,4 +40,4 @@ var Disposable = extend({
       _disposeOf(this);
   }
 });
-module.exports = Disposable;
+export default Disposable;

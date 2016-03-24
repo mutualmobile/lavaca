@@ -1,12 +1,10 @@
-var $ = require('jquery'),
-  History = require('lavaca/net/History'),
-  View = require('lavaca/mvc/View'),
-  Cache = require('lavaca/util/Cache'),
-  Disposable = require('lavaca/util/Disposable'),
-  merge = require('mout/object/merge'),
-  fillIn = require('mout/object/fillIn'),
-  contains = require('mout/array/contains'),
-  removeAll = require('mout/array/removeAll');
+import { default as History } from '../net/History';
+import { default as View } from './View';
+import { default as Cache } from '../util/Cache';
+import { default as Disposable } from '../util/Disposable';
+import {merge, fillIn} from 'mout/object';
+import {contains, removeAll} from 'mout/array';
+import $ from 'jquery';
 
 /**
  * Manager responsible for drawing views
@@ -16,7 +14,7 @@ var $ = require('jquery'),
  * @constructor
  * @param {jQuery} el  The element that contains all layers
  */
-var ViewManager = Disposable.extend(function(el) {
+var ViewManager = Disposable.extend(function ViewManager(el){
   Disposable.call(this);
   /**
    * The element that contains all view layers
@@ -92,14 +90,14 @@ var ViewManager = Disposable.extend(function(el) {
    */
   initBreadcrumbTracking: function() {
     this.shouldTrackBreadcrumb = true;
-    History.on('popstate', function(e) {
+    History.on('popstate', (e) => {
       if (e.direction === 'back') {
         this.popBreadcrumb();
         if (!e.bypassLoad) {
           this.popBreadcrumb();
         }
       }
-    }.bind(this));
+    });
   },
   /**
    * Handles the disposal of views that are popped out of the breadcrumb array
@@ -241,35 +239,27 @@ var ViewManager = Disposable.extend(function(el) {
     pageView = this.buildPageView(obj);
 
     return Promise.resolve()
-      .then(function() {
+      .then(() => {
         if (!pageView.hasRendered) {
           return pageView.render();
         }
       })
-      .then(function() {
-        return this.beforeEnterExit(layer-1, pageView);
-      }.bind(this))
-      .then(function() {
+      .then(() => this.beforeEnterExit(layer-1, pageView))
+      .then(() => {
         this.enteringPageViews = [pageView];
         return Promise.all([
-          (function() {
-            if (this.layers[layer] !== pageView) {
-              return pageView.enter(this.el, this.exitingPageViews);
-            }
-          }.bind(this))(),
-          (function() {
-            return this.dismissLayersAbove(layer-1, pageView);
-          }.bind(this))()
+          (() => this.layers[layer] !== pageView ? pageView.enter(this.el, this.exitingPageViews):null)(),
+          (() => this.dismissLayersAbove(layer-1, pageView))()
         ]);
-      }.bind(this))
-      .then(function() {
+      })
+      .then(() => {
         this.locked = false;
         this.enteringPageViews = [];
         this.layers[layer] = pageView;
-      }.bind(this));
+      });
   },
   /**
-   * Execute beforeEnter or beforeExit for each layer. Both functions
+   * Execute beforeEnter or beforeExit for each layer. Both fucntions
    * beforeEnter and beforeExit must return promises.
    * @method beforeEnterExit
    *
@@ -277,7 +267,7 @@ var ViewManager = Disposable.extend(function(el) {
    * @return {Promise}  A promise
    */
   /**
-   * Execute beforeEnter or beforeExit for each layer. Both functions
+   * Execute beforeEnter or beforeExit for each layer. Both fucntions
    * beforeEnter and beforeExit must return promises.
    * @method beforeEnterExit
    *
@@ -294,7 +284,7 @@ var ViewManager = Disposable.extend(function(el) {
     }
     for (i = this.layers.length - 1; i > index; i--) {
       if ((layer = this.layers[i]) && (!enteringView || enteringView !== layer)) {
-        (function(layer) {
+        ((layer) => {
           if (typeof layer.beforeExit === 'function') {
             list.push(layer.beforeExit());
           }
@@ -358,11 +348,11 @@ var ViewManager = Disposable.extend(function(el) {
    */
   dismissLayersAbove: function(index, exceptForView) {
     var toDismiss = this.layers.slice(index+1)
-      .filter(function(layer) {
+      .filter((layer) => {
         return (layer && (!exceptForView || exceptForView !== layer));
       });
 
-    this.layers = this.layers.map(function(layer) {
+    this.layers = this.layers.map((layer) => {
       if (contains(toDismiss, layer)) {
         return null;
       }
@@ -370,19 +360,19 @@ var ViewManager = Disposable.extend(function(el) {
     });
 
     var promises = toDismiss
-      .map(function(layer) {
+      .map((layer) => {
         return Promise.resolve()
-          .then(function() {
+          .then(() => {
             this.exitingPageViews.push(layer);
             return layer.exit(this.el, this.enteringPageViews);
-          }.bind(this))
-          .then(function() {
+          })
+          .then(() => {
             removeAll(this.exitingPageViews, layer);
             if (!layer.cacheKey || (exceptForView && exceptForView.cacheKey === layer.cacheKey)) {
               layer.dispose();
             }
-          }.bind(this));
-      }.bind(this));
+          });
+      });
 
     return Promise.all(promises);
   },
@@ -416,4 +406,4 @@ var ViewManager = Disposable.extend(function(el) {
   }
 });
 
-module.exports = new ViewManager(null);
+export default new ViewManager(null);

@@ -1,14 +1,13 @@
-var Model = require('lavaca/mvc/Model'),
-    Connectivity = require('lavaca/net/Connectivity'),
-    isArray = require('mout/lang/isArray'),
-    clone = require('mout/lang/deepClone'),
-    removeAll = require('mout/array/removeAll'),
-    insert = require('mout/array/insert'),
-    merge = require('mout/object/merge');
+import $ from 'jquery';
+import { default as Model } from './Model';
+import { default as Connectivity } from '../net/Connectivity';
+import {deepClone as clone, isArray} from 'mout/lang';
+import {removeAll, insert} from 'mout/array';
+import {merge} from 'mout/object';
 
 var UNDEFINED;
 
-function _triggerItemEvent(collection, event, previousIndex, index, model) {
+var _triggerItemEvent = (collection, event, previousIndex, index, model) => {
   collection.trigger(event, {
     previousIndex: previousIndex,
     index: index,
@@ -16,10 +15,10 @@ function _triggerItemEvent(collection, event, previousIndex, index, model) {
   });
 }
 
-function _getComparator(attr, descending) {
-  var compareVal = descending ? 1 : -1;
-  return function(modelA, modelB) {
-    var attrA = modelA.get(attr),
+var _getComparator = (attr, descending) => {
+  let compareVal = descending ? 1 : -1;
+  return (modelA, modelB) => {
+    let attrA = modelA.get(attr),
         attrB = modelB.get(attr);
     return (attrA === attrB)
             ? 0
@@ -68,7 +67,7 @@ function _getComparator(attr, descending) {
  * @param {Array} models  A list of models to add to the collection
  * @param {Object} [map]  A parameter hash to apply to the collection
  */
-var Collection = Model.extend(function(models, map) {
+var Collection = Model.extend(function (models, map){
   Model.call(this, map);
   this.models = [];
   this.changedOrder = false;
@@ -414,7 +413,7 @@ var Collection = Model.extend(function(models, map) {
         attrs;
     if (typeof test !== 'function') {
       attrs = test;
-      test = function(index, item) {
+      test = (index, item) => {
         for (var n in attrs) {
           if (item.get(n) !== attrs[n]) {
             return false;
@@ -555,7 +554,7 @@ var Collection = Model.extend(function(models, map) {
       this.changedOrder = true;
     }
     if (!this.suppressEvents) {
-      this.each(function(index, model) {
+      this.each((index, model) => {
         oldIndex = oldModels.indexOf(model);
         if (oldIndex !== index) {
           _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
@@ -579,7 +578,7 @@ var Collection = Model.extend(function(models, map) {
       this.changedOrder = true;
     }
     if (!this.suppressEvents) {
-      this.each(function(index, model) {
+      this.each((index, model) => {
         oldIndex = oldModels.indexOf(model);
         if (oldIndex !== index) {
           _triggerItemEvent(this, 'moveItem', oldModels.indexOf(model), index, model);
@@ -617,7 +616,7 @@ var Collection = Model.extend(function(models, map) {
    * @return {Object}  The key-value hash
    */
   toObject: function(idOnly) {
-    var obj = Model.prototype.toObject.apply(this, arguments),
+    let obj = Model.prototype.toObject.apply(this, arguments),
         prop = this.itemsProperty,
         items = obj[prop] = [],
         i = -1,
@@ -648,4 +647,4 @@ var Collection = Model.extend(function(models, map) {
   },
 });
 
-module.exports = Collection;
+export default Collection;
