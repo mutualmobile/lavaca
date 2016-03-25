@@ -78,7 +78,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
     if(!route){
       return;
     }
-    if(!params.isRedraw){
+    if(params && !params.isRedraw || ! params){
       this.history.push(route);
     }
     var ChildView = this.routes[route].TView, 
@@ -115,7 +115,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
         return Promise.all([
           (() => {
             if (this.layers[layer] !== childView) {
-              return childView.enter(this.el, this.exitingViews, params.isRedraw);
+              return childView.enter(this.el, this.exitingViews, params ? params.isRedraw : false);
             }
             return Promise.resolve();
           })(),
