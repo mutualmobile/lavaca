@@ -239,7 +239,7 @@ History.init = (useHash) => {
  * @param {String} title  The title of the page state
  * @param {String} url  The URL of the page state
  */
-History.push = () => History.init().push.apply(_hist, arguments);
+History.push = function(){History.init().push.apply(_hist, arguments);}
 
 /**
  * Replaces the current record in the history
@@ -250,7 +250,7 @@ History.push = () => History.init().push.apply(_hist, arguments);
  * @param {String} title  The title of the page state
  * @param {String} url  The URL of the page state
  */
-History.replace = () => History.init().replace.apply(_hist, arguments);
+History.replace = function(){History.init().replace.apply(_hist, arguments);}
 
 /**
  * Goes to the previous history state
@@ -297,7 +297,7 @@ History.dispose = () => {
  * @param {Function} callback  The function to execute when the event occurs
  * @return {Lavaca.mvc.History}  The history object (for chaining)
  */
-History.on = () => History.init().on.apply(_hist, arguments);
+History.on = function(){History.init().on.apply(_hist, arguments);}
 
 /**
  * Unbinds an event handler from the singleton history
@@ -309,7 +309,7 @@ History.on = () => History.init().on.apply(_hist, arguments);
  *    event occurs
  * @return {Lavaca.mvc.History}  The history object (for chaining)
  */
-History.off = () => History.init().off.apply(_hist, arguments);
+History.off = function(){History.init().off.apply(_hist, arguments);}
 
 /**
  * Sets Histroy to hash mode
