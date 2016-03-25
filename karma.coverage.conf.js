@@ -1,4 +1,11 @@
 var webpackConfig = require('./webpack.config.js');
+var path = require('path');
+
+webpackConfig.module.loaders.push({
+  test: /\.js/,
+  include: path.resolve('src'),
+  loader: 'istanbul-instrumenter'
+});
 
 module.exports = function(config) {
   config.set({

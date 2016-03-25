@@ -13,17 +13,15 @@ module.exports = function(grunt) {
       },
       debug: {
         configFile: 'karma.conf.js',
+        singleRun: false,
         reporters: ['dots'],
         browsers: ['Chrome']
       },
       coverage: {
-        configFile: 'karma.conf.js',
+        configFile: 'karma.coverage.conf.js',
         singleRun: true,
         reporters: ['dots', 'coverage'],
         browsers: ['PhantomJS'],
-        preprocessors: {
-          'src/**/*.js': ['coverage']
-        },
         coverageReporter: {
           type : 'lcov',
           dir : 'test/coverage/'
@@ -36,7 +34,7 @@ module.exports = function(grunt) {
         debug: true,
         coverage_dir: 'test/coverage',
         dryRun: false,
-        force: true,
+        force: false,
         recursive: true
       }
     },
