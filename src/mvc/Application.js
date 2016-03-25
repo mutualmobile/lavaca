@@ -112,16 +112,8 @@ var Application = EventDispatcher.extend(function (callback){
         rel = link.attr('rel'),
         target = link.attr('target'),
         isExternal = link.is('[data-external]') || _isExternal(url),
-        metaKey;
+        metaKey = e.ctrlKey || e.metaKey;
 
-    // backwards compatilibity with HammerJS < 2.0
-    if (e.type === 'tap' && e.gesture && e.gesture.srcEvent) {
-      metaKey = e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey;
-    } else if (e.type === 'tap' && e.originalEvent && e.originalEvent.gesture && e.originalEvent.srcEvent) {
-      metaKey = e.originalEvent.gesture.srcEvent.ctrlKey || e.originalEvent.gesture.srcEvent.metaKey;
-    } else {
-      metaKey = e.ctrlKey || e.metaKey;
-    }
     if (metaKey) {
       target = metaKey ? '_blank' : (target ? target : '_self');
     }
@@ -208,8 +200,7 @@ var Application = EventDispatcher.extend(function (callback){
   bindLinkHandler() {
     var $body = $(document.body),
         type = 'click';
-    if ($body.hammer) {
-      $body = $body.hammer();
+    if ($body.tap) {
       type = 'tap';
       $body.on('click', 'a', _stopEvent);
     }
