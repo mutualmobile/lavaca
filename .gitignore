@@ -1,11 +1,11 @@
-/src/components
-
 /node_modules
+/bower_components
 /docs
 /pkg
 /tmp
 /build
 /log
+/test/coverage
 npm-debug.log
 
 .tern-port

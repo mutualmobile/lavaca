@@ -4,21 +4,38 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    jasmine: {
-      all: {
-        // PhantomJS is not fully ES5-compatible; shim it
-        src: 'src/components/es5-shim/es5-shim.js',
-        options: {
-          specs: 'test/unit/**/*.js',
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: 'src/boot.js',
-            requireConfig: {
-              baseUrl: 'src'
-            }
-          },
-          keepRunner: true
+    karma: {
+      run: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        reporters: ['dots'],
+        browsers: ['PhantomJS']
+      },
+      debug: {
+        configFile: 'karma.conf.js',
+        singleRun: false,
+        reporters: ['dots'],
+        browsers: ['Chrome']
+      },
+      coverage: {
+        configFile: 'karma.coverage.conf.js',
+        singleRun: true,
+        reporters: ['dots', 'coverage'],
+        browsers: ['PhantomJS'],
+        coverageReporter: {
+          type : 'lcov',
+          dir : 'test/coverage/'
         }
+      }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverage_dir: 'test/coverage',
+        dryRun: false,
+        force: false,
+        recursive: true
       }
     },
 
@@ -28,7 +45,7 @@ module.exports = function(grunt) {
           jshintrc: '.jshintrc'
         },
         files: {
-          lavaca: 'src/js/lavaca/**/*.js'
+          lavaca: 'src/**/*.js'
         }
       },
       test: {
@@ -56,20 +73,6 @@ module.exports = function(grunt) {
       }
     },
 
-    requirejs: {
-      baseUrl: 'src',
-      mainConfigFile: 'src/boot.js',
-      optimize: 'none',
-      keepBuildDir: true,
-      locale: "en-us",
-      useStrict: false,
-      skipModuleInsertion: false,
-      findNestedDependencies: false,
-      removeCombined: false,
-      preserveLicenseComments: false,
-      logLevel: 0
-    },
-
     open : {
       doc : {
         path: 'docs/index.html'
@@ -79,12 +82,13 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   // Default task.
   grunt.registerTask('doc', ['yuidoc', 'open:doc']);
-  grunt.registerTask('test', 'generates runner and runs the tests', ['jasmine']);
+  grunt.registerTask('test', ['karma:run']);
 
 };

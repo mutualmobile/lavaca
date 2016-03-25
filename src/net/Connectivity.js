@@ -1,97 +1,85 @@
-define(function(require) {
+var $ = require('jquery'),
+    get = require('mout/object/get');
 
-  var $ = require('$'),
-      Promise = require('lavaca/util/Promise'),
-      resolve = require('lavaca/util/resolve');
+/**
+ * A utility type for working under different network connectivity situations.
+ * @class lavaca.net.Connectivity
+ */
 
-  /**
-   * A utility type for working under different network connectivity situations.
-   * @class lavaca.net.Connectivity
-   */
+var _navigatorOnlineSupported = typeof navigator.onLine === 'boolean',
+    _offlineAjaxHandlers = [],
+    _offlineErrorCode = 'offline';
 
-  var _navigatorOnlineSupported = typeof navigator.onLine === 'boolean',
-      _offlineAjaxHandlers = [],
-      _offlineErrorCode = 'offline';
-
-  function _onAjaxError(arg) {
-    if (arg === _offlineErrorCode) {
-      var i = -1,
-          callback;
-      while (!!(callback = _offlineAjaxHandlers[++i])) {
-        callback(arg);
-      }
+function _onAjaxError(arg) {
+  if (arg === _offlineErrorCode) {
+    var i = -1,
+        callback;
+    while (!!(callback = _offlineAjaxHandlers[++i])) {
+      callback(arg);
     }
   }
+}
 
-  function _isLocalUrl(url) {
-    return url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
+function _isLocalUrl(url) {
+  return url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
+}
+
+var Connectivity = {};
+
+/**
+ * Attempts to detect whether or not the browser is connected
+ * @method isOffline
+ * @static
+ *
+ * @return {Boolean}  True if the browser is offline; false if the browser is online
+ *    or if connection status cannot be determined
+ */
+Connectivity.isOffline = function() {
+  var connectionType = get(window, 'navigator.connection.type');
+  var none = get(window, 'Connection.NONE');
+  if (!!connectionType && !!none) {
+    return connectionType === none;
   }
+  else if(connectionType && connectionType !== 'none'){
+    return false;
+  }
+  else {
+    return _navigatorOnlineSupported ? !navigator.onLine : false;
+  }
+};
 
-  var Connectivity = {};
-
-  /**
-   * Attempts to detect whether or not the browser is connected
-   * @method isOffline
-   * @static
-   *
-   * @return {Boolean}  True if the browser is offline; false if the browser is online
-   *    or if connection status cannot be determined
-   */
-  Connectivity.isOffline = function() {
-    var connectionType = resolve('navigator.connection.type');
-    if (connectionType !== null) {
-      return connectionType === resolve('Connection.NONE');
-    } else {
-      return _navigatorOnlineSupported ? !navigator.onLine : false;
-    }
-  };
-
-  /**
-   * Makes an AJAX request if the user is online. If the user is offline, the returned
-   * promise will be rejected with the string argument "offline"
-   * @method ajax
-   * @static
-   *
-   * @param {Object} opts  jQuery-style AJAX options
-   * @return {Lavaca.util.Promise}  A promise
-   */
-  Connectivity.ajax = function(opts) {
-    var promise = new Promise(),
-        origSuccess = opts.success,
-        origError = opts.error;
-    opts.success = function() {
-      if (origSuccess) {
-        origSuccess.apply(this, arguments);
+/**
+ * Makes an AJAX request if the user is online. If the user is offline, the returned
+ * promise will be rejected with the string argument "offline"
+ * @method ajax
+ * @static
+ *
+ * @param {Object} opts  jQuery-style AJAX options
+ * @return {Promise}  A promise
+ */
+Connectivity.ajax = function(opts) {
+  return Promise.resolve()
+    .then(function() {
+      if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
+        throw _offlineErrorCode;
       }
-      promise.resolve.apply(promise, arguments);
-    };
-    opts.error = function() {
-      if (origError) {
-        origError.apply(this, arguments);
-      }
-      promise.reject.apply(promise, arguments);
-    };
-    if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
-      promise.reject(_offlineErrorCode);
-    } else {
-      $.ajax(opts);
-    }
-    promise.error(_onAjaxError);
-    return promise;
-  };
+    })
+    .then(function() {
+      return $.ajax(opts);
+    })
+    .catch(_onAjaxError);
+};
 
-  /**
-   * Adds a callback to be executed whenever any Lavaca.net.Connectivity.ajax() call is
-   * blocked as a result of a lack of internet connection.
-   * @method registerOfflineAjaxHandler
-   * @static
-   *
-   * @param {Function} callback  The callback to execute
-   */
-  Connectivity.registerOfflineAjaxHandler = function(callback) {
-    _offlineAjaxHandlers.push(callback);
-  };
+/**
+ * Adds a callback to be executed whenever any Lavaca.net.Connectivity.ajax() call is
+ * blocked as a result of a lack of internet connection.
+ * @method registerOfflineAjaxHandler
+ * @static
+ *
+ * @param {Function} callback  The callback to execute
+ */
+Connectivity.registerOfflineAjaxHandler = function(callback) {
+  _offlineAjaxHandlers.push(callback);
+};
 
-  return Connectivity;
-
-});
+module.exports = Connectivity;

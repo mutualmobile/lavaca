@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-    - "0.8"
-before_install:
-    - "npm cache clean ."
+    - "0.10"
 script:
     - "npm install -g grunt-cli"
     - "npm install -g bower"
+    - "npm install -g karma"
+    - "npm install"
     - "bower install"
-    - "grunt test --verbose"
+    - "grunt karma:coverage coveralls"
