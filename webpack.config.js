@@ -8,9 +8,7 @@ module.exports = {
       alias: {
         '$': 'bower_components/jquery/jquery',
         'jquery': 'bower_components/jquery/jquery',
-        'mout': 'bower_components/mout/src',
-        'es5-shim': 'bower_components/es5-shim/es5-shim',
-        'es6-shim': 'bower_components/es6-shim/es6-shim'
+        'mout': 'bower_components/mout/src'
       }
     },
     plugins: [

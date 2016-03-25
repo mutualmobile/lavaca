@@ -16,8 +16,6 @@
   ],
   "dependencies": {
     "jquery": "2.0.3",
-    "mout": "~0.7.1",
-    "es5-shim": "~2.1.0",
-    "es6-shim": "0.13.0"
+    "mout": "~0.7.1"
   }
 }
