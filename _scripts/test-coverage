@@ -1,0 +1,11 @@
+#!/bin/bash
+
+_dirname="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd $_dirname/..
+mkdir -p dist/commonjs
+./node_modules/babel-cli/bin/babel.js src -d dist/commonjs
+mkdir -p dist/commonjs-coverage
+./node_modules/istanbul/lib/cli.js instrument dist/commonjs --output dist/commonjs-coverage
+./node_modules/webpack/bin/webpack.js --resolve-alias 'lavaca=dist/commonjs-coverage' test/context.js test/context-compiled.js
+./node_modules/karma-cli/bin/karma start karma.coverage.conf.js

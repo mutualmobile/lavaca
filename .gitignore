@@ -4,7 +4,9 @@
 /pkg
 /tmp
 /build
+/dist
 /log
+/test/context-compiled.js
 /test/coverage
 npm-debug.log
 
