@@ -22,6 +22,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   this.elName = el;
   this.parentView = parent;
   this.id = id;
+  this.hasInitialized = false;
   if (typeof routes === 'object') {
     for (var r in routes) {
       this.routes[r] = routes[r];
@@ -37,7 +38,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
     this.el = view.find(this.elName);
     if (!this.el.hasClass('cvm')){
       this.el.addClass('cvm');
-      this.exec();
+      this.exec(null, {isRedraw: this.hasInitialized});
+      this.hasInitialized = true;
     }
   },
   back() {
@@ -76,7 +78,9 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
     if(!route){
       return;
     }
-    this.history.push(route);
+    if(!params.isRedraw){
+      this.history.push(route);
+    }
     var ChildView = this.routes[route].TView, 
         model = this.routes[route].model;
     if(!model){
@@ -111,7 +115,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
         return Promise.all([
           (() => {
             if (this.layers[layer] !== childView) {
-              return childView.enter(this.el, this.exitingViews);
+              return childView.enter(this.el, this.exitingViews, params.isRedraw);
             }
             return Promise.resolve();
           })(),
@@ -129,15 +133,12 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
             typeof this.parentView.onChildViewManagerExec === 'function') {
           this.parentView.onChildViewManagerExec(route, this.step);
         }
-      });
+      }).catch(err=>console.error(err));
   },
   dismiss(layer) {
     if (typeof layer === 'number') {
       return this.dismissLayersAbove(layer - 1);
-    // } 
-    // else if (layer instanceof View) {
     } else {
-      // return this.dismiss(layer.layer);
       layer = $(layer);
       var index = layer.attr('data-layer-index');
       if (index === null) {
@@ -160,7 +161,6 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
       }
       return layer;
     });
-
     var promises = toDismiss.map((layer) => {
         return Promise.resolve()
           .then(() => {
