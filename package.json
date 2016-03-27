@@ -53,11 +53,10 @@
     "karma-cli": "^0.1.0",
     "karma-coverage": "0.2.4",
     "karma-jasmine": "^0.3.5",
-    "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "0.2.2",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "1.6.0",
-    "webpack": "1.10.1"
+    "webpack": "1.12.14"
   },
   "keywords": [
     "lavaca",
