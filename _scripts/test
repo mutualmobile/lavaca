@@ -1,9 +1,12 @@
 #!/bin/bash
 
-_dirname="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
 
-cd $_dirname/..
-mkdir -p dist/commonjs
-./node_modules/babel-cli/bin/babel.js --source-maps inline src -d dist/commonjs
-./node_modules/webpack/bin/webpack.js --devtool 'inline-source-map' --resolve-alias 'lavaca=dist/commonjs' test/context.js test/context-compiled.js
-./node_modules/karma-cli/bin/karma start karma.conf.js
+cd "$PROJECT_ROOT"
+
+mkdir -p build/commonjs
+cp _scripts/.babelrc-commonjs .babelrc
+./node_modules/babel-cli/bin/babel.js --source-maps inline src -d build/commonjs
+./node_modules/webpack/bin/webpack.js --devtool 'inline-source-map' --resolve-alias 'lavaca=build/commonjs' test/context.js test/context-compiled.js
+./node_modules/karma-cli/bin/karma start karma.conf.js "$@"
