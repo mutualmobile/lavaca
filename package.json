@@ -23,6 +23,7 @@
   "engines": {
     "node": ">= 0.8.0"
   },
+  "main": "lavaca",
   "scripts": {
     "build": "_scripts/build",
     "publish": "_scripts/publish",
