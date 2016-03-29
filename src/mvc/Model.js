@@ -9,6 +9,7 @@ var UNDEFINED;
 
 let _triggerAttributeEvent = (model, event, attribute, previous, value, messages) => {
   model.trigger(event, {
+    type: event,
     attribute: attribute,
     previous: previous === UNDEFINED ? null : previous,
     value: value === UNDEFINED ? model.get(attribute) : value,
@@ -450,10 +451,10 @@ var Model = EventDispatcher.extend(function Model(map) {
       if (callback && (!attr || e.attribute === attr)) {
         callback.call(thisp || this, e);
       }
-    }
+    };
     handler.fn = callback;
     handler.thisp = thisp;
-    return EventDispatcher.prototype.on.call(this, type, handler, thisp);
+    return EventDispatcher.prototype.on.call(this, type, handler);
   }
 });
 /**

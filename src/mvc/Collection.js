@@ -70,6 +70,7 @@ var _getComparator = (attr, descending) => {
 var Collection = Model.extend(function (models, map){
   Model.call(this, map);
   this.models = [];
+  this.modelEventHandlers = [];
   this.changedOrder = false;
   this.addedItems = [];
   this.removedItems = [];
@@ -148,11 +149,27 @@ var Collection = Model.extend(function (models, map){
         index = this.models.indexOf(model);
     if (index === -1) {
       model
-        .on('change', this.onItemEvent, this)
-        .on('invalid', this.onItemEvent, this);
+        .on('change', this._getModelEventHandler(model))
+        .on('invalid', this._getModelEventHandler(model));
     }
     return model;
   },
+
+  _getModelEventHandler(model) {
+    let list = this.modelEventHandlers.filter((item) => {
+      return item.model === model;
+    });
+    if (list.length) {
+      return list[0].handler;
+    }
+    let obj = {
+      model: model,
+      handler: this.onItemEvent.bind(this, model)
+    };
+    this.modelEventHandlers.push(obj);
+    return obj.handler;
+  },
+
   /**
    * Determines whether or not an attribute can be assigned
    * @method canSet
@@ -347,8 +364,8 @@ var Collection = Model.extend(function (models, map){
           insert(this.removedItems, item);
         }
         item
-          .off('change', this.onItemEvent)
-          .off('invalid', this.onItemEvent);
+          .off('change', this._getModelEventHandler(item))
+          .off('invalid', this._getModelEventHandler(item));
         _triggerItemEvent(this, 'removeItem', index, null, item);
         return true;
       } else {
@@ -593,13 +610,12 @@ var Collection = Model.extend(function (models, map){
    *
    * @param {Lavaca.mvc.ModelEvent} e  The item event
    */
-  onItemEvent(e) {
-    var model = e.target,
-        index = this.models.indexOf(model);
+  onItemEvent(model, e) {
+    let index = this.models.indexOf(model);
     if (!this.suppressTracking) {
       if (e.type === 'change') {
         insert(this.changedItems, model);
-      } 
+      }
     }
     this.trigger(e.type + 'Item', merge({}, e, {
       target: model,

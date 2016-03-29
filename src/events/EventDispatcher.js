@@ -1,5 +1,4 @@
-import { default as Disposable } from '../util/Disposable'
-import {deepMixIn} from 'mout/object'
+import { default as Disposable } from '../util/Disposable';
 
 /**
  * Basic event dispatcher type
@@ -21,23 +20,24 @@ var EventDispatcher = Disposable.extend({
    * Bind an event handler to this object
    * @method on
    *
-   * @param {String} type  The name of the event
+   * @param {String} type  The name of the event plus optional namespaces e.g.
+   * "event.namespace" or "event.namespace1.namespace2"
    * @param {Function} callback  The function to execute when the event occurs
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  /**
-   * Bind an event handler to this object
-   * @method on
-   *
-   * @param {String} type  The name of the event
-   * @param {Function} callback  The function to execute when the event occurs
-   * @param {Object} thisp  The context of the handler
-   * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-   */
-  on(type, callback, thisp) {
-    var calls = this.callbacks || (this.callbacks = {}),
-        list = calls[type] || (calls[type] = []);
-    list[list.length] = {fn: callback, thisp: thisp};
+  on(spec, callback) {
+    this.callbacks = this.callbacks || [];
+
+    let parts = spec.split('.');
+    let type = parts[0];
+    let namespaces = parts.slice(1);
+
+    this.callbacks.push({
+        type: type,
+        namespaces: namespaces,
+        fn: callback
+    });
+
     return this;
   },
   /**
@@ -47,10 +47,11 @@ var EventDispatcher = Disposable.extend({
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
   /**
-   * Unbinds all event handlers for an event
+   * Unbinds all event handlers for an event and/or namespace
    * @method off
    *
-   * @param {String} type  The name of the event
+   * @param {String} type  The name of the event and/or optional namespaces,
+   * e.g. "event", "event.namespace", or ".namespace"
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
   /**
@@ -61,36 +62,43 @@ var EventDispatcher = Disposable.extend({
    * @param {Function} callback  The function handling the event
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  /**
-   * Unbinds a specific event handler
-   * @method off
-   *
-   * @param {String} type  The name of the event
-   * @param {Function} callback  The function handling the event
-   * @param {Object} thisp  The context of the handler
-   * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
-   */
-  off(type, callback, thisp) {
-    var calls = this.callbacks,
-        list,
-        isThisp;
-    if (!type) {
-      delete this.callbacks;
-    } else if (calls) {
-      if (!callback) {
-        delete calls[type];
-      } else {
-        list = calls[type];
-        if (list) {
-          for(let i = list.length-1; i >= 0; i--) {
-            isThisp = thisp && (list[i].thisp === thisp || list[i].fn.thisp === thisp);
-            if (_checkIfSameCallback(list[i].fn,callback) || (thisp && !isThisp)){
-              calls[type].splice(i,1);
-            }
-          }
-        }
-      }
+  off(spec, callback) {
+    this.callbacks = this.callbacks || [];
+    let hasCallbackArgument = (arguments.length === 2);
+
+    if (arguments.length === 0) {
+      this.callbacks = [];
+      return this;
     }
+
+    let parts = spec.split('.');
+    let type = parts[0];
+    let namespaces = parts.slice(1);
+
+    this.callbacks = this.callbacks.filter((item) => {
+      let matchesType = (item.type === type);
+
+      if (!type) {
+        matchesType = true;
+      }
+
+      let matchesNamespace = namespaces.some((ns) => {
+        return item.namespaces.indexOf(ns) !== -1;
+      });
+
+      if (!namespaces.length) {
+        matchesNamespace = true;
+      }
+
+      let matchesCallback = item.fn === callback;
+
+      if (!hasCallbackArgument) {
+        matchesCallback = true;
+      }
+
+      return !(matchesType && matchesNamespace && matchesCallback);
+    });
+
     return this;
   },
   /**
@@ -109,96 +117,19 @@ var EventDispatcher = Disposable.extend({
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
   trigger(type, params) {
-    if (!this.suppressEvents && this.callbacks) {
-      var list = _getMatchingCallbacks.call(this,type),
-          event = this.createEvent(type, params),
-          e = -1,
-          ev,
-          handler;
-      if (list) {
-        while (!!(ev = list[++e])) {
-          var i = -1;
-          while (!!(handler = ev[++i])) {
-              handler.fn.apply(handler.thisp || this, [event]);
-          }
-        }
-      }
+    if (this.suppressEvents) {
+      return this;
     }
-    return this;
-  },
-  /**
-   * Creates an event object
-   * @method createEvent
-   *
-   * @param {String} type  The type of event to create
-   * @return {Object}  The event object
-   */
-   /**
-   * Creates an event object with additional params
-   * @method createEvent
-   *
-   * @param {String} type  The type of event to create
-   * @param {Object} params  Additional data points to add to the event
-   * @return {Object}  The event object
-   */
-  createEvent(type, params) {
-    return deepMixIn({}, params || {}, {
-      type: type,
-      target: params && params.target ? params.target : this,
-      currentTarget: this
+
+    this.callbacks = this.callbacks || [];
+    this.callbacks.forEach((item) => {
+      if (item.type === type) {
+        item.fn(params);
+      }
     });
+
+    return this;
   }
 });
-  /**
-   * Returns all callbacks that match a specific trigger event
-   * @method _getMatchingCallbacks (private)
-   *
-   * @param {String} The trigger event type as a string
-   * @return {Array}  returns Array matching all callbacks
-   */
-
-  /*
-    Returns all callbacks that match a specific trigger event
-  */
-var _getMatchingCallbacks = function(type){
-  var returnCallbacks = [];
-  if(type == 'contentLoaded'){
-    //debugger;
-  }
-  for(let x in this.callbacks){
-    if(x.split){
-      if(x.split('.')[0] === type){
-        returnCallbacks.push(this.callbacks[x]);
-      }
-    }
-  }
-  return returnCallbacks;
-}
-
-
-  /**
-   * Checks if two callbacks are the same
-   * @method _checkIfSameCallback (private)
-   *
-   * @param {Function} a first function
-   * @param {Function} b function to compare a to
-   * @return {Boolean}  returns true or false
-   */
-
-  /*
-    checks if callback a matches b, then checks if a.fn matches b, 
-    then checks if it is jQuery/zepto proxy of callback
-   */
-  let _checkIfSameCallback = (a, b)=>{
-  if((a === b || 
-     a.fn === b ||
-     (a.fn && !!a.fn.guid && a.fn.guid === b.guid ||
-      a.fn && !!a.fn._zid && a.fn._zid === b._zid))){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
 
 export default EventDispatcher;
