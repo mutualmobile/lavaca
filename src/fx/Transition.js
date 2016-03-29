@@ -1,19 +1,19 @@
-var $ = require('jquery');
+import $ from 'jquery'
 
 var Transition = {};
 
-var _props = {
+const _props = {
       transition: ['transition', 'transitionend'],
       webkitTransition: ['-webkit-transition', 'webkitTransitionEnd'],
       MozTransition: ['-moz-transition', 'MozTransitionEnd'],
       OTransition: ['-o-transition', 'OTransitionEnd'],
       MSTransition: ['-ms-transition', 'MSTransitionEnd']
-    },
-    _prop,
+    };
+let _prop,
     _cssProp,
     _event;
 
-(function() {
+(() => {
   var style = document.createElement('div').style,
       s;
   for (s in _props) {
@@ -38,7 +38,7 @@ var _props = {
  *
  * @return {Boolean}  True when CSS transitions are supported
  */
-Transition.isSupported = function() {
+Transition.isSupported = () => {
   return !!_prop;
 };
 
@@ -80,7 +80,7 @@ Transition.isSupported = function() {
  * @param {String} easing  The interpolation for the transition
  * @return {String}  The generated CSS string
  */
-Transition.toCSS = function(props, duration, easing) {
+Transition.toCSS = (props, duration, easing) => {
   easing = easing || 'linear';
   var css = [],
       isArray = props instanceof Array,
@@ -101,9 +101,7 @@ Transition.toCSS = function(props, duration, easing) {
  *
  * @return {String}  The name of the CSS property
  */
-Transition.cssProperty = function() {
-  return _cssProp;
-};
+Transition.cssProperty = () => _cssProp;
 
 /**
  * Gets the name of the transition end event
@@ -112,9 +110,7 @@ Transition.cssProperty = function() {
  *
  * @return {String}  The name of the event
  */
-Transition.transitionEndEvent = function() {
-  return _event;
-};
+Transition.transitionEndEvent = () => _event;
 
 /**
  * Causes an element to undergo a transition
@@ -162,9 +158,7 @@ $.fn.transition = function(props, duration, easing, callback) {
     if (callback) {
       this.nextTransitionEnd(callback);
     }
-    this.each(function() {
-      this.style[_prop] = css;
-    });
+    this.each(() => this.style[_prop] = css);
     this.css(props);
   } else {
     this.css(props);
@@ -221,4 +215,4 @@ $.fn.nextTransitionEnd = function(delegate, callback) {
   }
 };
 
-module.exports = Transition;
+export default Transition;

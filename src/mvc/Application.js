@@ -1,16 +1,16 @@
-var $ = require('jquery'),
-  History = require('lavaca/net/History'),
-  Device = require('lavaca/env/Device'),
-  EventDispatcher = require('lavaca/events/EventDispatcher'),
-  router = require('lavaca/mvc/Router'),
-  viewManager = require('lavaca/mvc/ViewManager');
+import $ from 'jquery';
+import { default as History } from '../net/History';
+import { default as Device } from '../env/Device';
+import { default as EventDispatcher } from '../events/EventDispatcher';
+import { default as Router } from './Router';
+import { default as ViewManager } from './ViewManager';
 
-function _stopEvent(e) {
+var _stopEvent = (e) => {
   e.preventDefault();
   e.stopPropagation();
 }
 
-function _matchHashRoute(hash) {
+var _matchHashRoute = (hash) => {
   hash = hash.replace('#!', '#');
   var matches = decodeURIComponent(hash).match(/^(?:#)(\/.*)#?@?/);
   if (matches instanceof Array && matches[1]) {
@@ -19,7 +19,7 @@ function _matchHashRoute(hash) {
   return null;
 }
 
-function _isExternal(url) {
+var _isExternal = (url) => {
   var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
   if (typeof match[1] === 'string'
       && match[1].length > 0
@@ -45,14 +45,11 @@ function _isExternal(url) {
  * @constructor
  * @param {Function} [callback]  A callback to execute when the application is initialized but not yet ready
  */
-var Application = EventDispatcher.extend(function(callback) {
+var Application = EventDispatcher.extend(function (callback){
   if (callback) {
     this._callback = callback.bind(this);
   }
-  Device.init(function() {
-    this.beforeInit()
-      .then(this.init.bind(this));
-  }.bind(this));
+  Device.init(()=>this.beforeInit().then(()=>this.init()));
 }, {
   /**
    * The default URL that the app will navigate to
@@ -95,7 +92,7 @@ var Application = EventDispatcher.extend(function(callback) {
    *
    * @param {Object} err  The routing error
    */
-  onInvalidRoute: function(err) {
+  onInvalidRoute(err) {
     // If the error is equal to "locked", it means that the router or view manager was
     // busy while while the user was attempting to navigate
     if (err !== 'locked') {
@@ -108,23 +105,15 @@ var Application = EventDispatcher.extend(function(callback) {
    *
    * @param {Event} e  The event object
    */
-  onTapLink: function(e) {
+  onTapLink(e) {
     var link = $(e.currentTarget),
         defaultPrevented = e.isDefaultPrevented(),
         url = link.attr('href') || link.attr('data-href'),
         rel = link.attr('rel'),
         target = link.attr('target'),
         isExternal = link.is('[data-external]') || _isExternal(url),
-        metaKey;
+        metaKey = e.ctrlKey || e.metaKey;
 
-    // backwards compatilibity with HammerJS < 2.0
-    if (e.type === 'tap' && e.gesture && e.gesture.srcEvent) {
-      metaKey = e.gesture.srcEvent.ctrlKey || e.gesture.srcEvent.metaKey;
-    } else if (e.type === 'tap' && e.originalEvent && e.originalEvent.gesture && e.originalEvent.srcEvent) {
-      metaKey = e.originalEvent.gesture.srcEvent.ctrlKey || e.originalEvent.gesture.srcEvent.metaKey;
-    } else {
-      metaKey = e.ctrlKey || e.metaKey;
-    }
     if (metaKey) {
       target = metaKey ? '_blank' : (target ? target : '_self');
     }
@@ -165,7 +154,7 @@ var Application = EventDispatcher.extend(function(callback) {
    *
    * @return {Promise}  A promise that resolves when the application is ready for use
    */
-  init: function(args) {
+  init(args) {
     /**
      * View manager used to transition between UI states
      * @property viewManager
@@ -173,7 +162,7 @@ var Application = EventDispatcher.extend(function(callback) {
      *
      * @type {Lavaca.mvc.ViewManager}
      */
-    this.viewManager = viewManager.setEl(this.viewRootSelector);
+    this.viewManager = ViewManager.setEl(this.viewRootSelector);
     /**
      * Router used to manage application traffic and URLs
      * @property router
@@ -181,15 +170,13 @@ var Application = EventDispatcher.extend(function(callback) {
      *
      * @type {Lavaca.mvc.Router}
      */
-    this.router = router.setViewManager(this.viewManager);
+    this.router = Router.setViewManager(this.viewManager);
 
     this.bindLinkHandler();
 
     return Promise.resolve()
-      .then(function() {
-        return this._callback(args);
-      }.bind(this))
-      .then(function() {
+      .then(() => this._callback(args))
+      .then(() => {
         this.router.startHistory();
         if (!this.router.hasNavigated) {
           if (this.initState) {
@@ -197,20 +184,23 @@ var Application = EventDispatcher.extend(function(callback) {
           }
           return this.router.exec(this.initialHashRoute || this.initRoute, this.initState, this.initParams);
         }
-      }.bind(this))
-      .then(function() {
+      })
+      .then(() => {
         this.trigger('ready');
-      }.bind(this));
+      }).catch(err=>{
+        console.error('Unable to find initial route ', err);
+        this.router.unlock();
+        return this.router.exec(this.initRoute, this.initState, this.initParams);
+      });
   },
   /**
    * Binds a global link handler
    * @method bindLinkHandler
    */
-  bindLinkHandler: function() {
+  bindLinkHandler() {
     var $body = $(document.body),
         type = 'click';
-    if ($body.hammer) {
-      $body = $body.hammer();
+    if ($body.tap) {
       type = 'tap';
       $body.on('click', 'a', _stopEvent);
     }
@@ -225,7 +215,7 @@ var Application = EventDispatcher.extend(function(callback) {
    *
    * @type {String}
    */
-  initialHashRoute: (function(hash) {
+  initialHashRoute: (function(hash){
     return _matchHashRoute(hash);
   })(window.location.hash),
   /**
@@ -234,9 +224,7 @@ var Application = EventDispatcher.extend(function(callback) {
    *
    * @return {Promise}  A promise
    */
-  beforeInit: function() {
-    return Promise.resolve(null);
-  }
+  beforeInit: () => Promise.resolve(null)
 });
 
-module.exports = Application;
+export default Application;

@@ -1,16 +1,15 @@
-var EventDispatcher = require('lavaca/events/EventDispatcher'),
-    Connectivity = require('lavaca/net/Connectivity'),
-    Cache = require('lavaca/util/Cache'),
-    clone = require('mout/lang/deepClone'),
-    contains = require('mout/array/contains'),
-    removeAll = require('mout/array/removeAll'),
-    merge = require('mout/object/merge');
-
+import {removeAll, contains} from 'mout/array';
+import {merge, get} from 'mout/object';
+import {deepClone as clone} from 'mout/lang';
+import { default as Connectivity } from '../net/Connectivity';
+import { default as Cache } from '../util/Cache';
+import { default as EventDispatcher } from '../events/EventDispatcher';
 
 var UNDEFINED;
 
-function _triggerAttributeEvent(model, event, attribute, previous, value, messages) {
+let _triggerAttributeEvent = (model, event, attribute, previous, value, messages) => {
   model.trigger(event, {
+    type: event,
     attribute: attribute,
     previous: previous === UNDEFINED ? null : previous,
     value: value === UNDEFINED ? model.get(attribute) : value,
@@ -18,7 +17,7 @@ function _triggerAttributeEvent(model, event, attribute, previous, value, messag
   });
 }
 
-function _setFlagOn(model, name, flag) {
+let _setFlagOn = (model, name, flag) => {
   var keys = model.flags[flag];
   if (!keys) {
     keys = model.flags[flag] = [];
@@ -28,7 +27,7 @@ function _setFlagOn(model, name, flag) {
   }
 }
 
-function _suppressChecked(model, suppress, callback) {
+let _suppressChecked = (model, suppress, callback) => {
   suppress = !!suppress;
   var props = ['suppressValidation', 'suppressEvents', 'suppressTracking'],
       old = {},
@@ -47,9 +46,9 @@ function _suppressChecked(model, suppress, callback) {
   return result;
 }
 
-function _isValid(messages){
+let _isValid = (messages) => {
   var isValid = true;
-  for(var attribute in messages){
+  for(let attribute in messages){
     if (messages[attribute].length > 0){
       isValid = false;
     }
@@ -98,7 +97,7 @@ function _isValid(messages){
  * @constructor
  * @param {Object} [map]  A parameter hash to apply to the model
  */
-var Model = EventDispatcher.extend(function(map) {
+var Model = EventDispatcher.extend(function Model(map) {
   var suppressEvents, suppressTracking;
   EventDispatcher.call(this);
   this.attributes = new Cache();
@@ -138,13 +137,22 @@ var Model = EventDispatcher.extend(function(map) {
 
   suppressTracking: false,
   /**
+   * The name of the ID attribute
+   * @property id
+   * @default 'id'
+   *
+   * @type String
+   */
+
+  idAttribute: 'id',
+  /**
    * Gets the value of a attribute
    * @method get
    *
    * @param {String} attribute  The name of the attribute
    * @return {Object}  The value of the attribute, or null if there is no value
    */
-  get: function(attribute) {
+  get(attribute) {
     var attr = this.attributes.get(attribute),
         flags;
     if (typeof attr === 'function') {
@@ -160,7 +168,7 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {String} attribute  The name of the attribute
    * @return {Boolean}  True if you can assign to the attribute
    */
-  canSet: function() {
+  canSet(){
     return true;
   },
   /**
@@ -186,7 +194,7 @@ var Model = EventDispatcher.extend(function(map) {
 //* @event change
 
 
-  set: function(attribute, value, flag, suppress) {
+  set(attribute, value, flag, suppress) {
     return _suppressChecked(this, suppress, function() {
       if (!this.canSet(attribute)) {
         return false;
@@ -219,25 +227,16 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {String} attribute  The name of the attribute
    * @return {Boolean}  True if the attribute exists and has a value
    */
-  has: function(attribute) {
+  has(attribute) {
     return this.get(attribute) !== null;
   },
-  /**
-   * The name of the ID attribute
-   * @property id
-   * @default 'id'
-   *
-   * @type String
-   */
-
-  idAttribute: 'id',
   /**
    * Gets the ID of the model
    * @method id
    *
    * @return {String}  The ID of the model
    */
-  id: function() {
+  id() {
     return this.get(this.idAttribute);
   },
   /**
@@ -246,7 +245,7 @@ var Model = EventDispatcher.extend(function(map) {
    *
    * @return {Boolean}  True when the model has no ID associated with it
    */
-  isNew: function() {
+  isNew() {
     return null === this.id();
   },
   /**
@@ -256,7 +255,7 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {Object} map  The string or key-value hash to parse
    * @return {Object}  The parsed version of the map
    */
-  parse: function(map) {
+  parse(map) {
     if (typeof map === 'string') {
       map = JSON.parse(map);
     }
@@ -275,8 +274,8 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {Object} map  The string or key-value map to parse and apply
    * @param {Boolean} suppress  When true, validation, events and tracking are suppressed
    */
-  apply: function(map, suppress) {
-    _suppressChecked(this, suppress, function() {
+  apply(map, suppress) {
+    _suppressChecked(this, suppress, () => {
       map = this.parse(map);
       for (var n in map) {
         this.set(n, map[n]);
@@ -291,7 +290,7 @@ var Model = EventDispatcher.extend(function(map) {
    * Removes all flagged data from the model
    * @param {String} flag  The metadata flag describing the data to remove
    */
-  clear: function(flag) {
+  clear(flag) {
     if (flag) {
       var attrs = this.flags[flag],
           i = -1,
@@ -319,7 +318,7 @@ var Model = EventDispatcher.extend(function(map) {
    *
    * @return {Lavaca.mvc.Model}  The copy
    */
-  clone: function() {
+  clone() {
     return new this.constructor(this.attributes.toObject());
   },
   /**
@@ -331,7 +330,7 @@ var Model = EventDispatcher.extend(function(map) {
    *   form callback(attribute, value)
    * @param {String} message  A text message used when a value fails the test
    */
-  addRule: function(attribute, callback, message) {
+  addRule(attribute, callback, message) {
     this.rules.get(attribute, []).push({rule: callback, message: message});
   },
   /**
@@ -354,7 +353,7 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {Object} value  The potential value for the attribute
    * @return {Array}  A list of validation error messages
    */
-  validate: function(attribute, value) {
+  validate(attribute, value) {
     var messages,
         rules,
         i = -1,
@@ -373,7 +372,7 @@ var Model = EventDispatcher.extend(function(map) {
       return messages;
     } else {
       messages = {};
-      this.rules.each(function(attributeName) {
+      this.rules.each((attributeName) => {
         messages[attributeName] = this.validate(attributeName);
       }, this);
       return _isValid(messages);
@@ -385,7 +384,7 @@ var Model = EventDispatcher.extend(function(map) {
    *
    * @return {Object}  The key-value hash
    */
-  toObject: function() {
+  toObject() {
     var obj = this.attributes.toObject(),
         flags;
     for(var key in obj) {
@@ -404,7 +403,7 @@ var Model = EventDispatcher.extend(function(map) {
    *
    * @return {String}  The JSON string representing the model
    */
-  toJSON: function() {
+  toJSON() {
     return JSON.stringify(this.toObject());
   },
   /**
@@ -442,20 +441,20 @@ var Model = EventDispatcher.extend(function(map) {
    * @param {Object} thisp  The context of the handler
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
-  on: function(type, attr, callback, thisp) {
+  on(type, attr, callback, thisp) {
     if (typeof attr === 'function') {
       thisp = callback;
       callback = attr;
       attr = null;
     }
-    function handler(e) {
+    let handler = (e) => {
       if (callback && (!attr || e.attribute === attr)) {
         callback.call(thisp || this, e);
       }
-    }
+    };
     handler.fn = callback;
     handler.thisp = thisp;
-    return EventDispatcher.prototype.on.call(this, type, handler, thisp);
+    return EventDispatcher.prototype.on.call(this, type, handler);
   }
 });
 /**
@@ -474,4 +473,4 @@ Model.SENSITIVE = 'sensitive';
  */
 Model.DO_NOT_COMPUTE = 'do_not_compute';
 
-module.exports = Model;
+export default Model;

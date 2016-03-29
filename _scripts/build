@@ -1,0 +1,33 @@
+#!/bin/bash
+
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
+
+set -e
+
+cd "$PROJECT_ROOT"
+
+case "$1" in
+es)
+  mkdir -p build/es
+  cp -a src/* build/es/
+  node _scripts/changePackageName.js lavaca-es > build/es/package.json
+  ;;
+amd)
+  mkdir -p build/amd
+  cp _scripts/.babelrc-amd .babelrc
+  ./node_modules/babel-cli/bin/babel.js src -d build/amd
+  node _scripts/changePackageName.js lavaca-amd > build/amd/package.json
+  ;;
+commonjs)
+  mkdir -p build/commonjs
+  cp _scripts/.babelrc-commonjs .babelrc
+  ./node_modules/babel-cli/bin/babel.js src -d build/commonjs
+  node _scripts/changePackageName.js lavaca-commonjs > build/commonjs/package.json
+  ;;
+--all)
+  ./_scripts/build es
+  ./_scripts/build amd
+  ./_scripts/build commonjs
+  ;;
+esac

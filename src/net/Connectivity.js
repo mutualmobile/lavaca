@@ -1,6 +1,5 @@
-var $ = require('jquery'),
-    get = require('mout/object/get');
-
+import {get} from 'mout/object';
+import $ from 'jquery';
 /**
  * A utility type for working under different network connectivity situations.
  * @class lavaca.net.Connectivity
@@ -10,7 +9,7 @@ var _navigatorOnlineSupported = typeof navigator.onLine === 'boolean',
     _offlineAjaxHandlers = [],
     _offlineErrorCode = 'offline';
 
-function _onAjaxError(arg) {
+var _onAjaxError = (arg) => {
   if (arg === _offlineErrorCode) {
     var i = -1,
         callback;
@@ -20,9 +19,7 @@ function _onAjaxError(arg) {
   }
 }
 
-function _isLocalUrl(url) {
-  return url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
-}
+var _isLocalUrl = (url) => url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
 
 var Connectivity = {};
 
@@ -34,7 +31,7 @@ var Connectivity = {};
  * @return {Boolean}  True if the browser is offline; false if the browser is online
  *    or if connection status cannot be determined
  */
-Connectivity.isOffline = function() {
+Connectivity.isOffline = () => {
   var connectionType = get(window, 'navigator.connection.type');
   var none = get(window, 'Connection.NONE');
   if (!!connectionType && !!none) {
@@ -57,16 +54,14 @@ Connectivity.isOffline = function() {
  * @param {Object} opts  jQuery-style AJAX options
  * @return {Promise}  A promise
  */
-Connectivity.ajax = function(opts) {
+Connectivity.ajax = (opts) => {
   return Promise.resolve()
-    .then(function() {
+    .then(() => {
       if (Connectivity.isOffline() && !_isLocalUrl(opts.url)) {
         throw _offlineErrorCode;
       }
     })
-    .then(function() {
-      return $.ajax(opts);
-    })
+    .then(() => $.ajax(opts))
     .catch(_onAjaxError);
 };
 
@@ -78,8 +73,8 @@ Connectivity.ajax = function(opts) {
  *
  * @param {Function} callback  The callback to execute
  */
-Connectivity.registerOfflineAjaxHandler = function(callback) {
+Connectivity.registerOfflineAjaxHandler = (callback) => {
   _offlineAjaxHandlers.push(callback);
 };
 
-module.exports = Connectivity;
+export default Connectivity;

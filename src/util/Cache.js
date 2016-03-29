@@ -1,5 +1,5 @@
-var Disposable = require('lavaca/util/Disposable'),
-    uuid = require('lavaca/util/uuid');
+import { default as Disposable } from '../util/Disposable';
+import { default as uuid } from '../util/uuid';
 
 /**
  * Object for storing data
@@ -21,7 +21,7 @@ var Cache = Disposable.extend({
    * @param {Object} def  A default value that will be added, if there is no item stored
    * @return {Object}  The stored item (or null if no item is stored and no default)
    */
-  get: function(id, def) {
+  get(id, def) {
     var result = this['@' + id];
     if (result === undefined && def !== undefined) {
       result = this['@' + id] = def;
@@ -35,7 +35,7 @@ var Cache = Disposable.extend({
    * @param {String} id  The key under which the item will be stored
    * @param {Object} value  The object to store in the cache
    */
-  set: function(id, value) {
+  set(id, value) {
     this['@' + id] = value;
   },
   /**
@@ -45,7 +45,7 @@ var Cache = Disposable.extend({
    * @param {Object} value  The object to store in the cache
    * @return {String}  The auto-generated ID under which the value was stored
    */
-  add: function(value) {
+  add(value) {
     var id = uuid();
     this.set(id, value);
     return id;
@@ -56,8 +56,8 @@ var Cache = Disposable.extend({
    *
    * @param {String} id  The key under which the item is stored
    */
-  remove: function(id) {
-    delete this['@' + id];
+  remove(id) {
+    delete this['@' + id]
   },
   /**
    * Executes a callback for each cached item. To stop iteration immediately,
@@ -72,7 +72,7 @@ var Cache = Disposable.extend({
    * @param {Function} callback  A function to execute for each item, callback(key, item)
    * @param {Object} thisp  The context of the callback
    */
-  each: function(cb, thisp) {
+  each(cb, thisp) {
     var prop, returned;
     for (prop in this) {
       if (this.hasOwnProperty(prop) && prop.indexOf('@') === 0) {
@@ -89,9 +89,9 @@ var Cache = Disposable.extend({
    *
    * @return {Object}  The resulting key-value hash
    */
-  toObject: function() {
+  toObject() {
     var result = {};
-    this.each(function(prop, value) {
+    this.each((prop, value) => {
       result[prop] = (value && typeof value.toObject === 'function') ? value.toObject() : value;
     });
     return result;
@@ -102,8 +102,8 @@ var Cache = Disposable.extend({
    *
    * @return {String}  The JSON string
    */
-  toJSON: function() {
-    return JSON.stringify(this.toObject());
+  toJSON() {
+    JSON.stringify(this.toObject())
   },
    /**
    * Serializes the cache to an array
@@ -111,10 +111,10 @@ var Cache = Disposable.extend({
    *
    * @return {Object}  The resulting array with elements being index based and keys stored in an array on the 'ids' property
    */
-  toArray: function() {
+  toArray() {
     var results = [];
     results['ids'] = [];
-    this.each(function(prop, value) {
+    this.each((prop, value) => {
       results.push(typeof value.toObject === 'function' ? value.toObject() : value);
       results['ids'].push(prop); 
     });
@@ -125,8 +125,8 @@ var Cache = Disposable.extend({
    * removes all items from the cache
    * @method clear
    */
-  clear: function() {
-     this.each(function(key, item) {
+  clear() {
+     this.each((key, item) => {
        this.remove(key);
      }, this);
   },
@@ -135,9 +135,9 @@ var Cache = Disposable.extend({
    * returns number of items in cache
    * @method count
    */
-  count: function() {
+  count() {
     var count = 0;
-    this.each(function(key, item) {
+    this.each((key, item) => {
       count++;
     }, this);
     return count;
@@ -147,10 +147,10 @@ var Cache = Disposable.extend({
    * Clears all items from the cache on dispose
    * @method dispose
    */
-  dispose: function() {
+  dispose() {
     this.clear();
     Disposable.prototype.dispose.apply(this, arguments);
   }
 });
 
-module.exports = Cache;
+export default Cache;

@@ -1,24 +1,13 @@
-var Disposable = require('lavaca/util/Disposable'),
-    clone = require('mout/lang/deepClone'),
-    merge = require('mout/object/merge');
+import { default as Disposable } from '../util/Disposable';
+import {merge} from 'mout/object';
+import {deepClone as clone} from 'mout/lang';
 
-function _multivariablePattern() {
-  return new RegExp('\\{\\*(.*?)\\}', 'g');
-}
+let _multivariablePattern = () => new RegExp('\\{\\*(.*?)\\}', 'g');
+let _variablePattern = () => new RegExp('\\{([^\\/]*?)\\}', 'g');
+let _variableCharacters = () => new RegExp('[\\{\\}\\*]', 'g');
+let _datePattern = () => new RegExp('^\\d{4}-[0-1]\\d-[0-3]\\d$', 'g');
 
-function _variablePattern() {
-  return new RegExp('\\{([^\\/]*?)\\}', 'g');
-}
-
-function _variableCharacters() {
-  return new RegExp('[\\{\\}\\*]', 'g');
-}
-
-function _datePattern() {
-  return new RegExp('^\\d{4}-[0-1]\\d-[0-3]\\d$', 'g');
-}
-
-function _patternToRegExp(pattern) {
+let _patternToRegExp = (pattern) => {
   if (pattern === '/') {
     return new RegExp('^\\/(\\?.*)?(#.*)?$', 'g');
   }
@@ -42,7 +31,7 @@ function _patternToRegExp(pattern) {
   return new RegExp(exp, 'g');
 }
 
-function _scrubURLValue(value) {
+let _scrubURLValue = (value) => {
   value = decodeURIComponent(value);
   if (!isNaN(value)) {
     value = Number(value);
@@ -75,7 +64,7 @@ function _scrubURLValue(value) {
  * @param {Object} params  Key-value pairs that will be merged into the params
  *   object that is passed to the controller action
  */
-var Route = Disposable.extend(function(pattern, TController, action, params) {
+var Route = Disposable.extend(function Route(pattern, TController, action, params){
   Disposable.call(this);
   this.pattern = pattern;
   this.TController = TController;
@@ -89,7 +78,7 @@ var Route = Disposable.extend(function(pattern, TController, action, params) {
    * @param {String} url  The URL to test
    * @return {Boolean}  True when this route matches the URL
    */
-  matches: function(url) {
+  matches(url) {
     return _patternToRegExp(this.pattern).test(url);
   },
   /**
@@ -99,7 +88,7 @@ var Route = Disposable.extend(function(pattern, TController, action, params) {
    * @param {String} url  The URL to convert
    * @return {Object}  The params object
    */
-  parse: function(url) {
+  parse(url) {
     var result = clone(this.params),
         pattern = this.pattern.slice(1),
         urlParts = url.split('#'),
@@ -173,7 +162,7 @@ var Route = Disposable.extend(function(pattern, TController, action, params) {
    * @param {Object} params  Additional parameters to pass to the controller action
    * @return {Promise}  A promise
    */
-  exec: function(url, router, viewManager, state, params) {
+  exec(url, router, viewManager, state, params) {
     var controller = new this.TController(router, viewManager),
         urlParams = this.parse(url),
         model;
@@ -186,20 +175,20 @@ var Route = Disposable.extend(function(pattern, TController, action, params) {
     }
     params = merge(urlParams, params);
     return Promise.resolve()
-      .then(function() {
+      .then(() => {
         return controller[this.action](params, model);
-      }.bind(this))
-      .then(function() {
+      })
+      .then(() => {
         if (state) {
           document.title = state.title;
         }
       })
-      .then(this.dispose.bind(this))
-      .catch(function(err) {
+      .then(()=>this.dispose.call(this))
+      .catch((err) => {
         this.dispose();
         throw err;
-      }.bind(this));
+      });
   }
 });
 
-module.exports = Route;
+export default Route;

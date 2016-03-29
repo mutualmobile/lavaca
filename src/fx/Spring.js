@@ -1,18 +1,15 @@
-
+import { default as Animation } from './Animation'
+import $ from 'jquery';
 /**
  * Static utility type for creating a CSS keyframe animation with a spring effect
  * @class lavaca.fx.Spring
  */
 
-var $ = require('jquery'),
-    Animation = require('./Animation');
-
 var Springer = {};
 
-var Spring, SpringCurve;
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var __bind = (fn, me)=>{()=> fn.apply(me, arguments) };
 
-var defaults = {
+const defaults = {
   tension: 50,
   friction: 0,
   velocity: 0,
@@ -20,33 +17,33 @@ var defaults = {
   tolerance: 0.1
 };
 
-function springAccelerationForState(state) {
+let springAccelerationForState = (state) => {
   return (-state.tension * state.x) - (state.friction * state.v);
 }
 
-function springEvaluateState(initial) {
-  var output = {
+let springEvaluateState = (initial) => {
+  let output = {
     dx: initial.v,
     dv: springAccelerationForState(initial)
   };
   return output;
 }
 
-function springEvaluateStateWithDerivative(initial, dt, derivative) {
-  var state = {
+let springEvaluateStateWithDerivative = (initial, dt, derivative) => {
+  let state = {
     x: initial.x + derivative.dx * dt,
     v: initial.v + derivative.dv * dt,
     tension: initial.tension,
     friction: initial.friction
   };
-  var output = {
+  let output = {
     dx: state.v,
     dv: springAccelerationForState(state)
   };
   return output;
 }
 
-function springIntegrateState(state, speed) {
+let springIntegrateState = (state, speed) => {
   var a, b, c, d, dvdt, dxdt;
   a = springEvaluateState(state);
   b = springEvaluateStateWithDerivative(state, speed * 0.5, a);
@@ -59,7 +56,7 @@ function springIntegrateState(state, speed) {
   return state;
 }
 
-Spring = (function() {
+var Spring = (function() {
   function Spring(args) {
     this.next = __bind(this.next, this);
     this.reset = __bind(this.reset, this);
@@ -128,9 +125,8 @@ Spring = (function() {
 
 })();
 
-SpringCurve = function(tension, friction, velocity, fps) {
-  var spring;
-  spring = new Spring({
+var SpringCurve = (tension, friction, velocity, fps) => {
+  let spring = new Spring({
     tension: tension,
     friction: friction,
     velocity: velocity,
@@ -139,7 +135,7 @@ SpringCurve = function(tension, friction, velocity, fps) {
   return spring.all();
 };
 
-function getTransformFunction(option, defaultValue, mainOnly) {
+let getTransformFunction = (option, defaultValue, mainOnly) => {
   var result = {};
   var originalDefault;
   if (typeof defaultValue === 'number') {
@@ -157,7 +153,7 @@ function getTransformFunction(option, defaultValue, mainOnly) {
   }
 
   if (typeof option === 'object') {
-    for (var prop in option) {
+    for (let prop in option) {
       result[prop] = option[prop];
     }
   } else if (typeof option === 'number' || typeof option === 'string') {
@@ -178,11 +174,11 @@ function getTransformFunction(option, defaultValue, mainOnly) {
 
   return result;
 }
-function getDifference(initial, result) {
+let getDifference = (initial, result) => {
   var diff;
   if (typeof initial === 'object') {
     diff = {};
-    for (var prop in initial) {
+    for (let prop in initial) {
       diff[prop] = result[prop] - initial[prop];
     }
   } else if (typeof initial === 'number' || typeof result === 'number') {
@@ -190,11 +186,11 @@ function getDifference(initial, result) {
   }
   return diff;
 }
-function getResultState(initial, difference) {
+let getResultState = (initial, difference) => {
   var result;
   if (typeof initial === 'object') {
     result = {};
-    for (var prop in initial) {
+    for (let prop in initial) {
       result[prop] = initial[prop] + difference[prop];
     }
   } else if (typeof initial === 'number' || typeof difference === 'number') {
@@ -264,7 +260,7 @@ Springer.setResultState = function(result) {
 
 Springer.determineDifferences = function() {
   this.differences = {};
-  for (var prop in this.resultState) {
+  for (let prop in this.resultState) {
     this.differences[prop] = getDifference(this.initial[prop], this.resultState[prop]);
   }
   return this.differences;
@@ -272,7 +268,7 @@ Springer.determineDifferences = function() {
 
 Springer.determineResultState = function() {
   this.resultState = {};
-  for (var prop in this.differences) {
+  for (let prop in this.differences) {
     this.resultState[prop] = getResultState(this.initial[prop], this.differences[prop]);
   }
   return this.resultState;
@@ -290,7 +286,7 @@ Springer.generate = function() {
   this.setKeyframeStep(0, this.initial);
   this.setKeyframeStep(100, this.resultState);
 
-  for (var i = 1; i < length; ++i) {
+  for (let i = 1; i < length; ++i) {
     if ((originalDirection && this.curve[i] <= this.curve[i - 1])
       || (!originalDirection && this.curve[i] > this.curve[i - 1])) {
 
@@ -355,7 +351,7 @@ Springer.createTransform = function(options) {
   return theTransform;
 };
 
-Springer.createTranslate3d = function(translate) {
+Springer.createTranslate3d = (translate) => {
   if (translate.x !== undefined
     || translate.y !== undefined
     || translate.z !== undefined) {
@@ -367,7 +363,7 @@ Springer.createTranslate3d = function(translate) {
   }
   return '';
 };
-Springer.createScale3d = function(scale) {
+Springer.createScale3d = (scale) => {
   if (scale.x !== undefined
     || scale.y !== undefined
     || scale.z !== undefined) {
@@ -378,7 +374,7 @@ Springer.createScale3d = function(scale) {
   }
   return '';
 };
-Springer.createRotate = function(rotate) {
+Springer.createRotate = (rotate) => {
   var rotation = '';
   if (rotate.x !== undefined) {
     rotation += ' rotateX('+(rotate.x)+'deg)';
@@ -391,7 +387,7 @@ Springer.createRotate = function(rotate) {
   }
   return rotation;
 };
-Springer.createSkew = function(skew) {
+Springer.createSkew = (skew) => {
   var transform = '';
   if (skew.x !== undefined) {
     transform += ' skewX('+(skew.x)+'deg)';
@@ -401,7 +397,7 @@ Springer.createSkew = function(skew) {
   }
   return transform;
 };
-Springer.createPerspective = function(perspective) {
+Springer.createPerspective = (perspective) => {
   if (perspective !== undefined) {
     return ' perspective(' + perspective + ')';
   }
@@ -455,4 +451,4 @@ $.fn.spring = function(name, springOptions, keyframeOptions) {
   return this;
 };
 
-module.exports = Springer;
+export default Springer;

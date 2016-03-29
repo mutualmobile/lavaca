@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
+
+set -e
+
+cd "$PROJECT_ROOT"
+
+./_scripts/build --all
+
+cd "$PROJECT_ROOT/build/amd" && npm publish
+cd "$PROJECT_ROOT/build/commonjs" && npm publish
+cd "$PROJECT_ROOT/build/es" && npm publish

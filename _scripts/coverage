@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
+
+cd "$PROJECT_ROOT"
+
+./_scripts/build commonjs
+mkdir -p build/commonjs-coverage
+./node_modules/istanbul/lib/cli.js instrument build/commonjs --output build/commonjs-coverage
+./node_modules/webpack/bin/webpack.js --resolve-alias 'lavaca=build/commonjs-coverage' test/context.js test/context-compiled.js
+./node_modules/karma-cli/bin/karma start karma.coverage.conf.js "$@"
