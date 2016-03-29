@@ -1,10 +1,9 @@
+/.babelrc
 /node_modules
 /bower_components
 /docs
-/pkg
-/tmp
 /build
-/log
+/test/context-compiled.js
 /test/coverage
 npm-debug.log
 

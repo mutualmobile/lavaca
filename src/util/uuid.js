@@ -11,12 +11,10 @@ var _uuidMap = {};
  *
  * @return {Number}  A number that is unique to this page
  */
-var uuid = function(namespace) {
+export default (namespace) => {
   namespace = namespace || '__defaultNS';
   if (typeof _uuidMap[namespace] !== 'number') {
     _uuidMap[namespace] = 0;
   }
   return _uuidMap[namespace]++;
 };
-
-module.exports = uuid;

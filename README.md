@@ -6,30 +6,14 @@
 A curated collection of tools built for mobile
 
 ## Getting Started
-Pull down a [lavaca-starter project](https://github.com/mutualmobile/lavaca-starter)
 
-## Run Tests
-1. __Install grunt-cli globally__
-Note: this may require sudo
-```bash
-$ npm install -g grunt-cli
-```
+Pull down a [lavaca-starter
+project](https://github.com/mutualmobile/lavaca-starter) or just the source. If
+you're going with the source route, Lavaca has three flavors available:
 
-2. __Install bower globally__
-Note: this may require sudo
-```bash
-$ npm install -g bower
-```
-
-3. __Install dev dependencies for our tasks to work__
-```bash
-$ npm install && bower install
-```
-
-4. __Run Tests__
-```bash
-$ grunt test
-```
+- `npm install lavaca-amd`: AMD format
+- `npm install lavaca-commonjs`: CommonJS format
+- `npm install lavaca-es6`: ES6 module format
 
 ## Documentation
 <http://getlavaca.com/#/guide>

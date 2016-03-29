@@ -1,7 +1,7 @@
 {
   "name": "lavaca",
   "description": "A curated collection of tools built for mobile.",
-  "version": "4.0.0",
+  "version": "4.0.0-alpha.1",
   "homepage": "https://github.com/mutualmobile/lavaca",
   "author": {
     "name": "mutualmobile",
@@ -20,18 +20,23 @@
       "url": "https://github.com/mutualmobile/lavaca/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lavaca",
   "engines": {
     "node": ">= 0.8.0"
   },
-  "dependencies": {
-    "requirejs ": "2.1.8"
-  },
+  "main": "lavaca",
   "scripts": {
-    "test": "karma start"
+    "build": "_scripts/build",
+    "publish": "_scripts/publish",
+    "test": "_scripts/test",
+    "coverage": "_scripts/coverage"
   },
   "devDependencies": {
-    "babel-loader": "^5.0.0",
+    "babel": "6.5.2",
+    "babel-cli": "6.5.1",
+    "babel-loader": "6.2.4",
+    "babel-plugin-transform-es2015-modules-amd-simple": "6.6.7",
+    "babel-plugin-transform-es2015-modules-commonjs-simple": "6.7.0",
+    "babel-preset-es2015-webpack": "6.4.0",
     "fs-extra": "~0.6.3",
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.6.5",
@@ -39,19 +44,18 @@
     "grunt-karma": "0.12.2",
     "grunt-karma-coveralls": "2.5.1",
     "grunt-open": "0.2.1",
-    "istanbul-instrumenter-loader": "0.2.0",
-    "jasmine": "^2.4.1",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.22",
+    "istanbul": "0.4.2",
+    "jasmine": "2.4.1",
+    "jasmine-core": "2.4.1",
+    "karma": "0.13.22",
     "karma-chrome-launcher": "0.1.4",
     "karma-cli": "^0.1.0",
     "karma-coverage": "0.2.4",
     "karma-jasmine": "^0.3.5",
-    "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "0.2.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^1.6.0",
-    "webpack": "^1.10.1"
+    "karma-sourcemap-loader": "0.3.7",
+    "karma-webpack": "1.6.0",
+    "webpack": "1.12.14"
   },
   "keywords": [
     "lavaca",

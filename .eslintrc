@@ -1,0 +1,36 @@
+parser: babel-eslint
+extends: eslint:recommended
+rules:
+  quotes:
+    - 1
+    - single
+  semi:
+    - 1
+    - never
+  comma-dangle:
+    - 2
+    - always-multiline
+  camelcase: 0
+  no-unexpected-multiline: 2
+  no-underscore-dangle: 0
+  no-unused-vars: 1
+  no-unused-expressions: 0
+  react/prop-types: 1
+  react/self-closing-comp: 1
+  react/jsx-uses-react: 1
+  react/jsx-uses-vars: 1
+  react/jsx-no-undef: 1
+env:
+  browser: true
+  es6: true
+  node: true
+ecmaFeatures:
+  modules: true
+  jsx: true
+plugins:
+  - react
+globals:
+  __DEV__: true
+  __PROD__: true
+  NODE_ENV: true
+  process: true

@@ -3,125 +3,238 @@
 var EventDispatcher = require('lavaca/events/EventDispatcher');
 
 describe('An EventDispatcher', function() {
-  var eventDispatcher,
-      noop = {
-        func: function() {},
-        func2: function() {}
-      };
+  var eventDispatcher;
   beforeEach(function() {
     eventDispatcher = new EventDispatcher();
-  });
-  afterEach(function() {
-    eventDispatcher.dispose();
-    eventDispatcher = null;
-    noop.func = function() {};
-    noop.func2 = function() {};
   });
   it('can be initialized', function() {
     var type = typeof eventDispatcher;
     expect(type).toEqual(typeof new EventDispatcher());
   });
   describe('can bind', function() {
-    it('an event handler', function() {
-      eventDispatcher.on('test', noop.func);
-      expect(eventDispatcher.callbacks.test[0].fn).toEqual(noop.func);
+    it('an event handler', function(done) {
+      eventDispatcher.on('test', done);
+      eventDispatcher.trigger('test');
     });
-    it('an event handler with a context', function() {
-      var context = {test: 'test'};
-      eventDispatcher.on('test', noop.func, context);
-      expect(eventDispatcher.callbacks.test[0].fn).toEqual(noop.func);
-      expect(eventDispatcher.callbacks.test[0].thisp).toEqual(context);
+    it('an event handler with a namespace', function(done) {
+      eventDispatcher.on('test.ns', function() {
+        done();
+      });
+      eventDispatcher.trigger('test');
+    });
+    it('an event handler with an event triggered', function(done) {
+      eventDispatcher.on('test', function(e) {
+        expect(e.type).toEqual('click');
+        done();
+      });
+      eventDispatcher.trigger('test', { type: 'click'});
     });
   });
   describe('can unbind', function() {
-    it('all event handlers', function() {
-      eventDispatcher.on('test', noop.func);
-      eventDispatcher.on('test2', noop.func2);
-      expect(eventDispatcher.callbacks.test[0].fn).toEqual(noop.func);
-      expect(eventDispatcher.callbacks.test2[0].fn).toEqual(noop.func2);
-
-      eventDispatcher.off();
-      expect(eventDispatcher.callbacks).toBeFalsy();
-    });
-    it('all event handlers for an event', function() {
-      eventDispatcher.on('test', noop.func);
-      eventDispatcher.on('test2', noop.func2);
-      expect(eventDispatcher.callbacks.test[0].fn).toEqual(noop.func);
-      expect(eventDispatcher.callbacks.test2[0].fn).toEqual(noop.func2);
-
-      eventDispatcher.off('test');
-      expect(eventDispatcher.callbacks.test).toBeFalsy();
-      expect(eventDispatcher.callbacks.test2[0].fn).toEqual(noop.func2);
-    });
-    it('a specific event handler', function() {
-      eventDispatcher.on('test', noop.func);
-      eventDispatcher.on('test', noop.func2);
-      expect(eventDispatcher.callbacks.test.length).toEqual(2);
-
-      eventDispatcher.off('test', noop.func);
-      expect(eventDispatcher.callbacks.test.length).toEqual(1);
-    });
-    it('a proxied event handler', function() {
-      var context = {test: 'test'};
-      eventDispatcher.on('test', $.proxy(noop.func, context));
-      expect(eventDispatcher.callbacks.test.length).toEqual(1);
-
-      eventDispatcher.off('test', noop.func);
-      expect(eventDispatcher.callbacks.test.length).toEqual(0);
-    });
-    it('a specific event handler with a context', function() {
-      var context = {test: 'test'};
-      eventDispatcher.on('test', noop.func, context);
-      eventDispatcher.on('test', noop.func2);
-      expect(eventDispatcher.callbacks.test.length).toEqual(2);
-
-      eventDispatcher.off('test', noop.func, context);
-      expect(eventDispatcher.callbacks.test.length).toEqual(1);
-    });
-  });
-  describe('can trigger', function() {
+    var handler, called;
     beforeEach(function() {
-      spyOn(noop, 'func');
-      spyOn(noop, 'func2');
+      called = [];
+      handler = function() {
+        called.push('test - specific handler');
+      };
+      eventDispatcher.on('test', handler);
+      eventDispatcher.on('test', function() {
+        called.push('test');
+      });
+      eventDispatcher.on('test.namespace', function() {
+        called.push('test.namespace');
+      });
+      eventDispatcher.on('test.namespace2', function() {
+        called.push('test.namespace2');
+      });
+      eventDispatcher.on('test.namespace.namespace2', function() {
+        called.push('test.namespace.namespace2');
+      });
+      eventDispatcher.on('test2', function() {
+        called.push('test2');
+      });
+      eventDispatcher.on('test2.namespace', function() {
+        called.push('test2.namespace');
+      });
+      eventDispatcher.on('test2.namespace2', function() {
+        called.push('test2.namespace2');
+      });
+      eventDispatcher.on('test2.namespace.namespace2', function() {
+        called.push('test2.namespace.namespace2');
+      });
     });
-    afterEach(function() {
-      // noop.func.reset();
-      // noop.func2.reset();
-    });
-    it('an event', function() {
-      eventDispatcher.on('test', noop.func);
+    it('all event handlers', function(done) {
+      eventDispatcher.off();
+
       eventDispatcher.trigger('test');
-      eventDispatcher.trigger('notTest');
-      expect(noop.func).toHaveBeenCalled();
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).not.toContain('test - specific handler');
+        expect(called).not.toContain('test');
+        expect(called).not.toContain('test.namespace');
+        expect(called).not.toContain('test.namespace2');
+        expect(called).not.toContain('test.namespace.namespace2');
+        expect(called).not.toContain('test2');
+        expect(called).not.toContain('test2.namespace');
+        expect(called).not.toContain('test2.namespace2');
+        expect(called).not.toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+
+      setTimeout(done, 0);
     });
-    it('an event with params', function() {
-      var count = 0,
-          incrCount = function(obj) {
-            count += obj.diff;
-          };
-      eventDispatcher.on('test', incrCount);
-      eventDispatcher.trigger('test', {diff: 5});
-      expect(count).toEqual(5);
-    });
-    it('an event with a context', function() {
-      var context = {test: 'not good'},
-          testFunc = function() {
-            this.test = 'good';
-          };
-      eventDispatcher.on('test', testFunc, context);
+    it('all event handlers for an event', function(done) {
+      eventDispatcher.off('test');
+
       eventDispatcher.trigger('test');
-      expect(context.test).toEqual('good');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).not.toContain('test - specific handler');
+        expect(called).not.toContain('test');
+        expect(called).not.toContain('test.namespace');
+        expect(called).not.toContain('test.namespace2');
+        expect(called).not.toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
     });
-    it('an event with a context and params', function() {
-      var context = {test: 0},
-          testFunc = function(obj) {
-            this.test += obj.diff;
-          };
-      eventDispatcher.on('test', testFunc, context);
-      eventDispatcher.trigger('test', {diff: 5});
-      expect(context.test).toEqual(5);
+    it('all event handlers for a namespace', function(done) {
+      eventDispatcher.off('.namespace');
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).not.toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).not.toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).not.toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).not.toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('all event handlers for an event and a namespace', function(done) {
+      eventDispatcher.off('test.namespace');
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).not.toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).not.toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('a specific event handler', function(done) {
+      eventDispatcher.off('test', handler);
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).not.toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('a nonexistant event', function(done) {
+      eventDispatcher.off('test100');
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('a nonexistant namespace', function(done) {
+      eventDispatcher.off('.namespace100');
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('a nonexistant event and namespace', function(done) {
+      eventDispatcher.off('test100.namespace100');
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
+    });
+    it('a nonexistant specific event handler', function(done) {
+      eventDispatcher.off('test', undefined);
+
+      eventDispatcher.trigger('test');
+      eventDispatcher.trigger('test2');
+
+      setTimeout(function() {
+        expect(called).toContain('test - specific handler');
+        expect(called).toContain('test');
+        expect(called).toContain('test.namespace');
+        expect(called).toContain('test.namespace2');
+        expect(called).toContain('test.namespace.namespace2');
+        expect(called).toContain('test2');
+        expect(called).toContain('test2.namespace');
+        expect(called).toContain('test2.namespace2');
+        expect(called).toContain('test2.namespace.namespace2');
+        done();
+      }, 0);
     });
   });
 });
-
-

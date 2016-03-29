@@ -1,21 +1,21 @@
-var $ = require('jquery');
+import $ from 'jquery';
 
-var _props = {
+const _props = {
       transform: 'transform',
       webkitTransform: '-webkit-transform',
       MozTransform: '-moz-transform',
       OTransform: '-o-transform',
       MSTransform: '-ms-transform'
-    },
-    _prop,
+    };
+let _prop,
     _cssProp,
     _3d = false,
     UNDEFINED;
 
 var Transform = {};
 
-(function() {
-  var style = document.createElement('div').style,
+(() => {
+  let style = document.createElement('div').style,
       s;
   for (s in _props) {
     if (s in style) {
@@ -28,27 +28,13 @@ var Transform = {};
   }
 })();
 
-function _isUndefined(value) {
-  return value === UNDEFINED;
-}
+let _isUndefined = (value) => value === UNDEFINED;
+let _toOriginUnit = (v) => typeof v === 'number' ? v * 100 + '%' : v;
+let _scrubRotateValue = (v) => typeof v === 'number' ? v + 'deg' : v;
+let _scrubTranslateValue = (v) => typeof v === 'number' ? v + 'px' : v;
+let _scrubScaleValue = (v) => typeof v === 'number' ? v + ',' + v : v;
 
-function _toOriginUnit(v) {
-  return typeof v === 'number' ? v * 100 + '%' : v;
-}
-
-function _scrubRotateValue(v) {
-  return typeof v === 'number' ? v + 'deg' : v;
-}
-
-function _scrubTranslateValue(v) {
-  return typeof v === 'number' ? v + 'px' : v;
-}
-
-function _scrubScaleValue(v) {
-  return typeof v === 'number' ? v + ',' + v : v;
-}
-
-function _scrubTransformValue(prop, value) {
+let _scrubTransformValue = (prop, value) => {
   var isRotate = prop.indexOf('rotate') === 0,
       isScale = prop === 'scale',
       isTranslate = prop.indexOf('translate') === 0,
@@ -94,9 +80,7 @@ function _scrubTransformValue(prop, value) {
  *
  * @return {Boolean}  True when transforms are supported
  */
-Transform.isSupported = function() {
-  return !!_prop;
-};
+Transform.isSupported = () => !!_prop;
 
 /**
  * Whether or not 3D transforms are supported by the browser
@@ -105,9 +89,7 @@ Transform.isSupported = function() {
  *
  * @return {Boolean}  True when 3D transforms are supported
  */
-Transform.is3dSupported = function() {
-  return _3d;
-};
+Transform.is3dSupported = () => _3d;
 
 /**
  * Converts a transform hash into a CSS string
@@ -139,7 +121,7 @@ Transform.is3dSupported = function() {
  * @opt {String} perspective  A string containing the perspective transform values
  * @return {String}  The generated CSS string
  */
-Transform.toCSS = function(opts) {
+Transform.toCSS = (opts) => {
   var css = [],
       prop;
   if (typeof opts === 'object') {
@@ -159,9 +141,7 @@ Transform.toCSS = function(opts) {
  *
  * @return {String}  The name of the CSS property
  */
-Transform.cssProperty = function() {
-  return _cssProp;
-};
+Transform.cssProperty = () => _cssProp;
 
 /**
  * Transforms an element
@@ -285,7 +265,7 @@ $.fn.transform = function(value, origin) {
         origin = _toOriginUnit(origin.x) + (_isUndefined(origin.y) ? '' : ' ' + _toOriginUnit(origin.y));
       }
     }
-    this.each(function() {
+    this.each(() => {
       this.style[_prop] = value;
       if (origin) {
         this.style[_prop + 'Origin'] = origin;
@@ -295,4 +275,4 @@ $.fn.transform = function(value, origin) {
   return this;
 };
 
-module.exports = Transform;
+export default Transform;
