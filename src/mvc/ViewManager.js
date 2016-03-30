@@ -1,6 +1,5 @@
 import { default as History } from '../net/History';
 import { default as View } from './View';
-import { default as Cache } from '../util/Cache';
 import { default as Disposable } from '../util/Disposable';
 import {merge, fillIn} from 'mout/object';
 import {contains, removeAll} from 'mout/array';
@@ -24,10 +23,10 @@ var ViewManager = Disposable.extend(function ViewManager(el){
   this.el = $(el || document.body);
   /**
    * A cache containing all views
-   * @property {Lavaca.util.Cache} views
-   * @default new Lavaca.util.Cache()
+   * @property {Object} views
+   * @default {}
    */
-  this.pageViews = new Cache();
+  this.pageViews = {};
   /**
    * A list containing all layers
    * @property {Array} layers
@@ -145,11 +144,11 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    * Builds a pageView and merges in parameters
    * @method buildPageView
    *
-   * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer) 
+   * @param {Object} obj An Object containing the parts to create a view (cacheKey TPageView model params layer)
    * @return {Lavaca.mvc.View}  A View instance
    */
   buildPageView(obj) {
-    var pageView = this.pageViews.get(obj.cacheKey);
+    var pageView = this.pageViews[obj.cacheKey];
 
     if (typeof obj.params === 'object') {
       obj.params.breadcrumbLength = this.breadcrumb.length;
@@ -171,7 +170,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
       }
       pageView.isViewManagerView = true;
       if (obj.cacheKey !== null) {
-        this.pageViews.set(obj.cacheKey, pageView);
+        this.pageViews[obj.cacheKey] = pageView;
         pageView.cacheKey = obj.cacheKey;
       }
     } else {
@@ -384,17 +383,10 @@ var ViewManager = Disposable.extend(function ViewManager(el){
     // Don't dispose of any views that are currently displayed
     //flush individual cacheKey
     if (cacheKey){
-      this.pageViews.remove(cacheKey);
-    } else {
-      var i = -1,
-        layer;
-      while (!!(layer = this.layers[++i])) {
-        if (layer.cacheKey) {
-          this.pageViews.remove(layer.cacheKey);
-        }
-      }
-      this.pageViews.dispose();
-      this.pageViews = new Cache();
+      delete this.pageViews[cacheKey];
+    }
+    else {
+      this.pageViews = {};
     }
   },
   /**

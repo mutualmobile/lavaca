@@ -1,5 +1,4 @@
 var View = require('lavaca/mvc/View');
-var Cache = require('lavaca/util/Cache');
 var viewManager = require('lavaca/mvc/ViewManager');
 
 describe('A viewManager', function() {
@@ -24,7 +23,7 @@ describe('A viewManager', function() {
         return viewManager.load('myView', myPageView);
       })
       .then(function() {
-        var response = viewManager.pageViews.get('myView').hasRendered;
+        var response = viewManager.pageViews['myView'].hasRendered;
         expect(response).toBe(true);
         done();
       });
@@ -98,7 +97,7 @@ describe('A viewManager', function() {
           return viewManager.load('myView', myPageView);
         })
         .then(function() {
-          return viewManager.dismiss(viewManager.pageViews.get('myView'));
+          return viewManager.dismiss(viewManager.pageViews['myView']);
         })
         .then(function() {
           expect($('#view-root').children().length).toBe(0);
@@ -123,7 +122,7 @@ describe('A viewManager', function() {
       })
       .then(function() {
         viewManager.flush();
-        expect(viewManager.pageViews).toEqual(new Cache());
+        expect(viewManager.pageViews).toEqual({});
         expect(viewManager.layers[0].cacheKey).toEqual('myView');
         done();
       });

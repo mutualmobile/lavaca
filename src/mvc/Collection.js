@@ -1,6 +1,4 @@
-import $ from 'jquery';
 import { default as Model } from './Model';
-import { default as Connectivity } from '../net/Connectivity';
 import {deepClone as clone, isArray} from 'mout/lang';
 import {removeAll, insert} from 'mout/array';
 import {merge} from 'mout/object';
@@ -13,7 +11,7 @@ var _triggerItemEvent = (collection, event, previousIndex, index, model) => {
     index: index,
     model: model
   });
-}
+};
 
 var _getComparator = (attr, descending) => {
   let compareVal = descending ? 1 : -1;
@@ -26,7 +24,7 @@ var _getComparator = (attr, descending) => {
               ? compareVal
               : -compareVal;
   };
-}
+};
 
 // Virtual type
 /**
@@ -215,7 +213,7 @@ var Collection = Model.extend(function (models, map){
 
         // If it's a duplicate, remove the old item
         id = model.get(idAttribute);
-        if (id !== null) {
+        if (id !== undefined) {
           compareObj[idAttribute] = id;
           index = this.indexOf(compareObj);
           if (index > -1 && !this.allowDuplicatedIds) {

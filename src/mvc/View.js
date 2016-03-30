@@ -1,9 +1,9 @@
 import { default as EventDispatcher } from '../events/EventDispatcher';
 import { default as Model } from '../mvc/Model';
 import { default as ChildViewManager } from '../mvc/ChildViewManager';
-import { default as Cache } from '../util/Cache';
 import { default as uuid } from '../util/uuid';
-import {isString, isBoolean, isObject, isArray} from 'mout/lang';
+import { forOwn, size } from 'mout/object';
+import { isString, isBoolean, isObject, isArray } from 'mout/lang';
 import $ from 'jquery';
 
 let _UNDEFINED;
@@ -25,7 +25,7 @@ let _UNDEFINED;
  *
  *
  */
-var View = EventDispatcher.extend(function View(el, model, parentView){
+var View = EventDispatcher.extend(function View(el, model, parentView) {
   EventDispatcher.call(this);
 
   /**
@@ -114,10 +114,10 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
   /**
    * Interactive elements used by the view
    * @property childViews
-   * @default lavaca.util.cache
-   * @type lavaca.util.Cache
+   * @default {}
+   * @type Object
    */
-  this.childViews = new Cache();
+  this.childViews = {};
   /**
    * A dictionary of selectors and widget types in the form
    *   {selector: widgetType}
@@ -129,10 +129,10 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
   /**
    * Interactive elements used by the view
    * @property widgets
-   * @default lavaca.util.Cache
-   * @type lavaca.util.Cache
+   * @default {}
+   * @type Object
    */
-  this.widgets = new Cache();
+  this.widgets = {};
   /**
    *  A map of all the events to be applied to child Views in the form of
    *  {type: {TView: TView, callback : callback}}
@@ -379,7 +379,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    * @method disposeChildViews
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeChildViews:  function($el) {
+  disposeChildViews: function($el) {
     var childViewSearch,
       self = this;
 
@@ -392,7 +392,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
       var $item = $(item),
         childView = $item.data('view');
       if (childView) {
-        self.childViews.remove(childView.id);
+        delete self.childViews[childView.id];
         childView.dispose();
       }
     });
@@ -413,7 +413,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
         selector, widget;
       for (selector in widgets) {
         widget = widgets[selector];
-        self.widgets.remove(widget.id);
+        delete self.widgets[widget.id];
         widget.dispose();
       }
     });
@@ -605,7 +605,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
         TWidget = o;
         args = null;
       }
-      makeWidget = args ? (el) => new TWidget.bind.apply(TWidget, [null, el].concat(args)) : (el) => new TWidget(el);
+      makeWidget = args ? (el) => new (TWidget.bind.apply(TWidget, [null, el].concat(args)))() : (el) => new TWidget(el);
       (n === 'self' ? this.el : this.el.find(n))
         .each((index, item) => {
           var $el = $(item),
@@ -614,7 +614,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
           if (!widgetMap[n]) {
             widget = makeWidget($(item));
             widgetMap[n] = widget;
-            cache.set(widget.id, widget);
+            cache[widget.id] = widget;
             $el.data('widgets', widgetMap);
             $el.attr('data-has-widgets','');
           }
@@ -664,9 +664,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    *
    */
   createChildViews() {
-    var cache = this.childViews,
-      self = this,
-      o;
+    var self = this,
+        o;
     for (let n in this.childViewMap) {
       o = this.childViewMap[n];
       this.el.find(n)
@@ -681,7 +680,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
               model = o.model || self.model;
             }
             childView = new o.TView($el, model, self);
-            cache.set(childView.id, childView);
+            self.childViews[childView.id] = childView;
             if (childView.autoRender) {
               childView.render();
             }
@@ -782,8 +781,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
   applyChildViewEvents() {
     var childViewEventMap = this.childViewEventMap,
       type;
-    for (ev in childViewEventMap) {
-      this.childViews.each((key, item) => {
+    for (let ev in childViewEventMap) {
+      forOwn(this.childViews, (item) => {
         var callbacks,
           callback,
           i = -1;
@@ -826,10 +825,10 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
     if (this.model) {
       this.clearModelEvents();
     }
-    if (this.childViews.count()) {
+    if (size(this.childViews)) {
       this.disposeChildViews(this.el);
     }
-    if (this.widgets.count()) {
+    if (size(this.widgets)) {
       this.disposeWidgets(this.el);
     }
     if(this.extEventMap.length){
@@ -909,7 +908,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    */
   getWidgets(selector) {
     var items = [];
-    this.widgets.each(function(index, item) {
+    forOwn(this.widgets, (item) => {
       if (item.el.is(selector)) {
         items.push(item);
       }
@@ -924,7 +923,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView){
    */
   getChildViews(selector) {
     var items = [];
-    this.childViews.each(function(index, item) {
+    forOwn(this.childViews, (item) => {
       if (item.el.is(selector)) {
         items.push(item);
       }

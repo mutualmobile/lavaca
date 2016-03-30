@@ -1,4 +1,3 @@
-
 var Model = require('lavaca/mvc/Model');
 
 module.exports = describe('A Model', function() {
@@ -31,7 +30,7 @@ module.exports = describe('A Model', function() {
     testModel.set('myAttribute', true);
     testModel.set('email', 'test@lavaca.com', Model.SENSITIVE);
     testModel.clear();
-    expect(testModel.get('myAttribute')).toBeNull();
+    expect(testModel.get('myAttribute')).toBeUndefined();
   });
   it('should remove only flaged attributes on clear when a flag is specified', function() {
     testModel.set('myAttribute', true);
@@ -43,8 +42,8 @@ module.exports = describe('A Model', function() {
 
   describe('Saving and IDs', function() {
     it('should not have an ID if it has not been saved', function() {
-      expect(testModel.get('id')).toBeNull();
-      expect(testModel.id()).toBeNull();
+      expect(testModel.get('id')).toBeUndefined();
+      expect(testModel.id()).toBeUndefined();
     });
     it('should be marked as new if it does not have an id', function() {
       expect(testModel.isNew()).toBe(true);
@@ -147,12 +146,12 @@ module.exports = describe('A Model', function() {
       }, 'Phone must contain only numbers');
     });
     it('should apply a rule given to addRule()', function() {
-      expect(testModel.rules.get('phone').length).toBe(1);
+      expect(testModel.rules['phone'].length).toBe(1);
     });
     it('should refuse a set() call if it fails a rule', function() {
       testModel.on('invalid', 'phone', noop.func);
       testModel.set('phone', 'fdsaf');
-      expect(testModel.get('phone')).toBeNull();
+      expect(testModel.get('phone')).toBeUndefined();
       expect(noop.func).toHaveBeenCalled();
     });
     it('should allow a set() call if it passes all rules', function() {
@@ -167,7 +166,7 @@ module.exports = describe('A Model', function() {
         'phone': 'fdsaf',
         'someAttr': 'value'
       });
-      expect(testModel.get('phone')).toBeNull();
+      expect(testModel.get('phone')).toBeUndefined();
       expect(noop.func).toHaveBeenCalled();
     });
     it('should not validate if suppress flag is sent to apply', function() {
@@ -246,7 +245,7 @@ module.exports = describe('A Model', function() {
       expect(myModel.get('hello')).toEqual('hola');
       expect(testModel instanceof ModelType).toBe(false);
       expect(testModel.get('0')).toEqual(0.19);
-      expect(testModel.get('hello')).toEqual(null);
+      expect(testModel.get('hello')).toEqual(undefined);
       expect(testModel.get('holy')).toEqual('shi*');
     });
 

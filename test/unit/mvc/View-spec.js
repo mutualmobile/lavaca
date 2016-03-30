@@ -1,6 +1,7 @@
 var View = require('lavaca/mvc/View');
 var Model = require('lavaca/mvc/Model');
 var Widget = require('lavaca/ui/Widget');
+var values = require('mout/object/values');
 
 describe('A View', function() {
   var testView,
@@ -52,7 +53,7 @@ describe('A View', function() {
     it('with the same model as the parent view', function() {
       testView.mapChildView('.childView', View);
       testView.createChildViews();
-      var childView = testView.childViews.toArray()[0];
+      var childView = values(testView.childViews)[0];
       expect(childView instanceof View).toEqual(true);
       expect(childView.model).toBe(testView.model);
     });
@@ -60,7 +61,7 @@ describe('A View', function() {
       var model = new Model({color: 'red'});
       testView.mapChildView('.childView', View, model);
       testView.createChildViews();
-      var childView = testView.childViews.toArray()[0];
+      var childView = values(testView.childViews)[0];
       expect(childView instanceof View).toEqual(true);
       expect(childView.model).toBe(model);
     });
@@ -68,7 +69,7 @@ describe('A View', function() {
       multiChildView.mapChildView('.childView', View, handler.fn);
       multiChildView.createChildViews();
       expect(handler.fn).toHaveBeenCalledTimes(2);
-      var childViews = multiChildView.childViews.toArray();
+      var childViews = values(multiChildView.childViews);
       expect(childViews[0].model.get('index')).toBe(0);
       expect(childViews[0].model.get('id')).toBe('abc');
       expect(childViews[1].model.get('index')).toBe(1);
@@ -89,7 +90,7 @@ describe('A View', function() {
         }
       });
       multiChildView.createChildViews();
-      var childViews = multiChildView.childViews.toArray();
+      var childViews = values(multiChildView.childViews);
       // [data-id="abc"] matches '.childView' too, which has already been
       // initialized. it won't be initialized a second time
       expect(childViews.length).toEqual(3);
@@ -323,7 +324,7 @@ describe('A View', function() {
     testView = new TestView(el, new Model());
     testView.mapWidget('.widget', MyWidget);
     testView.render().then(function() {
-      expect(testView.widgets.get('widget').testProp).toEqual('abc');
+      expect(testView.widgets['widget'].testProp).toEqual('abc');
       done();
     });
     $('script[data-name="model-tmpl"]').remove();
@@ -361,13 +362,15 @@ describe('A View', function() {
       }
     });
     testView.render().then(function() {
-      expect(testView.widgets.get('widget').testProp).toEqual('xyz');
-      expect(testView.widgets.get('other-widget').testStr).toEqual('qwert');
-      expect(testView.widgets.get('other-widget').testInt).toEqual(12345);
+      expect(testView.widgets['widget'].testProp).toEqual('xyz');
+      expect(testView.widgets['other-widget'].testStr).toEqual('qwert');
+      expect(testView.widgets['other-widget'].testInt).toEqual(12345);
+      done();
+    }).catch(function(e) {
+      fail(e);
       done();
     });
 
     $('script[data-name="model-tmpl"]').remove();
   });
 });
-

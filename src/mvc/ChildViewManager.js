@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { default as Cache } from '../util/Cache';
 import { default as Disposable } from '../util/Disposable';
 import { default as History } from '../net/History';
 import {fillIn, merge} from 'mout/object';
@@ -14,7 +13,6 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   this.routes = [];
   this.currentView = false;
   this.isRoutingBack = false;
-  this.childViews = new Cache();
   this.layers = [];
   this.exitingViews = [];
   this.enteringViews = [];
@@ -81,7 +79,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
     if(params && !params.isRedraw || ! params){
       this.history.push(route);
     }
-    var ChildView = this.routes[route].TView, 
+    var ChildView = this.routes[route].TView,
         model = this.routes[route].model;
     if(!model){
       model = this.parentView ? this.parentView.model : null;
@@ -128,8 +126,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
         this.enteringPageViews = [];
         this.step = this.routes[route].step;
         this.layers[layer] = childView;
-        if (this.parentView && 
-            this.parentView.onChildViewManagerExec && 
+        if (this.parentView &&
+            this.parentView.onChildViewManagerExec &&
             typeof this.parentView.onChildViewManagerExec === 'function') {
           this.parentView.onChildViewManagerExec(route, this.step);
         }
@@ -182,14 +180,12 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   },
   flush() {
     this.history = [];
-    this.childViews.dispose();
-    this.childViews = new Cache();
   }
 });
 
 function _getRoute(url){
   var route = false;
-  if(this.routes){    
+  if(this.routes){
     for(var r in this.routes){
       if(r === url || this.routes[r].step === url){
         route = r;

@@ -1,8 +1,5 @@
-import {removeAll, contains} from 'mout/array';
-import {merge, get} from 'mout/object';
-import {deepClone as clone} from 'mout/lang';
-import { default as Connectivity } from '../net/Connectivity';
-import { default as Cache } from '../util/Cache';
+import { removeAll, contains } from 'mout/array';
+import { merge, forOwn } from 'mout/object';
 import { default as EventDispatcher } from '../events/EventDispatcher';
 
 var UNDEFINED;
@@ -15,7 +12,7 @@ let _triggerAttributeEvent = (model, event, attribute, previous, value, messages
     value: value === UNDEFINED ? model.get(attribute) : value,
     messages: messages || []
   });
-}
+};
 
 let _setFlagOn = (model, name, flag) => {
   var keys = model.flags[flag];
@@ -25,7 +22,7 @@ let _setFlagOn = (model, name, flag) => {
   if (!contains(keys, name)) {
     keys.push(name);
   }
-}
+};
 
 let _suppressChecked = (model, suppress, callback) => {
   suppress = !!suppress;
@@ -44,7 +41,7 @@ let _suppressChecked = (model, suppress, callback) => {
     model[prop] = old[prop];
   }
   return result;
-}
+};
 
 let _isValid = (messages) => {
   var isValid = true;
@@ -55,7 +52,7 @@ let _isValid = (messages) => {
   }
   messages.isValid = isValid;
   return messages;
-}
+};
 
 
 // Virtual type
@@ -100,8 +97,8 @@ let _isValid = (messages) => {
 var Model = EventDispatcher.extend(function Model(map) {
   var suppressEvents, suppressTracking;
   EventDispatcher.call(this);
-  this.attributes = new Cache();
-  this.rules = new Cache();
+  this.attributes = {};
+  this.rules = {};
   this.unsavedAttributes = [];
   this.flags = {};
   if (this.defaults) {
@@ -153,7 +150,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @return {Object}  The value of the attribute, or null if there is no value
    */
   get(attribute) {
-    var attr = this.attributes.get(attribute),
+    var attr = this.attributes[attribute],
         flags;
     if (typeof attr === 'function') {
       flags = this.flags[Model.DO_NOT_COMPUTE];
@@ -199,14 +196,14 @@ var Model = EventDispatcher.extend(function Model(map) {
       if (!this.canSet(attribute)) {
         return false;
       }
-      var previous = this.attributes.get(attribute),
+      var previous = this.attributes[attribute],
           messages = this.suppressValidation ? [] : this.validate(attribute, value);
       if (messages.length) {
         _triggerAttributeEvent(this, 'invalid', attribute, previous, value, messages);
         return false;
       } else {
         if (previous !== value) {
-          this.attributes.set(attribute, value);
+          this.attributes[attribute] = value;
           if (flag) {
             _setFlagOn(this, attribute, flag);
           }
@@ -228,7 +225,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @return {Boolean}  True if the attribute exists and has a value
    */
   has(attribute) {
-    return this.get(attribute) !== null;
+    return this.get(attribute) !== undefined;
   },
   /**
    * Gets the ID of the model
@@ -246,7 +243,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @return {Boolean}  True when the model has no ID associated with it
    */
   isNew() {
-    return null === this.id();
+    return undefined === this.id();
   },
   /**
    * Ensures that a map is suitable to be applied to this model
@@ -307,8 +304,7 @@ var Model = EventDispatcher.extend(function Model(map) {
         }
       }
     } else {
-      this.attributes.dispose();
-      this.attributes = new Cache();
+      this.attributes = {};
       this.unsavedAttributes.length = 0;
     }
   },
@@ -319,7 +315,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @return {Lavaca.mvc.Model}  The copy
    */
   clone() {
-    return new this.constructor(this.attributes.toObject());
+    return new this.constructor(this.attributes);
   },
   /**
    * Adds a validation rule to this model
@@ -331,7 +327,8 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @param {String} message  A text message used when a value fails the test
    */
   addRule(attribute, callback, message) {
-    this.rules.get(attribute, []).push({rule: callback, message: message});
+    this.rules[attribute] = this.rules[attribute] || [];
+    this.rules[attribute].push({rule: callback, message: message});
   },
   /**
    * Validates all attributes on the model
@@ -361,7 +358,7 @@ var Model = EventDispatcher.extend(function Model(map) {
     if (attribute) {
       messages = [];
       value = value === UNDEFINED ? this.get(attribute, value) : value;
-      rules = this.rules.get(attribute);
+      rules = this.rules[attribute];
       if (rules) {
         while (!!(rule = rules[++i])) {
           if (!rule.rule(attribute, value)) {
@@ -372,9 +369,9 @@ var Model = EventDispatcher.extend(function Model(map) {
       return messages;
     } else {
       messages = {};
-      this.rules.each((attributeName) => {
+      forOwn(this.rules, (value, attributeName) => {
         messages[attributeName] = this.validate(attributeName);
-      }, this);
+      });
       return _isValid(messages);
     }
   },
@@ -385,7 +382,7 @@ var Model = EventDispatcher.extend(function Model(map) {
    * @return {Object}  The key-value hash
    */
   toObject() {
-    var obj = this.attributes.toObject(),
+    var obj = this.attributes,
         flags;
     for(var key in obj) {
       if(typeof obj[key] === "function") {
