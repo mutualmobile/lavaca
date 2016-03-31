@@ -24,5 +24,4 @@ export { default as Connectivity } from './src/net/Connectivity';
 export { default as History } from './src/net/History';
 export { default as LoadingIndicator } from './src/ui/LoadingIndicator';
 export { default as Widget } from './src/ui/Widget';
-export { default as Cache } from './src/util/Cache';
 export { default as Disposable } from './src/util/Disposable';
