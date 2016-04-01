@@ -11,6 +11,10 @@ bower install
 
 `npm run-script test -- <arguments>`
 
+Open a web browser to `http://localhost:9876/debug.html` and use DevTools
+(Cmd+Alt+i or Ctrl+Shift+i) to debug. Refreshing the window will re-run the
+unit tests.
+
 Any `<arguments>` will be passed to the `karma` executable ([full list
 here](https://karma-runner.github.io/0.13/config/configuration-file.html)).
 Tests are configured to run in the Chrome browser by default. To use a
@@ -23,14 +27,8 @@ npm install karma-firefox-launcher
 npm run-script test -- --browsers=Firefox
 ```
 
-## Debugging unit tests
-
-`npm run-script test -- --single-run=false`
-
-A Chrome window will open in the background displaying "Karma v0.13.22 -
-connected". Click the "DEBUG" button to run the unit tests. Use DevTools
-(Cmd+Alt+i or Ctrl+Shift+i) to debug. Refreshing the window will re-run the
-unit tests.
+If you only want to run the unit tests once on the command line, use `npm
+run-script coverage`.
 
 ## Code coverage
 

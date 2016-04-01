@@ -24,7 +24,7 @@ you're going with the source route, Lavaca has three flavors available:
 <http://getlavaca.com/#/examples>
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+Refer to CONTRIBUTING.md
 
 ## Release History
 [View Change Log](https://github.com/mutualmobile/lavaca/blob/master/CHANGELOG.md)

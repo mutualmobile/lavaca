@@ -1,9 +1,7 @@
 module.exports = function(config) {
   config.set({
-    basePath: '',
-    browsers: ['Chrome'],
     files: [
-      { pattern: 'test/context-compiled.js', watched: false }
+      { pattern: 'test/context-compiled.js', watched: false, nocache: true }
     ],
     frameworks: ['jasmine'],
     preprocessors: {
@@ -11,6 +9,6 @@ module.exports = function(config) {
     },
     reporters: ['dots'],
     autoWatch: false,
-    singleRun: true
+    singleRun: false
   });
 };
