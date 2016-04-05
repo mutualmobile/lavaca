@@ -143,8 +143,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
   this.childViewEventMap = {};
 
   this
-    .on('rendersuccess', this.onRenderSuccess)
-    .on('rendererror', this.onRenderError);
+    .on('rendersuccess', this.onRenderSuccess.bind(this))
+    .on('rendererror', this.onRenderError.bind(this));
 }, {
   /**
    * Will render any childViews automatically when set to true
