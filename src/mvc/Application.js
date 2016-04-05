@@ -141,7 +141,11 @@ define(function(require) {
         } else {
           e.preventDefault();
           if (rel === 'back') {
-            History.back();
+            if (viewManager.breadcrumb.length > 1) {
+              History.back();
+            } else {
+              this.router.exec('/', null, {'root': true});
+            }
           } else if (rel === 'force-back' && url) {
             History.isRoutingBack = true;
             var _always = function() {
