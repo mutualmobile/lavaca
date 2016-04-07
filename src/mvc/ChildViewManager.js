@@ -26,6 +26,7 @@ define(function(require) {
     this.elName = el;
     this.parentView = parent;
     this.id = id;
+    this.hasInitialized = false;
     if (typeof routes === 'object') {
       for (var r in routes) {
         this.routes[r] = routes[r];
@@ -41,7 +42,8 @@ define(function(require) {
       this.el = view.find(this.elName);
       if (!this.el.hasClass('cvm')){
         this.el.addClass('cvm');
-        this.exec();
+        this.exec(null, {isRedraw: this.hasInitialized});
+        this.hasInitialized = true;
       }
     },
     back:function(){
@@ -80,7 +82,9 @@ define(function(require) {
       if(!route){
         return;
       }
-      this.history.push(route);
+      if(params && !params.isRedraw || ! params){
+        this.history.push(route);
+      }
       var ChildView = this.routes[route].TView, 
           model = this.routes[route].model;
       if(!model){
@@ -115,7 +119,7 @@ define(function(require) {
           return Promise.all([
             (function() {
               if (this.layers[layer] !== childView) {
-                return childView.enter(this.el, this.exitingViews);
+                return childView.enter(this.el, this.exitingViews, params ? params.isRedraw : false);
               }
               return Promise.resolve();
             }.bind(this))(),
