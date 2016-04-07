@@ -20,14 +20,14 @@ describe('A Disposable', function() {
     };
     ob.obj2 = new Type();
 
-    spyOn(ob.obj2, 'dispose');
+    sinon.spy(ob.obj2, 'dispose');
   });
   it('provides a dispose function', function() {
-    expect(typeof ob.dispose ==='function').toEqual(true);
+    expect(typeof ob.dispose ==='function').to.equal(true);
   });
   it('calls the dispose method of nested objects', function() {
     ob.dispose();
-    expect(ob.obj2.dispose).toHaveBeenCalled();
+    expect(ob.obj2.dispose.called).to.be.true;
   });
 });
 

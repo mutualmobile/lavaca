@@ -8,5 +8,5 @@ cd "$PROJECT_ROOT"
 ./_scripts/build commonjs
 mkdir -p build/commonjs-coverage
 ./node_modules/istanbul/lib/cli.js instrument build/commonjs --output build/commonjs-coverage
-./node_modules/webpack/bin/webpack.js --resolve-alias 'lavaca=build/commonjs-coverage' test/context.js test/context-compiled.js
+./node_modules/webpack/bin/webpack.js --config webpack.config.coverage.js --resolve-alias 'lavaca=build/commonjs-coverage' test/context.js test/context-compiled.js
 ./node_modules/karma-cli/bin/karma start karma.coverage.conf.js "$@"

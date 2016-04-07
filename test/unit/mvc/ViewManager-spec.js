@@ -12,7 +12,7 @@ describe('A viewManager', function() {
     $('script[data-name="hello-world"]').remove();
   });
   it('can be instantiated via its module constructor', function() {
-    expect(viewManager instanceof viewManager.constructor).toBe(true);
+    expect(viewManager instanceof viewManager.constructor).to.equal(true);
   });
   it('can load a view', function(done) {
     var myPageView = View.extend(function(){View.apply(this, arguments);},{
@@ -24,7 +24,7 @@ describe('A viewManager', function() {
       })
       .then(function() {
         var response = viewManager.pageViews['myView'].hasRendered;
-        expect(response).toBe(true);
+        expect(response).to.equal(true);
         done();
       });
   });
@@ -42,11 +42,11 @@ describe('A viewManager', function() {
           return viewManager.load('anotherView', myPageView, null, 1);
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(2);
+          expect($('#view-root').children().length).to.equal(2);
           return viewManager.dismiss(0);
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(0);
+          expect($('#view-root').children().length).to.equal(0);
           done();
         });
     });
@@ -62,11 +62,11 @@ describe('A viewManager', function() {
           return viewManager.load('anotherView', myPageView, null, 1);
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(2);
+          expect($('#view-root').children().length).to.equal(2);
           return viewManager.dismiss(1);
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(1);
+          expect($('#view-root').children().length).to.equal(1);
           done();
         });
     });
@@ -83,7 +83,7 @@ describe('A viewManager', function() {
           return viewManager.dismiss('.test-view');
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(0);
+          expect($('#view-root').children().length).to.equal(0);
           done();
         });
     });
@@ -100,7 +100,7 @@ describe('A viewManager', function() {
           return viewManager.dismiss(viewManager.pageViews['myView']);
         })
         .then(function() {
-          expect($('#view-root').children().length).toBe(0);
+          expect($('#view-root').children().length).to.equal(0);
           done();
         });
     });
@@ -122,8 +122,8 @@ describe('A viewManager', function() {
       })
       .then(function() {
         viewManager.flush();
-        expect(viewManager.pageViews).toEqual({});
-        expect(viewManager.layers[0].cacheKey).toEqual('myView');
+        expect(viewManager.pageViews).to.deep.equal({});
+        expect(viewManager.layers[0].cacheKey).to.equal('myView');
         done();
       });
   });

@@ -13,10 +13,11 @@ module.exports = describe('A Router', function() {
     $('body').append('<div id="view-root"></div>');
     viewManager = new viewManager.constructor('#view-root');
     router = new router.constructor(viewManager);
-    spyOn(ob, 'foo').and.callThrough();
+    sinon.spy(ob, 'foo');
   });
   afterEach(function(){
     $('#view-root').remove();
+    ob.foo.restore();
   });
   it('can add routes', function() {
     router.add({
@@ -24,17 +25,16 @@ module.exports = describe('A Router', function() {
       '/bar/{param1}': [Controller, 'bar', {}]
     });
     router.add('/foobar/{param1}', Controller, 'foobar', {});
-    expect(router.routes.length).toBe(3);
+    expect(router.routes.length).to.equal(3);
   });
   it('can exec routes that delegate to a controller', function(done) {
     var testController = Controller.extend(ob);
 
     router.add('/foo/{param}', testController, 'foo', {});
     router.exec('/foo/bar', null, {one: 1}).then(function() {
-      expect(ob.foo.calls[0].args[0]).toEqual(jasmine.any(Object));
-      expect(ob.foo.calls[0].args[0].param).toEqual('bar');
-      expect(ob.foo.calls[0].args[0].one).toEqual(1);
-      expect(ob.foo.calls[0].args[1]).toBeUndefined();
+      expect(ob.foo.args[0][0].param).to.equal('bar');
+      expect(ob.foo.args[0][0].one).to.equal(1);
+      expect(ob.foo.args[0][1]).to.be.undefined;
       done();
     });
   });

@@ -9,7 +9,7 @@ describe('An EventDispatcher', function() {
   });
   it('can be initialized', function() {
     var type = typeof eventDispatcher;
-    expect(type).toEqual(typeof new EventDispatcher());
+    expect(type).to.equal(typeof new EventDispatcher());
   });
   describe('can bind', function() {
     it('an event handler', function(done) {
@@ -24,7 +24,7 @@ describe('An EventDispatcher', function() {
     });
     it('an event handler with an event triggered', function(done) {
       eventDispatcher.on('test', function(e) {
-        expect(e.type).toEqual('click');
+        expect(e.type).to.equal('click');
         done();
       });
       eventDispatcher.trigger('test', { type: 'click'});
@@ -70,15 +70,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).not.toContain('test - specific handler');
-        expect(called).not.toContain('test');
-        expect(called).not.toContain('test.namespace');
-        expect(called).not.toContain('test.namespace2');
-        expect(called).not.toContain('test.namespace.namespace2');
-        expect(called).not.toContain('test2');
-        expect(called).not.toContain('test2.namespace');
-        expect(called).not.toContain('test2.namespace2');
-        expect(called).not.toContain('test2.namespace.namespace2');
+        expect(called).not.to.contain('test - specific handler');
+        expect(called).not.to.contain('test');
+        expect(called).not.to.contain('test.namespace');
+        expect(called).not.to.contain('test.namespace2');
+        expect(called).not.to.contain('test.namespace.namespace2');
+        expect(called).not.to.contain('test2');
+        expect(called).not.to.contain('test2.namespace');
+        expect(called).not.to.contain('test2.namespace2');
+        expect(called).not.to.contain('test2.namespace.namespace2');
         done();
       }, 0);
 
@@ -91,15 +91,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).not.toContain('test - specific handler');
-        expect(called).not.toContain('test');
-        expect(called).not.toContain('test.namespace');
-        expect(called).not.toContain('test.namespace2');
-        expect(called).not.toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).not.to.contain('test - specific handler');
+        expect(called).not.to.contain('test');
+        expect(called).not.to.contain('test.namespace');
+        expect(called).not.to.contain('test.namespace2');
+        expect(called).not.to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -110,15 +110,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).not.toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).not.toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).not.toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).not.toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).not.to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).not.to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).not.to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).not.to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -129,15 +129,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).not.toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).not.toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).not.to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).not.to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -148,15 +148,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).not.toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).not.to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -167,15 +167,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -186,15 +186,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -205,15 +205,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });
@@ -224,15 +224,15 @@ describe('An EventDispatcher', function() {
       eventDispatcher.trigger('test2');
 
       setTimeout(function() {
-        expect(called).toContain('test - specific handler');
-        expect(called).toContain('test');
-        expect(called).toContain('test.namespace');
-        expect(called).toContain('test.namespace2');
-        expect(called).toContain('test.namespace.namespace2');
-        expect(called).toContain('test2');
-        expect(called).toContain('test2.namespace');
-        expect(called).toContain('test2.namespace2');
-        expect(called).toContain('test2.namespace.namespace2');
+        expect(called).to.contain('test - specific handler');
+        expect(called).to.contain('test');
+        expect(called).to.contain('test.namespace');
+        expect(called).to.contain('test.namespace2');
+        expect(called).to.contain('test.namespace.namespace2');
+        expect(called).to.contain('test2');
+        expect(called).to.contain('test2.namespace');
+        expect(called).to.contain('test2.namespace2');
+        expect(called).to.contain('test2.namespace.namespace2');
         done();
       }, 0);
     });

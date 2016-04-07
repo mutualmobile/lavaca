@@ -18,7 +18,7 @@ module.exports = describe('A Controller', function() {
     $('body').append('<div id="view-root"></div>');
     viewManager = (new viewManager.constructor()).setEl('#view-root');
     router = (new router.constructor()).setViewManager(viewManager);
-    spyOn(ob, 'foo').and.callThrough();
+    sinon.spy(ob, 'foo');
     testController = Controller.extend(ob);
     router.add({
       '/foo': [testController, 'foo', {}]
@@ -26,23 +26,25 @@ module.exports = describe('A Controller', function() {
   });
   afterEach(function(){
     $('#view-root').remove();
+    ob.foo.restore();
   });
   it('can be instantiated', function() {
     var controller = new testController(router, viewManager);
-    expect(controller instanceof testController).toBe(true);
-    expect(controller.router).toBe(router);
-    expect(controller.viewManager).toBe(viewManager);
+    expect(controller instanceof testController).to.equal(true);
+    expect(controller.router).to.equal(router);
+    expect(controller.viewManager).to.equal(viewManager);
   });
   describe('can load a view', function() {
     var noop = {
           success: function() {}
         };
     beforeEach(function(){
-      spyOn(noop, 'success');
+      sinon.spy(noop, 'success');
       $('body').append('<script type="text/dust-template" data-name="hello-world">Hello World</script>');
     });
     afterEach(function(){
       $('script[data-name="hello-world"]').remove();
+      noop.success.restore();
     });
     it('with a view helper method', function(done) {
       var controller = new testController(router, viewManager),
@@ -52,7 +54,7 @@ module.exports = describe('A Controller', function() {
           response;
       controller.view('myView', myPageView).then(function() {
         response = viewManager.pageViews.get('myView').hasRendered;
-        expect(response).toBe(true);
+        expect(response).to.equal(true);
         done();
       });
     });
@@ -65,21 +67,21 @@ module.exports = describe('A Controller', function() {
     History.overrideStandardsMode();
     (controller.history(model, 'Home Page', window.location.href))();
     current = history.current();
-    expect(current.state).toEqual(model);
-    expect(current.title).toEqual('Home Page');
+    expect(current.state).to.equal(model);
+    expect(current.title).to.equal('Home Page');
   });
   it('can format urls', function() {
     var controller = new testController(router, viewManager),
         url = '/foo/{0}',
         response;
     response = controller.url(url, ['bar']);
-    expect(response).toEqual('/foo/bar');
+    expect(response).to.equal('/foo/bar');
   });
   describe('can redirect user to another route', function() {
     it('directly', function(done) {
       var controller = new testController(router, viewManager);
       controller.redirect('/foo').then(function() {
-        expect(ob.foo).toHaveBeenCalled();
+        expect(ob.foo.called).to.be.true;
         done();
       });
     });

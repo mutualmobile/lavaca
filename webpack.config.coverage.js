@@ -6,7 +6,6 @@ webpackConfig.module = {
     {
       loader: 'babel-loader',
       include: [
-        path.resolve(__dirname, 'src/'),
         path.resolve(__dirname, 'test/unit')
       ],
       exclude: /(node_modules)/,
