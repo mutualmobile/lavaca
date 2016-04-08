@@ -15,13 +15,13 @@ es)
   ;;
 amd)
   mkdir -p build/amd
-  cp _scripts/.babelrc-amd .babelrc
+  cp _scripts/.babelrc.amd .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/amd
   node _scripts/changePackageName.js lavaca-amd > build/amd/package.json
   ;;
 commonjs)
   mkdir -p build/commonjs
-  cp _scripts/.babelrc-commonjs .babelrc
+  cp _scripts/.babelrc.commonjs .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/commonjs
   node _scripts/changePackageName.js lavaca-commonjs > build/commonjs/package.json
   ;;

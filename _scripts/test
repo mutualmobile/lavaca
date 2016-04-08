@@ -5,6 +5,7 @@ PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
 
 cd "$PROJECT_ROOT"
 
+rm -f .babelrc
 ./node_modules/webpack/bin/webpack.js --config webpack.config.test.js --display-modules --watch --devtool 'inline-source-map' --resolve-alias 'lavaca=src' test/context.js test/context-compiled.js &
 ./node_modules/karma-cli/bin/karma start karma.conf.js "$@" &
 wait

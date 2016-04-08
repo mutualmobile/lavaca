@@ -41,7 +41,7 @@ var extend = function (TSuper, TSub, overrides){
     TSub = TSuper;
     TSuper = Object;
   }
-  let ctor = () => {/*Empty*/}
+  let ctor = function() {/*Empty*/}
   ctor.prototype = TSuper.prototype;
   TSub.prototype = new ctor;
   TSub.prototype.constructor = TSub;

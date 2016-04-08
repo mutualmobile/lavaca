@@ -12,7 +12,7 @@ webpackConfig.module = {
       exclude: /(node_modules)/,
       test: /\.js?$/,
       query: {
-        presets: ['es2015-webpack'],
+        presets: [],
         plugins: [
           ['transform-es2015-modules-commonjs-simple', { 'noMangle': true, 'addExports': true }]
         ]
