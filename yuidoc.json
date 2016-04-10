@@ -1,0 +1,6 @@
+{
+  "options": {
+    "linkNatives": "true",
+    "themedir": "libs/yuidoc/themes/default"
+  }
+}

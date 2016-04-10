@@ -5,7 +5,7 @@ script:
   - npm install -g bower
   - npm install
   - bower install
-  - ./_scripts/test
+  - npm run-script coverage
 
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
