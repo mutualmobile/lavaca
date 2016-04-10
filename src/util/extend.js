@@ -54,7 +54,7 @@ var extend = function (TSuper, TSub, overrides){
     if (typeof T === 'object') {
       overrides = T;
       T = function() {
-        TSub.apply(this, arguments);
+        return TSub.apply(this, arguments);
       };
     }
     extend(TSub, T, overrides);

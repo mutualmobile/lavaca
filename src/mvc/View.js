@@ -247,10 +247,6 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       }
     }
 
-    if (ret.model instanceof Model) {
-      ret.model = ret.model.toObject();
-    }
-
     return ret;
   },
 
@@ -440,7 +436,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         if (dotIndex !== -1) {
           event = event.substr(0, dotIndex);
         }
-        this.model.off(event + '.' + this.id, callback, this);
+        this.model.$off(event + '.' + this.id, callback, this);
       }
     }
   },
@@ -464,12 +460,12 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    */
   applyEvents() {
     var el = this.el,
-      callbacks,
-      callback,
-      property,
-      delegate,
-      dotIndex,
-      opts;
+        callbacks,
+        callback,
+        property,
+        delegate,
+        dotIndex,
+        opts;
     for (delegate in this.eventMap) {
       callbacks = this.eventMap[delegate];
       if (delegate === 'self') {
@@ -499,7 +495,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
               property = callbackType.substr(dotIndex+1);
               callbackType = callbackType.substr(0, dotIndex);
             }
-            this.model.on(callbackType + '.' + this.id, property, callback);
+            this.model.$on(callbackType + '.' + this.id, property, callback);
           }
         } else if (callbackType === 'animationEnd' && el.animationEnd) {
           el.animationEnd(delegate, callback);

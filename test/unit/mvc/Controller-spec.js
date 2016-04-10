@@ -53,7 +53,7 @@ module.exports = describe('A Controller', function() {
           }),
           response;
       controller.view('myView', myPageView).then(function() {
-        response = viewManager.pageViews.get('myView').hasRendered;
+        response = viewManager.pageViews.myView.hasRendered;
         expect(response).to.equal(true);
         done();
       });

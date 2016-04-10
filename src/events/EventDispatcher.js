@@ -7,7 +7,9 @@ import { default as Disposable } from '../util/Disposable';
  * @constructor
  *
  */
-var EventDispatcher = Disposable.extend({
+var EventDispatcher = Disposable.extend(function EventDispatcher() {
+  this.callbacks = [];
+}, {
   /**
    * When true, do not fire events
    * @property suppressEvents
@@ -26,16 +28,14 @@ var EventDispatcher = Disposable.extend({
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
   on(spec, callback) {
-    this.callbacks = this.callbacks || [];
-
     let parts = spec.split('.');
     let type = parts[0];
     let namespaces = parts.slice(1);
 
     this.callbacks.push({
-        type: type,
-        namespaces: namespaces,
-        fn: callback
+      type: type,
+      namespaces: namespaces,
+      fn: callback
     });
 
     return this;
@@ -63,7 +63,6 @@ var EventDispatcher = Disposable.extend({
    * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
    */
   off(spec, callback) {
-    this.callbacks = this.callbacks || [];
     let hasCallbackArgument = (arguments.length === 2);
 
     if (arguments.length === 0) {
@@ -121,7 +120,6 @@ var EventDispatcher = Disposable.extend({
       return this;
     }
 
-    this.callbacks = this.callbacks || [];
     this.callbacks.forEach((item) => {
       if (item.type === type) {
         item.fn(params);

@@ -70,10 +70,10 @@ describe('A View', function() {
       multiChildView.createChildViews();
       expect(handler.fn.callCount).to.equal(2);
       var childViews = values(multiChildView.childViews);
-      expect(childViews[0].model.get('index')).to.equal(0);
-      expect(childViews[0].model.get('id')).to.equal('abc');
-      expect(childViews[1].model.get('index')).to.equal(1);
-      expect(childViews[1].model.get('id')).to.equal('def');
+      expect(childViews[0].model.index).to.equal(0);
+      expect(childViews[0].model.id).to.equal('abc');
+      expect(childViews[1].model.index).to.equal(1);
+      expect(childViews[1].model.id).to.equal('def');
     });
     it('from a hash', function() {
       multiChildView.mapChildView({
@@ -94,9 +94,9 @@ describe('A View', function() {
       // [data-id="abc"] matches '.childView' too, which has already been
       // initialized. it won't be initialized a second time
       expect(childViews.length).to.equal(3);
-      expect(childViews[0].model.get('color')).to.equal('blue');
+      expect(childViews[0].model.color).to.equal('blue');
       expect(childViews[1].model).to.equal(multiChildView.model);
-      expect(childViews[2].model.get('color')).to.equal('purple');
+      expect(childViews[2].model.color).to.equal('purple');
     });
   });
   it('can be rendered', function(done) {
@@ -122,7 +122,7 @@ describe('A View', function() {
     },
     {
       generateHtml: function() {
-        return '<h2>Hello World</h2><p>Color is ' + this.model.get('color') + '.</p>';
+        return '<h2>Hello World</h2><p>Color is ' + this.model.color + '.</p>';
       }
     });
     testView = new TestView(el, model);
@@ -130,7 +130,7 @@ describe('A View', function() {
       expect(testView.hasRendered).to.equal(true);
       expect($(testView.el).length).to.equal(1);
       expect($(testView.el).html()).to.equal('<h2>Hello World</h2><p>Color is blue.</p>');
-      model.set('color', 'red');
+      model.color = 'red';
       return testView.render();
     }).then(function() {
       expect($(testView.el).html()).to.equal('<h2>Hello World</h2><p>Color is red.</p>');
@@ -176,8 +176,8 @@ describe('A View', function() {
       expect(testView.hasRendered).to.equal(true);
       expect($(testView.el).length).to.equal(1);
       expect($(testView.el).html()).to.equal('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-      model.set('color', 'orange');
-      model.set('primary', false);
+      model.color = 'orange';
+      model.primary = false;
       return testView.render('p.redraw');
     }).then(function() {
       expect($(testView.el).html()).to.equal('<p class="redraw">Color is orange.</p><p>It is primary</p>');
@@ -223,8 +223,8 @@ describe('A View', function() {
       expect(testView.hasRendered).to.equal(true);
       expect($(testView.el).length).to.equal(1);
       expect($(testView.el).html()).to.equal('<p class="redraw">Color is blue.</p><p>It is primary</p>');
-      model.set('color', 'orange');
-      model.set('primary', false);
+      model.color = 'orange';
+      model.primary = false;
       return testView.render(false);
     }).then(function(html) {
       expect($(testView.el).html()).to.equal('<p class="redraw">Color is blue.</p><p>It is primary</p>');
