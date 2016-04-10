@@ -22,17 +22,23 @@ set -x
 case "$1" in
 es)
   mkdir -p build/es
+  cp README.md build/es/
+  cp CONTRIBUTING.md build/es/
   cp -a src/* build/es/
   node _scripts/changePackageName.js lavaca > build/es/package.json
   ;;
 amd)
   mkdir -p build/amd
+  cp README.md build/amd/
+  cp CONTRIBUTING.md build/amd/
   cp _scripts/.babelrc.amd .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/amd
   node _scripts/changePackageName.js lavaca-amd > build/amd/package.json
   ;;
 commonjs)
   mkdir -p build/commonjs
+  cp README.md build/commonjs/
+  cp CONTRIBUTING.md build/commonjs/
   cp _scripts/.babelrc.commonjs .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/commonjs
   node _scripts/changePackageName.js lavaca-commonjs > build/commonjs/package.json
