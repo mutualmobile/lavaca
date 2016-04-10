@@ -1,6 +1,5 @@
 /.babelrc
 /node_modules
-/bower_components
 /docs
 /build
 /test/context-compiled.js

@@ -4,7 +4,6 @@ Before you run anything else, make sure you have the dependencies pulled down:
 
 ```
 npm install
-bower install
 ```
 
 ## Running unit tests

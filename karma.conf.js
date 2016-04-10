@@ -4,6 +4,7 @@ module.exports = function(config) {
     files: [
       { pattern: 'node_modules/sinon/pkg/sinon-1.17.3.js', watched: false, nocache: true },
       { pattern: 'node_modules/chai/chai.js', watched: false, nocache: true },
+      { pattern: 'node_modules/jquery/dist/jquery.js', watched: false, nocache: true },
       { pattern: 'test/context-compiled.js', watched: true, nocache: true }
     ],
     preprocessors: {
