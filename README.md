@@ -1,7 +1,7 @@
 # Lavaca
 
-[![Build Status](https://travis-ci.org/mutualmobile/lavaca.svg?branch=master)](https://travis-ci.org/mutualmobile/lavaca)
-[![Coverage Status](https://coveralls.io/repos/mutualmobile/lavaca/badge.png?branch=master)](https://coveralls.io/r/mutualmobile/lavaca?branch=master)
+[![Build Status](https://travis-ci.org/mutualmobile/lavaca.svg?branch=dev)](https://travis-ci.org/mutualmobile/lavaca)
+[![Coverage Status](https://coveralls.io/repos/mutualmobile/lavaca/badge.png?branch=dev)](https://coveralls.io/r/mutualmobile/lavaca?branch=dev)
 
 A curated collection of tools built for mobile
 
