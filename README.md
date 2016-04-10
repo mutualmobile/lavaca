@@ -13,7 +13,7 @@ you're going with the source route, Lavaca has three flavors available:
 
 - `npm install lavaca-amd`: AMD format
 - `npm install lavaca-commonjs`: CommonJS format
-- `npm install lavaca-es6`: ES6 module format
+- `npm install lavaca`: ES6 module format
 
 ## Documentation
 <http://getlavaca.com/#/guide>

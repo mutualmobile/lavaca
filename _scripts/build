@@ -23,7 +23,7 @@ case "$1" in
 es)
   mkdir -p build/es
   cp -a src/* build/es/
-  node _scripts/changePackageName.js lavaca-es > build/es/package.json
+  node _scripts/changePackageName.js lavaca > build/es/package.json
   ;;
 amd)
   mkdir -p build/amd
