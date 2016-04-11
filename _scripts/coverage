@@ -5,11 +5,12 @@ PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
 
 cd "$PROJECT_ROOT"
 
+mkdir -p build/instrumented
+./node_modules/istanbul/lib/cli.js instrument src --output build/instrumented --es-modules
 mkdir -p build/commonjs
 cp _scripts/.babelrc.commonjs.coverage .babelrc
-./node_modules/babel-cli/bin/babel.js src -d build/commonjs
+./node_modules/babel-cli/bin/babel.js build/instrumented -d build/commonjs
 mkdir -p build/commonjs-coverage
-./node_modules/istanbul/lib/cli.js instrument build/commonjs --output build/commonjs-coverage
-./node_modules/webpack/bin/webpack.js --config webpack.config.coverage.js --resolve-alias 'lavaca=build/commonjs-coverage' test/context.js test/context-compiled.js
+./node_modules/webpack/bin/webpack.js --config webpack.config.coverage.js --resolve-alias 'lavaca=build/commonjs' test/context.js test/context-compiled.js
 ./node_modules/karma-cli/bin/karma start karma.coverage.conf.js "$@"
 find ./test -name lcov.info -exec cat "{}" \; | ./node_modules/coveralls/bin/coveralls.js

@@ -41,7 +41,7 @@
     "chai": "3.5.0",
     "coveralls": "2.11.9",
     "fs-extra": "0.6.3",
-    "istanbul": "0.4.2",
+    "istanbul": "1.0.0-alpha.2",
     "jquery": "2.2.3",
     "karma": "0.13.22",
     "karma-chrome-launcher": "0.1.4",
