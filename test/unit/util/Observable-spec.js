@@ -225,6 +225,84 @@ describe('An Observable', function() {
       }, 100);
     });
 
+    it('should propagate nested member changes to every member in the chain', function(done) {
+      let done1 = false;
+      let done2 = false;
+      let done3 = false;
+      let done4 = false;
+
+      let checkDone = function() {
+        if (done1 && done2 && done3 && done4) {
+          done();
+        }
+      };
+
+      let obj = new Observable({
+        a: new Observable({
+          b: new Observable({
+            c: new Observable({
+              d: 'foo'
+            })
+          })
+        })
+      });
+
+      obj.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(1);
+        expect(changes).to.deep.include.members([{
+          type: 'changed',
+          path: 'a.b.c',
+          key: 'd',
+          oldValue: 'foo',
+          newValue: 'bar'
+        }]);
+        done1 = true;
+        checkDone();
+      });
+
+      obj.a.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(1);
+        expect(changes).to.deep.include.members([{
+          type: 'changed',
+          path: 'b.c',
+          key: 'd',
+          oldValue: 'foo',
+          newValue: 'bar'
+        }]);
+        done2 = true;
+        checkDone();
+      });
+
+      obj.a.b.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(1);
+        expect(changes).to.deep.include.members([{
+          type: 'changed',
+          path: 'c',
+          key: 'd',
+          oldValue: 'foo',
+          newValue: 'bar'
+        }]);
+        done3 = true;
+        checkDone();
+      });
+
+      obj.a.b.c.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(1);
+        expect(changes).to.deep.include.members([{
+          type: 'changed',
+          key: 'd',
+          oldValue: 'foo',
+          newValue: 'bar'
+        }]);
+        done4 = true;
+        checkDone();
+      });
+
+      setTimeout(function() {
+        obj.a.b.c.d = 'bar';
+      }, 100);
+    });
+
     it('should not propagate nested member changes after member is removed', function(done) {
       let eventLoopTurn = 0;
       let member = new Observable({
@@ -504,6 +582,74 @@ describe('An Observable', function() {
       });
     });
 
+    it('should propagate member changes (large Array)', function(done) {
+      let item = {};
+      for (let i = 0; i < 50; i++) {
+        item[i.toString(16)] = i;
+      }
+      let list = new Observable([]);
+      for (let i = 0; i < 100; i++) {
+        list[i] = new Observable(clone(item));
+      }
+
+      list.$on('change', function(changes) {
+        expect(changes).to.deep.equal([
+          {
+            path: '50',
+            type: 'changed',
+            key: '1a',
+            oldValue: 26,
+            newValue: 'bar'
+          }
+        ]);
+        done();
+      });
+
+      setTimeout(function() {
+        list[50]['1a'] = 'bar';
+      }, 100);
+    });
+
+    it('should propagate member changes after member is moved, with member\'s new path', function(done) {
+      let list = new Observable([
+        new Observable({
+          a: 1
+        }),
+        new Observable({
+          b: 2
+        }),
+        new Observable({
+          c: 3
+        })
+      ]);
+
+      list.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(2);
+        expect(changes).to.deep.include.members([
+          {
+            path: '2',
+            type: 'changed',
+            key: 'a',
+            oldValue: 1,
+            newValue: 100
+          },
+          {
+            type: 'moved',
+            item: {
+              a: 100
+            },
+            fromIndex: 0,
+            toIndex: 2
+          }
+        ]);
+        done();
+      });
+
+      list[0].a = 100;
+      let obj = list.shift();
+      list.push(obj);
+    });
+
     it('should not propagate member changes after member is removed', function(done) {
       let list = new Observable([]);
       let obj = new Observable({
@@ -586,31 +732,6 @@ describe('An Observable', function() {
         obj.foo = 'baz';
       }, 100);
     });
-
-
-/*
- *    it('TODO 2', function(done) {
- *      let list = new Observable([
- *        new Observable({
- *          id: 1,
- *          foo: 'bar'
- *        }),
- *        new Observable({
- *          id: 2,
- *          foo: 'foobar'
- *        })
- *      ]);
- *
- *      list.$on('change', function(changes) {
- *        debugger;
- *      });
- *
- *      list[0] = list[0].$apply({
- *        id: 1,
- *        foo: 'baz'
- *      });
- *    });
- */
 
     it('should NOT fire an onChange event for immutable operations', function(done) {
       let list = new Observable(['foo', 'bar', 'baz']);

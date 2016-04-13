@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import { default as EventDispatcher } from '../events/EventDispatcher';
-import { mixIn as mixin, get } from 'mout/object';
+import { mixIn as mixin } from 'mout/object';
 import { difference, unique } from 'mout/array';
-import { forEach } from 'mout/collection';
+import { forEach, contains } from 'mout/collection';
 import { clone, isFunction, isArray, isObject } from 'mout/lang';
 import diff from './diff';
 
@@ -19,7 +19,6 @@ let cloneWithUuid = function(val) {
       return val;
     }
   };
-  /* eslint-enable no-use-before-define */
 
   let cloneObject = function(source) {
     var out = {};
@@ -56,6 +55,7 @@ let cloneWithUuid = function(val) {
   };
 
   return deepClone(val);
+  /* eslint-enable no-use-before-define */
 };
 
 let setEqualTo = function(a, b) {
@@ -127,6 +127,7 @@ let watchProperties = function(obj, callback) {
  *  delete obj.$$_watchedProperties;
  *};
  */
+
 let getPrototypeChain = function(obj) {
   let result = [];
   let proto = Object.getPrototypeOf(obj);
@@ -135,6 +136,20 @@ let getPrototypeChain = function(obj) {
     proto = Object.getPrototypeOf(proto);
   }
   return result;
+};
+
+let addParent = function(child, parent) {
+  if (child.$$_parents.indexOf(parent) !== -1) {
+    return;
+  }
+
+  child.$$_parents.push(parent);
+};
+
+let removeParent = function(child, parent) {
+  child.$$_parents = child.$$_parents.filter((p) => {
+    return parent !== p;
+  });
 };
 
 let Observable = function Observable(obj = {}) {
@@ -169,7 +184,7 @@ let Observable = function Observable(obj = {}) {
 
   // Make all properties of Observable or its superclasses non-enumerable
   getPrototypeChain(this).forEach((proto) => {
-    Object.keys(proto).forEach((key) => {
+    Object.getOwnPropertyNames(proto).forEach((key) => {
       var descriptor = Object.getOwnPropertyDescriptor(proto, key);
       descriptor.enumerable = false;
       Object.defineProperty(self, key, descriptor);
@@ -241,18 +256,7 @@ mixin(Observable.prototype, {
         return;
       }
 
-      let containsParent = val.$$_parents.some((p) => {
-        return p.ref === this;
-      });
-
-      if (containsParent) {
-        return;
-      }
-
-      val.$$_parents.push({
-        key,
-        ref: this
-      });
+      addParent(val, this, key);
     });
   },
 
@@ -277,9 +281,8 @@ let flattenChanges = function(changes) {
 
 let getChanges = function(obj) {
   let prev = obj.$$_snapshot;
-  let curr = cloneWithUuid(obj);
+  let curr = obj;
   let changes = diff(prev, curr, function(a, b) {
-    //return deepEquals(a, b);
     if (a.$$_uuid && b.$$_uuid) {
       return a.$$_uuid === b.$$_uuid;
     }
@@ -288,29 +291,105 @@ let getChanges = function(obj) {
 
   let result = flattenChanges(changes);
   result = result.map((item) => {
-    let obj = item.value || item.item;
-    if (isObject(obj) && '$$_uuid' in obj) {
-      delete obj.$$_uuid;
+    let key = 'value' in item ? 'value' : 'item';
+    if (!isObject(item[key])) {
+      return item;
+    }
+    if (item[key].$$_isObservable) {
+      return item;
+    }
+    if (isObject(item[key]) && '$$_uuid' in item[key]) {
+      delete item[key].$$_uuid;
     }
     return item;
   });
   return result;
 };
 
-let traverseParents = function(node, iterator) {
-  let visit = function(node, path) {
-    path = path || [];
-    if (iterator(node, path.join('.')) === false) {
-      return false;
+let getAncestorChains = function(child) {
+  let ret = [];
+  let visit = function(node, parents) {
+    parents = parents || [];
+    if (!node.$$_parents.length) {
+      ret = [...ret, parents];
+      return;
     }
     for (let i = 0; i < node.$$_parents.length; i++) {
-      if (visit(node.$$_parents[i].ref, [node.$$_parents[i].key, ...path]) === false) {
-        return false;
-      }
+      visit(node.$$_parents[i], [...parents, node.$$_parents[i]]);
     }
-    return true;
   };
-  return visit(node);
+  visit(child);
+  return ret;
+};
+
+let getPaths = function(child, parent) {
+  return getAncestorChains(child)
+    .filter((chain) => {
+      return chain.indexOf(parent) !== -1;
+    })
+    .map((chain) => {
+      let path = [];
+      let prev = child;
+      chain.every((curr) => {
+        forEach(curr, (obj, key) => {
+          if (obj === prev) {
+            path.unshift(key);
+          }
+        });
+        if (curr === parent) {
+          return false;
+        }
+        prev = curr;
+        return true;
+      });
+      return path.join('.');
+    });
+};
+
+let propagateChanges = function(changeMap, child, parent) {
+  let childChanges = changeMap.get(child) || [];
+  let parentChanges = changeMap.get(parent) || [];
+
+  getPaths(child, parent)
+    .forEach((path) => {
+      let changes = childChanges.map(function(c) {
+        c = clone(c);
+        c.path = path;
+        return c;
+      });
+
+      changeMap.set(parent, [...parentChanges, ...changes]);
+    });
+};
+
+let fixBrokenReferences = function(child) {
+  getAncestorChains(child).forEach((chain) => {
+    [child, ...chain].forEach((curr, i, list) => {
+      if (i === 0) {
+        return;
+      }
+      let prev = list[i - 1];
+      if (contains(curr, prev)) {
+        return;
+      }
+
+      removeParent(prev, curr);
+
+      forEach(curr, (obj) => {
+        if (obj === prev) {
+          addParent(prev, curr);
+        }
+      });
+    });
+  });
+};
+
+let cloneMap = function(map) {
+  let ret = new Map();
+  for (let [obj, changes] of map) {
+    ret.set(obj, changes);
+  }
+  return ret;
 };
 
 Observable.uuid = 1;
@@ -336,49 +415,21 @@ Observable.drain = function() {
     }
   }
 
+  for (let child of cloneMap(changeMap).keys()) {
+    fixBrokenReferences(child);
+    getAncestorChains(child).forEach((chain) => {
+      chain.forEach((parent) => {
+        propagateChanges(changeMap, child, parent);
+      });
+    });
+  }
+
   for (let i = 0; i < queue.length; i++) {
     let obj = queue[i];
     obj.$$_takeSnapshot();
   }
 
   Observable.queue = [];
-
-  let list = [];
-  for (let [obj, changes] of changeMap) {
-    list.push({
-      obj,
-      changes
-    });
-  }
-  list.forEach(function(item) {
-    let obj = item.obj;
-    let changes = item.changes;
-    traverseParents(obj, function(node, path) {
-      if (node === obj) {
-        return true;
-      }
-      if (get(node, path) === obj) {
-        let nodeChanges = changeMap.get(node) || [];
-        changeMap.set(node,
-          nodeChanges.concat(
-            changes.map(function(c) {
-              c = clone(c);
-              c.path = path;
-              return c;
-            })
-          )
-        );
-      }
-      else {
-        obj.$$_parents = obj.$$_parents.filter((p) => {
-          return String(p.key) !== path;
-        });
-        return false;
-        // remove $$_parent
-      }
-      return true;
-    });
-  });
 
   for (let [obj, changes] of changeMap) {
     obj.$trigger('change', changes);
