@@ -46,6 +46,7 @@ var _isExternal = (url) => {
  * @param {Function} [callback]  A callback to execute when the application is initialized but not yet ready
  */
 var Application = EventDispatcher.extend(function (callback){
+  EventDispatcher.apply(this, arguments);
   if (callback) {
     this._callback = callback.bind(this);
   }
