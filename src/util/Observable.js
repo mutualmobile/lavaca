@@ -245,7 +245,11 @@ mixin(Observable.prototype, {
     }
 
     watchProperties(this, this.$$_markDirty.bind(this));
-    this.$$_markDirty();
+
+    if (this.$$_eventDispatcher.callbacks.length) {
+      this.$$_markDirty();
+    }
+
     return this;
   },
 
