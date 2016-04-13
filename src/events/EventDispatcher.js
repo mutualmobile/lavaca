@@ -7,17 +7,22 @@ import { default as Disposable } from '../util/Disposable';
  * @constructor
  *
  */
-var EventDispatcher = Disposable.extend(function EventDispatcher() {
-  this.callbacks = [];
-}, {
-  /**
-   * When true, do not fire events
-   * @property suppressEvents
-   * @type Boolean
-   * @default false
-   *
-   */
-  suppressEvents: false,
+class EventDispatcher extends Disposable {
+
+  constructor() {
+    super();
+    this.callbacks = [];
+
+    /**
+     * When true, do not fire events
+     * @property suppressEvents
+     * @type Boolean
+     * @default false
+     *
+     */
+    this.suppressEvents = false;
+  }
+
   /**
    * Bind an event handler to this object
    * @method on
@@ -39,7 +44,8 @@ var EventDispatcher = Disposable.extend(function EventDispatcher() {
     });
 
     return this;
-  },
+  }
+
   /**
    * Unbinds all event handler from this object
    * @method off
@@ -99,7 +105,8 @@ var EventDispatcher = Disposable.extend(function EventDispatcher() {
     });
 
     return this;
-  },
+  }
+
   /**
    * Dispatches an event
    * @method trigger
@@ -128,6 +135,7 @@ var EventDispatcher = Disposable.extend(function EventDispatcher() {
 
     return this;
   }
-});
+
+}
 
 export default EventDispatcher;

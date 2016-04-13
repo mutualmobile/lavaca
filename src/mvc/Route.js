@@ -64,13 +64,16 @@ let _scrubURLValue = (value) => {
  * @param {Object} params  Key-value pairs that will be merged into the params
  *   object that is passed to the controller action
  */
-var Route = Disposable.extend(function Route(pattern, TController, action, params){
-  Disposable.call(this);
-  this.pattern = pattern;
-  this.TController = TController;
-  this.action = action;
-  this.params = params || {};
-}, {
+class Route extends Disposable {
+
+  constructor(pattern, TController, action, params) {
+    super();
+    this.pattern = pattern;
+    this.TController = TController;
+    this.action = action;
+    this.params = params || {};
+  }
+
   /**
    * Tests if this route applies to a URL
    * @method matches
@@ -80,7 +83,8 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
    */
   matches(url) {
     return _patternToRegExp(this.pattern).test(url);
-  },
+  }
+
   /**
    * Converts a URL into a params object according to this route's pattern
    * @method parse
@@ -131,7 +135,8 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
       result[patternItem.replace(_variableCharacters(), '')] = pathItem;
     }
     return result;
-  },
+  }
+
   /**
    * Executes this route's controller action see if work
    * @method exec
@@ -189,6 +194,7 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
         throw err;
       });
   }
-});
+
+}
 
 export default Route;

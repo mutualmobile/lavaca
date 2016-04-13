@@ -11,14 +11,14 @@ describe('A Collection', function() {
   });
 
   it('can add models with a custom model type', function() {
-    let TestModel = Model.extend({
-      fetch: function() {}
-    });
-    let TestCollection = Collection.extend(function TestCollection() {
-      return Collection.apply(this, arguments);
-    }, {
-      TModel: TestModel
-    });
+    let TestModel = class extends Model {
+      fetch() {}
+    };
+    let TestCollection = class extends Collection {
+      static get TModel() {
+        return TestModel;
+      }
+    };
     let list = new TestCollection([
       {
         foo: 'bar'
@@ -28,15 +28,15 @@ describe('A Collection', function() {
   });
 
   it('can deep-merge Arrays into itself with $merge()', function(done) {
-    let TestModel = Model.extend({
-      isTestModel: true
-    });
-    let TestCollection = Collection.extend({
-      TModel: TestModel,
-      $equals: function(a, b) {
+    let TestModel = class extends Model {};
+    let TestCollection = class extends Collection {
+      static get TModel() {
+        return TestModel;
+      }
+      $equals(a, b) {
         return a.id === b.id;
       }
-    });
+    };
 
     let list = new TestCollection([
       { id: 1, color: 'red' },
@@ -74,10 +74,12 @@ describe('A Collection', function() {
   });
 
   describe('can use native Array methods with custom model types', function() {
-    let TestModel = Model.extend({});
-    let TestCollection = Collection.extend({
-      TModel: TestModel
-    });
+    let TestModel = class extends Model {};
+    let TestCollection = class extends Collection {
+      static get TModel() {
+        return TestModel;
+      }
+    };
     let list = new TestCollection([]);
 
     beforeEach(function() {

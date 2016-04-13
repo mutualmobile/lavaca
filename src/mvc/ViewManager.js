@@ -1,8 +1,8 @@
 import { default as History } from '../net/History';
 import { default as View } from './View';
 import { default as Disposable } from '../util/Disposable';
-import {merge, fillIn} from 'mout/object';
-import {contains, removeAll} from 'mout/array';
+import { merge, fillIn } from 'mout/object';
+import { contains, removeAll } from 'mout/array';
 import $ from 'jquery';
 
 /**
@@ -13,57 +13,68 @@ import $ from 'jquery';
  * @constructor
  * @param {jQuery} el  The element that contains all layers
  */
-var ViewManager = Disposable.extend(function ViewManager(el){
-  Disposable.call(this);
-  /**
-   * The element that contains all view layers
-   * @property {jQuery} el
-   * @default null
-   */
-  this.el = $(el || document.body);
-  /**
-   * A cache containing all views
-   * @property {Object} views
-   * @default {}
-   */
-  this.pageViews = {};
-  /**
-   * A list containing all layers
-   * @property {Array} layers
-   * @default []
-   */
-  this.layers = [];
-  /**
-   * Toggles breadcrumb tracking
-   * @property {Boolean} shouldTrackBreadcrumb
-   * @default false
-   */
-  this.shouldTrackBreadcrumb = false;
-  /**
-   * A list containing all views starting from the last root
-   * @property {Array} breadcrumb
-   * @default []
-   */
-  this.breadcrumb = [];
-  /**
-   * A list containing all views that are currently exiting
-   * @property {Array} exitingPageViews
-   * @default []
-   */
-  this.exitingPageViews = [];
-  /**
-   * A list containing all views that are currently entering
-   * @property {Array} enteringPageViews
-   * @default []
-   */
-  this.enteringPageViews = [];
-}, {
-  /**
-   * When true, the view manager is prevented from loading views.
-   * @property {Boolean} locked
-   * @default false
-   */
-  locked: false,
+class ViewManager extends Disposable {
+
+  constructor(el) {
+    super();
+
+    /**
+     * The element that contains all view layers
+     * @property {jQuery} el
+     * @default null
+     */
+    this.el = $(el || document.body);
+
+    /**
+     * A cache containing all views
+     * @property {Object} views
+     * @default {}
+     */
+    this.pageViews = {};
+
+    /**
+     * A list containing all layers
+     * @property {Array} layers
+     * @default []
+     */
+    this.layers = [];
+
+    /**
+     * Toggles breadcrumb tracking
+     * @property {Boolean} shouldTrackBreadcrumb
+     * @default false
+     */
+    this.shouldTrackBreadcrumb = false;
+
+    /**
+     * A list containing all views starting from the last root
+     * @property {Array} breadcrumb
+     * @default []
+     */
+    this.breadcrumb = [];
+
+    /**
+     * A list containing all views that are currently exiting
+     * @property {Array} exitingPageViews
+     * @default []
+     */
+    this.exitingPageViews = [];
+
+    /**
+     * A list containing all views that are currently entering
+     * @property {Array} enteringPageViews
+     * @default []
+     */
+    this.enteringPageViews = [];
+
+    /**
+     * When true, the view manager is prevented from loading views.
+     * @property {Boolean} locked
+     * @default false
+     */
+    this.locked = false;
+  }
+
   /**
    * Sets the el property on the instance
    * @method setEl
@@ -81,7 +92,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
   setEl(el) {
     this.el = typeof el === 'string' ? $(el) : el;
     return this;
-  },
+  }
+
   /**
    * Initializes Breadcrumb tracking to handle contextual animations and enable edge swipe history states
    *
@@ -97,14 +109,16 @@ var ViewManager = Disposable.extend(function ViewManager(el){
         }
       }
     });
-  },
+  }
+
   /**
    * Handles the disposal of views that are popped out of the breadcrumb array
    * @method popBreadcrumb
    */
   popBreadcrumb() {
     this.breadcrumb.pop();
-  },
+  }
+
   /**
    * Tracks new breadcrumbs and resets root links
    *
@@ -116,7 +130,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
       this.breadcrumb = [];
     }
     this.breadcrumb.push(obj);
-  },
+  }
+
   /**
    * A method to silently rewind history without fully routing back.
    * This is an important tool for implementing edge swipe history back
@@ -139,7 +154,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
     if (pageView) {
       this.layers[0] = pageView;
     }
-  },
+  }
+
   /**
    * Builds a pageView and merges in parameters
    * @method buildPageView
@@ -173,14 +189,16 @@ var ViewManager = Disposable.extend(function ViewManager(el){
         this.pageViews[obj.cacheKey] = pageView;
         pageView.cacheKey = obj.cacheKey;
       }
-    } else {
+    }
+    else {
       if (typeof obj.params === 'object') {
         merge(pageView, obj.params);
       }
     }
 
     return pageView;
-  },
+  }
+
   /**
    * Loads a view
    * @method load
@@ -204,7 +222,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
   load(cacheKey, TPageView, model, params) {
     if (this.locked) {
       return Promise.reject('locked');
-    } else {
+    }
+    else {
       this.locked = true;
     }
     params = params || {};
@@ -218,18 +237,19 @@ var ViewManager = Disposable.extend(function ViewManager(el){
 
     if (typeof params === 'number') {
       layer = params;
-      params = {'layer': layer};
-    } else if (params.layer) {
+      params = { layer: layer };
+    }
+    else if (params.layer) {
       layer = params.layer;
     }
 
     var pageView,
         obj = {
-          'cacheKey':cacheKey,
-          'TPageView':TPageView,
-          'model':model,
-          'params':params,
-          'layer':layer
+          cacheKey: cacheKey,
+          TPageView: TPageView,
+          model: model,
+          params: params,
+          layer: layer
         };
 
     if (this.shouldTrackBreadcrumb) {
@@ -256,7 +276,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
         this.enteringPageViews = [];
         this.layers[layer] = pageView;
       }).catch(err=>console.error('Error in ViewManager: ', err));
-  },
+  }
+
   /**
    * Execute beforeEnter or beforeExit for each layer. Both fucntions
    * beforeEnter and beforeExit must return promises.
@@ -276,8 +297,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    */
   beforeEnterExit(index, enteringView) {
     var i,
-      layer,
-      list = [];
+        layer,
+        list = [];
     if (enteringView && typeof enteringView.beforeEnter === 'function') {
       list.push(enteringView.beforeEnter());
     }
@@ -291,7 +312,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
       }
     }
     return Promise.all(list);
-  },
+  }
+
   /**
    * Removes all views on a layer
    * @method dismiss
@@ -316,9 +338,11 @@ var ViewManager = Disposable.extend(function ViewManager(el){
   dismiss(layer) {
     if (typeof layer === 'number') {
       return this.dismissLayersAbove(layer - 1);
-    } else if (layer instanceof View) {
+    }
+    else if (layer instanceof View) {
       return this.dismiss(layer.layer);
-    } else {
+    }
+    else {
       layer = $(layer);
       var index = layer.attr('data-layer-index');
       if (index === null) {
@@ -329,7 +353,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
         return this.dismiss(Number(index));
       }
     }
-  },
+  }
+
   /**
    * Removes all layers above a given index
    * @method dismissLayersAbove
@@ -374,7 +399,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
       });
 
     return Promise.all(promises);
-  },
+  }
+
   /**
    * Empties the view cache
    * @method flush
@@ -388,7 +414,8 @@ var ViewManager = Disposable.extend(function ViewManager(el){
     else {
       this.pageViews = {};
     }
-  },
+  }
+
   /**
    * Readies the view manager for garbage collection
    * @method dispose
@@ -396,6 +423,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
   dispose() {
     Disposable.prototype.dispose.call(this);
   }
-});
+
+}
 
 export default new ViewManager(null);

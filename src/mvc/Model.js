@@ -1,5 +1,4 @@
 import Observable from '../util/Observable';
-import extend from '../util/extend';
 
 // Virtual type
 /**
@@ -40,8 +39,6 @@ import extend from '../util/extend';
  * @constructor
  * @param {Object} [map]  A parameter hash to apply to the model
  */
-let Model = extend(Observable, function Model() {
-  return Observable.apply(this, arguments);
-});
+class Model extends Observable {}
 
 export default Model;

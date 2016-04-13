@@ -100,14 +100,11 @@ describe('A View', function() {
     });
   });
   it('can be rendered', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function() {
+    var TestView = class extends View {
+      generateHtml() {
         return '<h2>Hello World</h2><p>Color is blue.</p>';
       }
-    });
+    };
     testView = new TestView(el, model);
     testView.render().then(function() {
       expect(testView.hasRendered).to.equal(true);
@@ -117,14 +114,11 @@ describe('A View', function() {
     });
   });
   it('can redraw whole view', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function() {
+    var TestView = class extends View {
+      generateHtml() {
         return '<h2>Hello World</h2><p>Color is ' + this.model.color + '.</p>';
       }
-    });
+    };
     testView = new TestView(el, model);
     testView.render().then(function() {
       expect(testView.hasRendered).to.equal(true);
@@ -139,14 +133,11 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can redraw whole view using a custom model', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function(model) {
+    var TestView = class extends View {
+      generateHtml(model) {
         return '<p class="redraw">Color is ' + model.color + '.</p>';
       }
-    });
+    };
 
     var otherModel = new Model({color: 'orange'});
     testView = new TestView(el, model);
@@ -162,14 +153,11 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can redraw part of a based on a selector', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function(model) {
+    var TestView = class extends View {
+      generateHtml(model) {
         return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
       }
-    });
+    };
 
     testView = new TestView(el, model);
     testView.render().then(function() {
@@ -186,14 +174,11 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can redraw part of a based on a selector with a custom model', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function(model) {
+    var TestView = class extends View {
+      generateHtml(model) {
         return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
       }
-    });
+    };
 
     var otherModel = new Model({color: 'orange', primary: false});
     testView = new TestView(el, model);
@@ -209,14 +194,11 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can re-render without redrawing', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function(model) {
+    var TestView = class extends View {
+      generateHtml(model) {
         return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
       }
-    });
+    };
 
     testView = new TestView(el, model);
     testView.render().then(function() {
@@ -234,14 +216,11 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can re-render using a custom model without redrawing', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function(model) {
+    var TestView = class extends View {
+      generateHtml(model) {
         return '<p class="redraw">Color is ' + model.color + '.</p><p>It is ' + (model.primary ? '' : 'not ') + 'primary</p>';
       }
-    });
+    };
 
     var otherModel = new Model({color: 'orange', primary: false});
     testView = new TestView(el, model);
@@ -258,22 +237,23 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can map an event', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
+    var TestView = class extends View {
+      constructor(...args) {
+        super(...args);
 
-      this.mapEvent({
-        'input': {
-          'click': function() {
-            done();
+        this.mapEvent({
+          'input': {
+            'click': function() {
+              done();
+            }
           }
-        }
-      });
-    },
-    {
-      generateHtml: function() {
+        });
+      }
+
+      generateHtml() {
         return '<input type="button" value="Click here!"></input>';
       }
-    });
+    };
 
     testView = new TestView(el, new Model());
     testView.render().then(function() {
@@ -281,25 +261,26 @@ describe('A View', function() {
     });
   });
   it('always binds mapped event handlers to itself (`this` === View instance)', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
+    var TestView = class extends View {
+      constructor(...args) {
+        super(...args);
 
-      var id = this.id;
+        var id = this.id;
 
-      this.mapEvent({
-        'input': {
-          'click': function() {
-            expect(this.id).to.equal(id);
-            done();
+        this.mapEvent({
+          'input': {
+            'click': function() {
+              expect(this.id).to.equal(id);
+              done();
+            }
           }
-        }
-      });
-    },
-    {
-      generateHtml: function() {
+        });
+      }
+
+      generateHtml() {
         return '<input type="button" value="Click here!"></input>';
       }
-    });
+    };
 
     testView = new TestView(el, new Model());
     testView.render().then(function() {
@@ -307,19 +288,18 @@ describe('A View', function() {
     });
   });
   it('can map a widget', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function() {
+    var TestView = class extends View {
+      generateHtml() {
         return '<div class="widget" id="widget"></div>';
       }
-    });
+    };
 
-    var MyWidget = Widget.extend(function MyWidget() {
-      Widget.apply(this, arguments);
-      this.testProp = 'abc';
-    });
+    var MyWidget = class extends Widget {
+      constructor(...args) {
+        super(...args);
+        this.testProp = 'abc';
+      }
+    };
 
     testView = new TestView(el, new Model());
     testView.mapWidget('.widget', MyWidget);
@@ -330,25 +310,26 @@ describe('A View', function() {
     $('script[data-name="model-tmpl"]').remove();
   });
   it('can map a widget with custom arguments', function(done) {
-    var TestView = View.extend(function() {
-      View.apply(this, arguments);
-    },
-    {
-      generateHtml: function() {
+    var TestView = class extends View {
+      generateHtml() {
         return '<div class="widget" id="widget"></div><div class="other-widget" id="other-widget"></div>';
       }
-    });
+    };
 
-    var MyWidget = Widget.extend(function MyWidget(el, testProp) {
-      Widget.apply(this, arguments);
-      this.testProp = testProp;
-    });
+    var MyWidget = class extends Widget {
+      constructor(el, testProp) {
+        super(el, testProp);
+        this.testProp = testProp;
+      }
+    };
 
-    var MyOtherWidget = Widget.extend(function MyOtherWidget(el, testStr, testInt) {
-      Widget.apply(this, arguments);
-      this.testStr = testStr;
-      this.testInt = testInt;
-    });
+    var MyOtherWidget = class extends Widget {
+      constructor(el, testStr, testInt) {
+        super(el, testStr, testInt);
+        this.testStr = testStr;
+        this.testInt = testInt;
+      }
+    };
 
     testView = new TestView(el, new Model());
     testView.mapWidget({

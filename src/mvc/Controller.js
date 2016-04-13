@@ -1,9 +1,6 @@
-import $ from 'jquery';
-import { default as Model } from './Model';
-import { default as Connectivity } from '../net/Connectivity';
 import { default as History } from '../net/History';
 import { default as Disposable } from '../util/Disposable';
-import {interpolate} from 'mout/string';
+import { interpolate } from 'mout/string';
 
 /**
  * Base type for controllers
@@ -14,27 +11,34 @@ import {interpolate} from 'mout/string';
  * @param {Lavaca.mvc.Router} [router]  The application's router
  * @param {Lavaca.mvc.ViewManager} [viewManager]  The application's view manager
  */
-var Controller = Disposable.extend(function Controller(router, viewManager){
-  if (router instanceof Controller) {
-    this.router = router.router;
-    this.viewManager = router.viewManager;
-  } else {
-    this.router = router;
-    this.viewManager = viewManager;
+class Controller extends Disposable {
+
+  constructor(router, viewManager) {
+    super();
+    /**
+     * The application's router
+     * @property {Lavaca.mvc.Router} router
+     * @default null
+     */
+    this.router = null;
+
+    /**
+     * The application's view manager
+     * @property {Lavaca.mvc.ViewManager} viewManager
+     * @default null
+     */
+    this.viewManager = null;
+
+    if (router instanceof Controller) {
+      this.router = router.router;
+      this.viewManager = router.viewManager;
+    }
+    else {
+      this.router = router;
+      this.viewManager = viewManager;
+    }
   }
-}, {
-  /**
-   * The application's router
-   * @property {Lavaca.mvc.Router} router
-   * @default null
-   */
-  router: null,
-  /**
-   * The application's view manager
-   * @property {Lavaca.mvc.ViewManager} viewManager
-   * @default null
-   */
-  viewManager: null,
+
   /**
    * Loads a view
    * @method view
@@ -47,7 +51,8 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    */
   view(cacheKey, TView, model, layer) {
     return this.viewManager.load(cacheKey, TView, model, layer);
-  },
+  }
+
   /**
    * Adds a state to the browser history
    * @method history
@@ -64,7 +69,8 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
         History[useReplace ? 'replace' : 'push'](state, title, url);
       }
     };
-  },
+  }
+
   /**
    * Convenience method for formatting URLs
    * @method url
@@ -76,7 +82,8 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
   url(str, args) {
     args = args.map(window.encodeURIComponent);
     return interpolate(str, args, /\{(.+?)\}/);
-  },
+  }
+
   /**
    * Directs the user to another route
    * @method redirect
@@ -94,7 +101,8 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
    */
   redirect(str, args, params) {
     return this.router.unlock().exec(this.url(str, args || []), null, params);
-  },
+  }
+
   /**
    * Readies the controller for garbage collection
    * @method dispose
@@ -106,6 +114,7 @@ var Controller = Disposable.extend(function Controller(router, viewManager){
       = null;
     Disposable.prototype.dispose.apply(this, arguments);
   }
-});
+
+}
 
 export default Controller;

@@ -25,171 +25,170 @@ let _UNDEFINED;
  *
  *
  */
-var View = EventDispatcher.extend(function View(el, model, parentView) {
-  EventDispatcher.call(this);
+class View extends EventDispatcher {
 
-  /**
-   * The model used by the view
-   * @property model
-   * @default null
-   * @optional
-   * @type lavaca.mvc.Model
-   *
-   */
-  this.model = model || null;
+  constructor(el, model, parentView) {
+    super();
 
-  /**
-   * An id is applied to a data property on the views container
-   * @property id
-   * @default generated from className and unique identifier
-   * @type String
-   *
-   */
-  this.id = (this.className + '-' + uuid()).replace(' ', '-');
-
-  if (typeof parentView !== 'number') {
     /**
-     * If the view is created in the context of a childView, the parent view is assigned to this view
-     * @property parentView
-    * @default null
+     * The model used by the view
+     * @property model
+     * @default null
+     * @optional
+     * @type lavaca.mvc.Model
+     *
+     */
+    this.model = model || null;
+
+    /**
+     * An id is applied to a data property on the views container
+     * @property id
+     * @default generated from className and unique identifier
+     * @type String
+     *
+     */
+    this.id = (this.className + '-' + uuid()).replace(' ', '-');
+
+    /**
+     * A dictionary of selectors and event types in the form
+     * {eventType: {delegate: 'xyz', callback: func}}@property el
+     * @property eventMap
+     * @default {}
+     * @type Object
+     */
+    this.eventMap = {};
+
+    /**
+     * An array of selectors and events in the form of
+     * {delegate:delegate, event:event, callback: callback}
+     * @property extEventMap
+     * @default []]
+     * @type Array
+     */
+    this.extEventMap = [];
+
+    /**
+     * A dictionary of selectors, View types and models in the form
+     *   {selector: {TView: TView, model: model}}}
+     * @property {Object} childViewMap
+     * @default {}
      * @type Object
      *
      */
-    this.parentView = parentView || null;
+    this.childViewMap = {};
+    /**
+     * Interactive elements used by the view
+     * @property childViews
+     * @default {}
+     * @type Object
+     */
+    this.childViews = {};
+    /**
+     * A dictionary of selectors and widget types in the form
+     *   {selector: widgetType}
+     * @property {Object} widgetMap
+     * @default {}
+     * @type Object
+     */
+    this.widgetMap = {};
+    /**
+     * Interactive elements used by the view
+     * @property widgets
+     * @default {}
+     * @type Object
+     */
+    this.widgets = {};
+    /**
+     *  A map of all the events to be applied to child Views in the form of
+     *  {type: {TView: TView, callback : callback}}
+     * @property childViewEventMap
+     * @default Object
+     * @type Object
+     */
+    this.childViewEventMap = {};
+    /**
+     * Will render any childViews automatically when set to true
+     * @property autoRender
+     * @default true
+     *
+     * @type Boolean
+     */
+    this.autoRender = true;
+    /**
+     * The name of the template associated with the view
+     * @property {String} template
+     * @default null
+     *
+     */
+    this.template = null;
+    /**
+     * A class name added to the view container
+     * @property String className
+     * @default null
+     *
+     */
+    this.className = null;
+    /**
+     * The index of the layer on which the view sits
+     * @property {Number} layer
+     * @default 0
+     */
+    this.layer = 0;
+    /**
+     * Type of view, ex PageView, View
+     * @property String viewType
+     * @default null
+     */
+    this.viewType = null;
+    /**
+     * Reference to the ChildViewManager if one is mapped
+     * @property {Lavaca.mvc.childViewManager} childViewManager
+     * @default false
+     */
+    this.childViewManager = false;
 
-  } else {
-    this.layer = parentView;
+    if (typeof parentView !== 'number') {
+      /**
+       * If the view is created in the context of a childView, the parent view is assigned to this view
+       * @property parentView
+      * @default null
+       * @type Object
+       *
+       */
+      this.parentView = parentView || null;
+    }
+    else {
+      this.layer = parentView;
+    }
+
+    /**
+     * The element that is either assigned to the view if in the context of a childView, or is created for the View
+     * if it is a PageView
+     * @property el
+     * @default null
+     * @type Object | String
+     *
+     */
+    if (isString(el)) {
+      this.el = $(el);
+    }
+    else if (el && el.length) {
+      this.el = el;
+    }
+    else {
+      this.el = $('<div></div>');
+    }
+    this.el.addClass('view');
+    this.el.addClass(this.className);
+    this.el.data('view', this);
+    this.el.attr('data-view-id', this.id);
+
+
+
+    this
+      .on('rendersuccess', this.onRenderSuccess.bind(this))
+      .on('rendererror', this.onRenderError.bind(this));
   }
-
-  /**
-   * The element that is either assigned to the view if in the context of a childView, or is created for the View
-   * if it is a PageView
-   * @property el
-   * @default null
-   * @type Object | String
-   *
-   */
-  if (isString(el)) {
-    this.el = $(el);
-  }
-  else if (el && el.length) {
-    this.el = el;
-  }
-  else {
-    this.el = $('<div></div>');
-  }
-  this.el.addClass('view');
-  this.el.addClass(this.className);
-  this.el.data('view', this);
-  this.el.attr('data-view-id', this.id);
-
-
-  /**
-   * A dictionary of selectors and event types in the form
-   * {eventType: {delegate: 'xyz', callback: func}}@property el
-   * @property eventMap
-   * @default {}
-   * @type Object
-   */
-  this.eventMap = {};
-
-  /**
-   * An array of selectors and events in the form of
-   * {delegate:delegate, event:event, callback: callback}
-   * @property extEventMap
-   * @default []]
-   * @type Array
-   */
-  this.extEventMap = [];
-
-  /**
-   * A dictionary of selectors, View types and models in the form
-   *   {selector: {TView: TView, model: model}}}
-   * @property {Object} childViewMap
-   * @default {}
-   * @type Object
-   *
-   */
-  this.childViewMap = {};
-  /**
-   * Interactive elements used by the view
-   * @property childViews
-   * @default {}
-   * @type Object
-   */
-  this.childViews = {};
-  /**
-   * A dictionary of selectors and widget types in the form
-   *   {selector: widgetType}
-   * @property {Object} widgetMap
-   * @default {}
-   * @type Object
-   */
-  this.widgetMap = {};
-  /**
-   * Interactive elements used by the view
-   * @property widgets
-   * @default {}
-   * @type Object
-   */
-  this.widgets = {};
-  /**
-   *  A map of all the events to be applied to child Views in the form of
-   *  {type: {TView: TView, callback : callback}}
-   * @property childViewEventMap
-   * @default Object
-   * @type Object
-   */
-  this.childViewEventMap = {};
-
-  this
-    .on('rendersuccess', this.onRenderSuccess.bind(this))
-    .on('rendererror', this.onRenderError.bind(this));
-}, {
-  /**
-   * Will render any childViews automatically when set to true
-   * @property autoRender
-   * @default true
-   *
-   * @type Boolean
-   */
-  autoRender: true,
-  /**
-   * The name of the template associated with the view
-   * @property {String} template
-   * @default null
-   *
-   */
-  template: null,
-  /**
-   * A class name added to the view container
-   * @property String className
-   * @default null
-   *
-   */
-  className: null,
-
-
-  /**
-   * The index of the layer on which the view sits
-   * @property {Number} layer
-   * @default 0
-   */
-  layer: 0,
-
-  /**
-   * Type of view, ex PageView, View
-   * @property String viewType
-   * @default null
-   */
-  viewType: null,
-
-  /**
-   * Reference to the ChildViewManager if one is mapped
-   * @property {Lavaca.mvc.childViewManager} childViewManager
-   * @default false
-   */
-  childViewManager: false,
 
   /**
    * Generate the HTML to be used in render() and redraw() methods. Override
@@ -202,7 +201,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    */
   generateHtml(model) {
     return '';
-  },
+  }
 
   _parseRenderArguments() {
     var args = Array.prototype.slice.call(arguments);
@@ -248,7 +247,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     }
 
     return ret;
-  },
+  }
 
   /**
    * Renders the view's template and replaces the DOM nodes that match the
@@ -368,14 +367,14 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     );
 
     return promise;
-  },
+  }
 
   /**
    * Dispose old widgets and child views
    * @method disposeChildViews
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeChildViews: function($el) {
+  disposeChildViews($el) {
     var childViewSearch,
       self = this;
 
@@ -392,7 +391,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         childView.dispose();
       }
     });
-  },
+  }
 
   /**
    * Dispose old widgets and child views
@@ -414,7 +413,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       }
     });
     $el.removeData('widgets');
-  },
+  }
+
   /**
    * Unbinds events from the model
    * @method clearModelEvents
@@ -439,7 +439,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         this.model.$off(event + '.' + this.id, callback, this);
       }
     }
-  },
+  }
 
   /**
    * Unbinds all extEvents
@@ -451,7 +451,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       o.delegate.off(o.event,o.callback);
     });
     this.extEventMap = [];
-  },
+  }
 
   /**
    * Binds events to the view
@@ -510,7 +510,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         }
       }
     }
-  },
+  }
+
   /**
    * Maps multiple delegated events for the view
    * @method mapEvent
@@ -556,7 +557,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       o[eventType] = callback;
     }
     return this;
-  },
+  }
+
   /**
    * Called from mapEvent to map an event to external objects that extend from EventDispatcher
    * @method mapExtEvent
@@ -577,7 +579,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     else{
       console.warn('You are trying to call mapExtEvent with something that does not extend from EventDispatcher.');
     }
-  },
+  }
+
   /**
    * Initializes widgets on the view
    * @method createWidgets
@@ -616,7 +619,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
           }
         });
     }
-  },
+  }
+
   /**
    * Assigns multiple widget types to elements on the view
    * @method mapWidget
@@ -653,7 +657,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       this.widgetMap[selector] = TWidget;
     }
     return this;
-  },
+  }
+
   /**
    * Initializes child views on the view, called from onRenderSuccess
    * @method createChildViews
@@ -683,7 +688,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
           }
         });
     }
-  },
+  }
+
   /*
    * Assigns a View type to be created for elements matching a selector when the view is rendered
    * @method mapChildView
@@ -719,7 +725,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       this.childViewMap[selector] = { TView: TView, model: model };
     }
     return this;
-  },
+  }
 
   /**
    * Instantiates a ChildViewManager for handling transitions between various childviews
@@ -737,7 +743,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     if (typeof fillin === 'object') {
       this.childViewManager.childViewFillin = fillin;
     }
-  },
+  }
 
   /**
    * Listen for events triggered from child views.
@@ -767,7 +773,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         callback: callback
       };
     }
-  },
+  }
 
   /**
    * Called from onRenderSuccess of the view, adds listeners to all childviews if present
@@ -794,7 +800,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         }
       });
     }
-  },
+  }
+
   /**
    * Executes when the template renders successfully
    * @method onRenderSuccess
@@ -802,7 +809,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    * @param {Event} e  The render event. This object should have a string property named "html"
    *   that contains the template's rendered HTML output.
    */
-  onRenderSuccess(e){},
+  onRenderSuccess(e) {}
+
   /**
    * Executes when the template fails to render
    * @method onRenderError
@@ -811,8 +819,9 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    *   that contains the error message.
    */
   onRenderError(e) {
-    console.log(e.err)
-  },
+    console.log(e.err);
+  }
+
   /**
    * Readies the view for garbage collection
    * @method dispose
@@ -838,8 +847,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       = null;
 
     EventDispatcher.prototype.dispose.apply(this, arguments);
-  },
-
+  }
 
   /**
    * Adds this view to a container
@@ -860,7 +868,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       }
       container.append(this.el);
     }
-  },
+  }
 
   /**
    * Executes when the user navigates to this view
@@ -882,7 +890,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       .then(function() {
         this.trigger('enter');
       }.bind(this)).catch(err=>console.error(err));
-  },
+  }
+
   /**
    * Executes when the user navigates away from this view
    * @method exit
@@ -895,7 +904,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     this.el.detach();
     this.trigger('exit');
     return Promise.resolve();
-  },
+  }
+
   /**
    * Retrieves an array of widgets that match a selector
    * @method getWidget
@@ -910,7 +920,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       }
     });
     return items;
-  },
+  }
+
   /**
    * Retrieves an array of childViews that match a selector
    * @method getChildViews
@@ -926,6 +937,6 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     });
     return items;
   }
-});
+}
 
 export default View;

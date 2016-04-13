@@ -4,34 +4,36 @@ import { default as History } from '../net/History';
 import {fillIn, merge} from 'mout/object';
 import {removeAll, contains} from 'mout/array';
 
-var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, id){
-  Disposable.call(this);
-  this.history = [];
-  this.animationBreadcrumb = [];
-  this.step = 1;
-  this.initialStep = 1;
-  this.routes = [];
-  this.currentView = false;
-  this.isRoutingBack = false;
-  this.layers = [];
-  this.exitingViews = [];
-  this.enteringViews = [];
-  this.routes = {};
-  this.elName = el;
-  this.parentView = parent;
-  this.id = id;
-  this.hasInitialized = false;
-  if (typeof routes === 'object') {
-    for (var r in routes) {
-      this.routes[r] = routes[r];
+class ChildViewManager extends Disposable {
+  constructor(el, routes, parent, id) {
+    super();
+    this.history = [];
+    this.animationBreadcrumb = [];
+    this.step = 1;
+    this.initialStep = 1;
+    this.routes = [];
+    this.currentView = false;
+    this.isRoutingBack = false;
+    this.layers = [];
+    this.exitingViews = [];
+    this.enteringViews = [];
+    this.routes = {};
+    this.elName = el;
+    this.parentView = parent;
+    this.id = id;
+    this.hasInitialized = false;
+    if (typeof routes === 'object') {
+      for (var r in routes) {
+        this.routes[r] = routes[r];
+      }
     }
+    else{
+      console.warn('You must pass mapChildViewManager an element string and object of the routes.');
+      return;
+    }
+    $(window).on('cvmexec.'+this.id,_exec.bind(this));
   }
-  else{
-    console.warn('You must pass mapChildViewManager an element string and object of the routes.');
-    return;
-  }
-  $(window).on('cvmexec.'+this.id,_exec.bind(this));
-}, {
+
   init(view, id) {
     this.el = view.find(this.elName);
     if (!this.el.hasClass('cvm')){
@@ -39,7 +41,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
       this.exec(null, {isRedraw: this.hasInitialized});
       this.hasInitialized = true;
     }
-  },
+  }
+
   back() {
     if(!this.history || this.history.length - 1 <= 0){
       History.back();
@@ -53,7 +56,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
       };
       this.exec(route).then(_always, _always);
     }
-  },
+  }
+
   stepBack() {
     if(this.history.length > 1){
       var route = _getRoute.call(this, this.history[this.history.length - 1]);
@@ -67,7 +71,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
     else{
       this.back();
     }
-  },
+  }
+
   exec(route, params) {
     if(!route){
       route = 1;
@@ -132,7 +137,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
           this.parentView.onChildViewManagerExec(route, this.step);
         }
       }).catch(err=>console.error(err));
-  },
+  }
+
   dismiss(layer) {
     if (typeof layer === 'number') {
       return this.dismissLayersAbove(layer - 1);
@@ -147,7 +153,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
         return this.dismiss(Number(index));
       }
     }
-  },
+  }
+
   dismissLayersAbove(index, exceptForView) {
     var toDismiss = this.layers.slice(index+1)
       .filter((layer) => {
@@ -172,16 +179,19 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
       });
 
     return Promise.all(promises).catch(err=>console.error(err));
-  },
+  }
+
   dispose() {
     this.model = this.parentView = null;
     $(window).off('cvmexec.'+this.id);
     Disposable.prototype.dispose.call(this);
-  },
+  }
+
   flush() {
     this.history = [];
   }
-});
+
+}
 
 function _getRoute(url){
   var route = false;

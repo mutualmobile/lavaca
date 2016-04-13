@@ -9,41 +9,45 @@ import { default as Disposable } from '../util/Disposable';
  * @constructor
  * @param {Lavaca.mvc.ViewManager} viewManager  The view manager
  */
-var Router = Disposable.extend(function(viewManager){
-  Disposable.call(this);
-  /**
-   * @field {Array} routes
-   * @default []
-   * The [[Lavaca.mvc.Route]]s used by this router
-   */
-  this.routes = [];
-  /**
-   * @field {Lavaca.mvc.ViewManager} viewManager
-   * @default null
-   * The view manager used by this router
-   */
-  this.viewManager = viewManager;
+class Router extends Disposable {
 
-}, {
-  /**
-   * @field {Boolean} locked
-   * @default false
-   * When true, the router is prevented from executing a route
-   */
-  locked: false,
-  /**
-   * @field {Boolean} hasNavigated
-   * @default false
-   * Whether or not this router has been used to navigate
-   */
-  hasNavigated: false,
-  /**
-   * @field {Boolean} runAuthenticationCheck
-   * @default false
-   * When true, this runs the defined authentication function
-   * set in this.setAuth() before executing a route.
-   */
-  runAuthenticationCheck: false,
+  constructor(viewManager) {
+    super();
+    /**
+     * @field {Array} routes
+     * @default []
+     * The [[Lavaca.mvc.Route]]s used by this router
+     */
+    this.routes = [];
+    /**
+     * @field {Lavaca.mvc.ViewManager} viewManager
+     * @default null
+     * The view manager used by this router
+     */
+    this.viewManager = viewManager;
+
+    /**
+     * @field {Boolean} locked
+     * @default false
+     * When true, the router is prevented from executing a route
+     */
+    this.locked = false;
+
+    /**
+     * @field {Boolean} hasNavigated
+     * @default false
+     * Whether or not this router has been used to navigate
+     */
+    this.hasNavigated = false;
+
+    /**
+     * @field {Boolean} runAuthenticationCheck
+     * @default false
+     * When true, this runs the defined authentication function
+     * set in this.setAuth() before executing a route.
+     */
+    this.runAuthenticationCheck = false;
+  }
 
   startHistory() {
     this.onpopstate = (e) => {
@@ -56,7 +60,8 @@ var Router = Disposable.extend(function(viewManager){
       }
     };
     History.on('popstate', this.onpopstate, this);
-  },
+  }
+
   /**
    * Sets the viewManager property on the instance which is the view manager used by this router
    * @method setEl
@@ -67,7 +72,8 @@ var Router = Disposable.extend(function(viewManager){
   setViewManager(viewManager) {
     this.viewManager = viewManager;
     return this;
-  },
+  }
+
   /**
    * Adds multiple routes
    * @method add
@@ -114,7 +120,8 @@ var Router = Disposable.extend(function(viewManager){
       this.routes.push(new Route(pattern, TController, action, params));
     }
     return this;
-  },
+  }
+
   /**
    * Executes the action for a given URL
    * @method exec
@@ -151,7 +158,7 @@ var Router = Disposable.extend(function(viewManager){
     }
 
     //remove trailing slash
-    if (url.length > 1 && 
+    if (url.length > 1 &&
         url.substr(0,1) === '/' &&
         url.substr(-1) === '/') {
       url = url.substring(0,(url.length-1));
@@ -179,14 +186,15 @@ var Router = Disposable.extend(function(viewManager){
     }
     if(checkAuth && failUrl !== url && !ignoreAuth){
       return func().then(
-        () => _executeIfRouteExists.call(this, url, state, params), 
+        () => _executeIfRouteExists.call(this, url, state, params),
         () => _executeIfRouteExists.call(this, failUrl, state, params));
     }
     else{
       return _executeIfRouteExists.call(this, url, state, params);
     }
 
-  },
+  }
+
   /**
    * Unlocks the router so that it can be used again
    * @method unlock
@@ -196,7 +204,8 @@ var Router = Disposable.extend(function(viewManager){
   unlock() {
     this.locked = false;
     return this;
-  },
+  }
+
   /**
    * Creates authentication check for routes
    * @method setAuth
@@ -221,7 +230,8 @@ var Router = Disposable.extend(function(viewManager){
     else{
       console.warn('You must pass Router.setAuth() a function and a route to execute if authentication fails');
     }
-  },
+  }
+
   /**
    * Readies the router for garbage collection
    * @method dispose
@@ -233,7 +243,8 @@ var Router = Disposable.extend(function(viewManager){
     }
     Disposable.prototype.dispose.apply(this, arguments);
   }
-});
+
+}
 
 /**
  * Checks if route exists and executes that route
@@ -262,7 +273,7 @@ var Router = Disposable.extend(function(viewManager){
 let _executeIfRouteExists = function(url, state, params) {
   var i = -1,
       route;
-      
+
   while (!!(route = this.routes[++i])) {
     if (route.matches(url)) {
       break;

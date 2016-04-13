@@ -64,20 +64,24 @@ let merge = function(a, b, equals) {
   return result;
 };
 
-let Collection = Model.extend(function Collection(list = []) {
-  return Observable.call(this, list);
-}, {
-  TModel: Model,
+class Collection extends Model {
+  constructor(list = []) {
+    super(list);
+  }
+
+  static get TModel() {
+    return Model;
+  }
 
   $equals(a, b) {
     return a === b;
-  },
+  }
 
   $merge(list) {
     return this.$apply(
       merge(this, list, this.$equals.bind(this))
     );
-  },
+  }
 
   $apply(list) {
     if (list) {
@@ -98,33 +102,33 @@ let Collection = Model.extend(function Collection(list = []) {
     }
 
     for (let i = 0; i < this.length; i++) {
-      this[i] = coerceIntoModel(this.TModel, this[i]);
+      this[i] = coerceIntoModel(this.constructor.TModel, this[i]);
     }
 
     return Observable.prototype.$apply.call(this);
-  },
+  }
 
-  push: function(...list) {
+  push(...list) {
     this.$$_markDirty();
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
+    list = list.map(coerceIntoModel.bind(this, this.constructor.TModel));
     return Array.prototype.push.apply(this, list);
-  },
+  }
 
-  splice: function(start, deleteCount, ...list) {
+  splice(start, deleteCount, ...list) {
     this.$$_markDirty();
     if (arguments.length <= 2) {
       return Array.prototype.splice.apply(this, arguments);
     }
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
+    list = list.map(coerceIntoModel.bind(this, this.constructor.TModel));
     return Array.prototype.splice.call(this, start, deleteCount, ...list);
-  },
+  }
 
-  unshift: function(...list) {
+  unshift(...list) {
     this.$$_markDirty();
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
+    list = list.map(coerceIntoModel.bind(this, this.constructor.TModel));
     return Array.prototype.unshift.apply(this, list);
   }
 
-});
+}
 
 export default Collection;

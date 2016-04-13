@@ -45,47 +45,73 @@ var _isExternal = (url) => {
  * @constructor
  * @param {Function} [callback]  A callback to execute when the application is initialized but not yet ready
  */
-var Application = EventDispatcher.extend(function (callback){
-  if (callback) {
-    this._callback = callback.bind(this);
+class Application extends EventDispatcher {
+  constructor(callback) {
+    super();
+
+    if (callback) {
+      this._callback = callback.bind(this);
+    }
+
+    /**
+     * The default URL that the app will navigate to
+     * @property initRoute
+     * @default '/'
+     *
+     * @type String
+     */
+    this.initRoute = '/';
+
+    /**
+     * The default state object to supply the initial route
+     * @property initState
+     * @default null
+     *
+     * @type {Object}
+     */
+    this.initState = null;
+
+    /**
+     * The default params object to supply the initial route
+     * @property initParams
+     * @default null
+     *
+     * @type {Object}
+     */
+
+    this.initParams = null;
+
+    /**
+     * The selector used to identify the DOM element that will contain views
+     * @property viewRootSelector
+     * @default #view-root
+     *
+     * @type {String}
+     */
+    this.viewRootSelector = '#view-root';
+
+    /**
+     * Gets initial route based on query string returned by server 302 redirect
+     * @property initialStandardRoute
+     * @default null
+     *
+     * @type {String}
+     */
+    this.initialHashRoute = (function(hash){
+      return _matchHashRoute(hash);
+    })(window.location.hash);
+
+    /**
+     * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
+     * @method {String} beforeInit
+     *
+     * @return {Promise}  A promise
+     */
+   this.beforeInit = () => Promise.resolve(null);
+
+    Device.init(()=>this.beforeInit().then(()=>this.init()));
   }
-  Device.init(()=>this.beforeInit().then(()=>this.init()));
-}, {
-  /**
-   * The default URL that the app will navigate to
-   * @property initRoute
-   * @default '/'
-   *
-   * @type String
-   */
 
-  initRoute: '/',
-  /**
-   * The default state object to supply the initial route
-   * @property initState
-   * @default null
-   *
-   * @type {Object}
-   */
-  initState: null,
-  /**
-   * The default params object to supply the initial route
-   * @property initParams
-   * @default null
-   *
-   * @type {Object}
-   */
-
-  initParams: null,
-  /**
-   * The selector used to identify the DOM element that will contain views
-   * @property viewRootSelector
-   * @default #view-root
-   *
-   * @type {String}
-   */
-
-  viewRootSelector: '#view-root',
   /**
    * Handler for when the user attempts to navigate to an invalid route
    * @method onInvalidRoute
@@ -98,7 +124,8 @@ var Application = EventDispatcher.extend(function (callback){
     if (err !== 'locked') {
       alert('An error occurred while trying to display this URL.');
     }
-  },
+  }
+
   /**
    * Handler for when the user taps on a <A> element
    * @method onTapLink
@@ -145,7 +172,8 @@ var Application = EventDispatcher.extend(function (callback){
         }
       }
     }
-  },
+  }
+
   /**
    * Initializes the application
    * @method init
@@ -192,7 +220,8 @@ var Application = EventDispatcher.extend(function (callback){
         this.router.unlock();
         return this.router.exec(this.initRoute, this.initState, this.initParams);
       });
-  },
+  }
+
   /**
    * Binds a global link handler
    * @method bindLinkHandler
@@ -207,24 +236,8 @@ var Application = EventDispatcher.extend(function (callback){
     $body
       .on(type, '.ui-blocker', _stopEvent)
       .on(type, 'a', this.onTapLink.bind(this));
-  },
-  /**
-   * Gets initial route based on query string returned by server 302 redirect
-   * @property initialStandardRoute
-   * @default null
-   *
-   * @type {String}
-   */
-  initialHashRoute: (function(hash){
-    return _matchHashRoute(hash);
-  })(window.location.hash),
-  /**
-   * Handles asynchronous requests that need to happen before Application.init() is called in the constructor
-   * @method {String} beforeInit
-   *
-   * @return {Promise}  A promise
-   */
-  beforeInit: () => Promise.resolve(null)
-});
+  }
+
+}
 
 export default Application;

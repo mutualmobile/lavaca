@@ -9,20 +9,25 @@ import $ from 'jquery';
  * @constructor
  * @param {jQuery} el  The DOM element that is the root of the widget
  */
-var LoadingIndicator = Widget.extend({
-  /**
-   * Class name applied to the root
-   * @property {String} className
-   * @default 'loading'
-   */
-  className: 'loading',
+class LoadingIndicator extends Widget {
+  constructor() {
+    super();
+    /**
+     * Class name applied to the root
+     * @property {String} className
+     * @default 'loading'
+     */
+    this.className = 'loading';
+  }
+
   /**
    * Activates the loading indicator
    * @method show
    */
   show() {
     this.el.addClass(this.className);
-  },
+  }
+
   /**
    * Deactivates the loading indicator
    * @method hide
@@ -30,7 +35,9 @@ var LoadingIndicator = Widget.extend({
   hide() {
     this.el.removeClass(this.className);
   }
-});
+
+}
+
 /**
  * Creates a loading indicator and binds it to the document's AJAX events
  * @method init
