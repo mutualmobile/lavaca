@@ -42,6 +42,29 @@ import extend from '../util/extend';
  */
 let Model = extend(Observable, function Model() {
   return Observable.apply(this, arguments);
+},{
+
+  /**
+   * Sets a value and calls $apply() to trigger a change event
+   * @method $set
+   * @param {String} key  The property name you want to change/set
+   * @param {Object} value  Sets the value in of the property
+   */
+  /**
+   * Sets a value and calls $apply() to trigger a change event
+   * @method $set
+   * @param {String} key  The property name you want to change/set
+   * @param {Object} value  Sets the value in of the property
+   * @param {Boolean} mergeIn  Merges value with previous value
+   */
+  $set(key, value, mergeIn){
+    try{
+      this[key] = merge ? merge(this[key],value) : value;
+    }catch(e){
+      this[key] = value;
+    }
+    this.$apply();
+  }
 });
 
 export default Model;
