@@ -489,13 +489,13 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         }
 
         if (delegate === 'model') {
-          if (this.model && this.model instanceof Model) {
+          if (this.model && typeof this.model.$on === 'function') {
             dotIndex = callbackType.indexOf('.');
             if (dotIndex !== -1) {
               property = callbackType.substr(dotIndex+1);
               callbackType = callbackType.substr(0, dotIndex);
             }
-            this.model.$on(callbackType + '.' + this.id, property, callback);
+            this.model.$on(callbackType + '.' + this.id, callback);
           }
         } else if (callbackType === 'animationEnd' && el.animationEnd) {
           el.animationEnd(delegate, callback);
