@@ -59,7 +59,7 @@ let Model = extend(Observable, function Model() {
    */
   $set(key, value, mergeIn){
     try{
-      this[key] = merge ? merge(this[key],value) : value;
+      this[key] = mergeIn ? (typeof value == 'object' ? merge(this[key] || {} ,value) : value ): value;
     }catch(e){
       this[key] = value;
     }
