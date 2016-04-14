@@ -127,7 +127,7 @@ var Router = Disposable.extend(function(viewManager){
    * @method exec
    *
    * @param {String} url  The URL
-   * @param {Object} state  A history record object
+   * @param {Object} params  Additional parameters to pass to the route
    * @return {Promise}  A promise
    */
   /**
@@ -140,6 +140,9 @@ var Router = Disposable.extend(function(viewManager){
    * @return {Promise}  A promise
    */
   exec(url, state, params) {
+    if(state && !params){
+      state = params;
+    }
     if (this.locked) {
       return Promise.reject('locked');
     } else {
@@ -179,11 +182,11 @@ var Router = Disposable.extend(function(viewManager){
     }
     if(checkAuth && failUrl !== url && !ignoreAuth){
       return func().then(
-        () => _executeIfRouteExists.call(this, url, state, params), 
-        () => _executeIfRouteExists.call(this, failUrl, state, params));
+        () => _executeIfRouteExists.call(this, url, state, params),
+        () => _executeIfRouteExists.call(this, failUrl, state, params)).catch(url=>_rejectionMessage(url));
     }
     else{
-      return _executeIfRouteExists.call(this, url, state, params);
+      return _executeIfRouteExists.call(this, url, state, params).catch(url=>_rejectionMessage(url));;
     }
 
   },
@@ -270,7 +273,7 @@ let _executeIfRouteExists = function(url, state, params) {
   }
 
   if (!route) {
-    return Promise.reject([url, state]);
+    return Promise.reject(url);
   }
   return Promise.resolve()
     .then(() => route.exec(url, this, this.viewManager, state, params))
@@ -281,6 +284,7 @@ let _executeIfRouteExists = function(url, state, params) {
       throw err;
     });
 }
+let _rejectionMessage = (url)=>console.error('Unable to find a route for ' + url);
 
 let singletonRouter = new Router();
 export default singletonRouter;
