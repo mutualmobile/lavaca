@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import { default as Model } from './Model';
-import { default as Connectivity } from '../net/Connectivity';
 import { default as History } from '../net/History';
 import { default as Disposable } from '../util/Disposable';
 import {interpolate} from 'mout/string';
