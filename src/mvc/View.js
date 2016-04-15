@@ -872,7 +872,6 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       = this.model
       = this.parentView
       = null;
-      debugger;
     EventDispatcher.prototype.dispose.apply(this, arguments);
   },
 
