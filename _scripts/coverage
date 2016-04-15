@@ -13,4 +13,7 @@ cp _scripts/.babelrc.commonjs.coverage .babelrc
 mkdir -p build/commonjs-coverage
 ./node_modules/webpack/bin/webpack.js --config webpack.config.coverage.js --resolve-alias 'lavaca=build/commonjs' test/context.js test/context-compiled.js
 ./node_modules/karma-cli/bin/karma start karma.coverage.conf.js "$@"
-find ./test -name lcov.info -exec cat "{}" \; | ./node_modules/coveralls/bin/coveralls.js
+
+if [[ $CI == 'true' ]]; then
+  find ./test -name lcov.info -exec cat "{}" \; | ./node_modules/coveralls/bin/coveralls.js
+fi
