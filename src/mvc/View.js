@@ -458,7 +458,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     if (this.eventMap
       && this.eventMap.model
       && this.model
-      && typeof this.model == 'object') {
+      && typeof this.model.$off == 'function') {
       for (let event in this.eventMap.model) {
         callback = this.eventMap.model[event];
         if (typeof callback === 'object') {
