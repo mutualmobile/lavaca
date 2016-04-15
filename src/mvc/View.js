@@ -144,6 +144,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
 
   this
     .on('rendersuccess', this.onRenderSuccess.bind(this))
+    .on('enter', this.onRenderComplete.bind(this))
     .on('rendererror', this.onRenderError.bind(this));
 }, {
   /**
@@ -827,6 +828,11 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       });
     }
   },
+  /**
+   * Executes when the template is rendered and available in the DOM
+   * @method onRenderComplete
+   */
+  onRenderComplete(){},
   /**
    * Executes when the template renders successfully
    * @method onRenderSuccess
