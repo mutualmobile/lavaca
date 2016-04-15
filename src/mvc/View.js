@@ -375,7 +375,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    * @method disposeChildViews
    * @param  {Object} $el the $el to search for child views and widgets in
    */
-  disposeChildViews: function($el) {
+  disposeChildViews($el) {
     var childViewSearch,
       self = this;
 
@@ -392,6 +392,37 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         childView.dispose();
       }
     });
+  },
+
+  /**
+   * Disposes of events
+   * @method disposeViewEvents
+   */
+  disposeViewEvents(){
+    let el = this.el,
+        callbacks,
+        callback,
+        delegate;
+    for (let delegate in this.eventMap) {
+      callbacks = this.eventMap[delegate];
+      for (let callbackType in this.eventMap[delegate]) {
+        callback = callbacks[callbackType];
+        if (isString(callback) && callback in this) {
+          callback = this[callback].bind(this);
+        }
+        else {
+          callback = callback.bind(this);
+        }
+        if(delegate !== 'model' && delegate !== 'self'){
+          if (el.hammer) {
+            el.hammer({domEvents:true}).off(callbackType, delegate);
+          } else {
+            el.off(callbackType, delegate);
+          }
+          delete this.eventMap[delegate];
+        }
+      }
+    }
   },
 
   /**
@@ -417,16 +448,17 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
   },
   /**
    * Unbinds events from the model
-   * @method clearModelEvents
+   * @method disposeModelEvents
    *
    */
-  clearModelEvents() {
+  disposeModelEvents() {
     var callback,
       dotIndex;
+
     if (this.eventMap
       && this.eventMap.model
       && this.model
-      && this.model instanceof EventDispatcher) {
+      && typeof this.model == 'object') {
       for (let event in this.eventMap.model) {
         callback = this.eventMap.model[event];
         if (typeof callback === 'object') {
@@ -813,13 +845,17 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
   onRenderError(e) {
     console.log(e.err)
   },
+
   /**
    * Readies the view for garbage collection
    * @method dispose
    */
   dispose() {
     if (this.model) {
-      this.clearModelEvents();
+      this.disposeModelEvents();
+    }
+    if(this.eventMap){
+      this.disposeViewEvents();
     }
     if (size(this.childViews)) {
       this.disposeChildViews(this.el);
@@ -836,7 +872,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       = this.model
       = this.parentView
       = null;
-
+      debugger;
     EventDispatcher.prototype.dispose.apply(this, arguments);
   },
 
