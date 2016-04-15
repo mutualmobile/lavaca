@@ -19,57 +19,41 @@ describe('An Observable', function() {
     });
 
     it('should fire an onChange event for added properties', function(done) {
-      let eventLoopTurn = 0;
       let obj = new Observable();
 
       obj.$on('change', function(changes) {
-        expect(eventLoopTurn).to.equal(2);
         expect(changes).to.deep.equal([{
-          type: 'added',
-          key: 'someAttribute',
+          op: 'add',
+          path: ['someAttribute'],
           value: 'new'
         }]);
         done();
       });
 
       setTimeout(function() {
-        eventLoopTurn++;
         obj.someAttribute = 'new';
-      }, 100);
-
-      // test that new properties can't be detected until $apply() is called
-      setTimeout(function() {
-        eventLoopTurn++;
         obj.$apply();
-      }, 200);
+      }, 100);
     });
 
     it('should fire an onChange event for removed properties', function(done) {
-      let eventLoopTurn = 0;
       let obj = new Observable({
         someAttribute: 'old'
       });
 
       obj.$on('change', function(changes) {
-        expect(eventLoopTurn).to.equal(2);
         expect(changes).to.deep.equal([{
-          type: 'removed',
-          key: 'someAttribute',
+          op: 'remove',
+          path: ['someAttribute'],
           value: 'old'
         }]);
         done();
       });
 
       setTimeout(function() {
-        eventLoopTurn++;
         delete obj.someAttribute;
-      }, 100);
-
-      // test that `delete` can't be detected until $apply() is called
-      setTimeout(function() {
-        eventLoopTurn++;
         obj.$apply();
-      }, 200);
+      }, 100);
     });
 
     it('should fire an onChange event for changed properties', function(done) {
@@ -79,16 +63,17 @@ describe('An Observable', function() {
 
       obj.$on('change', function(changes) {
         expect(changes).to.deep.equal([{
-          type: 'changed',
-          key: 'someAttribute',
+          op: 'replace',
+          path: ['someAttribute'],
           oldValue: 'old',
-          newValue: 'new'
+          value: 'new'
         }]);
         done();
       });
 
       setTimeout(function() {
         obj.someAttribute = 'new';
+        obj.$apply();
       }, 100);
     });
 
@@ -107,16 +92,17 @@ describe('An Observable', function() {
         // no events triggered for the obj.a = 100, obj.b = 200, obj.c = 300
         // above
         expect(changes).to.deep.equal([{
-          type: 'changed',
-          key: 'a',
+          op: 'replace',
+          path: ['a'],
           oldValue: 100,
-          newValue: 999
+          value: 999
         }]);
         done();
       });
 
       setTimeout(function() {
         obj.a = 999;
+        obj.$apply();
       }, 100);
     });
 
@@ -130,17 +116,17 @@ describe('An Observable', function() {
       obj.$on('change', function(changes) {
         if (eventLoopTurn === 1) {
           expect(changes).to.deep.equal([{
-            type: 'removed',
-            key: 'foo',
+            op: 'remove',
+            path: ['foo'],
             value: 1
           }]);
         }
         else if (eventLoopTurn === 2) {
           expect(changes).to.deep.equal([{
-            type: 'changed',
-            key: 'bar',
+            op: 'replace',
+            path: ['bar'],
             oldValue: 2,
-            newValue: 200
+            value: 200
           }]);
           done();
         }
@@ -150,11 +136,13 @@ describe('An Observable', function() {
         eventLoopTurn++;
         obj.foo = 100;
         delete obj.foo;
+        obj.$apply();
       }, 100);
 
       setTimeout(function() {
         eventLoopTurn++;
         obj.bar = 200;
+        obj.$apply();
       }, 200);
     });
 
@@ -165,14 +153,15 @@ describe('An Observable', function() {
 
       obj.$on('change', function(changes) {
         expect(changes).to.deep.equal([{
-          type: 'changed',
-          key: 'a',
+          op: 'replace',
+          path: ['a'],
           oldValue: 1,
-          newValue: 2
+          value: 2
         }]);
       });
 
       obj.a = 2;
+      obj.$apply();
 
       setTimeout(function() {
         obj.a = 3; // also testing that changes aren't dispatched until next turn
@@ -186,42 +175,88 @@ describe('An Observable', function() {
       setTimeout(function() {
         obj.$on('change', function(changes) {
           expect(changes).to.deep.equal([{
-            type: 'changed',
-            key: 'a',
+            op: 'replace',
+            path: ['a'],
             oldValue: 0,
-            newValue: 5
+            value: 5
           }]);
           done();
         });
         obj.a = 5;
+        obj.$apply();
       }, 200);
     });
 
     it('should propagate nested member changes', function(done) {
       let obj = new Observable({
-        a: new Observable({
-          b: new Observable({
-            c: new Observable({
+        a: {
+          b: {
+            c: {
               d: 'foo'
-            })
-          })
-        })
+            }
+          }
+        }
       });
 
       obj.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          path: 'a.b.c',
-          key: 'd',
+          op: 'replace',
+          path: ['a', 'b', 'c', 'd'],
           oldValue: 'foo',
-          newValue: 'bar'
+          value: 'bar'
         }]);
         done();
       });
 
       setTimeout(function() {
         obj.a.b.c.d = 'bar';
+        obj.$apply();
+      }, 100);
+    });
+
+    it('should propagate multiple nested member changes', function(done) {
+      let member1 = new Observable({
+        city: 'Austin'
+      });
+      let member2 = new Observable({
+        state: 'TX'
+      });
+      let obj = new Observable({
+        a: {
+          b: {
+            c: member1
+          }
+        },
+        y: {
+          z: member2
+        }
+      });
+
+      obj.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(2);
+        expect(changes).to.deep.include.members([
+          {
+            op: 'replace',
+            path: ['a', 'b', 'c', 'city'],
+            oldValue: 'Austin',
+            value: 'New York'
+          },
+          {
+            op: 'replace',
+            path: ['y', 'z', 'state'],
+            oldValue: 'TX',
+            value: 'NY'
+          }
+        ]);
+        done();
+      });
+
+      setTimeout(function() {
+        member1.city = 'New York';
+        member1.$apply();
+        member2.state = 'NY';
+        member2.$apply();
       }, 100);
     });
 
@@ -250,11 +285,10 @@ describe('An Observable', function() {
       obj.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          path: 'a.b.c',
-          key: 'd',
+          op: 'replace',
+          path: ['a', 'b', 'c', 'd'],
           oldValue: 'foo',
-          newValue: 'bar'
+          value: 'bar'
         }]);
         done1 = true;
         checkDone();
@@ -263,11 +297,10 @@ describe('An Observable', function() {
       obj.a.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          path: 'b.c',
-          key: 'd',
+          op: 'replace',
+          path: ['b', 'c', 'd'],
           oldValue: 'foo',
-          newValue: 'bar'
+          value: 'bar'
         }]);
         done2 = true;
         checkDone();
@@ -276,11 +309,10 @@ describe('An Observable', function() {
       obj.a.b.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          path: 'c',
-          key: 'd',
+          op: 'replace',
+          path: ['c', 'd'],
           oldValue: 'foo',
-          newValue: 'bar'
+          value: 'bar'
         }]);
         done3 = true;
         checkDone();
@@ -289,10 +321,10 @@ describe('An Observable', function() {
       obj.a.b.c.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          key: 'd',
+          op: 'replace',
+          path: ['d'],
           oldValue: 'foo',
-          newValue: 'bar'
+          value: 'bar'
         }]);
         done4 = true;
         checkDone();
@@ -300,11 +332,20 @@ describe('An Observable', function() {
 
       setTimeout(function() {
         obj.a.b.c.d = 'bar';
+        obj.$apply();
       }, 100);
     });
 
     it('should not propagate nested member changes after member is removed', function(done) {
-      let eventLoopTurn = 0;
+      let done1 = false;
+      let done2 = false;
+
+      let checkDone = function() {
+        if (done1 && done2) {
+          done();
+        }
+      };
+
       let member = new Observable({
         foo: 'bar'
       });
@@ -316,49 +357,37 @@ describe('An Observable', function() {
         })
       });
 
-      let memberOnChangeCalled = false;
       member.$on('change', function(changes) {
-        memberOnChangeCalled = true;
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          key: 'foo',
+          op: 'replace',
+          path: ['foo'],
           oldValue: 'bar',
-          newValue: 'baz'
+          value: 'baz'
         }]);
+        done1 = true;
+        checkDone();
       });
 
       obj.$on('change', function(changes) {
-        if (eventLoopTurn === 1) {
-          expect(changes).to.have.lengthOf(1);
-          expect(changes).to.deep.include.members([{
-            type: 'removed',
-            path: 'a.b',
-            key: 'c',
-            value: {
-              foo: 'bar'
-            }
-          }]);
-        }
-        else if (eventLoopTurn === 2) {
-          done(new Error('Changes should not propagate to a parent after a member is removed from a parent.'));
-        }
+        expect(changes).to.have.lengthOf(1);
+        expect(changes).to.deep.include.members([{
+          op: 'remove',
+          path: ['a', 'b', 'c'],
+          value: {
+            foo: 'bar'
+          }
+        }]);
+        done2 = true;
+        checkDone();
       });
 
       setTimeout(function() {
-        eventLoopTurn++;
         delete obj.a.b.c;
-      }, 100);
-
-      setTimeout(function() {
-        eventLoopTurn++;
+        obj.a.b.$apply();
         member.foo = 'baz';
-      }, 200);
-
-      setTimeout(function() {
-        expect(memberOnChangeCalled).to.be.true;
-        done();
-      }, 300);
+        member.$apply();
+      }, 100);
     });
 
     describe('should work with external libraries', function() {
@@ -374,15 +403,15 @@ describe('An Observable', function() {
           expect(changes).to.have.lengthOf(2);
           expect(changes).to.deep.include.members([
             {
-              type: 'added',
-              key: 'd',
+              op: 'add',
+              path: ['d'],
               value: 'foo'
             },
             {
-              type: 'changed',
-              key: 'a',
+              op: 'replace',
+              path: ['a'],
               oldValue: 1,
-              newValue: 100
+              value: 100
             }
           ]);
           done();
@@ -392,6 +421,7 @@ describe('An Observable', function() {
           a: 100,
           d: 'foo'
         });
+        obj.$apply();
       });
 
       it('mout/object/filter', function(done) {
@@ -403,8 +433,8 @@ describe('An Observable', function() {
 
         obj.$on('change', function(changes) {
           expect(changes).to.deep.equal([{
-            type: 'removed',
-            key: 'a',
+            op: 'remove',
+            path: ['a'],
             value: 1
           }]);
           done();
@@ -433,14 +463,15 @@ describe('An Observable', function() {
 
       list.$on('change', function(changes) {
         expect(changes).to.deep.equal([{
-          type: 'added',
-          item: 'foo',
-          index: 0
+          op: 'add',
+          value: 'foo',
+          path: [0]
         }]);
         done();
       });
 
       list.push('foo');
+      list.$apply();
     });
 
     it('should fire an onChange event for added items with direct access', function(done) {
@@ -450,19 +481,19 @@ describe('An Observable', function() {
         expect(changes).to.have.lengthOf(3);
         expect(changes).to.deep.include.members([
           {
-            type: 'added',
-            item: undefined,
-            index: 0
+            op: 'add',
+            value: undefined,
+            path: [0]
           },
           {
-            type: 'added',
-            item: undefined,
-            index: 1
+            op: 'add',
+            value: undefined,
+            path: [1]
           },
           {
-            type: 'added',
-            item: 'foo',
-            index: 2
+            op: 'add',
+            value: 'foo',
+            path: [2]
           }
         ]);
         done();
@@ -479,14 +510,14 @@ describe('An Observable', function() {
         expect(changes).to.have.lengthOf(2);
         expect(changes).to.deep.include.members([
           {
-            type: 'removed',
-            item: 'bar',
-            index: 1
+            op: 'remove',
+            value: 'bar',
+            path: [1]
           },
           {
-            type: 'removed',
-            item: 'baz',
-            index: 2
+            op: 'remove',
+            value: 'baz',
+            path: [2]
           }
         ]);
         done();
@@ -494,6 +525,7 @@ describe('An Observable', function() {
 
       list.pop();
       list.pop();
+      list.$apply();
     });
 
     it('should fire an onChange event for moved items', function(done) {
@@ -502,10 +534,10 @@ describe('An Observable', function() {
       list.$on('change', function(changes) {
         expect(changes).to.deep.equal([
           {
-            type: 'moved',
-            item: 'foo',
-            fromIndex: 0,
-            toIndex: 2
+            op: 'move',
+            from: [0],
+            path: [2],
+            value: 'foo'
           }
         ]);
         done();
@@ -513,6 +545,7 @@ describe('An Observable', function() {
 
       list.splice(0, 1);
       list.push('foo');
+      list.$apply();
     });
 
     it('should fire an onChange event for moved items (large Array test)', function(done) {
@@ -528,15 +561,16 @@ describe('An Observable', function() {
       list.$on('change', function(changes) {
         expect(changes).to.deep.equal([
           {
-            type: 'removed',
-            item: item,
-            index: 50
+            op: 'remove',
+            value: item,
+            path: [50]
           }
         ]);
         done();
       });
 
       list.splice(50, 1);
+      list.$apply();
     });
 
     it('should propagate member changes', function(done) {
@@ -558,28 +592,28 @@ describe('An Observable', function() {
       obj.$on('change', function(changes) {
         expect(changes).to.have.lengthOf(1);
         expect(changes).to.deep.include.members([{
-          type: 'changed',
-          key: 'foo',
+          op: 'replace',
+          path: ['foo'],
           oldValue: 'bar',
-          newValue: 'baz'
+          value: 'baz'
         }]);
         done1 = true;
         checkDone();
       });
 
-      obj.foo = 'baz';
-
       list.$on('change', function(changes) {
         expect(changes).to.deep.include.members([{
-          path: '0',
-          type: 'changed',
-          key: 'foo',
+          op: 'replace',
+          path: [0, 'foo'],
           oldValue: 'bar',
-          newValue: 'baz'
+          value: 'baz'
         }]);
         done2 = true;
         checkDone();
       });
+
+      obj.foo = 'baz';
+      obj.$apply();
     });
 
     it('should propagate member changes (large Array)', function(done) {
@@ -595,11 +629,10 @@ describe('An Observable', function() {
       list.$on('change', function(changes) {
         expect(changes).to.deep.equal([
           {
-            path: '50',
-            type: 'changed',
-            key: '1a',
+            op: 'replace',
+            path: [50, '1a'],
             oldValue: 26,
-            newValue: 'bar'
+            value: 'bar'
           }
         ]);
         done();
@@ -607,6 +640,7 @@ describe('An Observable', function() {
 
       setTimeout(function() {
         list[50]['1a'] = 'bar';
+        list.$apply();
       }, 100);
     });
 
@@ -627,19 +661,18 @@ describe('An Observable', function() {
         expect(changes).to.have.lengthOf(2);
         expect(changes).to.deep.include.members([
           {
-            path: '2',
-            type: 'changed',
-            key: 'a',
+            op: 'replace',
+            path: [2, 'a'],
             oldValue: 1,
-            newValue: 100
+            value: 100
           },
           {
-            type: 'moved',
-            item: {
+            op: 'move',
+            from: [0],
+            path: [2],
+            value: {
               a: 100
-            },
-            fromIndex: 0,
-            toIndex: 2
+            }
           }
         ]);
         done();
@@ -648,6 +681,7 @@ describe('An Observable', function() {
       list[0].a = 100;
       let obj = list.shift();
       list.push(obj);
+      list.$apply();
     });
 
     it('should not propagate member changes after member is removed', function(done) {
@@ -664,9 +698,9 @@ describe('An Observable', function() {
         if (count === 1) {
           expect(changes).to.have.lengthOf(1);
           expect(changes).to.deep.include.members([{
-            type: 'removed',
-            index: 0,
-            item: {
+            op: 'remove',
+            path: [0],
+            value: {
               foo: 'bar'
             }
           }]);
@@ -706,11 +740,10 @@ describe('An Observable', function() {
 
       list1.$on('change', function(changes) {
         expect(changes).to.deep.include.members([{
-          path: '0',
-          type: 'changed',
-          key: 'foo',
+          op: 'replace',
+          path: [0, 'foo'],
           oldValue: 'bar',
-          newValue: 'baz'
+          value: 'baz'
         }]);
         done1 = true;
         checkDone();
@@ -718,11 +751,10 @@ describe('An Observable', function() {
 
       list2.$on('change', function(changes) {
         expect(changes).to.deep.include.members([{
-          path: '3',
-          type: 'changed',
-          key: 'foo',
+          op: 'replace',
+          path: [3, 'foo'],
           oldValue: 'bar',
-          newValue: 'baz'
+          value: 'baz'
         }]);
         done2 = true;
         checkDone();
@@ -730,6 +762,7 @@ describe('An Observable', function() {
 
       setTimeout(function() {
         obj.foo = 'baz';
+        obj.$apply();
       }, 100);
     });
 
@@ -741,6 +774,7 @@ describe('An Observable', function() {
       });
 
       list.slice(1);
+      list.$apply();
 
       setTimeout(function() {
         done();
@@ -754,14 +788,14 @@ describe('An Observable', function() {
         expect(changes).to.have.lengthOf(2);
         expect(changes).to.deep.include.members([
           {
-            type: 'added',
-            item: 'foobar',
-            index: 2
+            op: 'add',
+            value: 'foobar',
+            path: [2]
           },
           {
-            type: 'removed',
-            item: 'foo',
-            index: 0
+            op: 'remove',
+            value: 'foo',
+            path: [0]
           }
         ]);
         done();
@@ -780,9 +814,9 @@ describe('An Observable', function() {
         list.$on('change', function(changes) {
           expect(changes).to.deep.equal([
             {
-              type: 'removed',
-              item: 'baz',
-              index: 2
+              op: 'remove',
+              value: 'baz',
+              path: [2]
             }
           ]);
           done();
@@ -798,19 +832,19 @@ describe('An Observable', function() {
         list.$on('change', function(changes) {
           expect(changes).to.deep.equal([
             {
-              type: 'removed',
-              item: 'foo',
-              index: 0
+              op: 'remove',
+              value: 'foo',
+              path: [0]
             },
             {
-              type: 'removed',
-              item: 'foo',
-              index: 3
+              op: 'remove',
+              value: 'foo',
+              path: [3]
             },
             {
-              type: 'removed',
-              item: 'foo',
-              index: 4
+              op: 'remove',
+              value: 'foo',
+              path: [4]
             }
           ]);
           done();

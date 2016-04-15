@@ -48,16 +48,15 @@ describe('A Collection', function() {
       expect(changes).to.have.lengthOf(2);
       expect(changes).to.deep.include.members([
         {
-          type: 'added',
-          index: 3,
-          item: { id: 4, color: 'violet' }
+          op: 'add',
+          path: [3],
+          value: { id: 4, color: 'violet' }
         },
         {
-          path: '2',
-          type: 'changed',
-          key: 'color',
+          op: 'replace',
+          path: [2, 'color'],
           oldValue: 'blue',
-          newValue: 'orange'
+          value: 'orange'
         }
       ]);
       done();

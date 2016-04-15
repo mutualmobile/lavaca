@@ -24,18 +24,19 @@ describe('A Model', function() {
     let testModel = new Model();
     testModel.someAttribute = 'old';
 
-    setTimeout(function() {
-      testModel.$on('change', function(changes) {
-        expect(changes).to.deep.equal([{
-          type: 'changed',
-          key: 'someAttribute',
-          oldValue: 'old',
-          newValue: 'new'
-        }]);
-        done();
-      });
+    testModel.$on('change', function(changes) {
+      expect(changes).to.deep.equal([{
+        op: 'replace',
+        path: ['someAttribute'],
+        oldValue: 'old',
+        value: 'new'
+      }]);
+      done();
+    });
 
+    setTimeout(function() {
       testModel.someAttribute = 'new';
+      testModel.$apply();
     }, 0);
   });
 
