@@ -55,16 +55,24 @@ let Model = extend(Observable, function Model() {
    * @method $set
    * @param {String} key  The property name you want to change/set
    * @param {Object} value  Sets the value in of the property
-   * @param {Boolean} mergeIn  Merges value with previous value
+   * @param {Function} fn  An optional function to modify how the values are added (merge, append, fillIn... etc)
    */
-  $set(key, value, mergeIn){
-    try{
-      this[key] = mergeIn ? (typeof value == 'object' ? merge(this[key] || {} ,value) : value ): value;
-    }catch(e){
-      this[key] = value;
-    }
+  $set(key, value, fn){
+    _$set.apply(this, arguments);
     this.$apply();
   }
 });
+function _$set(key, value, fn){
+  if(typeof key == 'object'){
+    for(let k in key){
+      _$set.call(this, k, key[k], fn);
+    }
+  }
+  else{
+    try{
+      this[key] = typeof fn == 'function' ? fn(this[key] ,value) : value;
+    }catch(e){}
+  }
+}
 
 export default Model;
