@@ -183,11 +183,11 @@ var Router = Disposable.extend(function(viewManager){
     }
     if(checkAuth && failUrl !== url && !ignoreAuth){
       return func().then(
-        () => _executeIfRouteExists.call(this, url, state, params),
-        () => _executeIfRouteExists.call(this, failUrl, state, params)).catch(url=>_rejection.call(this,url));
+        () => _executeIfRouteExists.call(this, url, state, params).catch(e=>console.error(e)),
+        () => _executeIfRouteExists.call(this, failUrl, state, params)).catch(url=>_rejection.call(this,url)).catch(e=>console.error(e));
     }
     else{
-      return _executeIfRouteExists.call(this, url, state, params).catch(url=>_rejection.call(this,url));;
+      return _executeIfRouteExists.call(this, url, state, params).catch(url=>_rejection.call(this,url));.catch(e=>console.error(e));
     }
 
   },

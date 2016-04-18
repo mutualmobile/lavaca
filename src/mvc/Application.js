@@ -189,7 +189,8 @@ var Application = EventDispatcher.extend(function (callback){
       .then(() => {
         this.trigger('ready');
       }).catch(err=>{
-        console.error('Unable to find initial route ', err);
+        console.error('Applicaiton had trouble initializing:');
+        console.error(err);
         this.router.unlock();
         return this.router.exec(this.initRoute, this.initState, this.initParams);
       });
