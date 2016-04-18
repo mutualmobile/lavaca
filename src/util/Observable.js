@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import { default as EventDispatcher } from '../events/EventDispatcher';
 import { mixIn as mixin, get } from 'mout/object';
-import { difference, unique } from 'mout/array';
-import { forEach, contains } from 'mout/collection';
+import { difference, unique, equals } from 'mout/array';
+import { forEach } from 'mout/collection';
 import { clone, isFunction, isArray, isObject } from 'mout/lang';
 import diff from './diff';
 
@@ -37,7 +37,7 @@ let cloneWithUuid = function(val) {
     if (!source.$$_uuid) {
       defineHiddenProperty(source, '$$_uuid', Observable.uuid++);
     }
-    out.$$_uuid = source.$$_uuid;
+    defineHiddenProperty(out, '$$_uuid', source.$$_uuid);
     return out;
   };
 
@@ -49,7 +49,7 @@ let cloneWithUuid = function(val) {
     if (!arr.$$_uuid) {
       defineHiddenProperty(arr, '$$_uuid', Observable.uuid++);
     }
-    out.$$_uuid = arr.$$_uuid;
+    defineHiddenProperty(out, '$$_uuid', arr.$$_uuid);
     return out;
   };
 
@@ -222,25 +222,14 @@ mixin(Observable.prototype, {
 let getChanges = function(obj) {
   let prev = obj.$$_snapshot;
   let curr = cloneWithUuid(obj);
-  let changes = diff(prev, curr, function(a, b) {
+  let shallowEquals = function(a, b) {
     if (a.$$_uuid && b.$$_uuid) {
       return a.$$_uuid === b.$$_uuid;
     }
     return a === b;
-  });
-
-  let result = changes;
-  result = result.map((item) => {
-    if (isObject(item.value)) {
-      traverse(item.value, (node) => {
-        if ('$$_uuid' in node) {
-          delete node.$$_uuid;
-        }
-      });
-    }
-    return item;
-  });
-  return result;
+  };
+  let changes = diff(prev, curr, shallowEquals);
+  return changes;
 };
 
 let traverseUp = function(node, iterator) {
@@ -264,38 +253,6 @@ let getAncestorChains = function(child) {
     }
   });
   return ret;
-};
-
-let isReachable = function(child, parent) {
-  let result = false;
-  traverseUp(child, (node) => {
-    if (node === parent) {
-      result = true;
-      return false;
-    }
-    return true;
-  });
-  return result;
-};
-
-let getUniqueRoots = function(list) {
-  return list.filter((item, i, list) => {
-    return !list.some((other) => {
-      return item !== other && isReachable(item, other);
-    });
-  });
-};
-
-let hasListeners = function(child) {
-  let result = false;
-  traverseUp(child, (node) => {
-    if (get(node, '$$_eventDispatcher.callbacks.length')) {
-      result = true;
-      return false;
-    }
-    return true;
-  });
-  return result;
 };
 
 let getPaths = function(child, parent) {
@@ -322,22 +279,30 @@ let getPaths = function(child, parent) {
     });
 };
 
-let fixBrokenReferences = function(child) {
-  getAncestorChains(child).forEach((chain) => {
-    let prev = child;
-    chain.forEach((curr) => {
-      if (contains(curr, prev)) {
-        return;
-      }
-      removeParent(prev, curr);
-      forEach(curr, (obj) => {
-        if (obj === prev) {
-          addParent(prev, curr);
+let resolveParentsFromChanges = function(changeMap) {
+  let uuidMap = {};
+  for (let node of cloneMap(changeMap).keys()) {
+    uuidMap[node.$$_uuid] = node;
+  }
+  for (let [node, changes] of cloneMap(changeMap).entries()) {
+    changes.forEach(function(item) {
+      if (
+        (typeof item.value === 'object')
+        &&
+        (item.value.$$_uuid)
+        &&
+        uuidMap[item.value.$$_uuid]
+      ) {
+        let child = uuidMap[item.value.$$_uuid];
+        if (item.op === 'add') {
+          addParent(child, node);
         }
-      });
-      prev = curr;
+        else if (item.op === 'remove') {
+          removeParent(child, node);
+        }
+      }
     });
-  });
+  }
 };
 
 let cloneMap = function(map) {
@@ -349,21 +314,40 @@ let cloneMap = function(map) {
 };
 
 let pushChangesDown = function(changeMap) {
+  let addChange = function(map, node, change) {
+    let changes = map.get(node) || [];
+    map.set(node, [...changes, change]);
+  };
+  let removeChange = function(map, node, change) {
+    let changes = map.get(node) || [];
+    changes = changes.filter((item) => {
+      return item !== change;
+    });
+    map.set(node, changes);
+  };
   let result = new Map();
   for (let [parent, changes] of cloneMap(changeMap).entries()) {
     changes.forEach((item) => {
-      let child;
       if (item.path.length <= 1) {
-        child = parent;
+        addChange(result, parent, item);
+        return;
       }
-      else {
-        child = get(parent, item.path.slice(0, item.path.length - 1).join('.'));
-      }
+      removeChange(result, parent, item);
+      let child = get(parent, item.path.slice(0, item.path.length - 1).join('.'));
       let change = clone(item);
       change.path = item.path.slice(-1);
-      let existingChanges = result.get(child) || [];
-      result.set(child, [...existingChanges, change]);
+      addChange(result, child, change);
     });
+  }
+  // remove duplicates
+  for (let [node, changes] of cloneMap(result).entries()) {
+    result.set(node, unique(changes, (a, b) => {
+      return (
+        (a.op === b.op)
+        &&
+        equals(a.path, b.path)
+      );
+    }));
   }
   return result;
 };
@@ -405,10 +389,6 @@ Observable.schedule = function(obj) {
 
 Observable.drain = function() {
   let queue = unique(Observable.queue);
-  queue.forEach(fixBrokenReferences);
-  queue = getUniqueRoots(queue);
-  queue = queue.filter(hasListeners);
-
   let changeMap = new Map();
 
   for (let i = 0; i < queue.length; i++) {
@@ -419,6 +399,7 @@ Observable.drain = function() {
     }
   }
 
+  resolveParentsFromChanges(changeMap);
   changeMap = pushChangesDown(changeMap);
   changeMap = propagateChangesUp(changeMap);
 

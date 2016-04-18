@@ -644,6 +644,37 @@ describe('An Observable', function() {
       }, 100);
     });
 
+    it('should propagate member changes after structure is changed post-snapshot ($on takes a snapshot)', function(done) {
+      let list = new Observable([]);
+      let member = new Observable({
+        a: 1
+      });
+
+      list.$on('change', function(changes) {
+        expect(changes).to.have.lengthOf(2);
+        expect(changes).to.deep.include.members([
+          {
+            op: 'replace',
+            path: [0, 'a'],
+            oldValue: 1,
+            value: 100
+          },
+          {
+            op: 'add',
+            path: [0],
+            value: {
+              a: 100
+            }
+          }
+        ]);
+        done();
+      });
+
+      list.push(member);
+      member.a = 100;
+      member.$apply();
+    });
+
     it('should propagate member changes after member is moved, with member\'s new path', function(done) {
       let list = new Observable([
         new Observable({
