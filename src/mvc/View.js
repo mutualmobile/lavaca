@@ -224,7 +224,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         ret.model = this.model;
         ret.shouldRedraw = false;
       }
-      else if (isObject(args[0]) || args[0] instanceof Model) {
+      else if (isObject(args[0]) || typeof args[0].$on == 'function') {
         ret.selector = null;
         ret.model = args[0];
         ret.shouldRedraw = true;
@@ -481,7 +481,9 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    */
   clearExtEvents() {
     this.extEventMap.forEach(function(o,i){
-      o.delegate.off(o.event,o.callback);
+      if(o.delegate && typeof o.delegate.$off == 'function') {
+        o.delegate.$off(o.event,o.callback);
+      }
     });
     this.extEventMap = [];
   },
@@ -600,10 +602,11 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
    */
   mapExtEvent(delegate, events) {
     var callback;
-    if(delegate && delegate instanceof (EventDispatcher)){
+
+    if(delegate && typeof delegate.$on == 'function'){
       for(let event in events){
         callback = events[event];
-        delegate.on(event,callback);
+        delegate.$on(event,callback);
         this.extEventMap.push({delegate:delegate,event:event,callback:callback});
       }
     }
