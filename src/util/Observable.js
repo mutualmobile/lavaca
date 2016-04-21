@@ -3,62 +3,55 @@ import { default as EventDispatcher } from '../events/EventDispatcher';
 import { mixIn as mixin, get } from 'mout/object';
 import { difference, unique, equals } from 'mout/array';
 import { forEach } from 'mout/collection';
-import { clone, isFunction, isArray, isObject } from 'mout/lang';
+import { clone, isFunction } from 'mout/lang';
 import diff from './diff';
 
 let defineHiddenProperty = function(obj, key, value) {
   Object.defineProperty(obj, key, {
-    configurable: false,
+    configurable: true,
     enumerable: false,
     writable: true,
     value: value
   });
 };
 
-let cloneWithUuid = function(val) {
-  /* eslint-disable no-use-before-define */
-  let deepClone = function(val) {
-    if (isArray(val)) {
-      return cloneArray(val);
+let deepClone = function(src) {
+  let cloneHiddenProperties = function(src, dst) {
+    let keys = Object.getOwnPropertyNames(src);
+    for (let i = 0; i < keys.length; i++) {
+      if (!src.propertyIsEnumerable(keys[i]) && keys[i] !== 'length') {
+        defineHiddenProperty(dst, keys[i], src[keys[i]]);
+      }
     }
-    else if (isObject(val)) {
-      return cloneObject(val);
+  };
+  let clone = function(src) {
+    let dst;
+    if (typeof src === 'object') {
+      if (Array.isArray(src)) {
+        dst = [];
+        for (let i = 0; i < src.length; i++) {
+          dst[i] = clone(src[i]);
+        }
+      }
+      else {
+        dst = {};
+        let keys = Object.keys(src);
+        for (let i = 0; i < keys.length; i++) {
+          dst[keys[i]] = clone(src[keys[i]]);
+        }
+      }
+      cloneHiddenProperties(src, dst);
     }
     else {
-      return val;
+      dst = src;
     }
+    return dst;
   };
-
-  let cloneObject = function(source) {
-    var out = {};
-    Object.keys(source).forEach(function(key) {
-      out[key] = deepClone(source[key]);
-    });
-    if (!source.$$_uuid) {
-      defineHiddenProperty(source, '$$_uuid', Observable.uuid++);
-    }
-    defineHiddenProperty(out, '$$_uuid', source.$$_uuid);
-    return out;
-  };
-
-  let cloneArray = function(arr) {
-    var out = [];
-    for (let i = 0; i < arr.length; i++) {
-      out[i] = deepClone(arr[i]);
-    }
-    if (!arr.$$_uuid) {
-      defineHiddenProperty(arr, '$$_uuid', Observable.uuid++);
-    }
-    defineHiddenProperty(out, '$$_uuid', arr.$$_uuid);
-    return out;
-  };
-
-  return deepClone(val);
-  /* eslint-enable no-use-before-define */
+  return clone(src);
 };
 
 let setEqualTo = function(a, b) {
-  if (isArray(b)) {
+  if (Array.isArray(b)) {
     Array.prototype.splice.apply(a, [0, a.length, ...b]);
   }
   else {
@@ -74,29 +67,78 @@ let setEqualTo = function(a, b) {
   }
 };
 
-let getPrototypeChain = function(obj) {
-  let result = [];
-  let proto = Object.getPrototypeOf(obj);
-  while (proto !== Object.prototype) {
-    result.unshift(proto);
-    proto = Object.getPrototypeOf(proto);
-  }
-  return result;
-};
-
 let traverse = function(root, iterator) {
-  let visit = function(node) {
-    if (typeof node !== 'object') {
+  let visit = function(context) {
+    if (iterator(context) === false) {
       return;
     }
-    forEach(node, (child) => {
-      if (iterator(node, child) === false) {
-        return;
+    if (typeof context.node !== 'object') {
+      return;
+    }
+    if (Array.isArray(context.node)) {
+      for (let i = 0; i < context.node.length; i++) {
+        visit({
+          parent: context.node,
+          node: context.node[i],
+          path: [...context.path, i]
+        });
       }
-      visit(child, node);
-    });
+    }
+    else {
+      let keys = Object.keys(context.node);
+      for (let i = 0; i < keys.length; i++) {
+        visit({
+          parent: context.node,
+          node: context.node[keys[i]],
+          path: [...context.path, keys[i]]
+        });
+      }
+    }
   };
-  visit(root);
+  visit({
+    node: root,
+    parent: null,
+    path: []
+  });
+};
+
+let traverseUp = function(node, parentKey, iterator) {
+  let getKey = function(parent, child) {
+    if (Array.isArray(parent)) {
+      return parent.indexOf(child);
+    }
+    else {
+      let keys = Object.keys(parent);
+      for (let i = 0; i < keys.length; i++) {
+        if (parent[keys[i]] === child) {
+          return keys[i];
+        }
+      }
+    }
+    return null;
+  };
+  let visit = function(context) {
+    let parents = context.node[parentKey];
+    if (!parents.length) {
+      context.isRoot = true;
+    }
+    if (iterator(context) === false) {
+      return;
+    }
+    for (let i = 0; i < parents.length; i++) {
+      let key = getKey(parents[i], context.node);
+      visit({
+        node: parents[i],
+        path: [key, ...context.path],
+        ancestors: [...context.ancestors, parents[i]]
+      });
+    }
+  };
+  visit({
+    node: node,
+    path: [],
+    ancestors: []
+  });
 };
 
 let addParent = function(child, parent) {
@@ -115,12 +157,14 @@ let removeParent = function(child, parent) {
   });
 };
 
-let addParentsRecursive = function(root) {
-  traverse(root, (parent, child) => {
-    if (typeof child === 'object') {
-      addParent(child, parent);
-    }
-  });
+let getPrototypeChain = function(obj) {
+  let result = [];
+  let proto = Object.getPrototypeOf(obj);
+  while (proto !== Object.prototype) {
+    result.unshift(proto);
+    proto = Object.getPrototypeOf(proto);
+  }
+  return result;
 };
 
 let Observable = function Observable(obj = {}) {
@@ -133,7 +177,7 @@ let Observable = function Observable(obj = {}) {
   // technically a constructor function; it just adds a lot of non-enumerable
   // methods/properties to a new Object/Array.
   let self = {};
-  if (isArray(obj)) {
+  if (Array.isArray(obj)) {
     self = [];
   }
 
@@ -209,8 +253,17 @@ mixin(Observable.prototype, {
   },
 
   $$_takeSnapshot() {
-    this.$$_snapshot = cloneWithUuid(this);
-    addParentsRecursive(this);
+    traverse(this, (context) => {
+      if (typeof context.node === 'object') {
+        if (!context.node.$$_uuid) {
+          defineHiddenProperty(context.node, '$$_uuid', Observable.uuid++);
+        }
+        if (context.parent) {
+          addParent(context.node, context.parent);
+        }
+      }
+    });
+    this.$$_snapshot = deepClone(this);
   },
 
   $$_markDirty() {
@@ -221,7 +274,7 @@ mixin(Observable.prototype, {
 
 let getChanges = function(obj) {
   let prev = obj.$$_snapshot;
-  let curr = cloneWithUuid(obj);
+  let curr = obj;
   let shallowEquals = function(a, b) {
     if (a.$$_uuid && b.$$_uuid) {
       return a.$$_uuid === b.$$_uuid;
@@ -230,53 +283,6 @@ let getChanges = function(obj) {
   };
   let changes = diff(prev, curr, shallowEquals);
   return changes;
-};
-
-let traverseUp = function(node, iterator) {
-  let visit = function(node, parents) {
-    parents = parents || [];
-    if (iterator(node, parents) === false) {
-      return;
-    }
-    for (let i = 0; i < node.$$_parents.length; i++) {
-      visit(node.$$_parents[i], [...parents, node.$$_parents[i]]);
-    }
-  };
-  visit(node);
-};
-
-let getAncestorChains = function(child) {
-  let ret = [];
-  traverseUp(child, (node, parents) => {
-    if (!node.$$_parents.length) {
-      ret = [...ret, parents];
-    }
-  });
-  return ret;
-};
-
-let getPaths = function(child, parent) {
-  return getAncestorChains(child)
-    .filter((chain) => {
-      return chain.indexOf(parent) !== -1;
-    })
-    .map((chain) => {
-      let path = [];
-      let prev = child;
-      chain.every((curr) => {
-        forEach(curr, (obj, key) => {
-          if (obj === prev) {
-            path.unshift(key);
-          }
-        });
-        if (curr === parent) {
-          return false;
-        }
-        prev = curr;
-        return true;
-      });
-      return path;
-    });
 };
 
 let resolveParentsFromChanges = function(changeMap) {
@@ -355,22 +361,19 @@ let pushChangesDown = function(changeMap) {
 let propagateChangesUp = function(changeMap) {
   let result = cloneMap(changeMap);
   for (let child of changeMap.keys()) {
-    getAncestorChains(child).forEach((chain) => {
-      chain.forEach((parent) => {
-        let childChanges = result.get(child) || [];
-        let parentChanges = result.get(parent) || [];
-
-        getPaths(child, parent)
-          .forEach((path) => {
-            let changes = childChanges.map(function(c) {
-              c = clone(c);
-              c.path = [...path, ...c.path];
-              return c;
-            });
-
-            result.set(parent, [...parentChanges, ...changes]);
-          });
+    let childChanges = result.get(child) || [];
+    traverseUp(child, '$$_parents', (context) => {
+      if (context.node === child) {
+        return;
+      }
+      let parent = context.node;
+      let parentChanges = result.get(parent) || [];
+      let changes = childChanges.map(function(c) {
+        c = clone(c);
+        c.path = [...context.path, ...c.path];
+        return c;
       });
+      result.set(parent, [...parentChanges, ...changes]);
     });
   }
   return result;
