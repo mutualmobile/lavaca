@@ -128,7 +128,7 @@ let longestCommonSubsequence = function(a, b, equals) {
   let moved = [];
   common = [...common, ...result.common];
 
-  // detect moved items (both added and removed but weren't part of LCS)
+  // detect moved items (both added and removed)
   for (let i = result.removed.length-1; i >= 0; i--) {
     for (let j = result.added.length-1; j >= 0; j--) {
       if (equals(removed[i].item, added[j].item)) {
@@ -202,17 +202,20 @@ let diff = function(a, b, equals) {
   let objectDiff = function(a, b, path) {
     let oldKeys = Object.keys(a);
     let newKeys = Object.keys(b);
-    let deleted = false;
+    let keysAreEqual = true;
 
     for (let i = 0; i < oldKeys.length; i++) {
       let key = oldKeys[i];
+
+      if (key !== newKeys[i]) {
+        keysAreEqual = false;
+      }
 
       if (b[key] === a[key]) {
         continue;
       }
 
-      if (!(key in b)) {
-        deleted = true;
+      if (b[key] === undefined && newKeys.indexOf(key) === -1) {
         patches.push({
           op: 'remove',
           path: [...path, key],
@@ -224,14 +227,16 @@ let diff = function(a, b, equals) {
       anyDiff(a[key], b[key], [...path, key]);
     }
 
-    if (!deleted && newKeys.length === oldKeys.length) {
+    // We can skip checking for 'add's if a and b have the exact same
+    // enumerable property names.
+    if (keysAreEqual && oldKeys.length === newKeys.length) {
       return;
     }
 
     for (let i = 0; i < newKeys.length; i++) {
       let key = newKeys[i];
 
-      if (!(key in a)) {
+      if (a[key] === undefined && oldKeys.indexOf(key) === -1) {
         patches.push({
           op: 'add',
           path: [...path, key],
