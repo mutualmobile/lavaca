@@ -26,7 +26,7 @@ let deepClone = function(src) {
   };
   let clone = function(src) {
     let dst;
-    if (typeof src === 'object') {
+    if (src && typeof src === 'object') {
       if (Array.isArray(src)) {
         dst = [];
         for (let i = 0; i < src.length; i++) {
@@ -72,26 +72,25 @@ let traverse = function(root, iterator) {
     if (iterator(context) === false) {
       return;
     }
-    if (typeof context.node !== 'object') {
-      return;
-    }
-    if (Array.isArray(context.node)) {
-      for (let i = 0; i < context.node.length; i++) {
-        visit({
-          parent: context.node,
-          node: context.node[i],
-          path: [...context.path, i]
-        });
+    if (context.node && typeof context.node === 'object') {
+      if (Array.isArray(context.node)) {
+        for (let i = 0; i < context.node.length; i++) {
+          visit({
+            parent: context.node,
+            node: context.node[i],
+            path: [...context.path, i]
+          });
+        }
       }
-    }
-    else {
-      let keys = Object.keys(context.node);
-      for (let i = 0; i < keys.length; i++) {
-        visit({
-          parent: context.node,
-          node: context.node[keys[i]],
-          path: [...context.path, keys[i]]
-        });
+      else {
+        let keys = Object.keys(context.node);
+        for (let i = 0; i < keys.length; i++) {
+          visit({
+            parent: context.node,
+            node: context.node[keys[i]],
+            path: [...context.path, keys[i]]
+          });
+        }
       }
     }
   };
@@ -254,7 +253,7 @@ mixin(Observable.prototype, {
 
   $$_takeSnapshot() {
     traverse(this, (context) => {
-      if (typeof context.node === 'object') {
+      if (context.node && typeof context.node === 'object') {
         if (!context.node.$$_uuid) {
           defineHiddenProperty(context.node, '$$_uuid', Observable.uuid++);
         }
@@ -293,9 +292,11 @@ let resolveParentsFromChanges = function(changeMap) {
   for (let [node, changes] of cloneMap(changeMap).entries()) {
     changes.forEach(function(item) {
       if (
-        (typeof item.value === 'object')
+        item.value
         &&
-        (item.value.$$_uuid)
+        typeof item.value === 'object'
+        &&
+        item.value.$$_uuid
         &&
         uuidMap[item.value.$$_uuid]
       ) {

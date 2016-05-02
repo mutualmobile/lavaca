@@ -247,7 +247,7 @@ let diff = function(a, b, equals) {
   };
 
   let anyDiff = function(a, b, path) {
-    if (typeof a === 'object' && typeof b === 'object') {
+    if (a && b && typeof a === 'object' && typeof b === 'object') {
       if (Array.isArray(a) && Array.isArray(b)) {
         arrayDiff(a, b, path);
         return;

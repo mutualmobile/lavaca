@@ -448,6 +448,24 @@ describe('An Observable', function() {
 
     });
 
+    it('should be null-safe', function(done) {
+      let obj = new Observable({
+        foo: null,
+      });
+
+      obj.$on('change', function(changes) {
+        expect(changes).to.deep.equal([{
+          op: 'remove',
+          path: ['foo'],
+          value: null
+        }]);
+        done();
+      });
+
+      delete obj.foo;
+      obj.$apply();
+    });
+
   });
 
   describe('Array', function() {
