@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+set -e
+
+npm adduser <<EOD
+$NPM_USER
+$NPM_PASS
+$NPM_EMAIL
+EOD
+
+"$DIRNAME/publish-dev"

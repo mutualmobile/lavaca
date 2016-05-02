@@ -2,13 +2,19 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - 5.1
+- 5.1
 script:
-  - npm install
-  - npm run-script coverage
+- npm install
+- npm run-script coverage
+- _scripts/publish-dev-ci
 before_install:
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sudo Xvfb :99 -ac &
+- wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+- sudo dpkg -i google-chrome*.deb
+- export CHROME_BIN=/usr/bin/google-chrome
+- export DISPLAY=:99.0
+- sudo Xvfb :99 -ac &
+env:
+  global:
+  - secure: Xx22OLXO01DMA8E+PgJ8uumbWu4LvoXm2vYDvjT6p62iQNBoULI4dGOoeejhn52DEMZo0S+rxl52upFvKkUZJzTWxmoFR0nqwXbEnKQ/jcew3WmTkS7P9anuxxHog0Mv92EYnVLid8oBUKKTkVkrQkt8wW+1CyXPFFARKvnUiXY=
+  - secure: IytSyueS1ImOlRZghI6wQ0PXRWX6N3UOMXBSOIVoLauVrH0DRZTH50kB4PGbJ8hV/Szf+SB15rFA2vA6Fj4n8SiejlfFETqUZ9nuZvQpRn71nl5A/1jeupEJQtVTZazEszubwO8iEmkQ9SwCFI3fOFH6RQMCr5vslXhzY0E7WqI=
+  - secure: MOXrNqeggj1UEFqfL41NFshtpqGei0UoavnFIFXPpRRh0d/KJsbYVPCyqSTmWfUrYK02x8YJ0PGG+iP4LkcouWerGBTO/7/DboscVemg+VdEBE5c1ZZvYVG2fsi/CDXb4WXTs2GcAwFDyUOq665l3dnt6n4VMuA1EWt9u2N3rIs=

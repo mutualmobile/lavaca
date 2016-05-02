@@ -1,4 +1,4 @@
-var name = process.argv[2];
+var hash = process.argv[2];
 var chunks = [];
 
 process.stdin.resume();
@@ -10,8 +10,8 @@ process.stdin.on('data', function(chunk) {
 
 process.stdin.on('end', function() {
   var pkg = JSON.parse(chunks.join());
-  pkg.name = name;
-  delete pkg.devDependencies;
-  delete pkg.scripts;
+  var version = pkg.version.match(/(\d+\.\d+\.\d+).*/)[1];
+  pkg.version = version + '-alpha-' + hash + '.0';
   process.stdout.write(JSON.stringify(pkg, false, 4) + '\n');
 });
+

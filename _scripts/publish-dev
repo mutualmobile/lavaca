@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DIRNAME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_ROOT=$( cd "$DIRNAME/.." && pwd )
+
+set -e
+
+cd "$PROJECT_ROOT"
+
+cp package.json package.json.bak
+cat package.json.bak \
+| node _scripts/changePackageDevVersion.js $(git rev-parse --short HEAD) \
+> package.json
+./_scripts/build --all
+mv package.json.bak package.json
+
+cd "$PROJECT_ROOT/build/amd" && npm publish
+cd "$PROJECT_ROOT/build/commonjs" && npm publish
+cd "$PROJECT_ROOT/build/es" && npm publish

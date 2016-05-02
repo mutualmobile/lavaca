@@ -25,7 +25,9 @@ es)
   cp README.md build/es/
   cp CONTRIBUTING.md build/es/
   cp -a src/* build/es/
-  node _scripts/changePackageName.js lavaca > build/es/package.json
+  cat package.json \
+  | node _scripts/changePackageName.js lavaca \
+  > build/es/package.json
   ;;
 amd)
   mkdir -p build/amd
@@ -33,7 +35,9 @@ amd)
   cp CONTRIBUTING.md build/amd/
   cp _scripts/.babelrc.amd .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/amd
-  node _scripts/changePackageName.js lavaca-amd > build/amd/package.json
+  cat package.json \
+  | node _scripts/changePackageName.js lavaca-amd \
+  > build/amd/package.json
   ;;
 commonjs)
   mkdir -p build/commonjs
@@ -41,7 +45,9 @@ commonjs)
   cp CONTRIBUTING.md build/commonjs/
   cp _scripts/.babelrc.commonjs .babelrc
   ./node_modules/babel-cli/bin/babel.js src -d build/commonjs
-  node _scripts/changePackageName.js lavaca-commonjs > build/commonjs/package.json
+  cat package.json \
+  | node _scripts/changePackageName.js lavaca-commonjs \
+  > build/commonjs/package.json
   ;;
 --all)
   ./_scripts/build es
