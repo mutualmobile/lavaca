@@ -362,7 +362,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       },
       (err) => {
         console.error('There was a problem rendering your view');
-        console.error(err);
+        console.trace(err.stack);
         this.trigger('rendererror', {err: err});
         throw err;
       }

@@ -190,7 +190,7 @@ var Application = EventDispatcher.extend(function (callback){
         this.trigger('ready');
       }).catch(err=>{
         console.error('Applicaiton had trouble initializing:');
-        console.error(err);
+        console.trace(err.stack);
         this.router.unlock();
         return this.router.exec(this.initRoute, this.initState, this.initParams);
       });

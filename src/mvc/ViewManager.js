@@ -255,7 +255,10 @@ var ViewManager = Disposable.extend(function ViewManager(el){
         this.locked = false;
         this.enteringPageViews = [];
         this.layers[layer] = pageView;
-      }).catch(err=>console.error('Error in ViewManager: ', err));
+      }).catch(err=>{
+        console.error('Error in ViewManager: ');
+        console.trace(err.stack);
+      });
   },
   /**
    * Execute beforeEnter or beforeExit for each layer. Both fucntions

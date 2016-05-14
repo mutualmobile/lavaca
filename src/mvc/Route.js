@@ -186,6 +186,7 @@ var Route = Disposable.extend(function Route(pattern, TController, action, param
       .then(()=>this.dispose.call(this))
       .catch((err) => {
         this.dispose();
+        console.trace(err.stack);
         throw err;
       });
   }

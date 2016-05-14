@@ -120,7 +120,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
           (() => {
             return this.dismissLayersAbove(layer-1, childView);
           })()
-        ]).catch(err=>console.error(err));
+        ]).catch(err=>console.trace(err.stack));
       })
       .then(() => {
         this.enteringPageViews = [];
@@ -131,7 +131,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
             typeof this.parentView.onChildViewManagerExec === 'function') {
           this.parentView.onChildViewManagerExec(route, this.step);
         }
-      }).catch(err=>console.error(err));
+      }).catch(err=>console.trace(err.stack));
   },
   dismiss(layer) {
     if (typeof layer === 'number') {
@@ -171,7 +171,7 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
           });
       });
 
-    return Promise.all(promises).catch(err=>console.error(err));
+    return Promise.all(promises).catch(err=>console.trace(err.stack));
   },
   dispose() {
     this.model = this.parentView = null;
