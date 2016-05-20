@@ -80,6 +80,7 @@ var ViewManager = Disposable.extend(function ViewManager(el){
    */
   setEl(el) {
     this.el = typeof el === 'string' ? $(el) : el;
+    this.el.html('');
     return this;
   },
   /**
