@@ -85,6 +85,7 @@ define(function(require) {
      */
     setEl: function(el) {
       this.el = typeof el === 'string' ? $(el) : el;
+      this.el.html('');
       return this;
     },
     /**
