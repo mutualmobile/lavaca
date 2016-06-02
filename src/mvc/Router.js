@@ -52,7 +52,7 @@ var Router = Disposable.extend(function(viewManager){
         var _always = () => {
           History.isRoutingBack = false;
         };
-        this.exec(e.url, e).then(_always, _always);
+        this.exec(e.url, e, {}).then(_always, _always);
       }
     };
     History.on('popstate', this.onpopstate, this);
