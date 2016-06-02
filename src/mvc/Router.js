@@ -286,7 +286,10 @@ let _executeIfRouteExists = function(url, state, params) {
     });
 }
 function _rejection(url){
-  !url && this.exec('/');
+  this.unlock();
+  if(!url || !History.length){
+    this.exec('/');
+  }
   console.error('Unable to find a route' + (url ? ' for ' + url:'.'));
 };
 
