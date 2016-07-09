@@ -112,13 +112,17 @@ define(function(require) {
      */
     trigger: function(type, params) {
       if (!this.suppressEvents && this.callbacks) {
-        var list = this.callbacks[type],
+        var list = _getMatchingCallbacks.call(this,type),
             event = this.createEvent(type, params),
-            i = -1,
+            e = -1,
+            ev,
             handler;
         if (list) {
-          while (!!(handler = list[++i])) {
-            handler.fn.apply(handler.thisp || this, [event]);
+          while (!!(ev = list[++e])) {
+            var i = -1;
+            while (!!(handler = ev[++i])) {
+                handler.fn.apply(handler.thisp || this, [event]);
+            }
           }
         }
       }
@@ -147,7 +151,33 @@ define(function(require) {
       });
     }
   });
-  
+    /**
+     * Returns all callbacks that match a specific trigger event
+     * @method _getMatchingCallbacks (private)
+     *
+     * @param {String} The trigger event type as a string
+     * @return {Array}  returns Array matching all callbacks
+     */
+
+    /*
+      Returns all callbacks that match a specific trigger event
+    */
+  function _getMatchingCallbacks(type){
+    var returnCallbacks = [];
+    if(type == 'contentLoaded'){
+      debugger;
+    }
+    for(var x in this.callbacks){
+      if(x.split){
+        if(x.split('.')[0] === type){
+          returnCallbacks.push(this.callbacks[x]);
+        }
+      }
+    }
+    return returnCallbacks;
+  }
+
+
     /**
      * Checks if two callbacks are the same
      * @method _checkIfSameCallback (private)

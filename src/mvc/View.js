@@ -154,11 +154,11 @@ define(function(require) {
     /**
      * Will render any childViews automatically when set to true
      * @property autoRender
-     * @default false
+     * @default true
      *
      * @type Boolean
      */
-    autoRender: false,
+    autoRender: true,
     /**
      * The name of the template associated with the view
      * @property {String} template
@@ -444,7 +444,7 @@ define(function(require) {
           if (dotIndex !== -1) {
             type = type.substr(0, dotIndex);
           }
-          this.model.off(type, callback, this);
+          this.model.off(type + '.' + this.id, callback, this);
         }
       }
     },
@@ -504,7 +504,7 @@ define(function(require) {
                 property = type.substr(dotIndex+1);
                 type = type.substr(0, dotIndex);
               }
-              this.model.on(type, property, callback);
+              this.model.on(type + '.' + this.id, property, callback);
             }
           } else if (type === 'animationEnd' && el.animationEnd) {
             el.animationEnd(delegate, callback);
@@ -749,8 +749,14 @@ define(function(require) {
      *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
      *
     */
-    mapChildViewManager:function(el, map){
-      this.childViewManager = new ChildViewManager(el, map, this);
+    mapChildViewManager:function(el, map, mixin, fillin){
+      this.childViewManager = new ChildViewManager(el, map, this, 'cvm-'+this.id);
+      if (typeof mixin === 'object') {
+        this.childViewManager.childViewMixin = mixin;
+      }
+      if (typeof fillin === 'object') {
+        this.childViewManager.childViewFillin = fillin;
+      }
     },
 
     /**

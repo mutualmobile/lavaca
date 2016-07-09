@@ -152,6 +152,14 @@ define(function(require) {
       if (!url) {
         url = '/';
       }
+
+      //remove trailing slash
+      if (url.length > 1 && 
+          url.substr(0,1) === '/' &&
+          url.substr(-1) === '/') {
+        url = url.substring(0,(url.length-1));
+      }
+
       if (url.indexOf('http') === 0) {
         url = url.replace(/^http(s?):\/\/.+?/, '');
       }

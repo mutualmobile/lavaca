@@ -1,11 +1,11 @@
 {
   "name": "lavaca",
   "description": "A curated collection of tools built for mobile.",
-  "version": "2.3.2",
+  "version": "3.0.1",
   "homepage": "https://github.com/mutualmobile/lavaca",
   "author": {
     "name": "mutualmobile",
-    "email": "george.henderson@mutualmobile.com"
+    "email": "lavaca@mutualmobile.com"
   },
   "repository": {
     "type": "git",

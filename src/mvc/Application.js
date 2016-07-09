@@ -5,8 +5,7 @@ define(function(require) {
     Device = require('lavaca/env/Device'),
     EventDispatcher = require('lavaca/events/EventDispatcher'),
     router = require('lavaca/mvc/Router'),
-    viewManager = require('lavaca/mvc/ViewManager'),
-    Connectivity = require('lavaca/net/Connectivity');
+    viewManager = require('lavaca/mvc/ViewManager');
 
   function _stopEvent(e) {
     e.preventDefault();
@@ -14,6 +13,7 @@ define(function(require) {
   }
 
   function _matchHashRoute(hash) {
+    hash = hash.replace('#!', '#');
     var matches = decodeURIComponent(hash).match(/^(?:#)(\/.*)#?@?/);
     if (matches instanceof Array && matches[1]) {
       return matches[1].replace(/#.*/, '');
@@ -141,7 +141,11 @@ define(function(require) {
         } else {
           e.preventDefault();
           if (rel === 'back') {
-            History.back();
+            if (viewManager.breadcrumb.length > 1) {
+              History.back();
+            } else {
+              this.router.exec('/', null, {'root': true});
+            }
           } else if (rel === 'force-back' && url) {
             History.isRoutingBack = true;
             var _always = function() {
@@ -150,6 +154,8 @@ define(function(require) {
             this.router.exec(url, null, null).then(_always, _always);
           } else if (rel === 'cancel') {
             this.viewManager.dismiss(e.currentTarget);
+          } else if (rel === 'root' && url) {
+            this.router.exec(url, null, {'root': true}).catch(this.onInvalidRoute);
           } else if (url) {
             url = url.replace(/^\/?#/, '');
             this.router.exec(url).catch(this.onInvalidRoute);

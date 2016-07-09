@@ -3,13 +3,21 @@ define(function(require) {
   var $ = require('$'),
     Cache = require('lavaca/util/Cache'),
     Disposable = require('lavaca/util/Disposable'),
-    merge = require('mout/object/merge'),
     contains = require('mout/array/contains'),
+    merge = require('mout/object/merge'),
+    fillIn = require('mout/object/fillIn'),
     History = require('lavaca/net/History'),
     removeAll = require('mout/array/removeAll');
 
-  var ChildViewManager = Disposable.extend(function(el, routes, parent) {
+  var ChildViewManager = Disposable.extend(function(el, routes, parent, id) {
     Disposable.call(this);
+    this.history = [];
+    this.animationBreadcrumb = [];
+    this.step = 1;
+    this.initialStep = 1;
+    this.routes = [];
+    this.currentView = false;
+    this.isRoutingBack = false;
     this.childViews = new Cache();
     this.layers = [];
     this.exitingViews = [];
@@ -17,9 +25,11 @@ define(function(require) {
     this.routes = {};
     this.elName = el;
     this.parentView = parent;
+    this.id = id;
+    this.hasInitialized = false;
     if (typeof routes === 'object') {
       for (var r in routes) {
-        this.routes[r] = { TView: routes[r].TView, model: routes[r].model , step: routes[r].step};
+        this.routes[r] = routes[r];
       }
     }
     else{
@@ -28,17 +38,13 @@ define(function(require) {
     }
     $(window).on('cvmexec.'+this.id,_exec.bind(this));
   }, {
-    history:[],
-    animationBreadcrumb:[],
-    step:1,
-    initialStep:1,
-    routes:[],
-    currentView:false,
-    isRoutingBack:false,
-    init: function(view) {
+    init: function(view, id) {
       this.el = view.find(this.elName);
-      this.el.addClass('cvm');
-      this.exec();
+      if (!this.el.hasClass('cvm')){
+        this.el.addClass('cvm');
+        this.exec(null, {isRedraw: this.hasInitialized});
+        this.hasInitialized = true;
+      }
     },
     back:function(){
       if(!this.history || this.history.length - 1 <= 0){
@@ -68,7 +74,7 @@ define(function(require) {
         this.back();
       }
     },
-    exec: function(route) {
+    exec: function(route, params) {
       if(!route){
         route = 1;
       }
@@ -76,20 +82,44 @@ define(function(require) {
       if(!route){
         return;
       }
-      this.history.push(route);
+      if(params && !params.isRedraw || ! params){
+        this.history.push(route);
+      }
       var ChildView = this.routes[route].TView, 
           model = this.routes[route].model;
-
+      if(!model){
+        model = this.parentView ? this.parentView.model : null;
+      }
       var layer = ChildView.prototype.layer || 0,
           childView = new ChildView(null, model, this.parentView);
+
+          params = params || {};
+          if (typeof params === 'number') {
+            layer = params;
+          } else if (params.layer) {
+            layer = params.layer;
+          }
           childView.layer = layer;
+
+          if (typeof this.childViewMixin === 'object') {
+            merge(childView, this.childViewMixin);
+          }
+          if (typeof this.childViewFillin === 'object') {
+            fillIn(childView, this.childViewFillin);
+          }
+          if (typeof params === 'object') {
+            merge(childView, params);
+          }
+
+          childView.isChildViewManagerView = true;
+
       return childView.render().then(function() {
           this.currentView = childView;
           this.enteringViews = [childView];
           return Promise.all([
             (function() {
               if (this.layers[layer] !== childView) {
-                return childView.enter(this.el, this.exitingViews);
+                return childView.enter(this.el, this.exitingViews, params ? params.isRedraw : false);
               }
               return Promise.resolve();
             }.bind(this))(),
@@ -100,8 +130,13 @@ define(function(require) {
         }.bind(this))
         .then(function() {
           this.enteringPageViews = [];
-          this.step = this.currentView.step;
+          this.step = this.routes[route].step;
           this.layers[layer] = childView;
+          if (this.parentView && 
+              this.parentView.onChildViewManagerExec && 
+              typeof this.parentView.onChildViewManagerExec === 'function') {
+            this.parentView.onChildViewManagerExec(route, this.step);
+          }
         }.bind(this));
     },
     dismiss: function(layer) {

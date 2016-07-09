@@ -6,10 +6,32 @@ define(function(require) {
   var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
       _standardsMode = !_isAndroid && typeof history.pushState === 'function',
       _hasPushed = false,
+      _shouldUseHashBang = false,
       _lastHash,
       _hist,
       _currentId,
-      _pushCount = 0;
+      _pushCount = 0,
+      _silentPop = false;
+
+  function checkForParams() {
+    var str = window.location.href; 
+    str = str.split('?')[1] || ''; 
+    str = str.split('#')[0] || '';
+    var paramArray = str.split('&') || [];
+    for (var i=0; i<paramArray.length; i++) {
+      str = paramArray[i];
+      var ar = str.split('=');
+      var ob = {};
+      if (ar && ar.length === 2) {
+        ob[ar[0]] = ar[1];
+        paramArray[i] = ob;
+        if (ar[0] === 'gclid') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   function _insertState(hist, position, id, state, title, url) {
     hist.position = position;
@@ -20,7 +42,11 @@ define(function(require) {
           url: url
         };
     hist.sequence[position] = record;
-    location.hash = _lastHash = url + '#@' + id;
+    var hashReplacement = url + '#@' + id;
+    _lastHash = hashReplacement;
+    if (!checkForParams() || id !== 0) {
+      location.hash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+    }
     return record;
   }
 
@@ -57,13 +83,17 @@ define(function(require) {
           _pushCount--;
           var previousId = _currentId;
           _currentId = e.state.id;
+
           self.trigger('popstate', {
+            bypassLoad: _silentPop,
             state: e.state.state,
             title: e.state.title,
             url: e.state.url,
             id: e.state.id,
             direction: _currentId > previousId ? 'forward' : 'back'
           });
+          _silentPop = false;
+          
         }
       };
       window.addEventListener('popstate', this.onPopState, false);
@@ -76,7 +106,7 @@ define(function(require) {
             previousCode,
             i = -1;
         if (hash) {
-          hash = hash.replace(/^#/, '');
+          hash = _shouldUseHashBang ? hash.replace(/^#!/, '') : hash.replace(/^#/, '');
         }
         if (hash !== _lastHash) {
           previousCode = _lastHash.split('#@')[1];
@@ -85,7 +115,7 @@ define(function(require) {
             _pushCount--;
             code = hash.split('#@')[1];
             if (!code) {
-              History.back();
+              window.location.reload();
             }
             while (!!(item = self.sequence[++i])) {
               if (item.id === parseInt(code, 10)) {
@@ -95,15 +125,21 @@ define(function(require) {
               }
             }
             if (record) {
-              location.hash = record.url + '#@' + record.id;
+              var hashReplacement = record.url + '#@' + record.id;
+              hashReplacement = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+              location.hash = hashReplacement;
               document.title = record.title;
+
               self.trigger('popstate', {
+                bypassLoad: _silentPop,
                 state: record.state,
                 title: record.title,
                 url: record.url,
                 id: record.id,
                 direction: record.id > parseInt(previousCode, 10) ? 'forward' : 'back'
               });
+              _silentPop = false;
+
             }
           } else {
             History.back();
@@ -251,6 +287,15 @@ define(function(require) {
     history.back();
   };
   /**
+   * Goes to the previous history state without notifying router
+   * @method back
+   * @static
+   */
+  History.silentBack = function() {
+    _silentPop = true;
+    history.back();
+  };
+  /**
    * Goes to the next history state
    * @method forward
    * @static
@@ -294,6 +339,7 @@ define(function(require) {
   History.off = function() {
     return History.init().off.apply(_hist, arguments);
   };
+
   /**
    * Sets Histroy to hash mode
    * @method overrideStandardsMode
@@ -301,6 +347,15 @@ define(function(require) {
    */
   History.overrideStandardsMode = function() {
     _standardsMode = false;
+  };
+
+  /**
+   * Sets Histroy to use google crawlable #!
+   * @method useHashBang
+   * @static
+   */
+  History.useHashBang = function() {
+    _shouldUseHashBang = true;
   };
 
   /**
