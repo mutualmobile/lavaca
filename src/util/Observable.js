@@ -118,6 +118,10 @@ let traverseUp = function(node, parentKey, iterator) {
   };
   let visit = function(context) {
     let parents = context.node[parentKey];
+    if(!parents){
+      console.log('%clet ExampleModel = Model.extend(function(){\n\tlet self = Model.apply(this,arguments);\n\tself.$init();\n\treturn self;\n},{...});','font-style:italic;');
+      throw new Error('traverseUp() failed - You likely either:\nA) Forgot to return self in the constructor of your model \nB) Referenced `this` for a call in the constructor istead of self.');
+    }
     if (!parents.length) {
       context.isRoot = true;
     }
