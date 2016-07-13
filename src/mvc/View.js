@@ -224,7 +224,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         ret.model = this.model;
         ret.shouldRedraw = false;
       }
-      else if (isObject(args[0]) || typeof args[0].$on == 'function') {
+      else if (isObject(args[0]) || typeof args[0].$on == 'function' || typeof args[0].on == 'function') {
         ret.selector = null;
         ret.model = args[0];
         ret.shouldRedraw = true;
@@ -458,8 +458,7 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
 
     if (this.eventMap
       && this.eventMap.model
-      && this.model
-      && typeof this.model.$off == 'function') {
+      && this.model) {
       for (let event in this.eventMap.model) {
         callback = this.eventMap.model[event];
         if (typeof callback === 'object') {
@@ -469,7 +468,11 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         if (dotIndex !== -1) {
           event = event.substr(0, dotIndex);
         }
-        this.model.$off(event + '.' + this.id, callback, this);
+        if (typeof this.model.$off === 'function') {
+          this.model.$off(event + '.' + this.id, callback, this);
+        }else if (typeof this.model.off === 'function'){
+          this.model.off(event + '.' + this.id, callback, this);
+        }
       }
     }
   },
@@ -483,6 +486,9 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     this.extEventMap.forEach(function(o,i){
       if(o.delegate && typeof o.delegate.$off == 'function') {
         o.delegate.$off(o.event,o.callback);
+      }
+      else if(o.delegate && typeof o.delegate.off == 'function') {
+        o.delegate.off(o.event,o.callback);
       }
     });
     this.extEventMap = [];
@@ -524,13 +530,17 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
         }
 
         if (delegate === 'model') {
-          if (this.model && typeof this.model.$on === 'function') {
+          if(this.model){
             dotIndex = callbackType.indexOf('.');
             if (dotIndex !== -1) {
               property = callbackType.substr(dotIndex+1);
               callbackType = callbackType.substr(0, dotIndex);
             }
-            this.model.$on(callbackType + '.' + this.id, callback);
+            if (typeof this.model.$on === 'function') {
+              this.model.$on(callbackType + '.' + this.id, callback);
+            }else if (typeof this.model.on === 'function'){
+              this.model.on(callbackType + '.' + this.id, callback);
+            }
           }
         } else if (callbackType === 'animationEnd' && el.animationEnd) {
           el.animationEnd(delegate, callback);
@@ -607,6 +617,13 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       for(let event in events){
         callback = events[event];
         delegate.$on(event,callback);
+        this.extEventMap.push({delegate:delegate,event:event,callback:callback});
+      }
+    }
+    else if(delegate && typeof delegate.on == 'function'){
+      for(let event in events){
+        callback = events[event];
+        delegate.on(event,callback);
         this.extEventMap.push({delegate:delegate,event:event,callback:callback});
       }
     }
