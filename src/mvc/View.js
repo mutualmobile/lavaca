@@ -320,8 +320,8 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
     if (isFirstRender) {
       this.applyEvents();
     }
-
-    var promise = Promise.resolve(this.generateHtml(opts.model))
+    var mod = opts.model && opts.model.toObject ? opts.model.toObject() : opts.model;
+    var promise = Promise.resolve(this.generateHtml(mod))
       .then((html) => {
         if (isFirstRender || opts.shouldRedraw) {
           this.disposeChildViews(this.el);
