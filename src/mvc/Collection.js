@@ -83,7 +83,7 @@ let Collection = Model.extend(function Collection(list = []) {
 });
 
 function _init(arr){
-  arr = Array.isArray(arr) ? arr.map(_coerceIntoModel.bind(this, this.TModel)) : [];s
+  arr = Array.isArray(arr) ? arr.map(_coerceIntoModel.bind(this, this.TModel)) : [];
   this.models = new Observable(arr);
   this.models.TModel = this.TModel;
   this.models.push = _push;
@@ -183,25 +183,6 @@ function intersection(a, b, equals) {
     }
   }
 
-  return result;
-}
-
-function merge(a, b, equals) {
-  let result = [];
-  let rest = [];
-  intersection(a, b, equals)
-    .forEach((item) => {
-      if (item.left && item.right) {
-        result.push(item.right);
-      }
-      else if (item.left) {
-        result.push(item.left);
-      }
-      else if (item.right) {
-        rest.push(item.right);
-      }
-    });
-  result.push(...rest);
   return result;
 }
 
