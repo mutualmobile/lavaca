@@ -3,8 +3,154 @@ import { default as EventDispatcher } from '../events/EventDispatcher';
 import { mixIn as mixin, get } from 'mout/object';
 import { difference, unique, equals } from 'mout/array';
 import { forEach } from 'mout/collection';
-import { clone, isFunction } from 'mout/lang';
+import { clone, isFunction, isArray } from 'mout/lang';
 import diff from './diff';
+
+let Observable = function Observable(obj = {}) {
+  /* eslint-disable consistent-this */
+  // We're doing inheritance differently here so that Observables show up as
+  // regular Arrays/Objects as far as external libraries are concerned. Mainly
+  // Array.prototype.length behavior and browser Array optimizations. We create
+  // a plain Object or Array and mix in the Observable prototype's methods
+  // directly. The object is then returned. That means Observable() isn't
+  // technically a constructor function; it just adds a lot of non-enumerable
+  // methods/properties to a new Object/Array.
+  let self = {};
+  if (isArray(obj)) {
+    self = [];
+  }
+
+  // Mixin every function in every prototype in obj's chain
+  getPrototypeChain(obj).forEach((proto) => {
+    difference(Object.getOwnPropertyNames(proto), Object.getOwnPropertyNames(Object.prototype))
+      .filter((key) => isFunction(proto[key]))
+      .forEach((key) => {
+        var descriptor = Object.getOwnPropertyDescriptor(proto, key);
+        descriptor.enumerable = false;
+        Object.defineProperty(self, key, descriptor);
+      });
+  });
+
+  // Make all properties of Observable or its superclasses non-enumerable
+  getPrototypeChain(this).forEach((proto) => {
+    Object.getOwnPropertyNames(proto).forEach((key) => {
+      var descriptor = Object.getOwnPropertyDescriptor(proto, key);
+      descriptor.enumerable = false;
+      Object.defineProperty(self, key, descriptor);
+    });
+  });
+
+  let privateMembers = {};
+  privateMembers.$$_isObservable = true;
+  privateMembers.$$_eventDispatcher = new EventDispatcher();
+  privateMembers.$$_snapshot = null;
+  privateMembers.$$_parents = [];
+
+  forEach(privateMembers, (val, key) => {
+    defineHiddenProperty(self, key, val);
+  });
+
+  self.$apply(obj);
+  self.$$_takeSnapshot();
+  return self;
+  /* eslint-enable consistent-this */
+};
+
+Observable.prototype = {};
+Observable.prototype.constructor = Observable;
+
+Observable.uuid = 1;
+Observable.queue = [];
+
+Observable.schedule = function(obj) {
+  if (Observable.queue.length === 0) {
+    window.setTimeout(Observable.drain, 0);
+  }
+
+  Observable.queue.push(obj);
+};
+
+Observable.drain = function() {
+  let queue = unique(Observable.queue);
+  let changeMap = new Map();
+
+  for (let i = 0; i < queue.length; i++) {
+    let obj = queue[i];
+    let c = getChanges(obj);
+    if (c.length) {
+      changeMap.set(obj, c);
+    }
+  }
+
+  resolveParentsFromChanges(changeMap);
+  changeMap = pushChangesDown(changeMap);
+  changeMap = propagateChangesUp(changeMap);
+  for (let i = 0; i < queue.length; i++) {
+    let obj = queue[i];
+    obj.$$_takeSnapshot();
+  }
+
+  Observable.queue = [];
+  for (let [obj, changes] of changeMap) {
+    if (typeof obj.$trigger === 'function') {
+      obj.$trigger('change', changes);
+    }
+  }
+};
+
+mixin(Observable.prototype, {
+
+  $on() {
+    var before = this.$$_eventDispatcher.callbacks.length;
+    this.$$_eventDispatcher.on.apply(this.$$_eventDispatcher, arguments);
+    var after = this.$$_eventDispatcher.callbacks.length;
+
+    if (before === 0 && after > 0) {
+      this.$$_takeSnapshot();
+    }
+
+    return this;
+  },
+
+  $off() {
+    this.$$_eventDispatcher.off.apply(this.$$_eventDispatcher, arguments);
+    return this;
+  },
+
+  $trigger() {
+    this.$$_eventDispatcher.trigger.apply(this.$$_eventDispatcher, arguments);
+    return this;
+  },
+
+  $apply(obj) {
+    if (obj) {
+      setEqualTo(this, obj);
+    }
+    this.$$_markDirty();
+    return this;
+  },
+
+  $$_takeSnapshot() {
+    traverse(this, (context) => {
+
+      if (context.node && typeof context.node === 'object') {
+        if (!context.node.$$_uuid) {
+          defineHiddenProperty(context.node, '$$_uuid', Observable.uuid++);
+        }
+        if (context.parent) {
+          addParent(context.node, context.parent);
+        }
+      }
+    });
+    this.$$_snapshot = deepClone(this);
+  },
+
+  $$_markDirty() {
+    Observable.schedule(this);
+  }
+
+});
+
 
 let defineHiddenProperty = function(obj, key, value) {
   Object.defineProperty(obj, key, {
@@ -27,7 +173,7 @@ let deepClone = function(src) {
   let clone = function(src) {
     let dst;
     if (src && typeof src === 'object') {
-      if (Array.isArray(src)) {
+      if (isArray(src)) {
         dst = [];
         for (let i = 0; i < src.length; i++) {
           dst[i] = clone(src[i]);
@@ -51,7 +197,7 @@ let deepClone = function(src) {
 };
 
 let setEqualTo = function(a, b) {
-  if (Array.isArray(b)) {
+  if (isArray(b)) {
     Array.prototype.splice.apply(a, [0, a.length, ...b]);
   }
   else {
@@ -73,7 +219,7 @@ let traverse = function(root, iterator) {
       return;
     }
     if (context.node && typeof context.node === 'object') {
-      if (Array.isArray(context.node)) {
+      if (isArray(context.node)) {
         for (let i = 0; i < context.node.length; i++) {
           visit({
             parent: context.node,
@@ -103,7 +249,7 @@ let traverse = function(root, iterator) {
 
 let traverseUp = function(node, parentKey, iterator) {
   let getKey = function(parent, child) {
-    if (Array.isArray(parent)) {
+    if (isArray(parent)) {
       return parent.indexOf(child);
     }
     else {
@@ -169,112 +315,6 @@ let getPrototypeChain = function(obj) {
   }
   return result;
 };
-
-let Observable = function Observable(obj = {}) {
-  /* eslint-disable consistent-this */
-  // We're doing inheritance differently here so that Observables show up as
-  // regular Arrays/Objects as far as external libraries are concerned. Mainly
-  // Array.prototype.length behavior and browser Array optimizations. We create
-  // a plain Object or Array and mix in the Observable prototype's methods
-  // directly. The object is then returned. That means Observable() isn't
-  // technically a constructor function; it just adds a lot of non-enumerable
-  // methods/properties to a new Object/Array.
-  let self = {};
-  if (Array.isArray(obj)) {
-    self = [];
-  }
-
-  // Mixin every function in every prototype in obj's chain
-  getPrototypeChain(obj).forEach((proto) => {
-    difference(Object.getOwnPropertyNames(proto), Object.getOwnPropertyNames(Object.prototype))
-      .filter((key) => isFunction(proto[key]))
-      .forEach((key) => {
-        var descriptor = Object.getOwnPropertyDescriptor(proto, key);
-        descriptor.enumerable = false;
-        Object.defineProperty(self, key, descriptor);
-      });
-  });
-
-  // Make all properties of Observable or its superclasses non-enumerable
-  getPrototypeChain(this).forEach((proto) => {
-    Object.getOwnPropertyNames(proto).forEach((key) => {
-      var descriptor = Object.getOwnPropertyDescriptor(proto, key);
-      descriptor.enumerable = false;
-      Object.defineProperty(self, key, descriptor);
-    });
-  });
-
-  let privateMembers = {};
-  privateMembers.$$_isObservable = true;
-  privateMembers.$$_eventDispatcher = new EventDispatcher();
-  privateMembers.$$_snapshot = null;
-  privateMembers.$$_parents = [];
-
-  forEach(privateMembers, (val, key) => {
-    defineHiddenProperty(self, key, val);
-  });
-
-  self.$apply(obj);
-  self.$$_takeSnapshot();
-  return self;
-  /* eslint-enable consistent-this */
-};
-
-Observable.prototype = {};
-Observable.prototype.constructor = Observable;
-
-mixin(Observable.prototype, {
-
-  $on() {
-    var before = this.$$_eventDispatcher.callbacks.length;
-    this.$$_eventDispatcher.on.apply(this.$$_eventDispatcher, arguments);
-    var after = this.$$_eventDispatcher.callbacks.length;
-
-    if (before === 0 && after > 0) {
-      this.$$_takeSnapshot();
-    }
-
-    return this;
-  },
-
-  $off() {
-    this.$$_eventDispatcher.off.apply(this.$$_eventDispatcher, arguments);
-    return this;
-  },
-
-  $trigger() {
-    this.$$_eventDispatcher.trigger.apply(this.$$_eventDispatcher, arguments);
-    return this;
-  },
-
-  $apply(obj) {
-    if (obj) {
-      setEqualTo(this, obj);
-    }
-    this.$$_markDirty();
-    return this;
-  },
-
-  $$_takeSnapshot() {
-    traverse(this, (context) => {
-      if (context.node && typeof context.node === 'object') {
-        if (!context.node.$$_uuid) {
-          defineHiddenProperty(context.node, '$$_uuid', Observable.uuid++);
-        }
-        if (context.parent) {
-          addParent(context.node, context.parent);
-        }
-      }
-    });
-    this.$$_snapshot = deepClone(this);
-  },
-
-  $$_markDirty() {
-    Observable.schedule(this);
-  }
-
-});
-
 let getChanges = function(obj) {
   let prev = obj.$$_snapshot;
   let curr = obj;
@@ -284,9 +324,20 @@ let getChanges = function(obj) {
     }
     return a === b;
   };
+
+  curr.TModel && (curr = _modelToObject(curr));
+  prev.TModel && (prev = _modelToObject(prev));
   let changes = diff(prev, curr, shallowEquals);
   return changes;
 };
+
+function _modelToObject(arr){
+  var iteratorArr = [];
+  for(var model in arr){
+    iteratorArr[model] = arr[model].toObject ? arr[model].toObject() : arr[model];
+  }
+  return iteratorArr;
+}
 
 let resolveParentsFromChanges = function(changeMap) {
   let uuidMap = {};
@@ -305,7 +356,7 @@ let resolveParentsFromChanges = function(changeMap) {
         uuidMap[item.value.$$_uuid]
       ) {
         let child = uuidMap[item.value.$$_uuid];
-        if (item.op === 'add') {
+        if (item.op === 'add' || item.op === 'replace') {
           addParent(child, node);
         }
         else if (item.op === 'remove') {
@@ -382,47 +433,6 @@ let propagateChangesUp = function(changeMap) {
     });
   }
   return result;
-};
-
-Observable.uuid = 1;
-Observable.queue = [];
-
-Observable.schedule = function(obj) {
-  if (Observable.queue.length === 0) {
-    window.setTimeout(Observable.drain, 0);
-  }
-
-  Observable.queue.push(obj);
-};
-
-Observable.drain = function() {
-  let queue = unique(Observable.queue);
-  let changeMap = new Map();
-
-  for (let i = 0; i < queue.length; i++) {
-    let obj = queue[i];
-    let c = getChanges(obj);
-    if (c.length) {
-      changeMap.set(obj, c);
-    }
-  }
-
-  resolveParentsFromChanges(changeMap);
-  changeMap = pushChangesDown(changeMap);
-  changeMap = propagateChangesUp(changeMap);
-
-  for (let i = 0; i < queue.length; i++) {
-    let obj = queue[i];
-    obj.$$_takeSnapshot();
-  }
-
-  Observable.queue = [];
-
-  for (let [obj, changes] of changeMap) {
-    if (typeof obj.$trigger === 'function') {
-      obj.$trigger('change', changes);
-    }
-  }
 };
 
 export default Observable;

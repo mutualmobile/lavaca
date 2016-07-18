@@ -4,7 +4,6 @@ import {merge} from 'mout/object';
 
 let Collection = Model.extend(function Collection(list = []) {
   Model.call(this);
-  debugger;
   _init.call(this,list);
 }, {
   /**
@@ -16,6 +15,14 @@ let Collection = Model.extend(function Collection(list = []) {
    */
 
   TModel: Model,
+  /**
+   * The name of the property containing the collection's items when using toObject()
+   * @property itemsProperty
+   * @default 'items'
+   *
+   * @type String
+   */
+ itemsProperty: 'items',
   /**
    * The name of the property containing the collection's items when using toObject()
    * @property itemsProperty
@@ -62,6 +69,25 @@ let Collection = Model.extend(function Collection(list = []) {
     this.models.$apply([]);
   },
   /**
+   * Converts this model to a key-value hash
+   * @method toObject
+   *
+   * @return {Object}  The key-value hash
+   */
+  toObject() {
+    var obj = Model.prototype.toObject.apply(this, arguments),
+        prop = this.itemsProperty,
+        items = obj[prop] = [],
+        i = -1,
+        item;
+    while (!!(item = this.models[++i])) {
+      if(item.toObject){
+        items[obj[prop].length] = item.toObject();
+      }
+    }
+    return obj;
+  },
+  /**
    * Processes the data received from an object and apply it to self and the child models.
    * @method deepApply
    *
@@ -73,12 +99,13 @@ let Collection = Model.extend(function Collection(list = []) {
     list = obj;
     if (!(list instanceof Array)) {
       this.apply(obj);
-      for(let mod in this.models){
-        this.models[mod] = merge({}, this.models[mod], obj)
+      if (obj && obj.hasOwnProperty(this.itemsProperty)) {
+        list = obj[this.itemsProperty];
       }
-      this.models.$apply();
-      this.trigger('deepApply', {obj: obj});
     }
+    this.models.push(list);
+    this.models.$apply();
+    this.trigger('deepApply', {obj: obj});
   }
 });
 
