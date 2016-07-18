@@ -1,14 +1,155 @@
-import Model from 'lavaca/mvc/Model';
+import {EventDispatcher, Model} from 'lavaca';
 import Observable from '../util/Observable';
+import {merge} from 'mout/object';
 
-let coerceIntoModel = function(TModel, item) {
+let Collection = Model.extend(function Collection(list = []) {
+  Model.call(this);
+  debugger;
+  _init.call(this,list);
+}, {
+  /**
+   * The type of model object to use for items in this collection
+   * @property TModel
+   * @default [[Lavaca.mvc.Model]]
+   *
+   * @type Function
+   */
+
+  TModel: Model,
+  /**
+   * The name of the property containing the collection's items when using toObject()
+   * @property itemsProperty
+   * @default 'items'
+   *
+   * @type String
+   */
+  on(key,callback) {
+    if(key.split('.')[0] == 'change'){
+      return this.models.$on(key,callback);
+    }
+    return EventDispatcher.prototype.on.call(this, key, callback);
+  },
+  /**
+   * Bind an event handler to this object
+   * @method off
+   *
+   *
+   * @param {String} type  The name of the event
+   * @param {Function} callback  The function to execute when the event occurs
+   * @return {Lavaca.events.EventDispatcher}  This event dispatcher (for chaining)
+   */
+  off(key,callback) {
+    if(key.split('.')[0] == 'change'){
+      return this.models.$off(key,callback);
+    }
+    return EventDispatcher.prototype.off.call(this, key, callback);
+  },
+  /**
+   * Removes and disposes of all models in the collection
+   * @method clear
+   *
+   */
+  clear() {
+    Model.prototype.clear.apply(this, arguments);
+    this.clearModels();
+  },
+  /**
+   * clears only the models in the collection
+   * @method clearModels
+   *
+   */
+  clearModels() {
+    this.models.$apply([]);
+  },
+  /**
+   * Processes the data received from an object and apply it to self and the child models.
+   * @method deepApply
+   *
+   * @param {Object} obj  An object to apply to self and children
+   */
+  deepApply(obj) {
+    var list;
+    obj = this.parse(obj);
+    list = obj;
+    if (!(list instanceof Array)) {
+      this.apply(obj);
+      for(let mod in this.models){
+        this.models[mod] = merge({}, this.models[mod], obj)
+      }
+      this.models.$apply();
+      this.trigger('deepApply', {obj: obj});
+    }
+  }
+});
+
+function _init(arr){
+  arr = Array.isArray(arr) ? arr.map(_coerceIntoModel.bind(this, this.TModel)) : [];s
+  this.models = new Observable(arr);
+  this.models.TModel = this.TModel;
+  this.models.push = _push;
+  this.models.unshift = _unshift;
+  this.models.splice = _splice;
+  this.models.$apply = _apply;
+}
+
+function _equals(a, b) {
+  return a === b;
+}
+
+function _apply(list) {
+  if (list) {
+    list = intersection(list, this, _equals.bind(this))
+      .filter((item) => {
+        return item.left !== undefined;
+      })
+      .map((item) => {
+        if (item.right) {
+          return item.right.$apply(item.left);
+        }
+        else {
+          return item.left;
+        }
+      });
+
+    Array.prototype.splice.apply(this, [0, this.length, ...list]);
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    this[i] = _coerceIntoModel(this.TModel, this[i]);
+  }
+
+  return Observable.prototype.$apply.call(this);
+}
+
+function _push(...list) {
+  this.$$_markDirty();
+  list = list.map(_coerceIntoModel.bind(this, this.TModel));
+  return Array.prototype.push.apply(this, list);
+}
+
+function _splice(start, deleteCount, ...list) {
+  this.$$_markDirty();
+  if (arguments.length <= 2) {
+    return Array.prototype.splice.apply(this, arguments);
+  }
+  list = list.map(_coerceIntoModel.bind(this, this.TModel));
+  return Array.prototype.splice.call(this, start, deleteCount, ...list);
+}
+
+function _unshift(...list) {
+  this.$$_markDirty();
+  list = list.map(_coerceIntoModel.bind(this, this.TModel));
+  return Array.prototype.unshift.apply(this, list);
+}
+
+function _coerceIntoModel(TModel, item) {
   if (item.constructor === TModel) {
     return item;
   }
   return new TModel(item);
-};
+}
 
-let intersection = function(a, b, equals) {
+function intersection(a, b, equals) {
   let result = [];
   let matchIndexes = [];
 
@@ -43,9 +184,9 @@ let intersection = function(a, b, equals) {
   }
 
   return result;
-};
+}
 
-let merge = function(a, b, equals) {
+function merge(a, b, equals) {
   let result = [];
   let rest = [];
   intersection(a, b, equals)
@@ -62,69 +203,6 @@ let merge = function(a, b, equals) {
     });
   result.push(...rest);
   return result;
-};
-
-let Collection = Model.extend(function Collection(list = []) {
-  return Observable.call(this, list);
-}, {
-  TModel: Model,
-
-  $equals(a, b) {
-    return a === b;
-  },
-
-  $merge(list) {
-    return this.$apply(
-      merge(this, list, this.$equals.bind(this))
-    );
-  },
-
-  $apply(list) {
-    if (list) {
-      list = intersection(list, this, this.$equals.bind(this))
-        .filter((item) => {
-          return item.left !== undefined;
-        })
-        .map((item) => {
-          if (item.right) {
-            return item.right.$apply(item.left);
-          }
-          else {
-            return item.left;
-          }
-        });
-
-      Array.prototype.splice.apply(this, [0, this.length, ...list]);
-    }
-
-    for (let i = 0; i < this.length; i++) {
-      this[i] = coerceIntoModel(this.TModel, this[i]);
-    }
-
-    return Observable.prototype.$apply.call(this);
-  },
-
-  push: function(...list) {
-    this.$$_markDirty();
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
-    return Array.prototype.push.apply(this, list);
-  },
-
-  splice: function(start, deleteCount, ...list) {
-    this.$$_markDirty();
-    if (arguments.length <= 2) {
-      return Array.prototype.splice.apply(this, arguments);
-    }
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
-    return Array.prototype.splice.call(this, start, deleteCount, ...list);
-  },
-
-  unshift: function(...list) {
-    this.$$_markDirty();
-    list = list.map(coerceIntoModel.bind(this, this.TModel));
-    return Array.prototype.unshift.apply(this, list);
-  }
-
-});
+}
 
 export default Collection;
