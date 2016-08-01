@@ -1,6 +1,4 @@
 import { default as EventDispatcher } from '../events/EventDispatcher';
-import { default as Model } from '../mvc/Model';
-import { default as ChildViewManager } from '../mvc/ChildViewManager';
 import { default as uuid } from '../util/uuid';
 import { forOwn, size } from 'mout/object';
 import { isString, isBoolean, isObject, isArray } from 'mout/lang';
@@ -772,24 +770,6 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
       this.childViewMap[selector] = { TView: TView, model: model };
     }
     return this;
-  },
-
-  /**
-   * Instantiates a ChildViewManager for handling transitions between various childviews
-   * @method mapChildViewManager
-   * @param {String} el  The element selector for the child views to be rendred in
-   * @param {Object} map  An object containing all of the routes and view types to be rendered
-   *     The map should be in the form {selector: {TView : TView, model : lavaca.mvc.Model, step: Int}}. For example, {'form': {TView : ExampleView, model : new Model(), step: 1}}
-   *
-  */
-  mapChildViewManager(el, map, mixin, fillin) {
-    this.childViewManager = new ChildViewManager(el, map, this, 'cvm-'+this.id);
-    if (typeof mixin === 'object') {
-      this.childViewManager.childViewMixin = mixin;
-    }
-    if (typeof fillin === 'object') {
-      this.childViewManager.childViewFillin = fillin;
-    }
   },
 
   /**
