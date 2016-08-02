@@ -1,4 +1,4 @@
-import { default as Animation } from './Animation'
+import {default as Animation} from './Animation'
 import $ from 'jquery';
 /**
  * Static utility type for creating a CSS keyframe animation with a spring effect
@@ -19,7 +19,7 @@ const defaults = {
 
 let springAccelerationForState = (state) => {
   return (-state.tension * state.x) - (state.friction * state.v);
-}
+};
 
 let springEvaluateState = (initial) => {
   let output = {
@@ -27,7 +27,7 @@ let springEvaluateState = (initial) => {
     dv: springAccelerationForState(initial)
   };
   return output;
-}
+};
 
 let springEvaluateStateWithDerivative = (initial, dt, derivative) => {
   let state = {
@@ -41,7 +41,7 @@ let springEvaluateStateWithDerivative = (initial, dt, derivative) => {
     dv: springAccelerationForState(state)
   };
   return output;
-}
+};
 
 let springIntegrateState = (state, speed) => {
   var a, b, c, d, dvdt, dxdt;
@@ -54,7 +54,7 @@ let springIntegrateState = (state, speed) => {
   state.x = state.x + dxdt * speed;
   state.v = state.v + dvdt * speed;
   return state;
-}
+};
 
 var Spring = (function() {
   function Spring(args) {
@@ -173,7 +173,7 @@ let getTransformFunction = (option, defaultValue, mainOnly) => {
   result.z = (result.z || result.z === 0) ? result.z : defaultValue.z;
 
   return result;
-}
+};
 let getDifference = (initial, result) => {
   var diff;
   if (typeof initial === 'object') {
@@ -185,7 +185,7 @@ let getDifference = (initial, result) => {
     diff = (result || 0) - (initial || 0);
   }
   return diff;
-}
+};
 let getResultState = (initial, difference) => {
   var result;
   if (typeof initial === 'object') {
@@ -197,7 +197,7 @@ let getResultState = (initial, difference) => {
     result = (initial || 0) + (difference || 0);
   }
   return result;
-}
+};
 
 Springer.generateKeyframes = function(options, element) {
   var initialData = element && element.data() ? element.data() : {};

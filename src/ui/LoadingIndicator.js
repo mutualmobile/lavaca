@@ -1,4 +1,4 @@
-import { default as Widget } from './Widget';
+import {default as Widget} from './Widget';
 import $ from 'jquery';
 
 /**

@@ -1,4 +1,4 @@
-import { default as extend } from './extend';
+import {default as extend} from './extend';
 
 const _disposeOf = (obj) => {
   var n,

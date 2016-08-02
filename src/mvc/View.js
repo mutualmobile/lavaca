@@ -1,7 +1,11 @@
-import { default as EventDispatcher } from '../events/EventDispatcher';
-import { default as uuid } from '../util/uuid';
-import { forOwn, size } from 'mout/object';
-import { isString, isBoolean, isObject, isArray } from 'mout/lang';
+import {default as EventDispatcher} from '../events/EventDispatcher';
+import {default as uuid} from '../util/uuid';
+import {default as forOwn} from 'mout/object/forOwn';
+import {default as size} from 'mout/object/size';
+import {default as isString} from 'mout/lang/isString';
+import {default as isBoolean} from 'mout/lang/isBoolean';
+import {default as isObject} from 'mout/lang/isObject';
+import {default as isArray} from 'mout/lang/isArray';
 import $ from 'jquery';
 
 let _UNDEFINED;

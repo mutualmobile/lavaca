@@ -1,10 +1,12 @@
 import $ from 'jquery';
-import { default as Disposable } from '../util/Disposable';
-import { default as History } from '../net/History';
-import {fillIn, merge} from 'mout/object';
-import {removeAll, contains} from 'mout/array';
+import {default as Disposable} from '../util/Disposable';
+import {default as History} from '../net/History';
+import {default as fillIn} from 'mout/object/fillIn';
+import {default as merge} from 'mout/object/merge';
+import {default as removeAll} from 'mout/array/removeAll';
+import {default as contains} from 'mout/array/contains';
 
-var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, id, childViewMixin, childViewFillin){
+var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, id){
   Disposable.call(this);
   this.history = [];
   this.animationBreadcrumb = [];
@@ -19,10 +21,8 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   this.routes = {};
   this.elName = el;
   this.parentView = parent;
-  this.id = 'cvm-'+id;
+  this.id = id;
   this.hasInitialized = false;
-  this.childViewMixin = childViewMixin;
-  this.childViewFillin = childViewFillin;
   if (typeof routes === 'object') {
     for (var r in routes) {
       this.routes[r] = routes[r];

@@ -1,9 +1,9 @@
 import $ from 'jquery';
-import { default as History } from '../net/History';
-import { default as Device } from '../env/Device';
-import { default as EventDispatcher } from '../events/EventDispatcher';
-import { default as Router } from './Router';
-import { default as ViewManager } from './ViewManager';
+import {default as History} from '../net/History';
+import {default as Device} from '../env/Device';
+import {default as EventDispatcher} from '../events/EventDispatcher';
+import {default as Router} from './Router';
+import {default as ViewManager} from './ViewManager';
 
 var _stopEvent = (e) => {
   e.preventDefault();
@@ -17,7 +17,7 @@ var _matchHashRoute = (hash) => {
     return matches[1].replace(/#.*/, '');
   }
   return null;
-}
+};
 
 var _isExternal = (url) => {
   var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
@@ -32,7 +32,7 @@ var _isExternal = (url) => {
     return true;
   }
   return false;
-}
+};
 
 /**
  * Base application type

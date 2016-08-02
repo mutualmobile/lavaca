@@ -1,7 +1,9 @@
-import { default as Model } from './Model';
-import {deepClone as clone, isArray} from 'mout/lang';
-import {removeAll, insert} from 'mout/array';
-import {merge} from 'mout/object';
+import {default as Model} from './Model';
+import {default as clone} from 'mout/lang/clone';
+import {default as isArray} from 'mout/lang/isArray';
+import {default as removeAll} from 'mout/array/removeAll';
+import {default as insert} from 'mout/array/insert';
+import {default as merge} from 'mout/object/merge';
 
 var UNDEFINED;
 
@@ -11,7 +13,7 @@ var _triggerItemEvent = (collection, event, previousIndex, index, model) => {
     index: index,
     model: model
   });
-}
+};
 
 var _getComparator = (attr, descending) => {
   let compareVal = descending ? 1 : -1;
@@ -24,7 +26,7 @@ var _getComparator = (attr, descending) => {
               ? compareVal
               : -compareVal;
   };
-}
+};
 
 // Virtual type
 /**

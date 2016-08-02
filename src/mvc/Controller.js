@@ -1,7 +1,8 @@
 import $ from 'jquery';
-import { default as History } from '../net/History';
-import { default as Disposable } from '../util/Disposable';
-import {interpolate} from 'mout/string';
+import {default as Model} from './Model';
+import {default as History} from '../net/History';
+import {default as Disposable} from '../util/Disposable';
+import {default as interpolate} from 'mout/string/interpolate';
 
 /**
  * Base type for controllers

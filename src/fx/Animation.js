@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { default as Transform } from './Transform';
+import {default as Transform} from './Transform';
 
 var Animation = {};
 

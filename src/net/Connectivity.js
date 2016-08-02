@@ -1,4 +1,4 @@
-import {get} from 'mout/object';
+import {default as get} from 'mout/object/get';
 import $ from 'jquery';
 /**
  * A utility type for working under different network connectivity situations.
@@ -17,7 +17,7 @@ var _onAjaxError = (arg) => {
       callback(arg);
     }
   }
-}
+};
 
 var _isLocalUrl = (url) => url.indexOf('.local') > 0 || url.indexOf('localhost') > 0 || url.substring(0,4) === 'file';
 

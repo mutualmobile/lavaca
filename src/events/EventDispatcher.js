@@ -1,4 +1,4 @@
-import { default as Disposable } from '../util/Disposable';
+import {default as Disposable} from '../util/Disposable';
 
 /**
  * Basic event dispatcher type

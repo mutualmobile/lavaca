@@ -1,8 +1,10 @@
-import { default as History } from '../net/History';
-import { default as View } from './View';
-import { default as Disposable } from '../util/Disposable';
-import {merge, fillIn} from 'mout/object';
-import {contains, removeAll} from 'mout/array';
+import {default as History} from '../net/History';
+import {default as View} from './View';
+import {default as Disposable} from '../util/Disposable';
+import {default as merge} from 'mout/object/merge';
+import {default as fillIn} from 'mout/object/fillIn';
+import {default as contains} from 'mout/array/contains';
+import {default as removeAll} from 'mout/array/removeAll';
 import $ from 'jquery';
 
 /**

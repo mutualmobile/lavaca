@@ -1,7 +1,8 @@
-import {removeAll, contains} from 'mout/array';
-import {merge} from 'mout/object';
-import { default as Cache } from '../util/Cache';
-import { default as EventDispatcher } from '../events/EventDispatcher';
+import {default as removeAll} from 'mout/array/removeAll';
+import {default as contains} from 'mout/array/contains';
+import {default as merge} from 'mout/object/merge';
+import {default as Cache} from '../util/Cache';
+import {default as EventDispatcher} from '../events/EventDispatcher';
 
 var UNDEFINED;
 
@@ -12,7 +13,7 @@ let _triggerAttributeEvent = (model, event, attribute, previous, value, messages
     value: value === UNDEFINED ? model.get(attribute) : value,
     messages: messages || []
   });
-}
+};
 
 let _setFlagOn = (model, name, flag) => {
   var keys = model.flags[flag];
@@ -22,7 +23,7 @@ let _setFlagOn = (model, name, flag) => {
   if (!contains(keys, name)) {
     keys.push(name);
   }
-}
+};
 
 let _suppressChecked = (model, suppress, callback) => {
   suppress = !!suppress;
@@ -41,7 +42,7 @@ let _suppressChecked = (model, suppress, callback) => {
     model[prop] = old[prop];
   }
   return result;
-}
+};
 
 let _isValid = (messages) => {
   var isValid = true;
@@ -52,7 +53,7 @@ let _isValid = (messages) => {
   }
   messages.isValid = isValid;
   return messages;
-}
+};
 
 
 // Virtual type

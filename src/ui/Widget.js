@@ -1,5 +1,5 @@
-import { default as EventDispatcher } from '../events/EventDispatcher';
-import { default as uuid } from '../util/uuid';
+import {default as EventDispatcher} from '../events/EventDispatcher';
+import {default as uuid} from '../util/uuid';
 import $ from 'jquery';
 
 /**

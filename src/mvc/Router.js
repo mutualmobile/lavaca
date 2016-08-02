@@ -1,6 +1,6 @@
-import { default as Route } from './Route';
-import { default as History } from '../net/History';
-import { default as Disposable } from '../util/Disposable';
+import {default as Route} from './Route';
+import {default as History} from '../net/History';
+import {default as Disposable} from '../util/Disposable';
 /**
  * @class lavaca.mvc.Router
  * @extends lavaca.util.Disposable
@@ -52,7 +52,7 @@ var Router = Disposable.extend(function(viewManager){
         var _always = () => {
           History.isRoutingBack = false;
         };
-        this.exec(e.url, e, {}).then(_always, _always);
+        this.exec(e.url, e).then(_always, _always);
       }
     };
     History.on('popstate', this.onpopstate, this);
@@ -183,11 +183,11 @@ var Router = Disposable.extend(function(viewManager){
     }
     if(checkAuth && failUrl !== url && !ignoreAuth){
       return func().then(
-        () => _executeIfRouteExists.call(this, url, state, params).catch(err=>_rejection.call(this, url, err)),
-        () => _executeIfRouteExists.call(this, failUrl, state, params)).catch(err=>_rejection.call(this, failUrl, err));
+        () => _executeIfRouteExists.call(this, url, state, params).catch(url=>_rejection.call(this,url)),
+        () => _executeIfRouteExists.call(this, failUrl, state, params)).catch(url=>_rejection.call(this,url));
     }
     else{
-      return _executeIfRouteExists.call(this, url, state, params).catch(err=>_rejection.call(this,route, url, err));
+      return _executeIfRouteExists.call(this, url, state, params).catch(url=>_rejection.call(this,url));
     }
 
   },
@@ -285,14 +285,9 @@ let _executeIfRouteExists = function(url, state, params) {
       throw err;
     });
 }
-function _rejection(url, err){
-  this.unlock();
-  if(!err || !History.length){
-    if(url && url.pattern !== '/'){
-      this.exec('/');
-    }
-  }
-  console.error('Unable to find a route' + (url && url.pattern ? ' for ' + url.pattern:'.'));
+function _rejection(url){
+  !url && this.exec('/');
+  console.error('Unable to find a route' + (url ? ' for ' + url:'.'));
 };
 
 let singletonRouter = new Router();

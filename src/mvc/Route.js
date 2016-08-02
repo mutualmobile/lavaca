@@ -1,6 +1,6 @@
-import { default as Disposable } from '../util/Disposable';
-import {merge} from 'mout/object';
-import {deepClone as clone} from 'mout/lang';
+import {default as Disposable} from '../util/Disposable';
+import {default as merge} from 'mout/object/merge';
+import {default as clone} from 'mout/lang/clone';
 
 let _multivariablePattern = () => new RegExp('\\{\\*(.*?)\\}', 'g');
 let _variablePattern = () => new RegExp('\\{([^\\/]*?)\\}', 'g');
@@ -29,7 +29,7 @@ let _patternToRegExp = (pattern) => {
   }
   exp += '(\\?.*)?(#\\.*)?$';
   return new RegExp(exp, 'g');
-}
+};
 
 let _scrubURLValue = (value) => {
   value = decodeURIComponent(value);
@@ -44,7 +44,7 @@ let _scrubURLValue = (value) => {
     value = new Date(Number(value[0]), Number(value[1]) - 1, Number(value[2]));
   }
   return value;
-}
+};
 
 /**
  * @class lavaca.mvc.Route

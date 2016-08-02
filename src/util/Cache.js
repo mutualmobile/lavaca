@@ -1,5 +1,5 @@
-import { default as Disposable } from '../util/Disposable';
-import { default as uuid } from '../util/uuid';
+import {default as Disposable} from '../util/Disposable';
+import {default as uuid} from '../util/uuid';
 
 /**
  * Object for storing data

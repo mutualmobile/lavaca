@@ -1,5 +1,5 @@
-import { default as EventDispatcher } from '../events/EventDispatcher';
-import { default as uuid } from '../util/uuid';
+import {default as EventDispatcher} from '../events/EventDispatcher';
+import {default as uuid} from '../util/uuid';
 
 var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
     _standardsMode = !_isAndroid && typeof history.pushState === 'function',
@@ -23,7 +23,7 @@ let _insertState = (hist, position, id, state, title, url) => {
   _lastHash = url + '#@' + id;
   location.hash = _shouldUseHashBang ? '!' + hashReplacement : _lastHash;
   return record;
-}
+};
 
 /**
  * HTML5 history abstraction layer
