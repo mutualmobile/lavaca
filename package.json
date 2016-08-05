@@ -1,74 +1,75 @@
 {
-  "name": "lavaca",
-  "description": "A curated collection of tools built for mobile.",
-  "version": "4.0.0-alpha.7",
-  "homepage": "https://github.com/mutualmobile/lavaca",
-  "author": {
-    "name": "mutualmobile",
-    "email": "lavaca@mutualmobile.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mutualmobile/lavaca.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mutualmobile/lavaca/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/mutualmobile/lavaca/blob/master/LICENSE-MIT"
-    }
-  ],
-  "engines": {
-    "node": ">= 0.8.0"
-  },
-  "main": "lavaca",
-  "scripts": {
-    "build": "_scripts/build",
-    "publish": "_scripts/publish",
-    "test": "_scripts/test",
-    "coverage": "_scripts/coverage",
-    "doc": "node_modules/yuidocjs/lib/cli.js src --outdir docs"
-  },
-  "devDependencies": {
-    "babel": "6.5.2",
-    "babel-cli": "6.5.1",
-    "babel-loader": "6.2.4",
-    "babel-plugin-transform-es2015-modules-amd-simple": "6.6.7",
-    "babel-plugin-transform-es2015-modules-commonjs-simple": "6.7.0",
-    "babel-preset-es2015-webpack": "6.4.0",
-    "chai": "3.5.0",
-    "coveralls": "2.11.9",
-    "fs-extra": "0.6.3",
-    "istanbul": "1.0.0-alpha.2",
-    "jquery": "2.2.3",
-    "karma": "0.13.22",
-    "karma-chrome-launcher": "0.1.4",
-    "karma-cli": "0.1.0",
-    "karma-coverage": "0.2.4",
-    "karma-mocha": "0.2.2",
-    "karma-sourcemap-loader": "0.3.7",
-    "mocha": "2.4.5",
-    "mout": "1.0.0",
-    "sinon": "1.17.3",
-    "webpack": "1.12.14",
-    "yuidocjs": "0.10.0"
-  },
-  "keywords": [
-    "lavaca",
-    "javascript",
-    "lavaca-core",
-    "mobile",
-    "web",
-    "framework",
-    "touch",
-    "responsive",
-    "utils",
-    "build",
-    "mvc",
-    "localStorage",
-    "events",
-    "animation"
-  ]
+    "name": "lavaca",
+    "description": "A curated collection of tools built for mobile.",
+    "version": "4.0.0-alpha-9fbb9b7.0",
+    "homepage": "https://github.com/mutualmobile/lavaca",
+    "author": {
+        "name": "mutualmobile",
+        "email": "lavaca@mutualmobile.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/mutualmobile/lavaca.git"
+    },
+    "bugs": {
+        "url": "https://github.com/mutualmobile/lavaca/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/mutualmobile/lavaca/blob/master/LICENSE-MIT"
+        }
+    ],
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "main": "lavaca",
+    "scripts": {
+        "build": "_scripts/build",
+        "publish": "_scripts/publish",
+        "test": "_scripts/test",
+        "coverage": "_scripts/coverage",
+        "doc": "node_modules/yuidocjs/lib/cli.js src --outdir docs"
+    },
+    "devDependencies": {
+        "babel-core": "^6.0.0",
+        "babel": "6.5.2",
+        "babel-cli": "6.5.1",
+        "babel-loader": "6.2.4",
+        "babel-plugin-transform-es2015-modules-amd-simple": "6.6.7",
+        "babel-plugin-transform-es2015-modules-commonjs-simple": "6.7.0",
+        "babel-preset-es2015-webpack": "6.4.0",
+        "chai": "3.5.0",
+        "coveralls": "2.11.9",
+        "fs-extra": "0.6.3",
+        "istanbul": "1.0.0-alpha.2",
+        "jquery": "2.2.3",
+        "karma": "0.13.22",
+        "karma-chrome-launcher": "0.1.4",
+        "karma-cli": "0.1.0",
+        "karma-coverage": "0.2.4",
+        "karma-mocha": "0.2.2",
+        "karma-sourcemap-loader": "0.3.7",
+        "mocha": "2.4.5",
+        "mout": "1.0.0",
+        "sinon": "1.17.3",
+        "webpack": "1.12.14",
+        "yuidocjs": "0.10.0"
+    },
+    "keywords": [
+        "lavaca",
+        "javascript",
+        "lavaca-core",
+        "mobile",
+        "web",
+        "framework",
+        "touch",
+        "responsive",
+        "utils",
+        "build",
+        "mvc",
+        "localStorage",
+        "events",
+        "animation"
+    ]
 }
