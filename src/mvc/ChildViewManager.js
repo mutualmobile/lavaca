@@ -6,7 +6,7 @@ import {default as merge} from 'mout/object/merge';
 import {default as removeAll} from 'mout/array/removeAll';
 import {default as contains} from 'mout/array/contains';
 
-var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, id){
+var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, parent, childViewMixin, childViewFillin){
   Disposable.call(this);
   this.history = [];
   this.animationBreadcrumb = [];
@@ -21,7 +21,9 @@ var ChildViewManager = Disposable.extend(function ChildViewManager(el, routes, p
   this.routes = {};
   this.elName = el;
   this.parentView = parent;
-  this.id = id;
+  this.id = 'cvm-' + parent.id;
+  this.childViewMixin = childViewMixin;
+  this.childViewFillin = childViewFillin;
   this.hasInitialized = false;
   if (typeof routes === 'object') {
     for (var r in routes) {
