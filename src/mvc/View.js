@@ -552,6 +552,9 @@ var View = EventDispatcher.extend(function View(el, model, parentView) {
           if (el.hammer) {
             el.hammer({domEvents:true}).on(callbackType, delegate, callback);
           } else {
+            if (callbackType === 'tap' && !$(document.body).tap) {
+              callbackType = 'click';
+            }
             el.on(callbackType, delegate, callback);
           }
         }
