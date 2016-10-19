@@ -11,6 +11,26 @@ var _isAndroid = navigator.userAgent.indexOf('Android') > -1,
     _pushCount = 0,
     _silentPop = false;
 
+function checkForParams() {
+  var str = window.location.href; 
+  str = str.split('?')[1] || ''; 
+  str = str.split('#')[0] || '';
+  var paramArray = str.split('&') || [];
+  for (var i=0; i<paramArray.length; i++) {
+    str = paramArray[i];
+    var ar = str.split('=');
+    var ob = {};
+    if (ar && ar.length === 2) {
+      ob[ar[0]] = ar[1];
+      paramArray[i] = ob;
+      if (ar[0] === 'gclid') {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 let _insertState = (hist, position, id, state, title, url) => {
   hist.position = position;
   var record = {
@@ -21,7 +41,9 @@ let _insertState = (hist, position, id, state, title, url) => {
       };
   hist.sequence[position] = record;
   _lastHash = url + '#@' + id;
-  location.hash = _shouldUseHashBang ? '!' + hashReplacement : _lastHash;
+  if (!checkForParams() || id !== 0) {
+    location.hash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
+  }
   return record;
 };
 

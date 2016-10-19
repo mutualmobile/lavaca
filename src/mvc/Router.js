@@ -140,10 +140,6 @@ var Router = Disposable.extend(function(viewManager){
    * @return {Promise}  A promise
    */
   exec(url, state, params) {
-    if(state && !params){
-      params = state;
-      state = null;
-    }
     if (this.locked) {
       return Promise.reject('locked');
     } else {

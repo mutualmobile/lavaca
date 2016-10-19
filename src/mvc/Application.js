@@ -129,7 +129,11 @@ var Application = EventDispatcher.extend(function (callback){
       } else {
         e.preventDefault();
         if (rel === 'back') {
-          History.back();
+          if (ViewManager.breadcrumb.length > 1) {
+            History.back();
+          } else {
+            this.router.exec('/', null, {'root': true});
+          }
         } else if (rel === 'force-back' && url) {
           History.isRoutingBack = true;
           var _always = function() {
