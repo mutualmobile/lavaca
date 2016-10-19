@@ -40,7 +40,8 @@ let _insertState = (hist, position, id, state, title, url) => {
         url: url
       };
   hist.sequence[position] = record;
-  _lastHash = url + '#@' + id;
+  var hashReplacement = url + '#@' + id;
+  _lastHash = hashReplacement;
   if (!checkForParams() || id !== 0) {
     location.hash = _shouldUseHashBang ? '!' + hashReplacement : hashReplacement;
   }
